@@ -1251,11 +1251,55 @@ namespace manderijntje
         List<Node> nodes;
         List<Link> links;
 
+        public List<Node> unique_nodes;
+        public List<Link> unique_links;
+
         public DataModel()
         {
             nodes = new List<Node>();
             links = new List<Link>();
+
+            unique_nodes = new List<Node>();
+            unique_links = new List<Link>();
         }
+
+        // populate unique lists:
+
+        public void get_unique_nodes ()
+        {
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (!node_in_unique_nodes(nodes[i]) {
+                    unique_nodes.Add(nodes[i]);
+                }
+            }
+        }
+
+        public void get_unique_links ()
+        {
+            for (int i = 0; i < links.Count; i++)
+            {
+                if (node_in_unique_nodes(links[i].start) && node_in_unique_nodes(links[i].end))
+                {
+                    unique_links.Add(links[i]);
+                }
+            }
+        }
+
+        private bool node_in_unique_nodes (Node n)
+        {
+            for (int i = 0; i < unique_nodes.Count; i++)
+            {
+                if (unique_nodes[i].name_id == n.name_id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // end populate
+
         public void AddNode(Node n)
         {
             nodes.Add(n);
