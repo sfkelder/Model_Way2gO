@@ -1337,7 +1337,7 @@ namespace manderijntje
 
         // 'echte' coordinaten
         public double x, y;
-        public double number;
+        public int number;
         // unieke indentifier, naam in de vorm van een string
         public string name_id, routnaam, stationnaam, soortrout, routid, vervoersmiddels;
 
