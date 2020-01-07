@@ -94,6 +94,7 @@
     <Compile Include="UserControls\DetailsControl.Designer.cs">
       <DependentUpon>DetailsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="VisueelModel.cs" />
     <EmbeddedResource Include="Cells\autoSuggesCell.resx">
       <DependentUpon>autoSuggesCell.cs</DependentUpon>
     </EmbeddedResource>
