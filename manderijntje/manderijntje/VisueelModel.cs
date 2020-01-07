@@ -14,14 +14,14 @@ namespace manderijntje
 {
 
         /*Deze class bevat alle methodes die de connectie zijn tussen de visuele classes (alles in deze file) en de andere classes*/
-        public static class connecties
+        public class connecties
         {
-            private static lists_bewerkingen l = new lists_bewerkingen();
-            private static bewerkingen b = new bewerkingen();
-             static VisueelModel toegang = (new parsing()).getModel(new DataModel(), false);
+            private lists_bewerkingen l = new lists_bewerkingen();
+            private  bewerkingen b = new bewerkingen();
+            VisueelModel toegang = (new parsing()).getModel(new DataModel(), false);
 
             //word eenmalig aangeropen bij het opstarten van het programma en kijkt of de benodigde file al bestaat of nog aangemaakt moet worden
-            public static void opstarten()
+            public void opstarten()
             {
                 try
                 {
@@ -37,7 +37,7 @@ namespace manderijntje
 
 
             //wordt vanuit andere classes aangeroepen en stuurt alles in dit form aan
-            public static int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen)
+            public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen)
             {
                 int number = b.zoom(factor, zoomgrote);
 
