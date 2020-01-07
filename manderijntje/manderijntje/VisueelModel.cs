@@ -267,7 +267,7 @@ namespace manderijntje
         [Serializable]
         public class VisueelNode
         {
-            public int prioriteit;
+            public int prioriteit, index;
             public Point punt;
             public string name_id;
             public Color kleur = Color.Gray;
@@ -297,6 +297,7 @@ namespace manderijntje
             public string name_id;
             public Color kleur = Color.Gray;
             public bool paint = true;
+            public VisueelNode u, v;
 
             public VisueelLink(string name_id)
             {

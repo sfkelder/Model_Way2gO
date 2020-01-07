@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 
 namespace manderijntje
@@ -14,7 +12,7 @@ namespace manderijntje
         private List<sLinkPair> linkpairs = new List<sLinkPair>();
         private List<sBendLink> bendlinks = new List<sBendLink>();
 
-        private int width = 1000, height = 1000;
+        private const int width = 5000, height = 5000;
 
         public parsing(DataModel model)
         {
@@ -32,11 +30,9 @@ namespace manderijntje
         {
             if (solve && getDegree() <= 8)
             {
-                // run the solver
+                nodes = (new solver(nodes, links, linkpairs, bendlinks, width, height)).getSolution();
             }
-            // else don't run the solver
-
-            return new VisueelModel();
+            return createModel();
         }
 
         // planarity:
@@ -290,11 +286,68 @@ namespace manderijntje
 
         // create a visual model object:
 
+        private VisueelModel createModel()
+        {
+            VisueelModel model = new VisueelModel();
 
+            List<VisueelNode> dNodes = new List<VisueelNode>();
+            List<VisueelLink> dLinks = new List<VisueelLink>();
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                VisueelNode newNode = new VisueelNode(new Point(), "", 0);
+                newNode.index = nodes[i].index;
+                newNode.punt = new Point(nodes[i].x, nodes[i].y);
+                newNode.dummynode = nodes[i].draw;
+
+                dNodes.Add(newNode);
+            }
+
+            for (int i = 0; i < links.Count; i++)
+            {
+                VisueelLink newLink = new VisueelLink("");
+                newLink.u = getNode(links[i].u.index, dNodes);
+                newLink.v = getNode(links[i].v.index, dNodes);
+
+                dLinks.Add(newLink);
+            }
+
+            model.nodes = dNodes;
+            model.links = dLinks;
+
+            return model;
+        }
+
+        private VisueelNode getNode(int i, List<VisueelNode> dNodes)
+        {
+            for (int n = 0; n < dNodes.Count; n++)
+            {
+                if (dNodes[n].index == i)
+                {
+                    return dNodes[n];
+                }
+            }
+            return dNodes[0];
+        }
     }
 
     class solver
     {
+        private List<sNode> nodes;
+        private List<sLink> links;
+        private List<sLinkPair> linkpairs;
+        private List<sBendLink> bendlinks;
+
+        public solver (List<sNode> n, List<sLink> l, List<sLinkPair> p, List<sBendLink> b, int width, int height)
+        {
+            nodes = n; links = l; linkpairs = p; bendlinks = b;
+        }
+
+        public List<sNode> getSolution ()
+        {
+            // update the coordinates of the nodes first
+            return nodes;
+        }
 
         private int calc_sec(sNode u, sNode v)
         {
