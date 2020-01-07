@@ -230,7 +230,7 @@ namespace manderijntje
                 using (Stream str = File.Open(filepath, FileMode.Open))
                 {
                     var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    l = (lists)formater.Deserialize(str);
+                    l.nodes = (List<VisueelNode>)formater.Deserialize(str);
                 }
             }
 
@@ -242,7 +242,7 @@ namespace manderijntje
                     using (Stream str = File.Open(filepath, FileMode.Open))
                     {
                         var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                        formater.Serialize(str, l);
+                        formater.Serialize(str, l.nodes);
                     }
                 }
 
@@ -251,7 +251,7 @@ namespace manderijntje
                     using (Stream str = File.Open(filepath, FileMode.Create))
                     {
                         var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                        formater.Serialize(str, l);
+                        formater.Serialize(str, l.nodes);
                     }
                 }
 
@@ -272,8 +272,9 @@ namespace manderijntje
             public string name_id;
             public Color kleur = Color.Gray;
             public bool paint = true;
+            public bool dummynode = false;
 
-            public VisueelNode(Point punt, string name_id, int prioriteit, Color kleur, bool paint)
+            public VisueelNode(Point punt, string name_id, int prioriteit)
             {
                 // pointer naar de Node in het data model
                 //Node dataNode;
@@ -282,8 +283,6 @@ namespace manderijntje
                 this.punt = punt;
                 this.name_id = name_id;
                 this.prioriteit = prioriteit;
-                this.kleur = kleur;
-                this.paint = paint;
 
             }
 
@@ -299,14 +298,12 @@ namespace manderijntje
             public Color kleur = Color.Gray;
             public bool paint = true;
 
-            public VisueelLink(string name_id, Color kleur, bool paint)
+            public VisueelLink(string name_id)
             {
                 // pointer naar de Link in het data model
                 //Link dataLink;
 
                 this.name_id = name_id;
-                this.kleur = kleur; 
-                this.paint = paint;
 
             }
 
