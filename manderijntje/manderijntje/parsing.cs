@@ -10,6 +10,10 @@ namespace manderijntje
     {
 
 
+        public DataModel getModel (DataModel data, bool solve)
+        {
+            return new DataModel();
+        }
 
     }
 }
