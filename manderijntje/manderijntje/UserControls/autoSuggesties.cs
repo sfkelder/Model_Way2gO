@@ -106,6 +106,5 @@ namespace manderijntje
             l.Add(new autoSuggestModel("Arnhem Centraal", "Bus"));
             return l;
         }
-
     }
 }

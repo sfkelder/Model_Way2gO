@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.tussenstopsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.headerDetails = new System.Windows.Forms.Panel();
             this.overstappenIcon = new System.Windows.Forms.PictureBox();
             this.clockIcon = new System.Windows.Forms.PictureBox();
@@ -37,11 +38,19 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tijdenLBL = new System.Windows.Forms.Label();
             this.VertrekLBL = new System.Windows.Forms.Label();
-            this.tussenstopsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.headerDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.overstappenIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clockIcon)).BeginInit();
             this.SuspendLayout();
+            // 
+            // tussenstopsPanel
+            // 
+            this.tussenstopsPanel.AutoScroll = true;
+            this.tussenstopsPanel.Location = new System.Drawing.Point(0, 115);
+            this.tussenstopsPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.tussenstopsPanel.Name = "tussenstopsPanel";
+            this.tussenstopsPanel.Size = new System.Drawing.Size(634, 911);
+            this.tussenstopsPanel.TabIndex = 3;
             // 
             // headerDetails
             // 
@@ -54,15 +63,15 @@
             this.headerDetails.Controls.Add(this.label3);
             this.headerDetails.Controls.Add(this.tijdenLBL);
             this.headerDetails.Controls.Add(this.VertrekLBL);
-            this.headerDetails.Location = new System.Drawing.Point(0, 0);
+            this.headerDetails.Location = new System.Drawing.Point(0, -2);
             this.headerDetails.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.headerDetails.Name = "headerDetails";
             this.headerDetails.Size = new System.Drawing.Size(634, 112);
-            this.headerDetails.TabIndex = 0;
+            this.headerDetails.TabIndex = 2;
             // 
             // overstappenIcon
             // 
-            this.overstappenIcon.Image = manderijntje.Properties.Resources.OverstappenWhite;
+            this.overstappenIcon.Image = global::manderijntje.Properties.Resources.OverstappenWhite;
             this.overstappenIcon.Location = new System.Drawing.Point(501, 28);
             this.overstappenIcon.Name = "overstappenIcon";
             this.overstappenIcon.Size = new System.Drawing.Size(20, 20);
@@ -72,7 +81,7 @@
             // 
             // clockIcon
             // 
-            this.clockIcon.Image = manderijntje.Properties.Resources.WhiteClock;
+            this.clockIcon.Image = global::manderijntje.Properties.Resources.WhiteClock;
             this.clockIcon.Location = new System.Drawing.Point(411, 26);
             this.clockIcon.Name = "clockIcon";
             this.clockIcon.Size = new System.Drawing.Size(20, 20);
@@ -155,24 +164,14 @@
             this.VertrekLBL.TabIndex = 0;
             this.VertrekLBL.Text = "Vertrek";
             // 
-            // tussenstopsPanel
-            // 
-            this.tussenstopsPanel.AutoScroll = true;
-            this.tussenstopsPanel.Location = new System.Drawing.Point(0, 117);
-            this.tussenstopsPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.tussenstopsPanel.Name = "tussenstopsPanel";
-            this.tussenstopsPanel.Size = new System.Drawing.Size(634, 911);
-            this.tussenstopsPanel.TabIndex = 1;
-            // 
             // DetailsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tussenstopsPanel);
             this.Controls.Add(this.headerDetails);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "DetailsControl";
-            this.Size = new System.Drawing.Size(634, 1028);
+            this.Size = new System.Drawing.Size(634, 1024);
             this.headerDetails.ResumeLayout(false);
             this.headerDetails.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.overstappenIcon)).EndInit();
@@ -183,15 +182,15 @@
 
         #endregion
 
+        public System.Windows.Forms.FlowLayoutPanel tussenstopsPanel;
         private System.Windows.Forms.Panel headerDetails;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label tijdenLBL;
-        private System.Windows.Forms.Label VertrekLBL;
+        private System.Windows.Forms.PictureBox overstappenIcon;
+        private System.Windows.Forms.PictureBox clockIcon;
         private System.Windows.Forms.Label PerronLBL;
         private System.Windows.Forms.Label aantalOverstappenLBL;
         private System.Windows.Forms.Label totaleTijdLBL;
-        public System.Windows.Forms.FlowLayoutPanel tussenstopsPanel;
-        private System.Windows.Forms.PictureBox overstappenIcon;
-        private System.Windows.Forms.PictureBox clockIcon;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label tijdenLBL;
+        private System.Windows.Forms.Label VertrekLBL;
     }
 }
