@@ -3,12 +3,8 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Way2Go
+namespace manderijntje
 {
-    interface IRouting
-    {
-        Route GetRoute(string startNode, string endNode, DataModel dataModel);
-    }
 
     class Routing : IRouting
     {
