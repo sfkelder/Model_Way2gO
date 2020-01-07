@@ -18,7 +18,7 @@ namespace manderijntje
         {
             private static lists_bewerkingen l = new lists_bewerkingen();
             private static bewerkingen b = new bewerkingen();
-            static lists toegang = "";
+             static VisueelModel toegang = (new parsing()).getModel(new DataModel(), false);
 
             //word eenmalig aangeropen bij het opstarten van het programma en kijkt of de benodigde file al bestaat of nog aangemaakt moet worden
             public static void opstarten()
@@ -75,7 +75,7 @@ namespace manderijntje
 
         /*deze class houd alle lists*/
         [Serializable]
-        public class lists
+        public class VisueelModel
         {
             public List<VisueelNode> nodes = new List<VisueelNode>();
             public List<VisueelLink> links = new List<VisueelLink>();
@@ -91,7 +91,7 @@ namespace manderijntje
 
 
             //set de bool waarde van nodes naar true of false afhankelijk van de ingevoerde data
-            public void valuenode(lists toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number)
+            public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number)
             {
 
                 Point verschuiving = b.movemap(start, end);
@@ -121,7 +121,7 @@ namespace manderijntje
 
 
             //methode voor het veranderen van de kleur
-            public void kleurverandering(List<Point> l, lists list)
+            public void kleurverandering(List<Point> l, VisueelModel list)
             {
                 foreach (Point p in l)
                 {
@@ -130,7 +130,7 @@ namespace manderijntje
             }
 
             //methode die kijkt welke punten bij welke namen horen
-            public Point zoekpunt(string naamstation, lists toegang)
+            public Point zoekpunt(string naamstation, VisueelModel toegang)
             {
                 return toegang.nodes.Find(item => item.name_id == naamstation).punt;
             }
@@ -225,7 +225,7 @@ namespace manderijntje
             private static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/appdata.txt";
 
             //zorgt voor het inlezen van de file
-            public static void inlezen(lists l)
+            public static void inlezen(VisueelModel l)
             {
                 using (Stream str = File.Open(filepath, FileMode.Open))
                 {
@@ -235,7 +235,7 @@ namespace manderijntje
             }
 
             //zorgt voor het schrijven van een file
-            public static void schrijven(lists l)
+            public static void schrijven(VisueelModel l)
             {
                 try
                 {
