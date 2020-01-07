@@ -1230,8 +1230,10 @@ namespace manderijntje
     {
         List<Node> nodes;
         List<Link> links;
+
         List<Link> Unique_Link;
         List<Node> Unique_nodes;
+
         public DataModel()
         {
             nodes = new List<Node>();
