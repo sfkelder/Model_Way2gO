@@ -16,7 +16,7 @@ namespace manderijntje
 
         public parsing(DataModel model)
         {
-            setNodes(model.unique_nodes);
+            setNodes(model.unique_nodes);   // mogelijk een bug met de coordinaten van het datamodel. mogelijk lat en long omgewisseld. kan problemen veroorzaken
             setLinks(model.unique_links);
 
             enforcePlanarity();
@@ -35,9 +35,10 @@ namespace manderijntje
             return createModel();
         }
 
+
         // planarity:
 
-        public int getDegree()
+        private int getDegree()
         {
             int result = 0;
             for (int i = 0; i < nodes.Count; i++)
@@ -212,6 +213,7 @@ namespace manderijntje
             return false;
         }
 
+
         // init the nodes and links lists:
 
         private void setNodes(List<Node> dNodes)
@@ -283,6 +285,7 @@ namespace manderijntje
             }
             return nodes[0];
         }
+
 
         // create a visual model object:
 
