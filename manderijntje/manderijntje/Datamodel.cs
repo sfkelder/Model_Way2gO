@@ -13,14 +13,14 @@ namespace manderijntje
 
 
 
-    public partial class DataControl
+    public class DataControl
     {
 
-        string sFile = "../../../../groningen test2.xml";
+       // string sFile = "../../../../groningen test2.xml";
         // string sFile = "../../../../enkhuizen test 4.xml";
         //string sFile = "../../../../amsterdam test tram subway train2.xml";
         //string sFile = "../../../../train germany test.xml";
-        //  string sFile = "../../../../groenhart train.xml";
+         string sFile = "../../../../groenhart train.xml";
         //string sFile = "../../../../amsterdam tram bus.xml";
         //string sFile = "../../../../subway london.xml";
         //string sFile = "../../../../berlin subway.xml";
@@ -39,7 +39,7 @@ namespace manderijntje
             LoadWP(sFile);//punten met stationnamen
             LoadTracks(sFile);//punten met routes
             LoadWay(sFile);
-            dataModel = new TestDataModel();
+            dataModel = new DataModel();
             puntensamenvoegen();//samen naar een tweedimensionale array
             
             
@@ -47,9 +47,9 @@ namespace manderijntje
         }
 
 
-        TestDataModel dataModel;
+        DataModel dataModel;
 
-        public TestDataModel GetDataModel()
+        public DataModel GetDataModel()
         {
             return dataModel;
         }
@@ -1146,9 +1146,12 @@ namespace manderijntje
                 double x1 = double.Parse(puntenklaar[g, 2]);
                 double y1 = double.Parse(puntenklaar[g, 3]);
                 bool stop = bool.Parse(puntenklaar[g, 8]);
-                dataModel.AddNode(new Node(puntenklaar[g, 4], x1, y1, puntenklaar[g, 0], puntenklaar[g, 1], puntenklaar[g, 5], puntenklaar[g, 6], puntenklaar[g, 7], stop));
+                dataModel.AddNode(new Node(puntenklaar[g, 4], x1, y1, puntenklaar[g, 0], puntenklaar[g, 1], puntenklaar[g, 5], puntenklaar[g, 6], puntenklaar[g, 7], stop,0));
                 g++;
             }
+
+
+
             for (int i = 0; i < puntenklaar.Length / 9; i++)
             {
                 if (i + 1 < puntenklaar.Length / 9)
@@ -1175,30 +1178,7 @@ namespace manderijntje
 
             puntenklaar2 = new string[puntenklaar.Length / 9, 9];
 
-            for (int i = 0; i < puntenklaar.Length / 9; i++)
-            {
-                if (puntenklaar[i, 0] != null)
-                {
-
-
-                    double lona = (double.Parse(puntenklaar[i, 2]) - lomin) * (500 / lomid);
-                    double lata = (double.Parse(puntenklaar[i, 3]) - lamin) * (500 / lamid);
-                    int latb = 600 - (int)lata; //voor groote kaart, dat het niet omgedraait zit!
-                    int lonb = 80 + (int)lona; // dat het niet helemaal tegen de rand zit
-
-
-                    puntenklaar2[i, 0] = puntenklaar[i, 0];
-                    puntenklaar2[i, 1] = lonb.ToString();
-                    puntenklaar2[i, 2] = latb.ToString();
-                    puntenklaar2[i, 3] = puntenklaar[i, 1];
-                    puntenklaar2[i, 7] = puntenklaar[i, 4];
-                    puntenklaar2[i, 5] = puntenklaar[i, 5];
-                    puntenklaar2[i, 6] = puntenklaar[i, 6];
-                    puntenklaar2[i, 4] = puntenklaar[i, 7];
-                    puntenklaar2[i, 8] = puntenklaar[i, 8];
-
-                }
-            }
+            dataModel.Get_Unique_nodes();
         }
 
         static double distance(double x1, double y1, double x2, double y2)
@@ -1246,19 +1226,44 @@ namespace manderijntje
 
     }
     [Serializable]
-    public class TestDataModel
+    public class DataModel
     {
         List<Node> nodes;
         List<Link> links;
-
-        public TestDataModel()
+        List<Link> Unique_Link;
+        List<Node> Unique_nodes;
+        public DataModel()
         {
             nodes = new List<Node>();
             links = new List<Link>();
+            Unique_nodes = new List<Node>();
+            Unique_Link = new List<Link>();
         }
         public void AddNode(Node n)
         {
             nodes.Add(n);
+            
+        }
+
+        public void Get_Unique_nodes()
+        {
+            bool dubbel = true;
+            for (int i = 0; i < nodes.Count(); i++)
+            {
+                for (int y = 0; i < Unique_nodes.Count; y++)
+                {
+                    if (Unique_nodes[y].name_id == nodes[i].name_id)
+                    {
+                        dubbel = false;
+                    }
+                }
+                if (dubbel)
+                {
+                    Unique_nodes.Add(nodes[i]);
+                }
+
+            }
+
         }
 
         public List<Node> GetNodes()
@@ -1298,15 +1303,16 @@ namespace manderijntje
 
         // 'echte' coordinaten
         public double x, y;
-
+        public double ii;
         // unieke indentifier, naam in de vorm van een string
         public string name_id, routnaam, stationnaam, soortrout, routid, vervoersmiddels;
 
         public bool stops;
 
 
-        public Node(string name, double coordx, double coordy, string routenaam, string stationsnaam, string soortroute, string routeid, string vervoersmiddel, bool stop)
+        public Node(string name, double coordx, double coordy, string routenaam, string stationsnaam, string soortroute, string routeid, string vervoersmiddel, bool stop, int i)
         {
+            ii = i;
             name_id = name;
             x = coordx;
             y = coordy;
