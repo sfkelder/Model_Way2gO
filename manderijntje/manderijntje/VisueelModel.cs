@@ -247,7 +247,7 @@ namespace manderijntje
                 } 
 
                 catch (Exception)
-                {
+                { 
                     using (Stream str = File.Open(filepath, FileMode.Create))
                     {
                         var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
