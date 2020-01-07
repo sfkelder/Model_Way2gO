@@ -1283,7 +1283,7 @@ namespace manderijntje
         {
             for (int i = 0; i < unique_links.Count; i++)
             {
-                if (unique_links[i].start == n.start && unique_links[i].end == n.end)
+                if (unique_links[i].start == n.start && unique_links[i].end == n.end || unique_links[i].start == n.end && unique_links[i].end == n.start)
                 {
                     return true;
                 }
