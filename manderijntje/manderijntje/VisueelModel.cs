@@ -305,7 +305,7 @@ namespace manderijntje
                 //Link dataLink;
 
                 this.name_id = name_id;
-                this.kleur = kleur;
+                this.kleur = kleur; 
                 this.paint = paint;
 
             }
