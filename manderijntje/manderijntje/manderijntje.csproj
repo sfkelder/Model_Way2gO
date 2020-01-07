@@ -67,6 +67,7 @@
     <Compile Include="Cells\tussenstopCell.Designer.cs">
       <DependentUpon>tussenstopCell.cs</DependentUpon>
     </Compile>
+    <Compile Include="Datamodel.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
