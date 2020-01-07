@@ -4,9 +4,8 @@ using System.IO;
 using System.Linq;
 
 namespace manderijntje
-{
-
-    class Routing : IRouting
+{ 
+    class Routing
     {
         public int transfers;
 
