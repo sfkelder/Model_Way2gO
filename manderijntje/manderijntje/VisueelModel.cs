@@ -244,7 +244,7 @@ namespace manderijntje
                         var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                         formater.Serialize(str, l.nodes);
                     }
-                }
+                } 
 
                 catch (Exception)
                 {
