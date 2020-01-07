@@ -242,7 +242,7 @@ namespace manderijntje
                     using (Stream str = File.Open(filepath, FileMode.Open))
                     {
                         var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                        formater.Serialize(str, l.nodes);
+                        formater.Serialize(str, l.nodes); 
                     }
                 } 
 
