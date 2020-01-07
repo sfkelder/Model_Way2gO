@@ -1178,7 +1178,8 @@ namespace manderijntje
 
             puntenklaar2 = new string[puntenklaar.Length / 9, 9];
 
-            dataModel.Get_Unique_nodes();
+            dataModel.get_unique_nodes();
+            dataModel.get_unique_links();
         }
 
         static double distance(double x1, double y1, double x2, double y2)
@@ -1249,7 +1250,8 @@ namespace manderijntje
         {
             for (int i = 0; i < nodes.Count; i++)
             {
-                if (!node_in_unique_nodes(nodes[i]) {
+                if (!node_in_unique_nodes(nodes[i]))
+                {
                     unique_nodes.Add(nodes[i]);
                 }
             }
@@ -1286,27 +1288,7 @@ namespace manderijntje
             
         }
 
-        public void Get_Unique_nodes()
-        {
-            bool dubbel = true;
-            for (int i = 0; i < nodes.Count(); i++)
-            {
-                for (int y = 0; i < Unique_nodes.Count; y++)
-                {
-                    if (Unique_nodes[y].name_id == nodes[i].name_id)
-                    {
-                        dubbel = false;
-                    }
-                }
-                if (dubbel)
-                {
-                    Unique_nodes.Add(nodes[i]);
-                }
-
-            }
-
-        }
-
+        
         public List<Node> GetNodes()
         {
             return nodes;
