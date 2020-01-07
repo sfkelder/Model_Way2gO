@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using System.IO;
 
-namespace Way2Go
+namespace manderijntje
 {
    
 
@@ -39,7 +39,7 @@ namespace Way2Go
             LoadWP(sFile);//punten met stationnamen
             LoadTracks(sFile);//punten met routes
             LoadWay(sFile);
-            dataModel = new TestDataModel();
+            dataModel = new DataModel();
             puntensamenvoegen();//samen naar een tweedimensionale array
             
             
@@ -47,9 +47,9 @@ namespace Way2Go
         }
 
 
-        TestDataModel dataModel;
+        DataModel dataModel;
 
-        public TestDataModel GetDataModel()
+        public DataModel GetDataModel()
         {
             return dataModel;
         }
@@ -1246,12 +1246,12 @@ namespace Way2Go
 
     }
     [Serializable]
-    public class TestDataModel
+    public class DataModel
     {
         List<Node> nodes;
         List<Link> links;
 
-        public TestDataModel()
+        public DataModel()
         {
             nodes = new List<Node>();
             links = new List<Link>();

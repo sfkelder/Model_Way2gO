@@ -3,14 +3,9 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Way2Go
-{
-    interface IRouting
-    {
-        Route GetRoute(string startNode, string endNode, DataModel dataModel);
-    }
-
-    class Routing : IRouting
+namespace manderijntje
+{ 
+    class Routing
     {
         public int transfers;
 

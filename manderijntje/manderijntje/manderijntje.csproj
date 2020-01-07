@@ -67,6 +67,7 @@
     <Compile Include="Cells\tussenstopCell.Designer.cs">
       <DependentUpon>tussenstopCell.cs</DependentUpon>
     </Compile>
+    <Compile Include="Datamodel.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +83,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing.cs" />
+    <Compile Include="TimeModel.cs" />
     <Compile Include="UserControls\autoSuggestie.cs">
       <SubType>UserControl</SubType>
     </Compile>
