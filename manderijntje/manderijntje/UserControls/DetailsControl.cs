@@ -50,7 +50,7 @@ namespace manderijntje
             get { return _tussenstop; }
             set { _tussenstop = value; }
         }
-
+    
 
         public DetailsControl()
         {
