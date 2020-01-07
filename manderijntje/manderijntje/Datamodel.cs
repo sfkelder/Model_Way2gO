@@ -1246,7 +1246,7 @@ namespace manderijntje
 
         // populate unique lists:
 
-        public void get_unique_nodes ()
+        public void get_unique_nodes()
         {
             for (int i = 0; i < nodes.Count; i++)
             {
@@ -1257,22 +1257,33 @@ namespace manderijntje
             }
         }
 
-        public void get_unique_links ()
+        public void get_unique_links()
         {
             for (int i = 0; i < links.Count; i++)
             {
-                if (node_in_unique_nodes(links[i].start) && node_in_unique_nodes(links[i].end))
+                if (!link_in_unique_links(links[i]))
                 {
                     unique_links.Add(links[i]);
                 }
             }
         }
 
-        private bool node_in_unique_nodes (Node n)
+        private bool node_in_unique_nodes(Node n)
         {
             for (int i = 0; i < unique_nodes.Count; i++)
             {
                 if (unique_nodes[i].name_id == n.name_id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool link_in_unique_links(Link n)
+        {
+            for (int i = 0; i < unique_links.Count; i++)
+            {
+                if (unique_links[i].start == n.start && unique_links[i].end == n.end)
                 {
                     return true;
                 }
@@ -1326,7 +1337,7 @@ namespace manderijntje
 
         // 'echte' coordinaten
         public double x, y;
-        public double ii;
+        public double number;
         // unieke indentifier, naam in de vorm van een string
         public string name_id, routnaam, stationnaam, soortrout, routid, vervoersmiddels;
 
@@ -1335,7 +1346,7 @@ namespace manderijntje
 
         public Node(string name, double coordx, double coordy, string routenaam, string stationsnaam, string soortroute, string routeid, string vervoersmiddel, bool stop, int i)
         {
-            ii = i;
+            number = i;
             name_id = name;
             x = coordx;
             y = coordy;
