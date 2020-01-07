@@ -41,7 +41,7 @@ namespace Way2Go
             LoadWay(sFile);
             dataModel = new TestDataModel();
             puntensamenvoegen();//samen naar een tweedimensionale array
-            schrijfNaarFile(filename);
+            
             
 
         }
@@ -1232,29 +1232,7 @@ namespace Way2Go
             return output;
         }
 
-        public void schrijfNaarFile(string filename)
-        {
-            using (StreamWriter writer = new StreamWriter(filename))
-            {
-                for (int i = 0; i < puntenklaar.Length / 9 - 1; i++)
-                {
-                    if (puntenklaar[i + 1, 0] == puntenklaar[i, 0] && puntenklaar[i, 2] != null)
-                    {
-                        if (distance(double.Parse(puntenklaar[i + 1, 2]), double.Parse(puntenklaar[i + 1, 3]), double.Parse(puntenklaar[i, 2]), double.Parse(puntenklaar[i, 3])) > 1)
-                        {
-                            if (puntenklaar[i, 0] != null)
-                            {
-                                //writer.WriteLine(puntenklaar[i + 1, 0].ToString() + "|" + puntenklaar[i + 1, 1].ToString() + "|" + puntenklaar[i + 1, 2].ToString() + "|" + puntenklaar[i + 1, 3].ToString() + "|" + puntenklaar[i + 1, 4].ToString() + "|" + puntenklaar[i + 1, 5].ToString() + "|" + puntenklaar[i + 1, 6].ToString() + "|" + puntenklaar[i + 1, 7].ToString() + "|" + puntenklaar[i + 1, 8].ToString());
-
-                                writer.WriteLine(puntenklaar[i, 0].ToString() + "|" + puntenklaar[i, 1].ToString() + "|" + puntenklaar[i, 2].ToString() + "|" + puntenklaar[i, 3].ToString() + "|" + puntenklaar[i, 4].ToString() + "|" + puntenklaar[i, 5].ToString() + "|" + puntenklaar[i, 6].ToString() + "|" + puntenklaar[i, 7].ToString() + "|" + puntenklaar[i, 8].ToString());
-                                // writer.WriteLine("");
-                            }
-                        }
-                    }
-                }
-                writer.Close();
-            }
-        }
+        
 
 
         
