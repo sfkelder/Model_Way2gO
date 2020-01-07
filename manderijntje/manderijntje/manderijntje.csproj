@@ -95,9 +95,20 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing.cs" />
-    <EmbeddedResource Include="UserControls\autoSuggesties.resx">
-      <DependentUpon>autoSuggesties.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="TimeModel.cs" />
+    <Compile Include="UserControls\autoSuggestie.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\autoSuggestie.Designer.cs">
+      <DependentUpon>autoSuggestie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DetailsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\DetailsControl.Designer.cs">
+      <DependentUpon>DetailsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VisueelModel.cs" />
     <EmbeddedResource Include="Cells\autoSuggesCell.resx">
       <DependentUpon>autoSuggesCell.cs</DependentUpon>
     </EmbeddedResource>
