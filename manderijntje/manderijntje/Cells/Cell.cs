@@ -19,10 +19,11 @@ namespace manderijntje
         private string _naamVervoer;
         private string _busLijn;
         private string _totaleTijd;
-        private string _aantalOverstappen;
+        private int _aantalOverstappen;
         private string _perron;
         private bool _orange;
         private List<tussenStops> _tussenstop = new List<tussenStops>();
+        private List<Node> _shortestPath = new List<Node>();
         Form1 _parent;
         public string beginTijd 
         {
@@ -61,7 +62,7 @@ namespace manderijntje
                 clockIcon.Image = manderijntje.Properties.Resources.OrangeClock;
                 totaleTijdLBL.Text = value; }
         }
-        public string aantalOverstappen
+        public int aantalOverstappen
         {
             get { return _aantalOverstappen; }
             set { _aantalOverstappen = value;
@@ -86,6 +87,12 @@ namespace manderijntje
             }
         }
 
+        public List<Node> shortestPath
+        {
+            get { return _shortestPath; }
+            set { _shortestPath = value; }
+        }
+
 
         //
         // Zorgt ervoor dat de cell weet wie de parent is en dus waar die de methodes moet aanroepen wanneer er op de label wordt geklikt.
@@ -100,7 +107,7 @@ namespace manderijntje
         // Geeft de variabelen een waarde die wordt meegegeven als parameters.
         //
         public Cell(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
+            string busLijn, string totaleTijd, int aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange, List<Node> shortestPath)
         {
             this._beginTijd = beginTijd;
             this._eindTijd = eindTijd;
@@ -113,15 +120,16 @@ namespace manderijntje
             this._perron = perron;
             this._tussenstop = tussenstop;
             this._orange = orange;
+            this._shortestPath = shortestPath;
         }
 
         //
         // Pakt alle variabelen in en geeft een nieuwe Cell terug. Dit hebben we nodig voor de cell in de Form.
         //
         public static Cell getCellDetails(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
+            string busLijn, string totaleTijd, int aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange, List<Node> shortestPath)
         {
-            Cell c = new Cell(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange);
+            Cell c = new Cell(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange, shortestPath);
             return c;
         }
 
@@ -131,7 +139,7 @@ namespace manderijntje
         private void eindTijdLBL_Click(object sender, EventArgs e)
         {
             orange = true;
-            this._parent.cell = getCellDetails(_beginTijd, _eindTijd, _vervoerder, _typeVervoer, _naamVervoer, _busLijn, _totaleTijd, _aantalOverstappen, _perron, _tussenstop, _orange);
+            this._parent.cell = getCellDetails(_beginTijd, _eindTijd, _vervoerder, _typeVervoer, _naamVervoer, _busLijn, _totaleTijd, _aantalOverstappen, _perron, _tussenstop, _orange, _shortestPath);
             this._parent.setupReisDetails();
         }
 

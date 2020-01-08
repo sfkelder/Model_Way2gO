@@ -16,14 +16,14 @@ namespace manderijntje
         public string naamVervoer { get; set; }
         public string busLijn { get; set; }
         public string totaleTijd { get; set; }
-        public string aantalOverstappen { get; set; }
+        public int aantalOverstappen { get; set; }
         public string perron { get; set; }
         public bool orange { get; set; }
         public List<tussenStops> tussenstop { get; set; }
  
 
         public reisOpties(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
+            string busLijn, string totaleTijd, int aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
         {
             this.beginTijd = beginTijd;
             this.eindTijd = eindTijd;
@@ -46,7 +46,7 @@ namespace manderijntje
         // Geeft een reisOptie model terug.
         //
         public reisOpties reisOptiesModel(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
+            string busLijn, string totaleTijd, int aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
         {
             return new reisOpties(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange);
         }
