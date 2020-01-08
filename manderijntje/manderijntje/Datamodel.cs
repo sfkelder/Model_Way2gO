@@ -1283,7 +1283,7 @@ namespace manderijntje
         {
             for (int i = 0; i < unique_links.Count; i++)
             {
-                if (unique_links[i].start == n.start && unique_links[i].end == n.end || unique_links[i].start == n.end && unique_links[i].end == n.start)
+                if (unique_links[i].Start == n.Start && unique_links[i].End == n.End || unique_links[i].Start == n.End && unique_links[i].End == n.Start)
                 {
                     return true;
                 }
@@ -1330,10 +1330,10 @@ namespace manderijntje
     public class Node
     {
         // array met pointers naar alle andere nodes waarmee deze verbonden is
-        public List<Node> buren;
+        public List<Node> Buren;
 
         // array met pointers naar alle links die verbonden zijn met deze node
-        public List<Link> connecties;
+        public List<Link> Connecties;
 
         // 'echte' coordinaten
         public double x, y;
@@ -1342,6 +1342,14 @@ namespace manderijntje
         public string name_id, routnaam, stationnaam, soortrout, routid, vervoersmiddels;
 
         public bool stops;
+
+        public Node NearestToStart;
+
+        public double MinCostToStart = Double.MaxValue;
+
+        public bool Visited = false;
+
+
 
 
         public Node(string name, double coordx, double coordy, string routenaam, string stationsnaam, string soortroute, string routeid, string vervoersmiddel, bool stop, int i)
@@ -1357,25 +1365,25 @@ namespace manderijntje
             vervoersmiddels = vervoersmiddel;
             stops = stop;
 
-            buren = new List<Node>();
-            connecties = new List<Link>();
+            Buren = new List<Node>();
+            Connecties = new List<Link>();
         }
 
         public void addBuur(Node buur)
         {
             bool buurtest = true;
-            foreach (Node naaste in buren)
+            foreach (Node naaste in Buren)
             {
                 if (naaste == buur)
                     buurtest = false;
             }
             if (buurtest)
-                buren.Add(buur);
+                Buren.Add(buur);
         }
 
         public void addLink(Link link)
         {
-            connecties.Add(link);
+            Connecties.Add(link);
         }
     }
 
@@ -1383,15 +1391,16 @@ namespace manderijntje
     public class Link
     {
         // twee pointers die wijzen naar de twee nodes die deze link verbind
-        public Node start, end;
+        public Node Start, End;
 
+        public double Weight;
 
 
 
         public Link(Node startpunt, Node eindpunt)
         {
-            start = startpunt;
-            end = eindpunt;
+            Start = startpunt;
+            End = eindpunt;
 
         }
     }

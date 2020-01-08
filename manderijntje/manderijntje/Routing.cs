@@ -78,9 +78,6 @@ namespace manderijntje
             startTime = time;
             endTime = time.Add(TimeSpan.FromMinutes(shortestPath.Last().MinCostToStart));
             transfers = r.transfers;
-
         }
-
-        
     }
 }

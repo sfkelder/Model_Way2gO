@@ -269,7 +269,7 @@ namespace manderijntje
         {
             for (int i = 0; i < dLinks.Count; i++)
             {
-                sLink newLink = new sLink(getNode(dLinks[i].start.number), getNode(dLinks[i].end.number));
+                sLink newLink = new sLink(getNode(dLinks[i].Start.number), getNode(dLinks[i].End.number));
                 links.Add(newLink);
             }
         }
