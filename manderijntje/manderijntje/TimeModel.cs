@@ -285,8 +285,8 @@ namespace TimeModel
                 var stationID = station["id"].Value<string>();
                 var stationsnamen = station["standardname"].Value<string>();
                 //Indien er sprake is van twee namen voor één station, worden ze beide toegevoegd
-                //foreach (var stationsnaam in stationsnamen.Split(@"/"))
-                    //StationList.WriteLine(stationID + " " + stationsnaam);
+                foreach (var stationsnaam in stationsnamen.Split(@"/"))
+                    StationList.WriteLine(stationID + " " + stationsnaam);
             }
             StationList.Close();
         }
