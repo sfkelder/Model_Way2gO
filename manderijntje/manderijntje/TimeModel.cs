@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace TimeModel
 {
-    class Program
+    class TimeModel
     {
         #region Parameters: Links and Keys
         const string errorMessage = "404";
@@ -140,6 +140,9 @@ namespace TimeModel
         //De volgende functies halen het verschil tussen de vertrektijd en aankomsttijd van twee stations op. DateTime is disfunctional omdat de NS geen API's kan maken.
         static int GetTravelCostNS(DateTime time, string vertrekStation, string aankomstStation)
         {
+            //Variables:
+            
+
             //Stelt de links op
             string timeOfChoice = time.ToString("yyyy" + "MM" + "dd" + @"T" + "hh" + @":" + "mm");
             const string linkBase = @"https://gateway.apiportal.ns.nl/reisinformatie-api/api/v2/";
@@ -157,8 +160,6 @@ namespace TimeModel
             var dataAankomst = (JObject)JsonConvert.DeserializeObject(Request(linkAankomst, apiKeyNS, keyNameNS));
             var aankomstInfo = dataAankomst["payload"]["arrivals"].Children();
 
-            Console.WriteLine(dataAankomst);
-            Console.WriteLine(dataVertrek);
             foreach (var aankomst in aankomstInfo)
             {
                 foreach (var vertrek in vertrekInfo)
@@ -169,8 +170,8 @@ namespace TimeModel
                         vertrekTijd = vertrek["actualDateTime"].Value<DateTime>();
                         if (aankomstTijd > vertrekTijd)
                         {
-                            Console.WriteLine(vertrekTijd + " " + aankomstTijd);
-                            return (int)((aankomstTijd - vertrekTijd).TotalMinutes);
+                            int travelcost = (aankomstTijd - vertrekTijd).TotalMinutes;
+                            return TravelInformation(vertrekStation, vertrekParron, vertrekTijd, aankomstStation, aankomstParron, aankomstTijd, travelcost, vehicleID, vervoerder);
                         }
                         break;
                     }
@@ -297,14 +298,14 @@ namespace TimeModel
     {
         public TravelInformation()
         {
-            string vertrekStation;
+            string from;
             string vertrekParron;
-            string vertrekTijd;
-            string aankomstStation;
+            DateTime vertrekTijd;
+            string to;
             string aankomstParron;
-            string aankomstTijd;
+            DateTime aankomstTijd;
             string origin;
-            string travelcost;
+            int travelcost;
             string vehicleID;
             string vervoerder;
         }
