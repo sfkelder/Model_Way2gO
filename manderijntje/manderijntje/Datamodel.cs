@@ -918,7 +918,7 @@ namespace manderijntje
                 puntenklaar[g, 6] = punten8[i, 6];
                 puntenklaar[g, 7] = punten8[i, 7];
                 puntenklaar[g, 8] = "true";
-                for (int a = 0; a < punten2.Length / 9; a++)
+                for (int a = 0; a < punten2.Length / 3; a++)
                 {
                     if (punten8[i, 0] == punten2[a, 1] && punten8[i, 1] == punten2[a, 2])
                     {
