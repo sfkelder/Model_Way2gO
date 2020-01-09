@@ -11,8 +11,8 @@ namespace manderijntje
 
         public List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel dataModel)
         {
-            Node start = dataModel.GetNode(startName, dataModel.GetNodes());
-            Node end = dataModel.GetNode(endName, dataModel.GetNodes());
+            Node start = dataModel.GetNodeName(startName, dataModel.GetNodes());
+            Node end = dataModel.GetNodeName(endName, dataModel.GetNodes());
             DijkstraSearch(start, end, time);
             var shortestPath = new List<Node> {end};
             BuildShortestPath(shortestPath, end);
@@ -57,9 +57,9 @@ namespace manderijntje
             }
         }
 
-        public Route GetRoute(string startName, string endName, DateTime Time, DataModel dataModel)
+        public Route GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
         {
-            Route fastestRoute = new Route(startName, endName, Time, dataModel);
+            Route fastestRoute = new Route(startName, endName, time, dataModel);
             return fastestRoute;
         }
     }

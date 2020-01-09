@@ -26,7 +26,17 @@ namespace manderijntje
             visueelControl = new connecties(dataControl.GetDataModel());
 
             InitializeComponent();
-            setupView();  
+            setupView();
+            
+            //test
+            Routing r = new Routing();
+            Route route = r.GetRoute("Utrecht Centraal", "Amsterdam Centraal", DateTime.Now, dataControl.GetDataModel());
+            foreach (Node station in route.shortestPath)
+            {
+                Console.WriteLine(station.stationnaam);
+            }
+            Console.ReadLine();
+            //test end
         }
 
         //

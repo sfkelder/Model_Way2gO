@@ -1315,6 +1315,16 @@ namespace manderijntje
             return null;
         }
 
+        public Node GetNodeName(string name, List<Node> lijst)
+        {
+            foreach (Node node in lijst)
+            {
+                if (name == node.stationnaam)
+                    return node;
+            }
+            return null;
+        }
+
         public void AddLink(Link l)
         {
             links.Add(l);
@@ -1393,7 +1403,7 @@ namespace manderijntje
         // twee pointers die wijzen naar de twee nodes die deze link verbind
         public Node Start, End;
 
-        public double Weight;
+        public double Weight = 1;
 
 
 
