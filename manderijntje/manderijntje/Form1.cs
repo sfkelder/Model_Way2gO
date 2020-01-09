@@ -401,8 +401,8 @@ namespace manderijntje
             inputControl = true;
             inputPanel.Visible = true;
             hideshowBack();
-
         }
+
         private void hideshowBack()
         {
             if (inputControl)
