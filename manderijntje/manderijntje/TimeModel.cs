@@ -170,8 +170,8 @@ namespace TimeModel
                         vertrekTijd = vertrek["actualDateTime"].Value<DateTime>();
                         if (aankomstTijd > vertrekTijd)
                         {
-                            int travelcost = (aankomstTijd - vertrekTijd).TotalMinutes;
-                            return TravelInformation(vertrekStation, vertrekParron, vertrekTijd, aankomstStation, aankomstParron, aankomstTijd, travelcost, vehicleID, vervoerder);
+                            int travelcost = (int)(aankomstTijd - vertrekTijd).TotalMinutes;
+                            return travelcost; //TravelInformation(vertrekStation, vertrekParron, vertrekTijd, aankomstStation, aankomstParron, aankomstTijd, travelcost, vehicleID, vervoerder);
                         }
                         break;
                     }
@@ -286,14 +286,14 @@ namespace TimeModel
                 var stationID = station["id"].Value<string>();
                 var stationsnamen = station["standardname"].Value<string>();
                 //Indien er sprake is van twee namen voor één station, worden ze beide toegevoegd
-                foreach (var stationsnaam in stationsnamen.Split(@"/"))
+                foreach (var stationsnaam in stationsnamen.Split('/'))
                     StationList.WriteLine(stationID + " " + stationsnaam);
             }
             StationList.Close();
         }
         #endregion
     }
-
+    /*
     class TravelInformation
     {
         public TravelInformation()
@@ -310,4 +310,5 @@ namespace TimeModel
             string vervoerder;
         }
     }
+    */
 }
