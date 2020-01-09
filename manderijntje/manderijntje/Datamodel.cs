@@ -30,9 +30,8 @@ namespace manderijntje
         //string sFile = "../../../../train europa.xml";
         //string sFile = "../../../../train westeuropa.xml";
         //string sFile = "../../../../subway europa.xml";
-        string filename = @"C:\Users\Aletta S\Documents\Aletta\Utrecht\introductie project\train test.txt";
 
-        public DataControl(string file_path)
+        public DataControl()
         {
 
             
