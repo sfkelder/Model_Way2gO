@@ -22,7 +22,6 @@ namespace manderijntje
         public MapView()
         {
             InitializeComponent();
-            Size = new Size(width, height);
             BackColor = Color.Blue;
             this.Paint += this.painting;
             this.MouseClick += this.onclick;
@@ -34,7 +33,7 @@ namespace manderijntje
         {
             Connecties = c;
         }
-
+         
         public void setMap(int x, int y)
         {
             height = y;
@@ -64,7 +63,7 @@ namespace manderijntje
 
             }
         }
-         
+
 
         public void getsublist(List<VisueelNode> p)
         {
@@ -79,13 +78,13 @@ namespace manderijntje
 
         public void painting(object o, PaintEventArgs pea)
         {
-            for (int m = 0; m < nodes.Count - 1; m++)
+           /* for (int m = 0; m < nodes.Count - 1; m++)
             {
                 if (nodes[m].paint == true)
                 {
                     pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 10, 10);
                 }
-            }
+            }*/
         }
     }
 }
