@@ -18,8 +18,14 @@ namespace manderijntje
         {
             private lists_bewerkingen l = new lists_bewerkingen();
             private  bewerkingen b = new bewerkingen();
-            VisueelModel toegang = (new parsing(new DataModel())).getModel(false);
+            public VisueelModel toegang;
 
+            public connecties (DataModel data)
+            {
+                toegang = (new parsing(new DataModel())).getModel(false);
+        }
+
+        
             //word eenmalig aangeropen bij het opstarten van het programma en kijkt of de benodigde file al bestaat of nog aangemaakt moet worden
             public void opstarten()
             {

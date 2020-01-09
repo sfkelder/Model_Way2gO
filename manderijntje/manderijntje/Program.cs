@@ -9,7 +9,7 @@ namespace manderijntje
 {
     static class Program
     {
-        public const string baseDir = "";
+        public const string baseDir = "C:/Way2Go/";
 
         /// <summary>
         /// The main entry point for the application.
@@ -18,7 +18,7 @@ namespace manderijntje
         static void Main()
         {
             if (!Directory.Exists(baseDir)) {
-
+                Directory.CreateDirectory(baseDir);
             }
 
             Application.EnableVisualStyles();

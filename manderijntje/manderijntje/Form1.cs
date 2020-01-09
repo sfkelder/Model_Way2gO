@@ -8,7 +8,10 @@ namespace manderijntje
 {
     public partial class Form1 : Form
     {
+        DataControl dataControl;
+        connecties visueelControl;
 
+        
         List<reisOpties> reisOpties = new List<reisOpties>();
         List<tijdenModel> tijdenList = new List<tijdenModel>();
         Vertrek v = new Vertrek();
@@ -19,6 +22,9 @@ namespace manderijntje
 
         public Form1()
         {
+            dataControl = new DataControl();
+            visueelControl = new connecties(dataControl.GetDataModel());
+
             InitializeComponent();
             setupView();  
         }
