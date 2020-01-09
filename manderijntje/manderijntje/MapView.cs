@@ -40,7 +40,7 @@ namespace manderijntje
             width = x;
             Invalidate();
         }
-
+         
         public void onclick(object o, MouseEventArgs ea)
         {
             if (ea.Button == MouseButtons.Right)
