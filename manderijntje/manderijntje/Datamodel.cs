@@ -18,7 +18,7 @@ namespace manderijntje
 
        // string sFile = "../../../../groningen test2.xml";
         // string sFile = "../../../../enkhuizen test 4.xml";
-        //string sFile = "../../../../amsterdam test tram subway train2.xml";
+        //string sFile = "../../../../amsterdam test tram subway train.xml";
         //string sFile = "../../../../train germany test.xml";
          string sFile = "../../../../groenhart train.xml";
         //string sFile = "../../../../amsterdam tram bus.xml";
