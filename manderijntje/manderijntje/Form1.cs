@@ -10,8 +10,7 @@ namespace manderijntje
     {
         DataControl dataControl;
         connecties visueelControl;
-
-
+        MapView mapView = new MapView();
 
         List<reisOpties> reisOpties = new List<reisOpties>();
         List<tijdenModel> tijdenList = new List<tijdenModel>();
@@ -26,12 +25,7 @@ namespace manderijntje
             InitializeComponent();
             dataControl = new DataControl();
             visueelControl = new connecties(dataControl.GetDataModel());
-            MapView mapView = new MapView();
             mapView.GetVisueel(visueelControl);
-
-            mapViewControl.Size = new Size(500, this.Height);
-            mapViewControl.Location = new Point(500, 0);
-            mapView.setMap(500, this.Height);
             setupView();  
         }
          
@@ -44,6 +38,7 @@ namespace manderijntje
             show(inputPanel);
             hideshowBack();
             vultijdInput();
+            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             beginInput.GotFocus += new EventHandler(this.verwijderText);
             beginInput.LostFocus += new EventHandler(this.voegText);
             eindInput.GotFocus += new EventHandler(this.verwijderText);
@@ -439,42 +434,50 @@ namespace manderijntje
             }      
         }
 
+        // Geeft de mapView de juiste locatie en size.
+        private void sizeMap(int x, int y, int width, int height)
+        {
+            mapViewControl.Size = new Size(width, height);
+            mapViewControl.Location = new Point(x, y);
+            mapView.setMap(width, height);
+        }
+
         //
         // Hides active views
         //
         private void hideArrowIcon_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("inputControl: " + inputControl);
-            Console.WriteLine("optiesControl: " + optiesControl);
-            Console.WriteLine("indetailsControlput: " + detailsControl);
-            Console.WriteLine("optionSelected: " + optionSelected);
-
             if (inputControl)
             {
                 inputPanel.Visible = false;
                 hide(inputPanel);
+                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height);
 
             }
             else if (optiesControl)
             {
-                flowLayoutPanel.Visible = false;
+                flowLayoutPanel.Visible = false; 
                 hide(flowLayoutPanel);
+                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height);
 
             }
             else if (detailsControl)
             {
                 detailsUserControl.Visible = false;
                 hide(detailsControl);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             }
             else if (!inputControl && !optiesControl && !detailsControl && !optionSelected)
             {
-                inputPanel.Visible = true;
+                inputPanel.Visible = true; 
                 show(inputPanel);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             }
             else if (!inputControl && !optiesControl && !detailsControl && optionSelected)
             {
                 flowLayoutPanel.Visible = true;
                 show(flowLayoutPanel);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             }
         }
 
@@ -488,8 +491,12 @@ namespace manderijntje
                 veranderInput = true;
                 bLocatie = beginInput.Text;
                 eLocatie = eindInput.Text;
+                Color bKleur = beginInput.ForeColor;
+                Color eKleur = eindInput.ForeColor;
                 beginInput.Text = eLocatie;
+                beginInput.ForeColor = eKleur;
                 eindInput.Text = bLocatie;
+                eindInput.ForeColor = bKleur;
                 veranderInput = false;
             }
         }
@@ -523,7 +530,8 @@ namespace manderijntje
                 optiesControl = false;
                 detailsControl = true;
                 hideshowBack();           
-                this.logoHeader.Width = logoHeader.Width + detailsUserControl.Width;
+                logoHeader.Width = logoHeader.Width + detailsUserControl.Width;
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width, this.Height);
                 hideBarLocation(logoHeader.Width, logoHeader.Height);
                 changeBackIcon(false);
             }

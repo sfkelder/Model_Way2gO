@@ -96,7 +96,7 @@ namespace manderijntje
             }
             l.Add(new autoSuggestModel("Nijmegen", "Trein"));
             l.Add(new autoSuggestModel("Nijmegen centraal", "Trein"));
-            l.Add(new autoSuggestModel("Arnhem", "Trein"));
+            l.Add(new autoSuggestModel("Arnhem Centraal", "Trein"));
             l.Add(new autoSuggestModel("Arnhem", "Bus"));
             l.Add(new autoSuggestModel("Arnhem", "Trein"));
             l.Add(new autoSuggestModel("Arnhem", "Trein"));
