@@ -11,7 +11,8 @@ namespace manderijntje
         DataControl dataControl;
         connecties visueelControl;
 
-        
+
+
         List<reisOpties> reisOpties = new List<reisOpties>();
         List<tijdenModel> tijdenList = new List<tijdenModel>();
         Vertrek v = new Vertrek();
@@ -22,13 +23,18 @@ namespace manderijntje
 
         public Form1()
         {
+            InitializeComponent();
             dataControl = new DataControl();
             visueelControl = new connecties(dataControl.GetDataModel());
+            MapView mapView = new MapView();
+            mapView.GetVisueel(visueelControl);
 
-            InitializeComponent();
+            mapViewControl.Size = new Size(500, this.Height);
+            mapViewControl.Location = new Point(500, 0);
+            mapView.setMap(500, this.Height);
             setupView();  
         }
-
+         
         //
         // ZET HET SCHERM KLAAR
         //
@@ -172,6 +178,12 @@ namespace manderijntje
             if (checkBeginLocatie(beginLocatie, autosuggest.stationList) &&
                     checkEindLocatie(eindLocatie, autosuggest.stationList))
             {
+
+                List<string> list = new List<string>();
+                list.Add(beginLocatie);
+                list.Add(eindLocatie);
+                visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true);
+
                 v.vertrekModel(beginLocatie, eindLocatie, vertrekTijd);
                 gekozenTijd = Convert.ToDateTime(vertrekTijd);
                 setupReisOpties();

@@ -11,10 +11,10 @@ namespace manderijntje
     public class DataControl
     {
         // string sFile = "C:/Way2Go/groningen test2.xml";
-        // string sFile = "C:/Way2Go/enkhuizen test 4.xml";
+         string sFile = "C:/Way2Go/enkhuizen test 4.xml";
         //string sFile = "C:/Way2Go/amsterdam test tram subway train.xml";
         //string sFile = "C:/Way2Go/train germany.xml";
-        string sFile = "C:/Way2Go/train netherlands.xml";
+        //string sFile = "C:/Way2Go/train netherlands.xml";
         //string sFile = "C:/Way2Go/groenhart train.xml";
         //string sFile = "C:/Way2Go/amsterdam tram bus.xml";
         //string sFile = "C:/Way2Go/subway london.xml";
@@ -27,13 +27,64 @@ namespace manderijntje
         //string sFile = "C:/Way2Go/subway europa.xml";
         public DataControl()
         {
-            LoadWP(sFile);//punten met stationnamen
-            LoadTracks(sFile);//punten met routes
-            LoadWay(sFile);
-            dataModel = new DataModel();
-            puntensamenvoegen();//samen naar een tweedimensionale array
+            if (File.Exists(filepath) && !Program.reimport)
+            {
+                ReadDataFromDisk();
+            } else
+            {
+                LoadWP(sFile);//punten met stationnamen
+                LoadTracks(sFile);//punten met routes
+                LoadWay(sFile);
+                dataModel = new DataModel();
+                puntensamenvoegen();//samen naar een tweedimensionale array
+
+                if (Directory.Exists(filepath))
+                {
+                    WriteDataToDisk(FileMode.Open);
+                } else
+                {
+                    WriteDataToDisk(FileMode.Create);
+                }
+
+            }
         }
+
         DataModel dataModel;
+        private const string filepath = "C:/Way2Go/datamodel_binary.txt";
+
+        private void ReadDataFromDisk()
+        {
+            try
+            {
+                using (Stream str = File.Open(filepath, FileMode.Open))
+                {
+                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    dataModel = (DataModel)bformatter.Deserialize(str);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
+            }
+        }
+
+        private void WriteDataToDisk(FileMode fm)
+        {
+            try
+            {
+                using (Stream str = File.Open(filepath, fm))
+                {
+                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    bformatter.Serialize(str, dataModel);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
+            }
+        }
+
+
         public DataModel GetDataModel()
         {
             return dataModel;
@@ -41,7 +92,7 @@ namespace manderijntje
         //deze twee methodes zijn nodig om de data uit de file te halen
         private XDocument GetGpxDoc(string sFile)
         {
-            XDocument gpxDoc = XDocument.Load(sFile);
+           XDocument gpxDoc = XDocument.Load(sFile);
             return gpxDoc;
         }
         /*
