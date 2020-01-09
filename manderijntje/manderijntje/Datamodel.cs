@@ -936,7 +936,7 @@ namespace manderijntje
                 dataModel.AddNode(new Node(puntenklaar[g, 4], x1, y1, puntenklaar[g, 0], puntenklaar[g, 1], puntenklaar[g, 5], puntenklaar[g, 6], puntenklaar[g, 7], stop,0));
                 g++;
             }
-            for (int i = 0; i < puntenklaar.Length / 9; i++)
+            for (int i = 0; i < puntenklaar.Length / 9; i++)  
             {
                 if (i + 1 < puntenklaar.Length / 9)
                 {
@@ -1103,6 +1103,11 @@ namespace manderijntje
         public List<Node> GetStopNodes()
         {
             return stopnodes;
+        }
+
+        public List<Node> GetNodesRouting()
+        {
+            return nodesrouting;
         }
         public Node GetNode(string name, List<Node> lijst)
         {

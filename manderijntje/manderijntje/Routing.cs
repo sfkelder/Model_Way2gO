@@ -11,8 +11,8 @@ namespace manderijntje
 
         public List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel dataModel)
         {
-            Node start = dataModel.GetNodeName(startName, dataModel.GetStopNodes());
-            Node end = dataModel.GetNodeName(endName, dataModel.GetStopNodes());
+            Node start = dataModel.GetNodeName(startName, dataModel.GetNodesRouting());
+            Node end = dataModel.GetNodeName(endName, dataModel.GetNodesRouting());
             DijkstraSearch(start, end, time);
             var shortestPath = new List<Node> {end};
             BuildShortestPath(shortestPath, end);
