@@ -953,6 +953,7 @@ namespace manderijntje
                         station2node.addLink(new Link(station2node, station1node));
                     }
                 }
+
                 if (puntenklaar[i, 8] == "true")
                 {
 
