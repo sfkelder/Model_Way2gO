@@ -16,21 +16,21 @@ namespace manderijntje
     public class DataControl
     {
 
-        // string sFile = "../../../../groningen test2.xml";
-        // string sFile = "../../../../enkhuizen test 4.xml";
-        //string sFile = "../../../../amsterdam test tram subway train.xml";
-        //string sFile = "../../../../train germany.xml";
-        //string sFile = "../../../../train netherlands.xml";
-        string sFile = "../../../../groenhart train.xml";
-        //string sFile = "../../../../amsterdam tram bus.xml";
-        //string sFile = "../../../../subway london.xml";
-        //string sFile = "../../../../berlin subway.xml";
-        //string sFile = "../../../../train frankrijk.xml";
-        //string sFile = "../../../../train uk.xml";
-        // string sFile = "../../../../frankrijk test3.xml";
-        //string sFile = "../../../../train europa.xml";
-        //string sFile = "../../../../train westeuropa.xml";
-        //string sFile = "../../../../subway europa.xml";
+        // string sFile = "C:/Way2Go/groningen test2.xml";
+        // string sFile = "C:/Way2Go/enkhuizen test 4.xml";
+        //string sFile = "C:/Way2Go/amsterdam test tram subway train.xml";
+        //string sFile = "C:/Way2Go/train germany.xml";
+        //string sFile = "C:/Way2Go/train netherlands.xml";
+        string sFile = "C:/Way2Go/groenhart train.xml";
+        //string sFile = "C:/Way2Go/amsterdam tram bus.xml";
+        //string sFile = "C:/Way2Go/subway london.xml";
+        //string sFile = "C:/Way2Go/berlin subway.xml";
+        //string sFile = "C:/Way2Go/train frankrijk.xml";
+        //string sFile = "C:/Way2Go/train uk.xml";
+        // string sFile = "C:/Way2Go/frankrijk test3.xml";
+        //string sFile = "C:/Way2Go/train europa.xml";
+        //string sFile = "C:/Way2Go/train westeuropa.xml";
+        //string sFile = "C:/Way2Go/subway europa.xml";
 
         public DataControl()
         {
