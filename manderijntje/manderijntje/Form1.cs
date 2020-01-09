@@ -28,7 +28,7 @@ namespace manderijntje
             InitializeComponent();
             setupView();  
         }
-
+         
         //
         // ZET HET SCHERM KLAAR
         //
