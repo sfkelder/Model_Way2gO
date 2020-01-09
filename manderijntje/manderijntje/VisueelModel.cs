@@ -228,7 +228,7 @@ namespace manderijntje
         /*Deze classen bevat methodes die zorgen voor het inlzen en schrijven van de benodigde files*/
         public class files
         {
-            private static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/appdata.txt";
+            private const string filepath = "C:/Way2Go/visueel_model.txt";
 
             //zorgt voor het inlezen van de file
             public static void inlezen(VisueelModel l)
