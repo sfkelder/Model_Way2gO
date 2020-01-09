@@ -10,11 +10,12 @@ namespace manderijntje
     {
         DataControl dataControl;
         connecties visueelControl;
+        MapView mapView = new MapView();
+        VisueelModel visual = new VisueelModel();
+        //List<reisOpties> reisOpties = new List<reisOpties>();
 
-        
-        List<reisOpties> reisOpties = new List<reisOpties>();
+        List<Route> reisOpties = new List<Route>();
         List<tijdenModel> tijdenList = new List<tijdenModel>();
-        Vertrek v = new Vertrek();
         public Cell cell { get; set; }
         DateTime gekozenTijd { get; set; }
         string beginLocatie, eindLocatie, vertrekTijd, bLocatie, eLocatie;
@@ -22,12 +23,14 @@ namespace manderijntje
 
         public Form1()
         {
+            InitializeComponent();
             dataControl = new DataControl();
             visueelControl = new connecties(dataControl.GetDataModel());
 
-            InitializeComponent();
+
+            mapView.GetVisueel(visueelControl);
             setupView();
-            
+
             //test
             Routing r = new Routing();
             Route route = r.GetRoute("Utrecht Centraal", "Amsterdam Centraal", DateTime.Now, dataControl.GetDataModel());
@@ -38,7 +41,7 @@ namespace manderijntje
             Console.ReadLine();
             //test end
         }
-
+         
         //
         // ZET HET SCHERM KLAAR
         //
@@ -48,6 +51,7 @@ namespace manderijntje
             show(inputPanel);
             hideshowBack();
             vultijdInput();
+            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             beginInput.GotFocus += new EventHandler(this.verwijderText);
             beginInput.LostFocus += new EventHandler(this.voegText);
             eindInput.GotFocus += new EventHandler(this.verwijderText);
@@ -99,7 +103,6 @@ namespace manderijntje
         //
         // KIJKT OF begin locatie (GOED) is INGEVULD
         //
-
         private static bool checkBeginLocatie(string bLocatie, List<autoSuggestModel> stationList)
         {
             foreach (autoSuggestModel item in stationList)
@@ -182,8 +185,7 @@ namespace manderijntje
             if (checkBeginLocatie(beginLocatie, autosuggest.stationList) &&
                     checkEindLocatie(eindLocatie, autosuggest.stationList))
             {
-                v.vertrekModel(beginLocatie, eindLocatie, vertrekTijd);
-                gekozenTijd = Convert.ToDateTime(vertrekTijd);
+                //v.vertrekModel(beginLocatie, eindLocatie, vertrekTijd);
                 setupReisOpties();
             }
             else
@@ -211,7 +213,19 @@ namespace manderijntje
             flowLayoutPanel.Location = new Point(0, logoHeader.Height);
             clearFlowControl(this.flowLayoutPanel);
             reisOpties.Clear();
-            reisOpties = fakeLijst(gekozenTijd);
+
+            List<string> list = new List<string>();
+            list.Add(beginLocatie);
+            list.Add(eindLocatie);
+            visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true);
+
+            gekozenTijd = Convert.ToDateTime(vertrekTijd);
+            Routing r = new Routing();
+            DataModel d = dataControl.GetDataModel();
+            reisOpties.Add(r.GetRoute(beginLocatie, eindLocatie, gekozenTijd, d));
+
+            //reisOpties = fakeLijst(gekozenTijd);
+
             vullReisOpties(new Cell[reisOpties.Count()]);
         }
 
@@ -222,7 +236,29 @@ namespace manderijntje
         {
             for (int i = 0; i < reisOpties.Count; i++)
             {
+
                 listItems[i] = new Cell(this);
+                listItems[i].beginTijd = Convert.ToString(reisOpties[i].startTime);
+                listItems[i].eindTijd = Convert.ToString(reisOpties[i].endTime);
+                listItems[i].typeVervoer = reisOpties[i].shortestPath[0].vervoersmiddels;
+                listItems[i].totaleTijd = Convert.ToString(reisOpties[i].endTime.Subtract(reisOpties[i].startTime));
+                listItems[i].aantalOverstappen = reisOpties[i].transfers.ToString();
+                listItems[i].shortestPath = reisOpties[i].shortestPath;
+
+
+                //listItems[i].perron = reisOpties[i].shortestPath[0].perron;
+                //listItems[i].naamVervoer = reisOpties[i].shortestPath[0].;
+
+
+                //listItems[i].vervoerder = reisOpties[i].shortestPath[0].vervoersmiddels;
+                //listItems[i].busLijn = reisOpties[i].busLijn;
+                //listItems[i].tussenstop = reisOpties[i].tussenstop;
+                //listItems[i].orange = false;
+
+
+                // Test Only
+
+                /*listItems[i] = new Cell(this);
                 listItems[i].beginTijd = reisOpties[i].beginTijd;
                 listItems[i].eindTijd = reisOpties[i].eindTijd;
                 listItems[i].vervoerder = reisOpties[i].vervoerder;
@@ -233,7 +269,9 @@ namespace manderijntje
                 listItems[i].aantalOverstappen = reisOpties[i].aantalOverstappen;
                 listItems[i].perron = reisOpties[i].perron;
                 listItems[i].tussenstop = reisOpties[i].tussenstop;
-                listItems[i].orange = false;
+                listItems[i].orange = false;*/
+
+
                 if (flowLayoutPanel.Controls.Count < 0)
                     clearFlowControl(this.flowLayoutPanel);
                 else
@@ -267,7 +305,7 @@ namespace manderijntje
         public void setupReisDetails()
         {
             showReisDetails();
-            vullTussenStops(new tussenstopCell[this.detailsUserControl.tussenstop.Count()]);
+            vullTussenStops(new tussenstopCell[this.detailsUserControl.shortestPath.Count()]);
         }
 
         //
@@ -275,14 +313,26 @@ namespace manderijntje
         //
         private void vullTussenStops(tussenstopCell[] listItems)
         {
-            for (int i = 0; i < this.detailsUserControl.tussenstop.Count; i++)
+            for (int i = 0; i < this.detailsUserControl.shortestPath.Count; i++)
             {
                 listItems[i] = new tussenstopCell();
+                listItems[i].stationNaam = detailsUserControl.shortestPath[i].stationnaam;
+                listItems[i].richting = detailsUserControl.shortestPath[i].routnaam;
+                listItems[i].typeVervoer = detailsUserControl.shortestPath[i].vervoersmiddels;
+
+                //listItems[i].perron = detailsUserControl.shortestPath[i].perron;
+                //listItems[i].vertrekTijd = detailsUserControl.shortestPath[i].;
+
+
+                //Test only
+
+                /*listItems[i] = new tussenstopCell();
                 listItems[i].vertrekTijd = this.detailsUserControl.tussenstop[i].vertrekTijd;
                 listItems[i].stationNaam = this.detailsUserControl.tussenstop[i].station;
                 listItems[i].perron = this.detailsUserControl.tussenstop[i].perron;
                 listItems[i].richting = this.detailsUserControl.tussenstop[i].richtingVervoer;
-                listItems[i].typeVervoer = this.detailsUserControl.tussenstop[i].typeVervoer;
+                listItems[i].typeVervoer = this.detailsUserControl.tussenstop[i].typeVervoer;*/
+
                 if (i == 0)
                     listItems[i].eerste = true;
                 else if (i == this.detailsUserControl.tussenstop.Count - 1)
@@ -437,42 +487,50 @@ namespace manderijntje
             }      
         }
 
+        // Geeft de mapView de juiste locatie en size.
+        private void sizeMap(int x, int y, int width, int height)
+        {
+            mapViewControl.Size = new Size(width, height);
+            mapViewControl.Location = new Point(x, y);
+            mapView.setMap(width, height);
+        }
+
         //
         // Hides active views
         //
         private void hideArrowIcon_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("inputControl: " + inputControl);
-            Console.WriteLine("optiesControl: " + optiesControl);
-            Console.WriteLine("indetailsControlput: " + detailsControl);
-            Console.WriteLine("optionSelected: " + optionSelected);
-
             if (inputControl)
             {
                 inputPanel.Visible = false;
                 hide(inputPanel);
+                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height);
 
             }
             else if (optiesControl)
             {
-                flowLayoutPanel.Visible = false;
+                flowLayoutPanel.Visible = false; 
                 hide(flowLayoutPanel);
+                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height);
 
             }
             else if (detailsControl)
             {
                 detailsUserControl.Visible = false;
                 hide(detailsControl);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             }
             else if (!inputControl && !optiesControl && !detailsControl && !optionSelected)
             {
-                inputPanel.Visible = true;
+                inputPanel.Visible = true; 
                 show(inputPanel);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             }
             else if (!inputControl && !optiesControl && !detailsControl && optionSelected)
             {
                 flowLayoutPanel.Visible = true;
                 show(flowLayoutPanel);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             }
         }
 
@@ -486,8 +544,12 @@ namespace manderijntje
                 veranderInput = true;
                 bLocatie = beginInput.Text;
                 eLocatie = eindInput.Text;
+                Color bKleur = beginInput.ForeColor;
+                Color eKleur = eindInput.ForeColor;
                 beginInput.Text = eLocatie;
+                beginInput.ForeColor = eKleur;
                 eindInput.Text = bLocatie;
+                eindInput.ForeColor = bKleur;
                 veranderInput = false;
             }
         }
@@ -521,7 +583,8 @@ namespace manderijntje
                 optiesControl = false;
                 detailsControl = true;
                 hideshowBack();           
-                this.logoHeader.Width = logoHeader.Width + detailsUserControl.Width;
+                logoHeader.Width = logoHeader.Width + detailsUserControl.Width;
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width, this.Height);
                 hideBarLocation(logoHeader.Width, logoHeader.Height);
                 changeBackIcon(false);
             }

@@ -23,6 +23,7 @@ namespace manderijntje
         private string _perron;
         private bool _orange;
         private List<tussenStops> _tussenstop = new List<tussenStops>();
+        private List<Node> _shortestPath = new List<Node>();
         Form1 _parent;
         public string beginTijd 
         {
@@ -84,6 +85,12 @@ namespace manderijntje
             set { _orange = value;
                 //changeColor(_orange);
             }
+        }
+
+        public List<Node> shortestPath
+        {
+            get { return _shortestPath; }
+            set { _shortestPath = value; }
         }
 
 

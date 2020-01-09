@@ -77,6 +77,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MapView.Designer.cs">
+      <DependentUpon>MapView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\autoSuggestModel.cs" />
     <Compile Include="Models\reisOptiesModel.cs" />
     <Compile Include="Models\tijdenModel.cs" />

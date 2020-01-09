@@ -16,7 +16,7 @@ namespace manderijntje
         public string naamVervoer { get; set; }
         public string busLijn { get; set; }
         public string totaleTijd { get; set; }
-        public string aantalOverstappen { get; set; }
+        public string  aantalOverstappen { get; set; }
         public string perron { get; set; }
         public bool orange { get; set; }
         public List<tussenStops> tussenstop { get; set; }
