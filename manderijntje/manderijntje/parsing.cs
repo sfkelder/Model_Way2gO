@@ -16,14 +16,17 @@ namespace manderijntje
 
         public parsing(DataModel model)
         {
-            setNodes(model.unique_nodes);   // mogelijk een bug met de coordinaten van het datamodel. mogelijk lat en long omgewisseld. kan problemen veroorzaken
-            setLinks(model.unique_links);
+            if (model.unique_nodes.Count != 0 && model.unique_links.Count != 0)
+            {
+                setNodes(model.unique_nodes);   // mogelijk een bug met de coordinaten van het datamodel. mogelijk lat en long omgewisseld. kan problemen veroorzaken
+                setLinks(model.unique_links);
 
-            enforcePlanarity();
-            setNeighbours();
+                enforcePlanarity();
+                setNeighbours();
 
-            getLinkPairs();
-            getBendLinks();
+                getLinkPairs();
+                getBendLinks();
+            }
         }
 
         public VisueelModel getModel (bool solve)
@@ -59,7 +62,6 @@ namespace manderijntje
                 {
                     if (areLinksNonIncident(links[i], links[n]) && doLinksIntersect(links[i], links[n]))
                     {
-                        //Console.WriteLine("evaluate crossing" + " link e1: " + links[i].u.index + " " + links[i].v.index + " link e2: " + links[n].u.index + " " + links[n].v.index);
                         insertNode(links[i], links[n]);
                     }
                 }

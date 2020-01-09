@@ -22,7 +22,7 @@ namespace manderijntje
 
             public connecties (DataModel data)
             {
-                toegang = (new parsing(new DataModel())).getModel(false);
+                toegang = (new parsing(data)).getModel(false);
         }
 
         
