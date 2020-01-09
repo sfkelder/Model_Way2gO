@@ -120,7 +120,7 @@
             this.planTripLabel.Location = new System.Drawing.Point(2, 6);
             this.planTripLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.planTripLabel.Name = "planTripLabel";
-            this.planTripLabel.Size = new System.Drawing.Size(220, 37);
+            this.planTripLabel.Size = new System.Drawing.Size(154, 26);
             this.planTripLabel.TabIndex = 3;
             this.planTripLabel.Text = "Plan your trip";
             // 
@@ -157,7 +157,7 @@
             this.vertrekLabel.Location = new System.Drawing.Point(3, 5);
             this.vertrekLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.vertrekLabel.Name = "vertrekLabel";
-            this.vertrekLabel.Size = new System.Drawing.Size(68, 20);
+            this.vertrekLabel.Size = new System.Drawing.Size(48, 13);
             this.vertrekLabel.TabIndex = 6;
             this.vertrekLabel.Text = "Vertrek";
             // 
@@ -167,7 +167,7 @@
             this.tijdInput.Location = new System.Drawing.Point(75, 1);
             this.tijdInput.Margin = new System.Windows.Forms.Padding(2);
             this.tijdInput.Name = "tijdInput";
-            this.tijdInput.Size = new System.Drawing.Size(111, 28);
+            this.tijdInput.Size = new System.Drawing.Size(111, 21);
             this.tijdInput.TabIndex = 5;
             // 
             // textboxPanel
@@ -198,7 +198,7 @@
             this.beginInput.Location = new System.Drawing.Point(2, 2);
             this.beginInput.Margin = new System.Windows.Forms.Padding(2);
             this.beginInput.Name = "beginInput";
-            this.beginInput.Size = new System.Drawing.Size(182, 26);
+            this.beginInput.Size = new System.Drawing.Size(182, 20);
             this.beginInput.TabIndex = 0;
             this.beginInput.TextChanged += new System.EventHandler(this.beginInput_TextChanged);
             // 
@@ -209,7 +209,7 @@
             this.eindInput.Location = new System.Drawing.Point(3, 32);
             this.eindInput.Margin = new System.Windows.Forms.Padding(2);
             this.eindInput.Name = "eindInput";
-            this.eindInput.Size = new System.Drawing.Size(181, 26);
+            this.eindInput.Size = new System.Drawing.Size(181, 20);
             this.eindInput.TabIndex = 1;
             this.eindInput.TextChanged += new System.EventHandler(this.eindInput_TextChanged);
             // 
@@ -218,7 +218,7 @@
             this.flowLayoutPanel.AutoScroll = true;
             this.flowLayoutPanel.Location = new System.Drawing.Point(383, 62);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(381, 689);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(381, 685);
             this.flowLayoutPanel.TabIndex = 9;
             // 
             // hideBar
@@ -270,7 +270,7 @@
             this.autoSuggestie1.Location = new System.Drawing.Point(87, 456);
             this.autoSuggestie1.Margin = new System.Windows.Forms.Padding(4);
             this.autoSuggestie1.Name = "autoSuggestie1";
-            this.autoSuggestie1.Size = new System.Drawing.Size(249, 185);
+            this.autoSuggestie1.Size = new System.Drawing.Size(186, 124);
             this.autoSuggestie1.TabIndex = 15;
             // 
             // detailsUserControl
@@ -282,7 +282,8 @@
             this.detailsUserControl.Margin = new System.Windows.Forms.Padding(4);
             this.detailsUserControl.Name = "detailsUserControl";
             this.detailsUserControl.perron = null;
-            this.detailsUserControl.Size = new System.Drawing.Size(564, 822);
+            this.detailsUserControl.shortestPath = null;
+            this.detailsUserControl.Size = new System.Drawing.Size(422, 685);
             this.detailsUserControl.TabIndex = 14;
             this.detailsUserControl.totaleTijd = null;
             this.detailsUserControl.tussenstop = null;

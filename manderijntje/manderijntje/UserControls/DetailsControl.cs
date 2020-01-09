@@ -18,6 +18,7 @@ namespace manderijntje
         private string _aantalOverstappen;
         private string _perron;
         private List<tussenStops> _tussenstop;
+        private List<Node> _shortestPath;
 
         public string beginTijd
         {
@@ -50,35 +51,17 @@ namespace manderijntje
             get { return _tussenstop; }
             set { _tussenstop = value; }
         }
-    
+
+        public List<Node> shortestPath
+        {
+            get { return _shortestPath; }
+            set { _shortestPath = value; }
+        }
+
 
         public DetailsControl()
         {
             InitializeComponent();
-        }
-
-        public void setupView()
-        {
-            tijdenLBL.Text = _beginTijd + " - " + _eindTijd;
-            totaleTijdLBL.Text = _totaleTijd;
-            aantalOverstappenLBL.Text = _aantalOverstappen + "x";
-            PerronLBL.Text = perron;
-
-            tussenstopCell[] listItems = new tussenstopCell[tussenstop.Count()]; ;
-            for (int i = 0; i < tussenstop.Count; i++)
-            {
-                listItems[i] = new tussenstopCell();
-                listItems[i].vertrekTijd = tussenstop[i].vertrekTijd;
-                listItems[i].stationNaam = tussenstop[i].station;
-                listItems[i].perron = tussenstop[i].perron;
-                listItems[i].richting = tussenstop[i].richtingVervoer;
-                listItems[i].typeVervoer = tussenstop[i].typeVervoer;
-
-                if (tussenstopsPanel.Controls.Count < 0)
-                    tussenstopsPanel.Controls.Clear();
-                else
-                    tussenstopsPanel.Controls.Add(listItems[i]);
-            }
         }
     }
 }
