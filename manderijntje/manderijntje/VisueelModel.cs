@@ -19,28 +19,28 @@ namespace manderijntje
             private lists_bewerkingen l = new lists_bewerkingen();
             private  bewerkingen b = new bewerkingen();
             public VisueelModel toegang;
+            private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
 
             public connecties (DataModel data)
             {
-                toegang = (new parsing(data)).getModel(false);
+                if (File.Exists(filepath) && !Program.reimport)
+                {
+                    files.inlezen(toegang, filepath);
+                }
+                else
+                {
+                    toegang = (new parsing(data)).getModel(false);
+
+                    if (Directory.Exists(filepath))
+                    {
+                        files.schrijven(toegang, FileMode.Open, filepath);
+                    }
+                    else
+                    {
+                        files.schrijven(toegang, FileMode.Create, filepath);
+                    }
+                }
         }
-
-        
-            //word eenmalig aangeropen bij het opstarten van het programma en kijkt of de benodigde file al bestaat of nog aangemaakt moet worden
-            public void opstarten()
-            {
-                try
-                {
-                    files.inlezen(toegang);
-                }
-
-                catch (Exception)
-                {
-                    files.schrijven(toegang);
-                }
-
-            }
-
 
             //wordt vanuit andere classes aangeroepen en stuurt alles in dit form aan
             public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen)
@@ -228,37 +228,37 @@ namespace manderijntje
         /*Deze classen bevat methodes die zorgen voor het inlzen en schrijven van de benodigde files*/
         public class files
         {
-            private const string filepath = "C:/Way2Go/visueel_model.txt";
-
             //zorgt voor het inlezen van de file
-            public static void inlezen(VisueelModel l)
+            public static void inlezen(VisueelModel l, string path)
             {
-                using (Stream str = File.Open(filepath, FileMode.Open))
+                try
                 {
-                    var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    l.nodes = (List<VisueelNode>)formater.Deserialize(str);
+                    using (Stream str = File.Open(path, FileMode.Open))
+                    {
+                        var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                        l = (VisueelModel)formater.Deserialize(str);
+                    }
+                }
+                catch
+                {
+                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
                 }
             }
 
             //zorgt voor het schrijven van een file
-            public static void schrijven(VisueelModel l)
+            public static void schrijven(VisueelModel l, FileMode fm, string path)
             {
                 try
                 {
-                    using (Stream str = File.Open(filepath, FileMode.Open))
+                    using (Stream str = File.Open(path, fm))
                     {
                         var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                        formater.Serialize(str, l.nodes); 
+                        formater.Serialize(str, l); 
                     }
                 } 
-
-                catch (Exception)
-                { 
-                    using (Stream str = File.Open(filepath, FileMode.Create))
-                    {
-                        var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                        formater.Serialize(str, l.nodes);
-                    }
+                catch
+                {
+                    MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
                 }
 
             }

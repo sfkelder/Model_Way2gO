@@ -34,7 +34,7 @@ namespace manderijntje
 
         public DataControl()
         {
-            if (File.Exists(filepath) && !reimport)
+            if (File.Exists(filepath) && !Program.reimport)
             {
                 ReadDataFromDisk();
             } else
@@ -58,7 +58,6 @@ namespace manderijntje
 
         DataModel dataModel;
         private const string filepath = "C:/Way2Go/datamodel_binary.txt";
-        private const bool reimport = false; // deze waarde is een override als er wel een file op disk staat maar je wenst toch de gegevens opnieuw in te lezen van disk
 
         private void ReadDataFromDisk()
         {
