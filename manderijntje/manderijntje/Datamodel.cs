@@ -11,10 +11,10 @@ namespace manderijntje
     public class DataControl
     {
         //string sFile = "C:/Way2Go/groningen test2.xml";
-         string sFile = "C:/Way2Go/enkhuizen test 4.xml";
+        // string sFile = "C:/Way2Go/enkhuizen test 4.xml";
         //string sFile = "C:/Way2Go/amsterdam test tram subway train.xml";
         //string sFile = "C:/Way2Go/train germany.xml";
-        //string sFile = "C:/Way2Go/train netherlands.xml";
+        string sFile = "C:/Way2Go/train netherlands.xml";
         //string sFile = "C:/Way2Go/groenhart train.xml";
         //string sFile = "C:/Way2Go/amsterdam tram bus.xml";
         //string sFile = "C:/Way2Go/subway london.xml";
@@ -32,7 +32,8 @@ namespace manderijntje
                 {
 
                 ReadDataFromDisk();
-            } else
+            } 
+            else
             {
                 LoadWP(sFile);//punten met stationnamen
                 LoadTracks(sFile);//punten met routes
@@ -1092,6 +1093,11 @@ namespace manderijntje
         {
             return nodes;
         }
+
+        public List<Node> GetStopNodes()
+        {
+            return stopnodes;
+        }
         public Node GetNode(string name, List<Node> lijst)
         {
             foreach (Node node in lijst)
@@ -1178,6 +1184,8 @@ namespace manderijntje
     {
         // twee pointers die wijzen naar de twee nodes die deze link verbind
         public Node Start, End;
+
+        public List<Node> driveBystation;
 
         public double Weight = 1;
 

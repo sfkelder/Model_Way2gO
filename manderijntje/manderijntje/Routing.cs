@@ -11,8 +11,8 @@ namespace manderijntje
 
         public List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel dataModel)
         {
-            Node start = dataModel.GetNodeName(startName, dataModel.GetNodes());
-            Node end = dataModel.GetNodeName(endName, dataModel.GetNodes());
+            Node start = dataModel.GetNodeName(startName, dataModel.GetStopNodes());
+            Node end = dataModel.GetNodeName(endName, dataModel.GetStopNodes());
             DijkstraSearch(start, end, time);
             var shortestPath = new List<Node> {end};
             BuildShortestPath(shortestPath, end);
@@ -37,7 +37,7 @@ namespace manderijntje
                 prioQueue = prioQueue.OrderBy(x => x.MinCostToStart).ToList();
                 var node = prioQueue.First();
                 prioQueue.Remove(node);
-                foreach (var link in node.Connecties.OrderBy(x => x.Weight))
+                foreach (var link in node. Connecties.OrderBy(x => x.Weight))
                 {
                     var childNode = link.End;
                     if (childNode.Visited)
@@ -76,7 +76,7 @@ namespace manderijntje
             Routing r = new Routing();
             shortestPath = r.GetShortestPathDijkstra(startName, endName, time, dataModel);
             startTime = time;
-            endTime = time.Add(TimeSpan.FromMinutes(shortestPath.Last().MinCostToStart));
+            //endTime = time.Add(TimeSpan.FromMinutes(shortestPath.Last().MinCostToStart));
             transfers = r.transfers;
         }
     }
