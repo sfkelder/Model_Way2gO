@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.logoHeader = new System.Windows.Forms.Panel();
+            this.backIcon = new System.Windows.Forms.PictureBox();
+            this.logoIcon = new System.Windows.Forms.PictureBox();
             this.inputPanel = new System.Windows.Forms.Panel();
             this.planTripLabel = new System.Windows.Forms.Label();
             this.searchButton = new System.Windows.Forms.Button();
@@ -38,25 +40,25 @@
             this.vertrekLabel = new System.Windows.Forms.Label();
             this.tijdInput = new System.Windows.Forms.ComboBox();
             this.textboxPanel = new System.Windows.Forms.Panel();
+            this.changeTextImage = new System.Windows.Forms.PictureBox();
             this.beginInput = new System.Windows.Forms.TextBox();
             this.eindInput = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.hideBar = new System.Windows.Forms.Panel();
-            this.hideBarOrangePanel = new System.Windows.Forms.Panel();
             this.hideArrowIcon = new System.Windows.Forms.PictureBox();
-            this.changeTextImage = new System.Windows.Forms.PictureBox();
-            this.backIcon = new System.Windows.Forms.PictureBox();
-            this.logoIcon = new System.Windows.Forms.PictureBox();
+            this.hideBarOrangePanel = new System.Windows.Forms.Panel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.detailsUserControl = new manderijntje.DetailsControl();
+            this.autoSuggestie1 = new manderijntje.autoSuggestie();
             this.logoHeader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.backIcon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoIcon)).BeginInit();
             this.inputPanel.SuspendLayout();
             this.tijdPanel.SuspendLayout();
             this.textboxPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.changeTextImage)).BeginInit();
             this.hideBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hideArrowIcon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.changeTextImage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backIcon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.logoIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -77,6 +79,27 @@
             this.logoHeader.Size = new System.Drawing.Size(390, 59);
             this.logoHeader.TabIndex = 1;
             // 
+            // backIcon
+            // 
+            this.backIcon.Image = global::manderijntje.Properties.Resources.backArrowWhite;
+            this.backIcon.Location = new System.Drawing.Point(24, 22);
+            this.backIcon.Name = "backIcon";
+            this.backIcon.Size = new System.Drawing.Size(20, 20);
+            this.backIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.backIcon.TabIndex = 2;
+            this.backIcon.TabStop = false;
+            this.backIcon.Click += new System.EventHandler(this.backIcon_Click);
+            // 
+            // logoIcon
+            // 
+            this.logoIcon.Image = global::manderijntje.Properties.Resources.Way2GoLogo;
+            this.logoIcon.Location = new System.Drawing.Point(153, 0);
+            this.logoIcon.Name = "logoIcon";
+            this.logoIcon.Size = new System.Drawing.Size(71, 58);
+            this.logoIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.logoIcon.TabIndex = 1;
+            this.logoIcon.TabStop = false;
+            // 
             // inputPanel
             // 
             this.inputPanel.Controls.Add(this.planTripLabel);
@@ -96,7 +119,7 @@
             this.planTripLabel.Location = new System.Drawing.Point(2, 6);
             this.planTripLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.planTripLabel.Name = "planTripLabel";
-            this.planTripLabel.Size = new System.Drawing.Size(220, 37);
+            this.planTripLabel.Size = new System.Drawing.Size(187, 31);
             this.planTripLabel.TabIndex = 3;
             this.planTripLabel.Text = "Plan your trip";
             // 
@@ -133,7 +156,7 @@
             this.vertrekLabel.Location = new System.Drawing.Point(3, 5);
             this.vertrekLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.vertrekLabel.Name = "vertrekLabel";
-            this.vertrekLabel.Size = new System.Drawing.Size(68, 20);
+            this.vertrekLabel.Size = new System.Drawing.Size(61, 17);
             this.vertrekLabel.TabIndex = 6;
             this.vertrekLabel.Text = "Vertrek";
             // 
@@ -143,7 +166,7 @@
             this.tijdInput.Location = new System.Drawing.Point(75, 1);
             this.tijdInput.Margin = new System.Windows.Forms.Padding(2);
             this.tijdInput.Name = "tijdInput";
-            this.tijdInput.Size = new System.Drawing.Size(156, 28);
+            this.tijdInput.Size = new System.Drawing.Size(156, 24);
             this.tijdInput.TabIndex = 5;
             // 
             // textboxPanel
@@ -157,13 +180,24 @@
             this.textboxPanel.Size = new System.Drawing.Size(234, 64);
             this.textboxPanel.TabIndex = 4;
             // 
+            // changeTextImage
+            // 
+            this.changeTextImage.Image = global::manderijntje.Properties.Resources.changeText;
+            this.changeTextImage.Location = new System.Drawing.Point(194, 10);
+            this.changeTextImage.Name = "changeTextImage";
+            this.changeTextImage.Size = new System.Drawing.Size(35, 35);
+            this.changeTextImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.changeTextImage.TabIndex = 14;
+            this.changeTextImage.TabStop = false;
+            this.changeTextImage.Click += new System.EventHandler(this.changeTextImage_Click);
+            // 
             // beginInput
             // 
             this.beginInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.beginInput.Location = new System.Drawing.Point(2, 2);
             this.beginInput.Margin = new System.Windows.Forms.Padding(2);
             this.beginInput.Name = "beginInput";
-            this.beginInput.Size = new System.Drawing.Size(182, 26);
+            this.beginInput.Size = new System.Drawing.Size(182, 23);
             this.beginInput.TabIndex = 0;
             this.beginInput.TextChanged += new System.EventHandler(this.beginInput_TextChanged);
             // 
@@ -174,7 +208,7 @@
             this.eindInput.Location = new System.Drawing.Point(3, 32);
             this.eindInput.Margin = new System.Windows.Forms.Padding(2);
             this.eindInput.Name = "eindInput";
-            this.eindInput.Size = new System.Drawing.Size(181, 26);
+            this.eindInput.Size = new System.Drawing.Size(181, 23);
             this.eindInput.TabIndex = 1;
             this.eindInput.TextChanged += new System.EventHandler(this.eindInput_TextChanged);
             // 
@@ -196,14 +230,6 @@
             this.hideBar.Size = new System.Drawing.Size(31, 737);
             this.hideBar.TabIndex = 13;
             // 
-            // hideBarOrangePanel
-            // 
-            this.hideBarOrangePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
-            this.hideBarOrangePanel.Location = new System.Drawing.Point(0, 0);
-            this.hideBarOrangePanel.Name = "hideBarOrangePanel";
-            this.hideBarOrangePanel.Size = new System.Drawing.Size(10, 734);
-            this.hideBarOrangePanel.TabIndex = 0;
-            // 
             // hideArrowIcon
             // 
             this.hideArrowIcon.BackColor = System.Drawing.Color.Transparent;
@@ -216,59 +242,65 @@
             this.hideArrowIcon.TabStop = false;
             this.hideArrowIcon.Click += new System.EventHandler(this.hideArrowIcon_Click);
             // 
-            // changeTextImage
+            // hideBarOrangePanel
             // 
-            this.changeTextImage.Image = global::manderijntje.Properties.Resources.changeText;
-            this.changeTextImage.Location = new System.Drawing.Point(194, 10);
-            this.changeTextImage.Name = "changeTextImage";
-            this.changeTextImage.Size = new System.Drawing.Size(35, 35);
-            this.changeTextImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.changeTextImage.TabIndex = 14;
-            this.changeTextImage.TabStop = false;
-            this.changeTextImage.Click += new System.EventHandler(this.changeTextImage_Click);
+            this.hideBarOrangePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
+            this.hideBarOrangePanel.Location = new System.Drawing.Point(0, 0);
+            this.hideBarOrangePanel.Name = "hideBarOrangePanel";
+            this.hideBarOrangePanel.Size = new System.Drawing.Size(10, 734);
+            this.hideBarOrangePanel.TabIndex = 0;
             // 
-            // backIcon
+            // imageList1
             // 
-            this.backIcon.Image = global::manderijntje.Properties.Resources.backArrowWhite;
-            this.backIcon.Location = new System.Drawing.Point(24, 22);
-            this.backIcon.Name = "backIcon";
-            this.backIcon.Size = new System.Drawing.Size(20, 20);
-            this.backIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.backIcon.TabIndex = 2;
-            this.backIcon.TabStop = false;
-            this.backIcon.Click += new System.EventHandler(this.backIcon_Click);
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // logoIcon
+            // detailsControl1
             // 
-            this.logoIcon.Image = global::manderijntje.Properties.Resources.Way2GoLogo;
-            this.logoIcon.Location = new System.Drawing.Point(153, 0);
-            this.logoIcon.Name = "logoIcon";
-            this.logoIcon.Size = new System.Drawing.Size(71, 58);
-            this.logoIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.logoIcon.TabIndex = 1;
-            this.logoIcon.TabStop = false;
+            this.detailsUserControl.aantalOverstappen = null;
+            this.detailsUserControl.beginTijd = null;
+            this.detailsUserControl.eindTijd = null;
+            this.detailsUserControl.Location = new System.Drawing.Point(771, 62);
+            this.detailsUserControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.detailsUserControl.Name = "detailsControl1";
+            this.detailsUserControl.perron = null;
+            this.detailsUserControl.Size = new System.Drawing.Size(564, 822);
+            this.detailsUserControl.TabIndex = 14;
+            this.detailsUserControl.totaleTijd = null;
+            this.detailsUserControl.tussenstop = null;
+            // 
+            // autoSuggestie2
+            // 
+            this.autoSuggestie1.Location = new System.Drawing.Point(87, 456);
+            this.autoSuggestie1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.autoSuggestie1.Name = "autoSuggestie2";
+            this.autoSuggestie1.Size = new System.Drawing.Size(249, 185);
+            this.autoSuggestie1.TabIndex = 15;
             // 
             // Form1
             // 
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1365, 726);
+            this.Controls.Add(this.autoSuggestie1);
+            this.Controls.Add(this.detailsUserControl);
             this.Controls.Add(this.hideBar);
             this.Controls.Add(this.flowLayoutPanel);
             this.Controls.Add(this.inputPanel);
             this.Controls.Add(this.logoHeader);
             this.Name = "Form1";
             this.logoHeader.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.backIcon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoIcon)).EndInit();
             this.inputPanel.ResumeLayout(false);
             this.inputPanel.PerformLayout();
             this.tijdPanel.ResumeLayout(false);
             this.tijdPanel.PerformLayout();
             this.textboxPanel.ResumeLayout(false);
             this.textboxPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.changeTextImage)).EndInit();
             this.hideBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.hideArrowIcon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.changeTextImage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backIcon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.logoIcon)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -287,8 +319,6 @@
         public System.Windows.Forms.TextBox beginInput;
         public System.Windows.Forms.TextBox eindInput;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
-        private DetailsControl detailsUserControl;
-        private autoSuggestie autoSuggestie1;
         private System.Windows.Forms.Panel hideBar;
         private System.Windows.Forms.Panel hideBarOrangePanel;
         private System.Windows.Forms.PictureBox logoIcon;
@@ -296,6 +326,8 @@
         private System.Windows.Forms.PictureBox backIcon;
         private System.Windows.Forms.PictureBox changeTextImage;
         private System.Windows.Forms.ImageList imageList1;
+        private DetailsControl detailsUserControl;
+        private autoSuggestie autoSuggestie1;
     }
 }
 
