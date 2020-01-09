@@ -15,6 +15,7 @@ namespace manderijntje
         public List<autoSuggestModel> stationList = new List<autoSuggestModel>();
         public List<autoSuggestModel> suggestieslist = new List<autoSuggestModel>();
         Form1 _parent;
+
         public autoSuggestie(Form1 parent)
         {
             InitializeComponent();

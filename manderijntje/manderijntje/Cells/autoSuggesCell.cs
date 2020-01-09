@@ -17,6 +17,7 @@ namespace manderijntje
         private bool _beginInput;
         autoSuggestie _auto;
         Form1 _form;
+
         public string stationNaam
         {
             get { return _stationNaam; }
@@ -28,11 +29,11 @@ namespace manderijntje
             set { _stationType = value; 
                 if (_stationType == "Trein")
                 {
-                    stationTypeIcon.Image = manderijntje.Properties.Resources.OrangeTrain;
+                    stationTypeIcon.Image = Properties.Resources.OrangeTrain;
                 }
                 else if (_stationType == "Bus")
                 {
-                    stationTypeIcon.Image = manderijntje.Properties.Resources.busIcon;
+                    stationTypeIcon.Image = Properties.Resources.busIcon;
                 }
             
             }

@@ -11,10 +11,11 @@ namespace manderijntje
         DataControl dataControl;
         connecties visueelControl;
         MapView mapView = new MapView();
+        VisueelModel visual = new VisueelModel();
+        //List<reisOpties> reisOpties = new List<reisOpties>();
 
-        List<reisOpties> reisOpties = new List<reisOpties>();
+        List<Route> reisOpties = new List<Route>();
         List<tijdenModel> tijdenList = new List<tijdenModel>();
-        Vertrek v = new Vertrek();
         public Cell cell { get; set; }
         DateTime gekozenTijd { get; set; }
         string beginLocatie, eindLocatie, vertrekTijd, bLocatie, eLocatie;
@@ -90,7 +91,6 @@ namespace manderijntje
         //
         // KIJKT OF begin locatie (GOED) is INGEVULD
         //
-
         private static bool checkBeginLocatie(string bLocatie, List<autoSuggestModel> stationList)
         {
             foreach (autoSuggestModel item in stationList)
@@ -173,14 +173,7 @@ namespace manderijntje
             if (checkBeginLocatie(beginLocatie, autosuggest.stationList) &&
                     checkEindLocatie(eindLocatie, autosuggest.stationList))
             {
-
-                List<string> list = new List<string>();
-                list.Add(beginLocatie);
-                list.Add(eindLocatie);
-                visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true);
-
-                v.vertrekModel(beginLocatie, eindLocatie, vertrekTijd);
-                gekozenTijd = Convert.ToDateTime(vertrekTijd);
+                //v.vertrekModel(beginLocatie, eindLocatie, vertrekTijd);
                 setupReisOpties();
             }
             else
@@ -208,7 +201,19 @@ namespace manderijntje
             flowLayoutPanel.Location = new Point(0, logoHeader.Height);
             clearFlowControl(this.flowLayoutPanel);
             reisOpties.Clear();
-            reisOpties = fakeLijst(gekozenTijd);
+
+            List<string> list = new List<string>();
+            list.Add(beginLocatie);
+            list.Add(eindLocatie);
+            visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true);
+
+            gekozenTijd = Convert.ToDateTime(vertrekTijd);
+            Routing r = new Routing();
+            DataModel d = dataControl.GetDataModel();
+            reisOpties.Add(r.GetRoute(beginLocatie, eindLocatie, gekozenTijd, d));
+
+            //reisOpties = fakeLijst(gekozenTijd);
+
             vullReisOpties(new Cell[reisOpties.Count()]);
         }
 
@@ -219,7 +224,29 @@ namespace manderijntje
         {
             for (int i = 0; i < reisOpties.Count; i++)
             {
+
                 listItems[i] = new Cell(this);
+                listItems[i].beginTijd = Convert.ToString(reisOpties[i].startTime);
+                listItems[i].eindTijd = Convert.ToString(reisOpties[i].endTime);
+                listItems[i].typeVervoer = reisOpties[i].shortestPath[0].vervoersmiddels;
+                listItems[i].totaleTijd = Convert.ToString(reisOpties[i].endTime.Subtract(reisOpties[i].startTime));
+                listItems[i].aantalOverstappen = reisOpties[i].transfers.ToString();
+                listItems[i].shortestPath = reisOpties[i].shortestPath;
+
+
+                //listItems[i].perron = reisOpties[i].shortestPath[0].perron;
+                //listItems[i].naamVervoer = reisOpties[i].shortestPath[0].;
+
+
+                //listItems[i].vervoerder = reisOpties[i].shortestPath[0].vervoersmiddels;
+                //listItems[i].busLijn = reisOpties[i].busLijn;
+                //listItems[i].tussenstop = reisOpties[i].tussenstop;
+                //listItems[i].orange = false;
+
+
+                // Test Only
+
+                /*listItems[i] = new Cell(this);
                 listItems[i].beginTijd = reisOpties[i].beginTijd;
                 listItems[i].eindTijd = reisOpties[i].eindTijd;
                 listItems[i].vervoerder = reisOpties[i].vervoerder;
@@ -230,7 +257,9 @@ namespace manderijntje
                 listItems[i].aantalOverstappen = reisOpties[i].aantalOverstappen;
                 listItems[i].perron = reisOpties[i].perron;
                 listItems[i].tussenstop = reisOpties[i].tussenstop;
-                listItems[i].orange = false;
+                listItems[i].orange = false;*/
+
+
                 if (flowLayoutPanel.Controls.Count < 0)
                     clearFlowControl(this.flowLayoutPanel);
                 else
@@ -264,7 +293,7 @@ namespace manderijntje
         public void setupReisDetails()
         {
             showReisDetails();
-            vullTussenStops(new tussenstopCell[this.detailsUserControl.tussenstop.Count()]);
+            vullTussenStops(new tussenstopCell[this.detailsUserControl.shortestPath.Count()]);
         }
 
         //
@@ -272,14 +301,26 @@ namespace manderijntje
         //
         private void vullTussenStops(tussenstopCell[] listItems)
         {
-            for (int i = 0; i < this.detailsUserControl.tussenstop.Count; i++)
+            for (int i = 0; i < this.detailsUserControl.shortestPath.Count; i++)
             {
                 listItems[i] = new tussenstopCell();
+                listItems[i].stationNaam = detailsUserControl.shortestPath[i].stationnaam;
+                listItems[i].richting = detailsUserControl.shortestPath[i].routnaam;
+                listItems[i].typeVervoer = detailsUserControl.shortestPath[i].vervoersmiddels;
+
+                //listItems[i].perron = detailsUserControl.shortestPath[i].perron;
+                //listItems[i].vertrekTijd = detailsUserControl.shortestPath[i].;
+
+
+                //Test only
+
+                /*listItems[i] = new tussenstopCell();
                 listItems[i].vertrekTijd = this.detailsUserControl.tussenstop[i].vertrekTijd;
                 listItems[i].stationNaam = this.detailsUserControl.tussenstop[i].station;
                 listItems[i].perron = this.detailsUserControl.tussenstop[i].perron;
                 listItems[i].richting = this.detailsUserControl.tussenstop[i].richtingVervoer;
-                listItems[i].typeVervoer = this.detailsUserControl.tussenstop[i].typeVervoer;
+                listItems[i].typeVervoer = this.detailsUserControl.tussenstop[i].typeVervoer;*/
+
                 if (i == 0)
                     listItems[i].eerste = true;
                 else if (i == this.detailsUserControl.tussenstop.Count - 1)

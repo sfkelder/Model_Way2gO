@@ -270,7 +270,7 @@
             this.autoSuggestie1.Location = new System.Drawing.Point(87, 456);
             this.autoSuggestie1.Margin = new System.Windows.Forms.Padding(4);
             this.autoSuggestie1.Name = "autoSuggestie1";
-            this.autoSuggestie1.Size = new System.Drawing.Size(249, 185);
+            this.autoSuggestie1.Size = new System.Drawing.Size(186, 124);
             this.autoSuggestie1.TabIndex = 15;
             // 
             // detailsUserControl
@@ -282,6 +282,7 @@
             this.detailsUserControl.Margin = new System.Windows.Forms.Padding(4);
             this.detailsUserControl.Name = "detailsUserControl";
             this.detailsUserControl.perron = null;
+            this.detailsUserControl.shortestPath = null;
             this.detailsUserControl.Size = new System.Drawing.Size(422, 685);
             this.detailsUserControl.TabIndex = 14;
             this.detailsUserControl.totaleTijd = null;
