@@ -911,7 +911,7 @@ namespace manderijntje
                     if (punten2[j, 1] == punten2[j + 1, 1])
                     {
                         Node station1node = dataModel.GetNode(punten2[j, 0], dataModel.GetNodesrouting());
-                        Node station2node = dataModel.GetNode(punten2[j+ 1, 0], dataModel.GetNodesrouting());
+                        Node station2node = dataModel.GetNode(punten2[j+ 1, 0], dataModel.GetNodesrouting()); 
                         Link link = new Link(station1node, station2node);
                         dataModel.AddLinkrouting(link);
                         station1node.addBuur(station2node);
