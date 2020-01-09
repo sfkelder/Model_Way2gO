@@ -34,20 +34,64 @@ namespace manderijntje
 
         public DataControl()
         {
+            if (File.Exists(filepath) && !reimport)
+            {
+                ReadDataFromDisk();
+            } else
+            {
+                LoadWP(sFile);//punten met stationnamen
+                LoadTracks(sFile);//punten met routes
+                LoadWay(sFile);
+                dataModel = new DataModel();
+                puntensamenvoegen();//samen naar een tweedimensionale array
 
-            
-            LoadWP(sFile);//punten met stationnamen
-            LoadTracks(sFile);//punten met routes
-            LoadWay(sFile);
-            dataModel = new DataModel();
-            puntensamenvoegen();//samen naar een tweedimensionale array
-            
-            
+                if (Directory.Exists(filepath))
+                {
+                    WriteDataToDisk(FileMode.Open);
+                } else
+                {
+                    WriteDataToDisk(FileMode.Create);
+                }
 
+            }
         }
 
-
         DataModel dataModel;
+        private const string filepath = "C:/Way2Go/datamodel_binary.txt";
+        private const bool reimport = false; // deze waarde is een override als er wel een file op disk staat maar je wenst toch de gegevens opnieuw in te lezen van disk
+
+        private void ReadDataFromDisk()
+        {
+            try
+            {
+                using (Stream str = File.Open(filepath, FileMode.Open))
+                {
+                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    dataModel = (DataModel)bformatter.Deserialize(str);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
+            }
+        }
+
+        private void WriteDataToDisk(FileMode fm)
+        {
+            try
+            {
+                using (Stream str = File.Open(filepath, fm))
+                {
+                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    bformatter.Serialize(str, dataModel);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
+            }
+        }
+
 
         public DataModel GetDataModel()
         {

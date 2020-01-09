@@ -34,7 +34,7 @@ namespace manderijntje
             mapView.setMap(500, this.Height);
             setupView();  
         }
-
+         
         //
         // ZET HET SCHERM KLAAR
         //
