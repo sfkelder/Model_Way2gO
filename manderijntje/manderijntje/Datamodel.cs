@@ -899,19 +899,33 @@ namespace manderijntje
                 if (t >= 0)
                 {
                     punten2[j, 2] = punten1[t, 3];
-                }
-                dataModel.AddNoderouting(new Node(punten2[j,0], 0, 0, punten2[j,1], punten2[j,2] , "0", "0", "0", true, 0));
 
+                    bool dubbel = true;
+                    for (int i = 0; i < dataModel.nodesrouting.Count(); i++)
+                    {
+                        if (dataModel.nodesrouting[i].stationnaam == punten2[j, 2])
+                        {
+                            dubbel = false;
+                        }
+
+                    }
+                    if (dubbel)
+                    {
+                        dataModel.AddNoderouting(new Node(punten2[j, 0], 0, 0, punten2[j, 1], punten2[j, 2], "0", "0", "0", true, 0));
+
+                    }
+                }
             }
 
-            for (int j = 0; j < punten2.Length / 3; j++)
+            for (int j = 0; j < dataModel.nodesrouting.Count(); j++)
             {
-                if (j+ 1 < punten2.Length / 3)
+                if (j+ 1 < dataModel.nodesrouting.Count())
                 {
-                    if (punten2[j, 1] == punten2[j + 1, 1])
+                    
+                    if (dataModel.nodesrouting[j].routnaam == dataModel.nodesrouting[j+1].routnaam)
                     {
-                        Node station1node = dataModel.GetNode(punten2[j, 0], dataModel.GetNodesrouting());
-                        Node station2node = dataModel.GetNode(punten2[j+ 1, 0], dataModel.GetNodesrouting()); 
+                        Node station1node = dataModel.nodesrouting[j];
+                        Node station2node = dataModel.nodesrouting[j + 1]; 
                         Link link = new Link(station1node, station2node);
                         dataModel.AddLinkrouting(link);
                         station1node.addBuur(station2node);
@@ -1136,6 +1150,15 @@ namespace manderijntje
             foreach (Node node in lijst)
             {
                 if (name == node.name_id)
+                    return node;
+            }
+            return null;
+        }
+        public Node GetNoderouting(string name, List<Node> lijst)
+        {
+            foreach (Node node in lijst)
+            {
+                if (name == node.stationnaam)
                     return node;
             }
             return null;
