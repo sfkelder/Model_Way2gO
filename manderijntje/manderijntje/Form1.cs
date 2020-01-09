@@ -11,7 +11,8 @@ namespace manderijntje
         DataControl dataControl;
         connecties visueelControl;
 
-        
+
+
         List<reisOpties> reisOpties = new List<reisOpties>();
         List<tijdenModel> tijdenList = new List<tijdenModel>();
         Vertrek v = new Vertrek();
@@ -24,7 +25,8 @@ namespace manderijntje
         {
             dataControl = new DataControl();
             visueelControl = new connecties(dataControl.GetDataModel());
-
+            MapView mapView = new MapView();
+            mapView.GetVisueel(visueelControl);
             InitializeComponent();
             setupView();  
         }

@@ -56,7 +56,7 @@ namespace manderijntje
         //deze twee methodes zijn nodig om de data uit de file te halen
         private XDocument GetGpxDoc(string sFile)
         {
-            XDocument gpxDoc = XDocument.Load(sFile);
+           XDocument gpxDoc = XDocument.Load(sFile);
             return gpxDoc;
         }
         /*
