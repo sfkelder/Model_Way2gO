@@ -900,9 +900,8 @@ namespace manderijntje
                 {
                     punten2[j, 2] = punten1[t, 3];
                 }
-                if (t < 0)
-                {
-                }
+                dataModel.AddNoderouting(new Node("0", 0, 0, punten2[j,1], punten2[j,2] , "0", "0", "0", true, 0));
+
             }
             int g = 0; string na = "";
             puntenklaar = new string[punten8.Length / 8, 9];
@@ -1023,6 +1022,7 @@ namespace manderijntje
     public class DataModel
     {
         public List<Node> nodes;
+        public List<Node> nodesrouting;
         public List<Node> stopnodes;
         List<Link> links;
         public List<Node> unique_nodes;
@@ -1031,6 +1031,7 @@ namespace manderijntje
         public DataModel()
         {
             nodes = new List<Node>();
+            nodesrouting = new List<Node>();
             stopnodes = new List<Node>();
             links = new List<Link>();
             unique_nodes = new List<Node>();
@@ -1088,6 +1089,10 @@ namespace manderijntje
         public void AddNodestop(Node n)
         {
             stopnodes.Add(n);
+        }
+        public void AddNoderouting(Node n)
+        {
+            nodesrouting.Add(n);
         }
         public List<Node> GetNodes()
         {
