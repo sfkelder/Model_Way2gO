@@ -10,7 +10,7 @@ namespace manderijntje
 {
     public class DataControl
     {
-        // string sFile = "C:/Way2Go/groningen test2.xml";
+        //string sFile = "C:/Way2Go/groningen test2.xml";
          string sFile = "C:/Way2Go/enkhuizen test 4.xml";
         //string sFile = "C:/Way2Go/amsterdam test tram subway train.xml";
         //string sFile = "C:/Way2Go/train germany.xml";
@@ -27,8 +27,10 @@ namespace manderijntje
         //string sFile = "C:/Way2Go/subway europa.xml";
         public DataControl()
         {
-            if (File.Exists(filepath) && !Program.reimport)
-            {
+            if (//File.Exists(filepath) && !Program.reimport//)
+            false)
+                {
+
                 ReadDataFromDisk();
             } else
             {
@@ -950,6 +952,36 @@ namespace manderijntje
                         station2node.addLink(new Link(station2node, station1node));
                     }
                 }
+                if (puntenklaar[i, 8] == "true")
+                {
+
+                    double x1 = double.Parse(puntenklaar[i, 2]);
+                    double y1 = double.Parse(puntenklaar[i, 3]);
+                    bool stop = bool.Parse(puntenklaar[i, 8]);
+                    dataModel.AddNodestop(new Node(puntenklaar[i, 4], x1, y1, puntenklaar[i, 0], puntenklaar[i, 1], puntenklaar[i, 5], puntenklaar[i, 6], puntenklaar[i, 7], stop, 0));
+
+                }
+            }
+            
+
+            for (int i = 0; i < dataModel.stopnodes.Count; i++)
+            {
+
+                if (i + 1 < dataModel.stopnodes.Count)
+                {
+                    if (dataModel.stopnodes[i].routnaam == dataModel.stopnodes[i+1].routnaam)
+                    {
+                        Node station1node = dataModel.stopnodes[i];
+                        Node station2node = dataModel.stopnodes[i+1];
+                        Link link = new Link(station1node, station2node);
+                        dataModel.AddLinkstop(link);
+                        station1node.addBuur(station2node);
+                        station1node.addLink(new Link(station1node, station2node));
+                        station2node.addBuur(station1node);
+                        station2node.addLink(new Link(station2node, station1node));
+                    }
+                }
+
             }
             puntenklaar2 = new string[puntenklaar.Length / 9, 9];
             dataModel.get_unique_nodes();
@@ -989,16 +1021,20 @@ namespace manderijntje
     [Serializable]
     public class DataModel
     {
-        List<Node> nodes;
+        public List<Node> nodes;
+        public List<Node> stopnodes;
         List<Link> links;
         public List<Node> unique_nodes;
         public List<Link> unique_links;
+        public List<Link> stop_links;
         public DataModel()
         {
             nodes = new List<Node>();
+            stopnodes = new List<Node>();
             links = new List<Link>();
             unique_nodes = new List<Node>();
             unique_links = new List<Link>();
+            stop_links = new List<Link>();
         }
         // populate unique lists:
         public void get_unique_nodes()
@@ -1048,6 +1084,10 @@ namespace manderijntje
         {
             nodes.Add(n);
         }
+        public void AddNodestop(Node n)
+        {
+            stopnodes.Add(n);
+        }
         public List<Node> GetNodes()
         {
             return nodes;
@@ -1064,6 +1104,11 @@ namespace manderijntje
         public void AddLink(Link l)
         {
             links.Add(l);
+        }
+
+        public void AddLinkstop(Link l)
+        {
+            stop_links.Add(l);
         }
         public List<Link> GetLinks()
         {
