@@ -1145,6 +1145,11 @@ namespace manderijntje
         {
             return stopnodes;
         }
+
+        public List<Node> GetNodesRouting()
+        {
+            return nodesrouting;
+        }
         public Node GetNode(string name, List<Node> lijst)
         {
             foreach (Node node in lijst)
