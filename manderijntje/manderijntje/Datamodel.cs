@@ -900,7 +900,26 @@ namespace manderijntje
                 {
                     punten2[j, 2] = punten1[t, 3];
                 }
-                dataModel.AddNoderouting(new Node("0", 0, 0, punten2[j,1], punten2[j,2] , "0", "0", "0", true, 0));
+                dataModel.AddNoderouting(new Node(punten2[j,0], 0, 0, punten2[j,1], punten2[j,2] , "0", "0", "0", true, 0));
+
+            }
+
+            for (int j = 0; j < punten2.Length / 3; j++)
+            {
+                if (j+ 1 < punten2.Length / 3)
+                {
+                    if (punten2[j, 1] == punten2[j + 1, 1])
+                    {
+                        Node station1node = dataModel.GetNode(punten2[j, 0], dataModel.GetNodesrouting());
+                        Node station2node = dataModel.GetNode(punten2[j+ 1, 0], dataModel.GetNodesrouting()); 
+                        Link link = new Link(station1node, station2node);
+                        dataModel.AddLinkrouting(link);
+                        station1node.addBuur(station2node);
+                        station1node.addLink(new Link(station1node, station2node));
+                        station2node.addBuur(station1node);
+                        station2node.addLink(new Link(station2node, station1node));
+                    }
+                }
 
             }
             int g = 0; string na = "";
@@ -935,8 +954,10 @@ namespace manderijntje
                 bool stop = bool.Parse(puntenklaar[g, 8]);
                 dataModel.AddNode(new Node(puntenklaar[g, 4], x1, y1, puntenklaar[g, 0], puntenklaar[g, 1], puntenklaar[g, 5], puntenklaar[g, 6], puntenklaar[g, 7], stop,0));
                 g++;
+
             }
-            for (int i = 0; i < puntenklaar.Length / 9; i++)  
+
+            for (int i = 0; i < puntenklaar.Length / 9; i++)
             {
                 if (i + 1 < puntenklaar.Length / 9)
                 {
@@ -1025,7 +1046,8 @@ namespace manderijntje
         public List<Node> nodes;
         public List<Node> nodesrouting;
         public List<Node> stopnodes;
-        List<Link> links;
+        public List<Link> links;
+        public List<Link> linksrouting;
         public List<Node> unique_nodes;
         public List<Link> unique_links;
         public List<Link> stop_links;
@@ -1035,6 +1057,7 @@ namespace manderijntje
             nodesrouting = new List<Node>();
             stopnodes = new List<Node>();
             links = new List<Link>();
+            linksrouting = new List<Link>();
             unique_nodes = new List<Node>();
             unique_links = new List<Link>();
             stop_links = new List<Link>();
@@ -1099,7 +1122,11 @@ namespace manderijntje
         {
             return nodes;
         }
-
+        public List<Node> GetNodesrouting()
+        {
+            return nodesrouting;
+        }
+        
         public List<Node> GetStopNodes()
         {
             return stopnodes;
@@ -1132,6 +1159,10 @@ namespace manderijntje
         public void AddLink(Link l)
         {
             links.Add(l);
+        }
+        public void AddLinkrouting(Link l)
+        {
+            linksrouting.Add(l);
         }
 
         public void AddLinkstop(Link l)
