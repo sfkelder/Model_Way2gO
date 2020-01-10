@@ -12,14 +12,13 @@ namespace manderijntje
 
         DataControl dataControl;
         connecties visueelControl;
-        MapView mapView = new MapView();
+        MapView mapView;
         List<Route> tripOptions = new List<Route>();
         List<departureTimeModel> timeList = new List<departureTimeModel>();
         public tripOptionsCell tripOptionscell { get; set; }
         DateTime chosenTime { get; set; }
         string departureLocation, destinationLocation, departureTijd, depLocation, desLocation;
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
-        MapView mapView;
         VisueelModel visual = new VisueelModel();
         //List<reisOpties> reisOpties = new List<reisOpties>();
 
@@ -34,13 +33,13 @@ namespace manderijntje
             mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
 
-            Console.WriteLine(v.nodes.Count);
-            for(int i = 0; i < v.nodes.Count; i++)
-            {
-                Console.WriteLine("Naam: " + v.nodes[i].name_id);
-            }
-
             mapView.GetVisueel(visueelControl);
+
+            Console.WriteLine(visual.nodes.Count);
+            for (int i = 0; i < visual.nodes.Count; i++)
+            {
+                Console.WriteLine("Naam: " + visual.nodes[i].name_id);
+            }
             setupView();
 
             //test
