@@ -62,7 +62,7 @@ namespace manderijntje
         {
             get { return _last; }
             set { _last = value;
-                // Kijkt welke Image die moet gebruiken.
+                // Checks wich image it need to have
                 if (_last)
                 {
                     lijnImage.Image = Properties.Resources.eindSpoor;
@@ -73,8 +73,8 @@ namespace manderijntje
         public bool first
         {
             get { return _first; }
-            set { _first = value; 
-                // Kijkt welke Image die moet gebruiken.
+            set { _first = value;
+                // Checks wich image it need to have
                 if (_first)
                 {
                     lijnImage.Image = Properties.Resources.beginSpoor;
@@ -86,7 +86,7 @@ namespace manderijntje
         {
             get { return _mid; }
             set { _mid = value;
-                // Kijkt welke Image die moet gebruiken.
+                // Checks wich image it need to have
                 if (_mid)
                 {
                     lijnImage.Image = Properties.Resources.middenSpoor;

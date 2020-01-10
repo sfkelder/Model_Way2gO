@@ -28,9 +28,7 @@ namespace manderijntje
             InitializeComponent();
         }
 
-        //
-        // Haalt de autosuggestie weg van het scherm en maakt de list van autosuggesties leeg.
-        //
+        // Clears autosuggtions of the view and makes autosuggestionList empty
         public void clearAutosuggest()
         {
             _parent.autosuggesInVisible();
@@ -38,9 +36,7 @@ namespace manderijntje
             autosuggestFlowControl.Controls.Clear();
         }
 
-        //
-        // Zorgt ervoor dat de geklikte autosuggestie in de juiste TextBox als text komt te staan.
-        //
+        // Fill the stationName of the autosuggestions to the right TextBox
         public void fillTextbox(string stationNaam, bool bInput)
         {
             if (bInput)
@@ -51,9 +47,7 @@ namespace manderijntje
             clearAutosuggest();
         }
 
-        //
-        // Kijk of er een station, bushalte ect. begint met de meegegeven parameter, zo ja, dan wordt het in een suggestie list gestopt.
-        //
+        // Looks if there is a station that begin with the string parameter, if so it will put it in a suggestion list.
         public void checkInput(string toCheck)
         {
             suggestionsList.Clear();
@@ -66,9 +60,7 @@ namespace manderijntje
             }
         }
 
-        //
-        //  Zorgt ervoor dat de juiste methodes worden aangeroepen waardoor de suggestie userControl juist wordt weergegeven.
-        //
+        // Calls the needed methods to display the suggestion Usercontrol
         public void setupSuggesties(object sender)
         {
             bool bInput = false;

@@ -30,15 +30,14 @@ namespace manderijntje
             mapView = new MapView(visueelControl);
             mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
-
-            //mapView.GetVisueel(visueelControl);
+            setupView();
+            mapView.GetVisueel(visueelControl);
 
             Console.WriteLine("Nodes: " + visual.nodes.Count);
             for (int i = 0; i < visual.nodes.Count; i++)
             {
                 Console.WriteLine("Naam: " + visual.nodes[i].name_id);
             }
-            setupView();
 
             //test
             Route route = r.GetRoute("Utrecht Centraal", "Den Haag Centraal", DateTime.Now, dataControl.GetDataModel());
@@ -50,9 +49,7 @@ namespace manderijntje
             //test end
         }
 
-        //
-        // ZET HET SCHERM KLAAR
-        //
+        // Calls every method that needs to be called to setup the view Correctly
         private void setupView()
         {
             changeBackIcon(false);
@@ -74,12 +71,14 @@ namespace manderijntje
             tijdInput.DataSource = timeList;
             tijdInput.DisplayMember = "departureTijd";
         }
-
+        
+        // When screenSize is changed, call the method "setElement"
         private void screenSizeChanged(object sender, EventArgs e)
         {
             setElement();
         }
 
+        // Set the locations and size of elements corretly
         private void setElement()
         {
             sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
@@ -94,9 +93,7 @@ namespace manderijntje
             }
         }
 
-        //
-        // VERWIJDERD DE PLACEHOLDER TEXT
-        //
+        // Removes the placeholder text in the right inputBoxes
         private void removeText(object sender, EventArgs e)
         {
             TextBox textbox = (TextBox)sender;
@@ -107,9 +104,7 @@ namespace manderijntje
             }
         }
 
-        //
-        // VOEGT TEXT TOE ALS PLACEHOLDER VOOR DE TEXT INPUT
-        //
+        // Adds the placeholder tet in the right inputBoxes
         private void addText(object sender, EventArgs e)
         {
             bool departureInputBool = true;
@@ -128,9 +123,7 @@ namespace manderijntje
             }
         }
 
-        //
-        // KIJKT OF begin locatie (GOED) is INGEVULD
-        //
+        // Checks if the departure location is filled in correctly
         private static bool checkDepartureLocation(string departureLocation, List<autoSuggestModel> stationList)
         {
             foreach (autoSuggestModel item in stationList)
@@ -141,9 +134,7 @@ namespace manderijntje
             return false;
         }
 
-        //
-        // KIJKT OF eind locatie (GOED) is INGEVULD
-        //
+        // Checks if the destination location is filled in correctly
         private static bool checkDestinationLocation(string destinationLocation, List<autoSuggestModel> stationList)
         {
             foreach (autoSuggestModel item in stationList)
@@ -154,9 +145,7 @@ namespace manderijntje
             return false;
         }
 
-        //
-        // Kijkt waar de fout zit
-        //
+        // Checks in which textBox an error is
         private void checkFout(string departureLocation, string destinationLocation, bool departureBool, bool destinationBool)
         {
             if (departureLocation == "Departure")
@@ -169,19 +158,14 @@ namespace manderijntje
                 highlightTextBox(eindInput, "Destination is wrong");
         }
 
-        //
-        // Highlight en geeft de pop up aan wat en waar de fout zit
-        //
-
+        // Highlight textBox with the error
         private void highlightTextBox(TextBox textbox, string text)
         {
             MessageBox.Show(text + ", Try again", "Something went wrong");
             textbox.ForeColor = Color.Red;
         }
 
-        //
-        // VULT TIJD INPUT MET TIJDEN
-        //
+        // Fill the timeInput with generated times
         private void fillTimeInput()
         {
             DateTime previouseMin = Round(DateTime.Now.Subtract(TimeSpan.FromMinutes(15)), TimeSpan.FromMinutes(5));
@@ -195,13 +179,14 @@ namespace manderijntje
         }
 
         //
-        // ROND DE TIJDINPUT AF NAAR 5-TALLEN
+        // Round time to minutes that cant be diveded by 5
         //
         DateTime Round(DateTime dt, TimeSpan d)
         {
             return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
         }
-
+        
+        // Check if the departure or destination textBox is empty
         private static bool checkIfEmpty(string departureLocation, string destinationLocation)
         {
             if (departureLocation != "Departure" && destinationLocation != "Destination")
@@ -209,9 +194,7 @@ namespace manderijntje
             return false;
         }
 
-        //
-        // STUURT DATA DOOR NAAR DE FAKE DATA GENERATOR
-        //
+        // If there is no error it will call the "setupTripOptions" method for further setup for displaying some tripOptions
         private void searchButton_Click(object sender, EventArgs e)
         {
             autoSuggestie autosuggest = new autoSuggestie(this);
@@ -232,10 +215,8 @@ namespace manderijntje
             }
         }
 
-        //
-        // Laat de flowcontrol met alle reisopties zien.
-        //
-        public void setupTripOptions()
+        // SHows flowControl with all the possible tripOptions
+            public void setupTripOptions()
         {
             show(flowLayoutPanel);
             flowLayoutPanel.Location = new Point(0, logoHeader.Height);
@@ -254,9 +235,7 @@ namespace manderijntje
             fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
         }
 
-        //
-        // Vult de flowcontrol met usercontrols genaamd "Cell" en geeft de juiste data mee aan de Cell.
-        //
+        // Fills the flowcontrol with the usercontrol called "tripOptionsCell" and gives the needed data to tripOptionsCell.
         private void fillTripOptions(tripOptionsCell[] listItems)
         {
             for (int i = 0; i < tripOptions.Count; i++)
@@ -303,18 +282,14 @@ namespace manderijntje
             }
         }
 
-        //
-        // Zorgt ervoor dat de juiste methodes worden aangeroepen waardoor de detailsView juist wordt weergegeven.
-        //
+        // Will call the method for further setup of the TripDetails
         public void setupTripDetails()
         {
             showTripDetails();
             fillTransfersStops(new tussenstopCell[detailsUserControl.shortestPath.Count()]);
         }
 
-        //
-        // Geeft de juiste gegevens door aan de detailsView.
-        //
+        // Gives the right information from the tripOptionscell to the detailsUserControl
         private void showTripDetails()
         {
             this.detailsUserControl.Visible = true;
@@ -333,9 +308,7 @@ namespace manderijntje
             this.detailsUserControl.shortestPath = tripOptionscell.shortestPath;
         }
 
-        //
-        // Vult de flowcontrol met usercontrols genaamd "tussenstopCell" en geeft de juiste data mee aan de tussenstopCell.
-        //
+        // Fills the flowcontrol with the usercontrol called "tussenstopCell" and gives the needed data to tussenstopCell.
         private void fillTransfersStops(tussenstopCell[] listItems)
         {
             for (int i = 0; i < this.detailsUserControl.shortestPath.Count; i++)
@@ -372,10 +345,8 @@ namespace manderijntje
             }
         }
 
-        //
-        // Nadat de gebruiker iets heeft getypt in de beginInput TextBox, wordt een autosuggestie laten zien of wordt de autosuggesties juist weggehaald.
-        //
-        private void beginInput_TextChanged(object sender, EventArgs e)
+        // After departureInput of the user it will show an autosuggestion or removes the autosuggestions
+        private void departureInput_TextChanged(object sender, EventArgs e)
         {
             autoSuggestie autosuggest = new autoSuggestie(this);
             if (beginInput.Text != "" && changeInput == false)
@@ -398,10 +369,8 @@ namespace manderijntje
             }
         }
 
-        //
-        // Nadat de gebruiker iets heeft getypt in de eindInput TextBox, wordt een autosuggestie laten zien of wordt de autosuggesties juist weggehaald.
-        //
-        private void eindInput_TextChanged(object sender, EventArgs e)
+        // After destinationInput of the user it will show an autosuggestion or removes the autosuggestions
+        private void destinationInput_TextChanged(object sender, EventArgs e)
         {
             autoSuggestie autosuggest = new autoSuggestie(this);
             if (eindInput.Text != "" && changeInput == false)
@@ -424,9 +393,7 @@ namespace manderijntje
             }
         }
 
-        //
-        // Vult de flowcontrol met usercontrols genaamd "autoSuggesCell" en geeft de juiste data mee aan de autoSuggesCell.
-        //
+        // Fills the flowcontrol with the usercontrol called "autoSuggesCell" and gives the needed data to autoSuggesCell.
         public void fillAutosuggestie(autoSuggesCell[] listItems, bool departureInput, List<autoSuggestModel> suggestionsList)
         {
             for (int i = 0; i < suggestionsList.Count; i++)
@@ -442,9 +409,7 @@ namespace manderijntje
             }
         }
 
-        //
-        // Laat de userControl op de juiste Y zien en laat zorgt ervoor dat de juist hoogte van de flowControl wordt ingesteld.
-        //
+        // Set the usercontrol on the right Y coordinate en setup the right height ogf the flowControl
         public void setFlowControl(int yLocation, int aantalElementen)
         {
             if (aantalElementen >= 5)
@@ -458,9 +423,7 @@ namespace manderijntje
             this.autoSuggestie1.Location = new Point(autoSuggestie1.Location.X, yLocation);
         }
 
-        //
-        // Maakt FlowControlPanel Leeg.
-        //
+        // Clears flowControl
         public void clearFlowControl(object sender)
         {
             if (sender.Equals(detailsUserControl))
@@ -471,21 +434,20 @@ namespace manderijntje
                 this.autoSuggestie1.autosuggestFlowControl.Controls.Clear();
         }
 
-        //
-        // Maakt de Suggestie userControl Visible.
-        //
+        // Shows autosuggestion UserControl
         public void autosuggestVisible()
         {
             this.autoSuggestie1.Visible = true;
         }
         //
-        // Maakt de Suggestie userControl inVisible.
+        // Removes autosuggestion UserControl
         //
         public void autosuggesInVisible()
         {
             this.autoSuggestie1.Visible = false;
         }
 
+        // Will set the right bools for removal of the userControls
         private void backIcon_Click(object sender, EventArgs e)
         {
             detailsControl = false;
@@ -494,6 +456,7 @@ namespace manderijntje
             hideshowBack();
         }
 
+        // Will remove the right userControls
         private void hideshowBack()
         {
             if (inputControl)
@@ -512,7 +475,7 @@ namespace manderijntje
             }
         }
 
-        // Geeft de mapView de juiste locatie en size.
+        // Gives the mapVIew the right location and size
         private void sizeMap(int x, int y, int width, int height)
         {
             mapView.Size = new Size(width, height);
@@ -559,9 +522,7 @@ namespace manderijntje
             }
         }
 
-        //
-        // VERANDERD BEGIN PUNT NAAR EIND PUNT EN ANDERSOM
-        //
+        // Changed departureInput to Destionation and the otherway around
         private void changeTextImage_Click(object sender, EventArgs e)
         {
             if (checkIfEmpty(beginInput.Text, eindInput.Text))
@@ -579,6 +540,7 @@ namespace manderijntje
             }
         }
 
+        // Shows the right UserControl
         private void show(object sender)
         {
             if (sender.Equals(inputPanel))
@@ -614,7 +576,8 @@ namespace manderijntje
                 changeBackIcon(false);
             }
         }
-
+        
+        // Changes the arrow image in the hideBa
         private void changeBackIcon(bool Forward)
         {
             if (Forward)
@@ -623,7 +586,7 @@ namespace manderijntje
                 hideArrowIcon.Image = Properties.Resources.BackwardArrow;
         }
 
-
+        // Hides userControl or the flowcontrolPanel that needs to not be visbible
         public void hide(object sender)
         {
             if (sender.Equals(inputPanel))
@@ -655,6 +618,8 @@ namespace manderijntje
                 changeBackIcon(false);
             }
         }
+
+        // Set Location of the hideBar
         private void hideBarLocation(int x, int y)
         {
             hideBar.Location = new Point(x - hideBarOrangePanel.Width, y);

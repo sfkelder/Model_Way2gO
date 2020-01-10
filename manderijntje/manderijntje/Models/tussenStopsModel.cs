@@ -28,9 +28,8 @@ namespace manderijntje
         public tussenStops()
         { 
         }
-        //
-        // Geeft een tussenStops model terug.
-        //
+
+        // Gives tussenStops model back
         public tussenStops tussenstopsModel(string station, string perron, string aankomstTijd, string vertrekTijd, string typeVervoer, string richtingVervoer)
         {
             return new tussenStops(station, perron, aankomstTijd, vertrekTijd, typeVervoer, richtingVervoer);

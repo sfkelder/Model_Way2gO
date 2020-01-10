@@ -94,20 +94,11 @@ namespace manderijntje
             get { return _shortestPath; }
             set { _shortestPath = value; }
         }
-
-
-        //
-        // Zorgt ervoor dat de cell weet wie de parent is en dus waar die de methodes moet aanroepen wanneer er op de label wordt geklikt.
-        //
         public tripOptionsCell(Form1 parent)
         {
             InitializeComponent();
             this._parent = parent;
         }
-
-        //
-        // Geeft de variabelen een waarde die wordt meegegeven als parameters.
-        //
         public tripOptionsCell(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
             string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange, List<Node> shortestPath)
         {
@@ -126,7 +117,7 @@ namespace manderijntje
         }
 
         //
-        // Pakt alle variabelen in en geeft een nieuwe Cell terug. Dit hebben we nodig voor de cell in de Form.
+        // Gives a tripOptionsCell back
         //
         public static tripOptionsCell getCellDetails(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
             string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange, List<Node> shortestPath)
@@ -135,9 +126,7 @@ namespace manderijntje
             return c;
         }
 
-        //
-        // Triggerd methodes (bij de From class) wanneer er op een label wordt geklikt.
-        //
+        // Calls methods in the form call when clicked on a label.
         private void eindTijdLBL_Click(object sender, EventArgs e)
         {
             orange = true;

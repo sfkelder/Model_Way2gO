@@ -43,19 +43,12 @@ namespace manderijntje
             get { return _departureInput; }
             set { _departureInput = value; }
         }
-        //
-        // Zorgt ervoor dat de cell weet wie de parent is en dus waar die de methodes moet aanroepen wanneer er op de label wordt geklikt.
-        //
         public autoSuggesCell(autoSuggestie auto, Form1 form)
         {
             InitializeComponent();
             this._auto = auto;
             this._form = form;
         }
-
-        //
-        // Geeft de variabelen een waarde die wordt meegegeven als parameters.
-        //
         public autoSuggesCell(string stationName, string stationType, bool departureInput)
         {
             this._stationName = stationName;
@@ -63,18 +56,14 @@ namespace manderijntje
             this._departureInput = departureInput;
         }
 
-        //
-        // Pakt alle variabelen in en geeft een nieuwe autoSuggesCell terug. Dit hebben we nodig voor de autosuggescell methode in de Form.
-        //
+        // Gives a autoSuggesCell back
         public static autoSuggesCell getautoSuggestDetails(string stationName, string stationType, bool departureInput)
         {
             autoSuggesCell auto = new autoSuggesCell(stationName, stationType, departureInput);
             return auto;
         }
 
-        //
-        // Triggerd methodes (bij de From class) wanneer er op een label wordt geklikt.
-        //
+        // Calls methods in the form call when clicked on a label.
         private void stationLBL_Click(object sender, EventArgs e)
         {
             autoSuggestie a = new autoSuggestie(_form);

@@ -22,9 +22,7 @@ namespace manderijntje
         {
         }
 
-        //
-        // Geeft een vertrekModel model terug.
-        //
+        // Gives vertrekModel model back
         public Vertrek vertrekModel(string departureLocation, string destinationLocation, string departureTijd)
         {
             return new Vertrek(departureLocation, destinationLocation, departureTijd);
