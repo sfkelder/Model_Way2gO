@@ -10,7 +10,7 @@ namespace manderijntje
     {
         DataControl dataControl;
         connecties visueelControl;
-        MapView mapView = new MapView();
+        MapView mapView;
         VisueelModel visual = new VisueelModel();
         //List<reisOpties> reisOpties = new List<reisOpties>();
 
@@ -26,9 +26,12 @@ namespace manderijntje
             InitializeComponent();
             dataControl = new DataControl();
             visueelControl = new connecties(dataControl.GetDataModel());
+            mapView = new MapView(visueelControl);
+            mapView.Location = new Point(447, 22);
+            mapView.Size = new Size(230, 147);
+            mapView.BackColor = Color.Blue;
+            this.Controls.Add(mapView);
 
-
-            mapView.GetVisueel(visueelControl);
             setupView();
 
             //test
@@ -490,8 +493,8 @@ namespace manderijntje
         // Geeft de mapView de juiste locatie en size.
         private void sizeMap(int x, int y, int width, int height)
         {
-            mapViewControl.Size = new Size(width, height);
-            mapViewControl.Location = new Point(x, y);
+            mapView.Size = new Size(width, height);
+            mapView.Location = new Point(x, y);
             mapView.setMap(width, height);
         }
 

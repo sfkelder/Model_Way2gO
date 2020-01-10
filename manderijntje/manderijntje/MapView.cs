@@ -19,20 +19,16 @@ namespace manderijntje
         connecties Connecties;
 
 
-        public MapView()
+        public MapView(connecties c)
         {
+            Connecties = c;
             InitializeComponent();
-            //Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
+            Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
             BackColor = Color.Blue;
             this.Paint += this.painting;
             this.MouseClick += this.onclick;
             this.MouseDown += (object o, MouseEventArgs mea) => { start = mea.Location; };
             this.MouseUp += (object o, MouseEventArgs mea) => { end = mea.Location; };
-        }
-
-        public void GetVisueel(connecties c)
-        {
-            Connecties = c;
         }
          
         public void setMap(int x, int y)

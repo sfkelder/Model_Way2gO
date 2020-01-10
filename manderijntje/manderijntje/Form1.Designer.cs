@@ -48,7 +48,6 @@
             this.hideArrowIcon = new System.Windows.Forms.PictureBox();
             this.hideBarOrangePanel = new System.Windows.Forms.Panel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.mapViewControl = new manderijntje.MapView();
             this.autoSuggestie1 = new manderijntje.autoSuggestie();
             this.detailsUserControl = new manderijntje.DetailsControl();
             this.logoHeader.SuspendLayout();
@@ -257,14 +256,6 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // mapViewControl
-            // 
-            this.mapViewControl.BackColor = System.Drawing.Color.Blue;
-            this.mapViewControl.Location = new System.Drawing.Point(447, 22);
-            this.mapViewControl.Name = "mapViewControl";
-            this.mapViewControl.Size = new System.Drawing.Size(230, 147);
-            this.mapViewControl.TabIndex = 16;
-            // 
             // autoSuggestie1
             // 
             this.autoSuggestie1.Location = new System.Drawing.Point(87, 456);
@@ -292,7 +283,6 @@
             // 
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1365, 726);
-            this.Controls.Add(this.mapViewControl);
             this.Controls.Add(this.autoSuggestie1);
             this.Controls.Add(this.detailsUserControl);
             this.Controls.Add(this.hideBar);
@@ -339,7 +329,6 @@
         private System.Windows.Forms.ImageList imageList1;
         private DetailsControl detailsUserControl;
         private autoSuggestie autoSuggestie1;
-        private MapView mapViewControl;
     }
 }
 

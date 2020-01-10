@@ -28,7 +28,7 @@ namespace manderijntje
                 getLinkPairs();
                 getBendLinks();
 
-                test();
+                //test();
             }
         }
 
