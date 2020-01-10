@@ -17,7 +17,7 @@ namespace manderijntje
         public class connecties
         {
             private lists_bewerkingen l = new lists_bewerkingen();
-            private  bewerkingen b = new bewerkingen();
+            private bewerkingen b = new bewerkingen();
             public VisueelModel toegang;
             private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
 

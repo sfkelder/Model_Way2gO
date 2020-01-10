@@ -1,6 +1,6 @@
 ﻿namespace manderijntje
 {
-    partial class Cell
+    partial class tripOptionsCell
     {
         /// <summary> 
         /// Required designer variable.

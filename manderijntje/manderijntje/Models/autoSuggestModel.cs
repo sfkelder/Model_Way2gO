@@ -8,12 +8,12 @@ namespace manderijntje
 {
     public class autoSuggestModel
     {
-        public string stationNaam { get; set; }
+        public string stationName { get; set; }
         public string stationType { get; set; }
 
-        public autoSuggestModel(string stationNaam, string stationType)
+        public autoSuggestModel(string stationName, string stationType)
         {
-            this.stationNaam = stationNaam;
+            this.stationName = stationName;
             this.stationType = stationType;
         }
     }
