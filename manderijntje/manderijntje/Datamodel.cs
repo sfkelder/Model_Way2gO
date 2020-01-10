@@ -27,8 +27,7 @@ namespace manderijntje
         //string sFile = "C:/Way2Go/subway europa.xml";
         public DataControl()
         {
-            if (//File.Exists(filepath) && !Program.reimport//)
-            false)
+            if (File.Exists(filepath) && !Program.reimport)
                 {
 
                 ReadDataFromDisk();
@@ -40,6 +39,7 @@ namespace manderijntje
                 LoadWay(sFile);
                 dataModel = new DataModel();
                 puntensamenvoegen();//samen naar een tweedimensionale array
+                // graad verifieeren
 
                 if (Directory.Exists(filepath))
                 {
@@ -152,9 +152,9 @@ namespace manderijntje
                     {
                         //pakt coordinaat met punt en doet dan naar een met , zodat het parsebaar is
                         string[] latitude = wpt.Latitude.Split('.');
-                        string latitude2 = latitude[0] + "," + latitude[1];
+                        string latitude2 = latitude[0] + "." + latitude[1];
                         string[] longitude = wpt.Longitude.Split('.');
-                        string longitude2 = longitude[0] + "," + longitude[1];
+                        string longitude2 = longitude[0] + "." + longitude[1];
                         //berekend min en max hoeken kaart
                         if (lamin > double.Parse(latitude2))
                         {
@@ -190,9 +190,9 @@ namespace manderijntje
                     if (wptSeg.k == "name")
                     {
                         string[] latitude = wpt.Latitude.Split('.');
-                        string latitude2 = latitude[0] + "," + latitude[1];
+                        string latitude2 = latitude[0] + "." + latitude[1];
                         string[] longitude = wpt.Longitude.Split('.');
-                        string longitude2 = longitude[0] + "," + longitude[1];
+                        string longitude2 = longitude[0] + "." + longitude[1];
                         //weer . eraf , erbij
                         punten1[n, 0] = wpt.ID.PadLeft(10, '9');
                         punten1[n, 1] = longitude2; //longitude
