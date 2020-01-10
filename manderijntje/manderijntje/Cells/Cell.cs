@@ -59,15 +59,17 @@ namespace manderijntje
         {
             get { return _totaleTijd; }
             set { _totaleTijd = value; 
-                clockIcon.Image = manderijntje.Properties.Resources.OrangeClock;
+                clockIcon.Image = Properties.Resources.OrangeClock;
                 totaleTijdLBL.Text = value; }
         }
         public string aantalOverstappen
         {
             get { return _aantalOverstappen; }
             set { _aantalOverstappen = value;
-                this.overstappenIcon.Image = manderijntje.Properties.Resources.OverstappenOrange;
-                aantalOverstappenLBL.Text = value + "x"; }
+                this.overstappenIcon.Image = Properties.Resources.OverstappenOrange;
+                aantalOverstappenLBL.Text = value + "x";
+                Console.WriteLine(value);
+            }
         }
         public string perron
         {
@@ -107,7 +109,7 @@ namespace manderijntje
         // Geeft de variabelen een waarde die wordt meegegeven als parameters.
         //
         public tripOptionsCell(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
+            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange, List<Node> shortestPath)
         {
             this._beginTijd = beginTijd;
             this._eindTijd = eindTijd;
@@ -120,15 +122,16 @@ namespace manderijntje
             this._perron = perron;
             this._tussenstop = tussenstop;
             this._orange = orange;
+            this._shortestPath = shortestPath;
         }
 
         //
         // Pakt alle variabelen in en geeft een nieuwe Cell terug. Dit hebben we nodig voor de cell in de Form.
         //
         public static tripOptionsCell getCellDetails(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
+            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange, List<Node> shortestPath)
         {
-            tripOptionsCell c = new tripOptionsCell(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange);
+            tripOptionsCell c = new tripOptionsCell(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange, shortestPath);
             return c;
         }
 
@@ -138,7 +141,7 @@ namespace manderijntje
         private void eindTijdLBL_Click(object sender, EventArgs e)
         {
             orange = true;
-            this._parent.tripOptionscell = getCellDetails(_beginTijd, _eindTijd, _vervoerder, _typeVervoer, _naamVervoer, _busLijn, _totaleTijd, _aantalOverstappen, _perron, _tussenstop, _orange);
+            this._parent.tripOptionscell = getCellDetails(_beginTijd, _eindTijd, _vervoerder, _typeVervoer, _naamVervoer, _busLijn, _totaleTijd, _aantalOverstappen, _perron, _tussenstop, _orange, _shortestPath);
             this._parent.setupTripDetails();
         }
 
@@ -152,8 +155,8 @@ namespace manderijntje
                 this.aantalOverstappenLBL.ForeColor = Color.White;
                 this.totaleTijdLBL.ForeColor = Color.White;
                 this.PerronLBL.ForeColor = Color.White;
-                this.overstappenIcon.Image = manderijntje.Properties.Resources.OverstappenWhite;
-                this.overstappenIcon.Image = manderijntje.Properties.Resources.WhiteClock;
+                this.overstappenIcon.Image = Properties.Resources.OverstappenWhite;
+                this.overstappenIcon.Image = Properties.Resources.WhiteClock;
             }
             else
             {
