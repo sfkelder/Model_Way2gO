@@ -48,8 +48,8 @@
             this.hideArrowIcon = new System.Windows.Forms.PictureBox();
             this.hideBarOrangePanel = new System.Windows.Forms.Panel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.detailsUserControl = new manderijntje.DetailsControl();
             this.autoSuggestie1 = new manderijntje.autoSuggestie();
+            this.detailsUserControl = new manderijntje.DetailsControl();
             this.logoHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.logoIcon)).BeginInit();
@@ -119,7 +119,7 @@
             this.planTripLabel.Location = new System.Drawing.Point(2, 6);
             this.planTripLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.planTripLabel.Name = "planTripLabel";
-            this.planTripLabel.Size = new System.Drawing.Size(187, 31);
+            this.planTripLabel.Size = new System.Drawing.Size(154, 26);
             this.planTripLabel.TabIndex = 3;
             this.planTripLabel.Text = "Plan your trip";
             // 
@@ -130,7 +130,7 @@
             this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchButton.ForeColor = System.Drawing.Color.White;
-            this.searchButton.Location = new System.Drawing.Point(49, 144);
+            this.searchButton.Location = new System.Drawing.Point(39, 144);
             this.searchButton.Margin = new System.Windows.Forms.Padding(2);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(147, 36);
@@ -156,7 +156,7 @@
             this.vertrekLabel.Location = new System.Drawing.Point(3, 5);
             this.vertrekLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.vertrekLabel.Name = "vertrekLabel";
-            this.vertrekLabel.Size = new System.Drawing.Size(61, 17);
+            this.vertrekLabel.Size = new System.Drawing.Size(48, 13);
             this.vertrekLabel.TabIndex = 6;
             this.vertrekLabel.Text = "Vertrek";
             // 
@@ -166,7 +166,7 @@
             this.tijdInput.Location = new System.Drawing.Point(75, 1);
             this.tijdInput.Margin = new System.Windows.Forms.Padding(2);
             this.tijdInput.Name = "tijdInput";
-            this.tijdInput.Size = new System.Drawing.Size(156, 24);
+            this.tijdInput.Size = new System.Drawing.Size(111, 21);
             this.tijdInput.TabIndex = 5;
             // 
             // textboxPanel
@@ -197,7 +197,7 @@
             this.beginInput.Location = new System.Drawing.Point(2, 2);
             this.beginInput.Margin = new System.Windows.Forms.Padding(2);
             this.beginInput.Name = "beginInput";
-            this.beginInput.Size = new System.Drawing.Size(182, 23);
+            this.beginInput.Size = new System.Drawing.Size(182, 20);
             this.beginInput.TabIndex = 0;
             this.beginInput.TextChanged += new System.EventHandler(this.beginInput_TextChanged);
             // 
@@ -208,7 +208,7 @@
             this.eindInput.Location = new System.Drawing.Point(3, 32);
             this.eindInput.Margin = new System.Windows.Forms.Padding(2);
             this.eindInput.Name = "eindInput";
-            this.eindInput.Size = new System.Drawing.Size(181, 23);
+            this.eindInput.Size = new System.Drawing.Size(181, 20);
             this.eindInput.TabIndex = 1;
             this.eindInput.TextChanged += new System.EventHandler(this.eindInput_TextChanged);
             // 
@@ -217,7 +217,7 @@
             this.flowLayoutPanel.AutoScroll = true;
             this.flowLayoutPanel.Location = new System.Drawing.Point(383, 62);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(381, 689);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(381, 685);
             this.flowLayoutPanel.TabIndex = 9;
             // 
             // hideBar
@@ -250,33 +250,28 @@
             this.hideBarOrangePanel.Size = new System.Drawing.Size(10, 734);
             this.hideBarOrangePanel.TabIndex = 0;
             // 
-            // imageList1
+            // autoSuggestie1
             // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.autoSuggestie1.Location = new System.Drawing.Point(87, 456);
+            this.autoSuggestie1.Margin = new System.Windows.Forms.Padding(4);
+            this.autoSuggestie1.Name = "autoSuggestie1";
+            this.autoSuggestie1.Size = new System.Drawing.Size(186, 124);
+            this.autoSuggestie1.TabIndex = 15;
             // 
-            // detailsControl1
+            // detailsUserControl
             // 
             this.detailsUserControl.aantalOverstappen = null;
             this.detailsUserControl.beginTijd = null;
             this.detailsUserControl.eindTijd = null;
             this.detailsUserControl.Location = new System.Drawing.Point(771, 62);
-            this.detailsUserControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.detailsUserControl.Name = "detailsControl1";
+            this.detailsUserControl.Margin = new System.Windows.Forms.Padding(4);
+            this.detailsUserControl.Name = "detailsUserControl";
             this.detailsUserControl.perron = null;
-            this.detailsUserControl.Size = new System.Drawing.Size(564, 822);
+            this.detailsUserControl.shortestPath = null;
+            this.detailsUserControl.Size = new System.Drawing.Size(422, 685);
             this.detailsUserControl.TabIndex = 14;
             this.detailsUserControl.totaleTijd = null;
             this.detailsUserControl.tussenstop = null;
-            // 
-            // autoSuggestie2
-            // 
-            this.autoSuggestie1.Location = new System.Drawing.Point(87, 456);
-            this.autoSuggestie1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.autoSuggestie1.Name = "autoSuggestie2";
-            this.autoSuggestie1.Size = new System.Drawing.Size(249, 185);
-            this.autoSuggestie1.TabIndex = 15;
             // 
             // Form1
             // 

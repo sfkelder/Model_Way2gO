@@ -9,17 +9,19 @@ namespace manderijntje
     {
         public int transfers;
 
-        public List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel dataModel)
+        public List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel DataModel)
         {
-            Node start = dataModel.GetNode(startName, dataModel.GetNodes());
-            Node end = dataModel.GetNode(endName, dataModel.GetNodes());
+            DataModel dataModel = new DataModel();
+            dataModel = DataModel;
+            Node start = dataModel.GetNodeName(startName, dataModel.GetNodesRouting());
+            Node end = dataModel.GetNodeName(endName, dataModel.GetNodesRouting());
             DijkstraSearch(start, end, time);
             var shortestPath = new List<Node> {end};
             BuildShortestPath(shortestPath, end);
             shortestPath.Reverse();
             return shortestPath;
         }
-
+         
         private void BuildShortestPath(List<Node> list, Node node)
         {
             if (node.NearestToStart == null)
@@ -37,7 +39,7 @@ namespace manderijntje
                 prioQueue = prioQueue.OrderBy(x => x.MinCostToStart).ToList();
                 var node = prioQueue.First();
                 prioQueue.Remove(node);
-                foreach (var link in node.Connecties.OrderBy(x => x.Weight))
+                foreach (var link in node. Connecties.OrderBy(x => x.Weight))
                 {
                     var childNode = link.End;
                     if (childNode.Visited)
@@ -57,10 +59,27 @@ namespace manderijntje
             }
         }
 
-        public Route GetRoute(string startName, string endName, DateTime Time, DataModel dataModel)
+        public Route GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
         {
-            Route fastestRoute = new Route(startName, endName, Time, dataModel);
+            Route fastestRoute = new Route(startName, endName, time, dataModel);
             return fastestRoute;
+        }
+
+        public bool CheckForRouteDijkstra(string startName, string endName, DateTime time, DataModel DataModel)
+        {
+            DataModel dataModel = new DataModel();
+            dataModel = DataModel;
+            Node start = dataModel.GetNodeName(startName, dataModel.unique_nodes);
+            Node end = dataModel.GetNodeName(endName, dataModel.unique_nodes);
+            DijkstraSearch(start, end, time);
+            var shortestPath = new List<Node> { end };
+            BuildShortestPath(shortestPath, end);
+            shortestPath.Reverse();
+            if (shortestPath.Count == 0)
+                return false;
+            else
+                return true;
+
         }
     }
 

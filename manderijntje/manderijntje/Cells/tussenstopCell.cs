@@ -17,9 +17,9 @@ namespace manderijntje
         private string _perron;
         private string _richting;
         private string _typeVervoer;
-        private bool _laatste;
-        private bool _eerste;
-        private bool _midden;
+        private bool _last;
+        private bool _first;
+        private bool _mid;
 
         public string vertrekTijd
         {
@@ -49,47 +49,47 @@ namespace manderijntje
                 
                 if(_typeVervoer == "Trein")
                 {
-                    typeVervoerIcon.Image = manderijntje.Properties.Resources.OrangeTrain;
+                    typeVervoerIcon.Image = Properties.Resources.OrangeTrain;
                 }
                 else if (_typeVervoer == "Bus")
                 {
-                    typeVervoerIcon.Image = manderijntje.Properties.Resources.busIcon;
+                    typeVervoerIcon.Image = Properties.Resources.busIcon;
                 }
             }
         }
 
-        public bool laatste
+        public bool last
         {
-            get { return _laatste; }
-            set { _laatste = value;
+            get { return _last; }
+            set { _last = value;
                 // Kijkt welke Image die moet gebruiken.
-                if (_laatste)
+                if (_last)
                 {
-                    lijnImage.Image = manderijntje.Properties.Resources.eindSpoor;
+                    lijnImage.Image = Properties.Resources.eindSpoor;
                     typeVervoerIcon.Visible = false;
                 }    
             }
         }
-        public bool eerste
+        public bool first
         {
-            get { return _eerste; }
-            set { _eerste = value; 
+            get { return _first; }
+            set { _first = value; 
                 // Kijkt welke Image die moet gebruiken.
-                if (_eerste)
+                if (_first)
                 {
-                    lijnImage.Image = manderijntje.Properties.Resources.beginSpoor;
+                    lijnImage.Image = Properties.Resources.beginSpoor;
                 }
             }
         }
 
-        public bool midden
+        public bool mid
         {
-            get { return _midden; }
-            set { _midden = value;
+            get { return _mid; }
+            set { _mid = value;
                 // Kijkt welke Image die moet gebruiken.
-                if (_midden)
+                if (_mid)
                 {
-                    lijnImage.Image = manderijntje.Properties.Resources.middenSpoor;
+                    lijnImage.Image = Properties.Resources.middenSpoor;
                 }
             }
         }

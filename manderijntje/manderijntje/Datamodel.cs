@@ -6,17 +6,11 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.IO;
-
 namespace manderijntje
 {
-   
-
-
-
     public class DataControl
     {
-
-        // string sFile = "C:/Way2Go/groningen test2.xml";
+        //string sFile = "C:/Way2Go/groningen test2.xml";
         // string sFile = "C:/Way2Go/enkhuizen test 4.xml";
         //string sFile = "C:/Way2Go/amsterdam test tram subway train.xml";
         //string sFile = "C:/Way2Go/train germany.xml";
@@ -31,23 +25,123 @@ namespace manderijntje
         //string sFile = "C:/Way2Go/train europa.xml";
         //string sFile = "C:/Way2Go/train westeuropa.xml";
         //string sFile = "C:/Way2Go/subway europa.xml";
-
         public DataControl()
         {
+            if (File.Exists(filepath) && !Program.reimport)
+            {
 
-            
-            LoadWP(sFile);//punten met stationnamen
-            LoadTracks(sFile);//punten met routes
-            LoadWay(sFile);
-            dataModel = new DataModel();
-            puntensamenvoegen();//samen naar een tweedimensionale array
-            
-            
+                ReadDataFromDisk();
+            } 
+            else
+            {
+                LoadWP(sFile);//punten met stationnamen
+                LoadTracks(sFile);//punten met routes
+                LoadWay(sFile);
+                dataModel = new DataModel();
+                puntensamenvoegen();//samen naar een tweedimensionale array
+                
+                foreach (Node node in dataModel.unique_nodes)
+                {
+                    if (node.Buren.Count > 8)
+                    {
+                        CheckDegree(node);
+                    }
+                    
+                }
+                //dataModel.get_unique_links();
+                int deg = 0; 
+                for(int i = 0; i < dataModel.unique_nodes.Count; i++)
+                {
+                    if (dataModel.unique_nodes[i].Buren.Count > deg)
+                    {
+                        deg = dataModel.unique_nodes[i].Buren.Count;
+                    }
+                }
+
+                Console.WriteLine("real: " + deg);
+
+                if (Directory.Exists(filepath))
+                {
+                    WriteDataToDisk(FileMode.Open);
+                } else
+                {
+                    WriteDataToDisk(FileMode.Create);
+                }
+
+            }
+        }
+
+        DataModel dataModel;
+        private const string filepath = "C:/Way2Go/datamodel_binary.txt";
+
+        private void ReadDataFromDisk()
+        {
+            try
+            {
+                using (Stream str = File.Open(filepath, FileMode.Open))
+                {
+                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    dataModel = (DataModel)bformatter.Deserialize(str);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
+            }
+        }
+
+        private void WriteDataToDisk(FileMode fm)
+        {
+            try
+            {
+                using (Stream str = File.Open(filepath, fm))
+                {
+                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    bformatter.Serialize(str, dataModel);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
+            }
+        }
+
+        private void CheckDegree (Node n)
+        {
+            Node[] neighours = n.Buren.ToArray();
+            Array.Sort(neighours, (x, y) => n.DistanceToNode(x).CompareTo(n.DistanceToNode(y)));
+            Array.Reverse(neighours);
+
+            int toCheck = (n.Buren.Count - 8);
+            Console.WriteLine("check: " + toCheck);
+            for (int i = 0; i < toCheck; i++)
+            {
+                //n.Buren.Remove(neighours[0]);
+                //neighours[0].Buren.Remove(n);
+                dataModel.unique_links.Remove(getLink(n, neighours[i]));
+                Console.WriteLine("removed: ");
+            }
+
+
+
+
 
         }
 
+        private Link getLink (Node u, Node v)
+        {
+            for (int i = 0; i < dataModel.unique_links.Count; i++)
+            {
+                if ((dataModel.unique_links[i].Start == u || dataModel.unique_links[i].End == v) && (dataModel.unique_links[i].Start == v || dataModel.unique_links[i].End == u))
+                {
+                    Console.WriteLine("found");
+                    return dataModel.unique_links[i];
+                }
+            }
+            return dataModel.unique_links[0];
+        }
 
-        DataModel dataModel;
+
 
         public DataModel GetDataModel()
         {
@@ -65,22 +159,17 @@ namespace manderijntje
          punten2 met de nodeID en routenaam waar de trein ook echt stopt,
          punten3 met de wayID en routeID(dus alle ways waar de trein langskomt),
          en punten4 met de wayID en de NodeID die bij die way horen.
-
         de wayID van de routeID van punten3 staan soms in de verkeerde volgorde, 
         daarom moet je naar de eerste en de laatste(soms ook andersom) nodeID van elke wayID kijken 
         of die de dezelfde is als de volgende wayID om ze op volgorde te zetten.
-
         daarna moet je de data van alle datagroepen samenvoegen.
         */
-
-
         string[,] punten1;//met de stationnamen
         string[,] punten2; // met de routenamen
         string[,] punten3;
         string[,] punten4;
         string[,] puntenklaar; // klaar
         string[,] puntenklaar2; // lat en long verandererd
-
         int lengthjag2;
         string[] punten1ID;
         double lamin = 100000000, lomin = 100000000; //min
@@ -100,16 +189,12 @@ namespace manderijntje
                                 Longitude = waypoint.Attribute("lon").Value,
                                 ID = waypoint.Attribute("id") != null ?
                                 waypoint.Attribute("id").Value : null,
-
                                 Segs = (
-
                                 from waypoints2 in waypoint.Descendants("tag")
                                 select new
                                 {
-
                                     k = waypoints2.Attribute("k").Value,
                                     v = waypoints2.Attribute("v").Value,
-
                                 }
                               )
                             };
@@ -120,36 +205,12 @@ namespace manderijntje
                 {
                     if (wptSeg.k == "name")
                     {
-                        //pakt coordinaat met punt en doet dan naar een met , zodat het parsebaar is
-                        string[] latitude = wpt.Latitude.Split('.');
-                        string latitude2 = latitude[0] + "," + latitude[1];
-                        string[] longitude = wpt.Longitude.Split('.');
-                        string longitude2 = longitude[0] + "," + longitude[1];
-                        //berekend min en max hoeken kaart
-                        if (lamin > double.Parse(latitude2))
-                        {
-                            lamin = double.Parse(latitude2);
-                        }
-                        if (lomin > double.Parse(longitude2))
-                        {
-                            lomin = double.Parse(longitude2);
-                        }
-                        if (lamax < double.Parse(latitude2))
-                        {
-                            lamax = double.Parse(latitude2);
-                        }
-                        if (lomax < double.Parse(longitude2))
-                        {
-                            lomax = double.Parse(longitude2);
-                        }
+                      
                         a++;
                     }
                 }
-
             }
-            //berekend verschil
-            lamid = lamax - lamin;
-            lomid = lomax - lomin;
+
             //label1.Text = lamin.ToString();
             int n = 0;//teller
             punten1 = new string[a, 4];//eerste puntenstring
@@ -161,29 +222,21 @@ namespace manderijntje
                     if (wptSeg.k == "name")
                     {
                         string[] latitude = wpt.Latitude.Split('.');
-                        string latitude2 = latitude[0] + "," + latitude[1];
+                        string latitude2 = latitude[0] + "." + latitude[1];
                         string[] longitude = wpt.Longitude.Split('.');
-                        string longitude2 = longitude[0] + "," + longitude[1];
+                        string longitude2 = longitude[0] + "." + longitude[1];
                         //weer . eraf , erbij
-
                         punten1[n, 0] = wpt.ID.PadLeft(10, '9');
-                        punten1[n, 1] = longitude2; //longitude
-                        punten1[n, 2] = latitude2; //latitude
-
+                        punten1[n, 1] = wpt.Longitude; //longitude
+                        punten1[n, 2] = wpt.Latitude; //latitude
                         ID[n] = double.Parse(wpt.ID);
                         punten1[n, 3] = wptSeg.v;
                         n++;
                     }
-
-
                 }
-
             }
-
-
             Sort(punten1, 0, "ASC");
             punten1ID = GetColumn(punten1, 0);
-
         }
         public string[] GetColumn(string[,] matrix, int columnNumber)
         {
@@ -196,7 +249,6 @@ namespace manderijntje
             int colCount = array.GetLength(1), rowCount = array.GetLength(0);
             if (sortCol >= colCount || sortCol < 0)
                 throw new System.ArgumentOutOfRangeException("sortCol", "The column to sort on must be contained within the array bounds.");
-
             DataTable dt = new DataTable();
             // Name the columns with the second dimension index values, e.g., "0", "1", etc.
             for (int col = 0; col < colCount; col++)
@@ -214,7 +266,6 @@ namespace manderijntje
             }
             // Sort by using the column index = name + an optional order:
             DataRow[] rows = dt.Select("", sortCol.ToString() + " " + order);
-
             for (int row = 0; row <= rows.GetUpperBound(0); row++)
             {
                 DataRow dr = rows[row];
@@ -223,41 +274,31 @@ namespace manderijntje
                     array[row, col] = (T)dr[col];
                 }
             }
-
             dt.Dispose();
         }
         public void LoadTracks(string sFile)
         {
             XDocument gpxDoc = GetGpxDoc(sFile);
             var tracks = from track in gpxDoc.Descendants("relation")
-
-
-
                          select new
                          {
                              ID = track.Attribute("id") != null ?
                                 track.Attribute("id").Value : null,
                              Segs = (
-
                                 from trackpoint in track.Descendants("member")
                                 select new
                                 {
                                     type = trackpoint.Attribute("type").Value,
-
                                     refr = trackpoint.Attribute("ref").Value,
                                     role = trackpoint.Attribute("role").Value,
                                 }
                               ),
-
                              Segs2 = (
-
                                 from trackpoint in track.Descendants("tag")
                                 select new
                                 {
-
                                     k = trackpoint.Attribute("k").Value,
                                     v = trackpoint.Attribute("v").Value,
-
                                 }
                               )
                          };
@@ -273,8 +314,6 @@ namespace manderijntje
             List<string> U = new List<string>();
             foreach (var trk in tracks)
             {
-
-
                 string refr = "ref";
                 string net = "net";
                 string op = "op";
@@ -285,56 +324,41 @@ namespace manderijntje
                 string type = "type";
                 foreach (var trkSeg2 in trk.Segs2)
                 {
-
-
                     if (trkSeg2.k == "ref")
                     {
                         refr = trkSeg2.v;
-
                     }
-
                     if (trkSeg2.k == "network")
                     {
                         net = trkSeg2.v;
-
                     }
                     if (trkSeg2.k == "operator")
                     {
                         op = trkSeg2.v;
-
                     }
-
                     if (trkSeg2.k == "from")
                     {
                         from = trkSeg2.v;
-
                     }
                     if (trkSeg2.k == "to")
                     {
                         to = trkSeg2.v;
-
                     }
-
                     if (trkSeg2.k == "public_transport")
                     {
                         pt2 = trkSeg2.v;
-
                     }
                     if (trkSeg2.k == "wikidata")
                     {
                         w = trkSeg2.v;
-
                     }
-
                     if (trkSeg2.k == "type")
                     {
                         type = trkSeg2.v;
-
                     }
                 }
                 if (pt2 != "stop_area" && pt2 != "platform" && type == "route")
                 {
-
                     P.Add(refr);
                     Q.Add(net);
                     R.Add(op);
@@ -342,26 +366,18 @@ namespace manderijntje
                     T.Add(to);
                     U.Add(w);
                     bool dubbel = false;
-
                     for (int e = 0; e < Q.Count - 1; e++)
                     {
                         if (P[e] == refr && Q[e] == net && R[e] == op && U[e] == w)
                         {
                             if (S[e] == to && T[e] == from)
                             {
-
                                 dubbel = true;
-
-
-
                             }
                         }
-
                     }
-
                     if (dubbel == false)
                     {
-
                         foreach (var trkSeg in trk.Segs)
                         {
                             if (trkSeg.type == "node")
@@ -375,16 +391,11 @@ namespace manderijntje
                                     k++;
                                 }
                             }
-
                         }
-
                     }
                 }
                 h++;
             }
-
-
-
             List<string> N = new List<string>();
             List<string> M = new List<string>();
             List<string> O = new List<string>();
@@ -402,7 +413,6 @@ namespace manderijntje
             foreach (var trk in tracks)
             {
                 int g = 0; int i = 0;
-
                 string refr = "ref";
                 string net = "net";
                 string op = "op";
@@ -416,52 +426,38 @@ namespace manderijntje
                     if (trkSeg2.k == "ref")
                     {
                         refr = trkSeg2.v;
-
                     }
-
                     if (trkSeg2.k == "network")
                     {
                         net = trkSeg2.v;
-
                     }
                     if (trkSeg2.k == "operator")
                     {
                         op = trkSeg2.v;
-
                     }
                     if (trkSeg2.k == "to")
                     {
                         to = trkSeg2.v;
-
                     }
                     if (trkSeg2.k == "from")
                     {
                         from = trkSeg2.v;
-
                     }
                     if (trkSeg2.k == "wikidata")
                     {
                         w = trkSeg2.v;
-
                     }
-
-
                     if (trkSeg2.k == "public_transport")
                     {
                         pt = trkSeg2.v;
-
                     }
                     if (trkSeg2.k == "type")
                     {
                         type = trkSeg2.v;
-
                     }
-
                 }
-
                 if (pt != "stop_area" && pt != "platform" && type == "route")
                 {
-
                     N.Add(refr);
                     M.Add(net);
                     O.Add(op);
@@ -469,7 +465,6 @@ namespace manderijntje
                     L.Add(to);
                     J.Add(w);
                     bool dubbel = false;
-
                     for (int e = 0; e < M.Count - 1; e++)
                     {
                         if (N[e] == refr && M[e] == net && O[e] == op && J[e] == w)
@@ -477,17 +472,11 @@ namespace manderijntje
                             if (K[e] == to && L[e] == from)
                             {
                                 dubbel = true;
-
-
-
                             }
                         }
-
                     }
-
                     if (dubbel == false)
                     {
-
                         foreach (var trkSeg in trk.Segs)
                         {
                             if (trkSeg.type == "way")
@@ -498,123 +487,86 @@ namespace manderijntje
                                 }
                             }
                         }
-
                         if (i > 0)
                         {
                             jag2[j] = new string[i];
                         }
                         foreach (var trkSeg in trk.Segs)
                         {
-
                             if (trkSeg.type == "node")
                             {
-
                                 punten2[n, 0] = trkSeg.refr.PadLeft(10, '9');
-
                                 punten2[n, 1] = "route" + " " + m;
-
                                 foreach (var trkSeg2 in trk.Segs2)
                                 {
                                     if (trkSeg2.k == "name")
                                     {
                                         punten2[n, 1] = trkSeg2.v;
-
                                     }
-
                                 }
                                 n++;
                             }
-
                             if (trkSeg.type == "way")
                             {
                                 if (trkSeg.role == "")
                                 {
-
-
                                     punten3[o, 0] = trkSeg.refr.PadLeft(10, '9');
                                     punten3[o, 1] = trk.ID;
                                     punten3[o, 2] = "route" + " " + m;
                                     routid[o] = trk.ID;
-
                                     punten3[o, 3] = "-";
                                     punten3[o, 4] = "ref";
                                     punten3[o, 5] = "vehicle";
-
-
                                     foreach (var trkSeg2 in trk.Segs2)
                                     {
-
                                         if (trkSeg2.k == "name")
                                         {
                                             punten3[o, 2] = trkSeg2.v;
-
-
                                         }
                                         if (trkSeg2.k == "route")
                                         {
                                             punten3[o, 5] = trkSeg2.v;
-
                                         }
                                         if (trkSeg2.k == "service")
                                         {
                                             punten3[o, 3] = trkSeg2.v;
-
                                         }
-
-
                                         if (trkSeg2.k == "ref")
                                         {
-
                                             punten3[o, 4] = trkSeg2.v;
-
                                         }
                                     }
                                     o++;
-
                                     jag2[j][g] = trkSeg.refr.PadLeft(10, '9');
-
                                     g++;
                                     lengthjag2++;
                                 }
-
                             }
-
-
                         }
                     }
                     j++;
                 }
                 m++;
-
             }
             routids = routid.Distinct().ToList();
             routids.RemoveAll(item => item == null);
             jag2 = jag2.Where(x => x != null).ToArray();
             Sort(punten3, 0, "ASC");
         }
-
-
         public void LoadWay(string sFile)
         {
             XDocument gpxDoc = GetGpxDoc(sFile);
-
             var waypoints = from waypoint in gpxDoc.Descendants("way")
                             select new
                             {
-
                                 ID = waypoint.Attribute("id") != null ?
                                 waypoint.Attribute("id").Value : null,
-
                                 Segs = (
-
                                 from waypoints2 in waypoint.Descendants("nd")
                                 select new
                                 {
-
                                     refr = waypoints2.Attribute("ref").Value,
-
                                 }
-
                               )
                             };
             int k = 0;
@@ -623,11 +575,7 @@ namespace manderijntje
             {
                 foreach (var wptSeg in wpt.Segs)
                 {
-
-
                     k++;
-
-
                 }
                 h++;
             }
@@ -642,43 +590,30 @@ namespace manderijntje
                 id[j] = wpt.ID.PadLeft(10, '9');
                 foreach (var wptSeg in wpt.Segs)
                 {
-
                     punten4[o, 0] = wpt.ID.PadLeft(10, '9');
                     punten4[o, 1] = wptSeg.refr.PadLeft(10, '9');
-
                     o++;
                     i++;
-
                 }
                 if (i > 0)
                 {
                     jag[j] = new string[i];
                 }
-
                 foreach (var wptSeg in wpt.Segs)
                 {
                     jag[j][g] = wptSeg.refr.PadLeft(10, '9');
-
                     g++;
-
                 }
                 j++;
             }
             Sort(punten4, 0, "ASC");
-
         }
-
-
         public void puntensamenvoegen()
         {
-
-
             string[,] puntenc = new string[lengthjag2, 2];
             int q = 0; int z = 0;
             foreach (string[] array in jag2)
             {
-
-
                 List<int> puntenv = new List<int>();
                 int[,] opvz = new int[array.Length, 3];
                 string[] arrayid = new string[array.Length];
@@ -687,53 +622,37 @@ namespace manderijntje
                     int t = Array.IndexOf(id, array[e]);
                     if (t >= 0)
                     {
-
                         arrayid[e] = t.ToString();
                     }
                 }
                 for (int e = 0; e < arrayid.Length; e++)
                 {
-
                     string first = ""; string last = "";
                     string first1 = ""; string last1 = "";
                     int a = 0;
                     int t = int.Parse(arrayid[e]);
-
                     first = jag[t][0];
-
                     last = jag[t][jag[t].Length - 1];
                     if (jag[t].Length > 2)
                     {
                         first1 = jag[t][1];
                         last1 = jag[t][jag[t].Length - 2];
                     }
-
                     opvz[e, 1] = t + 1;
                     a = t;
-
-
-
                     for (int d = 0; d < arrayid.Length; d++)
                     {
                         int i = int.Parse(arrayid[d]);
                         if (a != i)
                         {
-
                             if (first == jag[i][0])
                             {
                                 opvz[e, 2] = i + 1;
-
                             }
-
-
-
                             if (last == jag[i][0])
                             {
                                 opvz[e, 0] = i + 1;
-
                             }
-
-
                         }
                     }
                     if (opvz[e, 0] == 0 || opvz[e, 2] == 0)
@@ -745,7 +664,6 @@ namespace manderijntje
                             {
                                 if (opvz[e, 2] == 0)
                                 {
-
                                     if (first == jag[i][jag[i].Length - 1])
                                     {
                                         opvz[e, 2] = i + 1;
@@ -756,17 +674,11 @@ namespace manderijntje
                                     if (last == jag[i][0])
                                     {
                                         opvz[e, 0] = i + 1;
-
                                     }
-
                                 }
-
                             }
                         }
                     }
-
-
-
                     if (opvz[e, 0] == 0 || opvz[e, 2] == 0)
                     {
                         for (int d = 0; d < arrayid.Length; d++)
@@ -774,14 +686,11 @@ namespace manderijntje
                             int i = int.Parse(arrayid[d]);
                             if (i >= 0 && a != i)
                             {
-
-
                                 if (opvz[e, 2] == 0)
                                 {
                                     if (jag[i].Contains(first))
                                     {
                                         opvz[e, 2] = i + 1;
-
                                     }
                                 }
                                 if (opvz[e, 0] == 0)
@@ -789,19 +698,10 @@ namespace manderijntje
                                     if (jag[i].Contains(last))
                                     {
                                         opvz[e, 0] = i + 1;
-
                                     }
                                 }
-
-
-
                             }
-
-
-
                         }
-
-
                     }
                     if ((opvz[e, 0] == 0 || opvz[e, 2] == 0) && first1 != "")
                     {
@@ -810,14 +710,11 @@ namespace manderijntje
                             int i = int.Parse(arrayid[d]);
                             if (i >= 0 && a != i)
                             {
-
-
                                 if (opvz[e, 2] == 0)
                                 {
                                     if (jag[i].Contains(first1))
                                     {
                                         opvz[e, 2] = i + 1;
-
                                     }
                                 }
                                 if (opvz[e, 0] == 0)
@@ -825,18 +722,11 @@ namespace manderijntje
                                     if (jag[i].Contains(last1))
                                     {
                                         opvz[e, 0] = i + 1;
-
                                     }
                                 }
-
-
                             }
-
-
                         }
-
                     }
-
                 }
                 /*
                 string dd = "";
@@ -844,9 +734,7 @@ namespace manderijntje
                 {
                     dd = dd + d +"-"+ opvz[d, 0] + "_" + opvz[d, 1] + "_" + opvz[d, 2] + "        " + "\n";
                 }
-
                 */
-
                 if (opvz[0, 0] != 0)
                 {
                     puntenv.Add(opvz[0, 0]);
@@ -874,7 +762,6 @@ namespace manderijntje
                 for (int t = 0; puntenv.Count() != (opvz.Length / 3) && t < (opvz.Length / 3) + 10; t++)
                 {
                     int j = 0;
-
                     for (int e = 1; e < opvz.Length / 3; e++)
                     {
                         if (puntenv[0] == opvz[e, 1] && puntenv[1] == opvz[e, 2] && (opvz[e, 0] != 0 || j != e))
@@ -882,30 +769,25 @@ namespace manderijntje
                             int index = puntenv.IndexOf(opvz[e, 1]);
                             puntenv.Insert(index, opvz[e, 0]);
                             j = e;
-
                         }
                         if (puntenv[0] == opvz[e, 1] && puntenv[1] == opvz[e, 0] && (opvz[e, 2] != 0 || j != e))
                         {
                             int index = puntenv.IndexOf(opvz[e, 1]);
                             puntenv.Insert(index, opvz[e, 2]);
                             j = e;
-
                         }
                         if (puntenv[puntenv.Count() - 2] == opvz[e, 0] && puntenv[puntenv.Count() - 1] == opvz[e, 1] && (opvz[e, 2] != 0 || j != e))
                         {
                             int index = puntenv.IndexOf(opvz[e, 1]);
                             puntenv.Insert(index + 1, opvz[e, 2]);
                             j = e;
-
                         }
                         if (puntenv[puntenv.Count() - 2] == opvz[e, 2] && puntenv[puntenv.Count() - 1] == opvz[e, 1] && (opvz[e, 0] != 0 || j != e))
                         {
                             int index = puntenv.IndexOf(opvz[e, 1]);
                             puntenv.Insert(index + 1, opvz[e, 0]);
                             j = e;
-
                         }
-
                     }
                 }
                 string[] puntenl = new string[puntenv.Count()];
@@ -914,9 +796,7 @@ namespace manderijntje
                     if (puntenv[e] != 0)
                     {
                         puntenl[e] = id[puntenv[e] - 1];
-
                     }
-
                 }
                 int l = 0;
                 for (int t = 0; t < puntenl.Length; t++)
@@ -926,68 +806,43 @@ namespace manderijntje
                     {
                         puntenc[q, 0] = id[k];
                         puntenc[q, 1] = routids[z];
-
                         q++;
                         l++;
                     }
-
                 }
                 if (puntenl.Length != l + 1 && puntenl.Length != l && puntenl.Length != l + 2)
                 {
-
                 }
                 z++;
-
             }
-
-
-
             string[,] puntenf = new string[((punten4.Length / 2) + (punten3.Length / 6)) * 5, 6];
             string[,] punten44 = new string[punten4.Length / 2, 3];
             int r = 0;
             double ll = punten1.Length / 4;
-
-
             int f = 0;
-
             int x = 0;
-
             for (int j = 0; j < punten4.Length / 2; j++)
             {
                 int t = Array.BinarySearch(punten1ID, punten4[j, 1]);
-
                 if (t >= 0)
                 {
-
-
                     punten44[x, 0] = punten4[j, 0];
                     punten44[x, 1] = punten4[j, 1];
                     punten44[x, 2] = punten1[t, 3];
-
                     x++;
                 }
-
             }
-
             string[,] punteny = clear_array_nulls(punten44);
             string[] punten4ID = GetColumn(punteny, 0);
             string[,] puntend = clear_array_nulls(puntenc);
             string[] punten3ID = GetColumn(punten3, 0);
-
-
             for (int j = 0; j < puntend.Length / 2; j++)
             {
-
-
                 int t = Array.BinarySearch(punten4ID, puntend[j, 0]);
-
                 if (t >= 0)
                 {
-
-
                     puntenf[f, 0] = punteny[t, 1];
                     puntenf[f, 5] = punteny[t, 2];
-
                     for (int d = 0; d < punten3.Length / 6; d++)
                     {
                         if (punten3[d, 0] == puntend[j, 0] && punten3[d, 1] == puntend[j, 1])
@@ -998,40 +853,29 @@ namespace manderijntje
                             puntenf[f, 4] = punten3[d, 5];
                             break;
                         }
-
                     }
-
                     f++;
-
                 }
-
             }
             string[,] puntens = clear_array_nulls(puntenf);
             string[,] punten5 = new string[puntens.Length / 6, 8];
             string[] duproutes = new string[puntens.Length / 6];
             for (int c = 0; c < puntens.Length / 6; c++)
             {
-
                 int t = Array.BinarySearch(punten1ID, puntens[c, 0]);
-
                 if (t >= 0)
                 {
-
                     punten5[r, 0] = puntens[c, 1];
                     punten5[r, 1] = punten1[t, 3];
                     duproutes[r] = puntens[c, 1];
-
                     punten5[r, 2] = punten1[t, 1];
                     punten5[r, 3] = punten1[t, 2];
                     punten5[r, 4] = punten1[t, 0];
-
                     punten5[r, 5] = puntenf[c, 2];
                     punten5[r, 6] = puntenf[c, 3];
                     punten5[r, 7] = puntenf[c, 4];
                     r++;
-
                 }
-
                 if (r - 1 >= 0)
                     if (punten5[r - 1, 4] != null)
                     {
@@ -1041,7 +885,6 @@ namespace manderijntje
                             {
                                 if (distance(double.Parse(punten5[r - 1, 2]), double.Parse(punten5[r - 1, 3]), double.Parse(punten5[y, 2]), double.Parse(punten5[y, 3])) < 0.05)
                                 {
-
                                     punten5[r - 1, 4] = punten5[y, 4];
                                     punten5[r - 1, 2] = punten5[y, 2];
                                     punten5[r - 1, 3] = punten5[y, 3];
@@ -1050,18 +893,14 @@ namespace manderijntje
                             }
                         }
                     }
-
-
             }
             string[,] punten6 = clear_array_nulls(punten5);
             string[,] punten7 = new string[punten6.Length / 8, 8];
-
             bool dupFound;
             int h = 0;
             for (int i = 0; i < punten6.Length / 8; i++)
             {
                 dupFound = false;
-
                 for (int a = i + 1; a < i + 5 && a < punten6.Length / 8; a++)
                 {
                     if ((i != a) && punten6[a, 0] == punten6[i, 0] && punten6[a, 1] == punten6[i, 1])
@@ -1070,7 +909,6 @@ namespace manderijntje
                         break;
                     }
                 }
-
                 if (!dupFound)
                 {
                     punten7[h, 0] = punten6[i, 0];
@@ -1085,34 +923,55 @@ namespace manderijntje
                 }
             }
             string[,] punten8 = clear_array_nulls(punten7);
-
             routes = duproutes.Distinct().ToList();
             routes.RemoveAll(item => item == null);
-
-
             for (int j = 0; j < punten2.Length / 3; j++)
             {
-
-
                 int t = Array.BinarySearch(punten1ID, punten2[j, 0]);
-
                 if (t >= 0)
                 {
-
                     punten2[j, 2] = punten1[t, 3];
 
-                }
-                if (t < 0)
-                {
+                    bool dubbel = false;
+                    foreach (Node node in dataModel.nodesrouting)
+                    {
+                        if (node.stationnaam == punten1[t, 3])
+                            dubbel = true;
+                    }
 
+                    if (!dubbel)
+                    {
+                        dataModel.AddNoderouting(new Node(punten1[t, 0], double.Parse(punten1[t,1]), double.Parse(punten1[t,2]), "", punten1[t, 3], "0", "0", "0", true, 0));
+                    }
                 }
             }
 
+            for (int j = 0; j < punten2.GetLength(0); j++)
+            {
+                if (j + 1 < punten2.GetLength(0)) 
+                {
+                    
+                    if (punten2[j,1] == punten2[j+1,1])
+                    {
+                        Node station1node = dataModel.GetNodeName(punten2[j, 2], dataModel.GetNodesRouting());
+                        Node station2node = dataModel.GetNodeName(punten2[j + 1, 2], dataModel.GetNodesRouting());
+                        if (!(station1node == null || station2node == null))
+                        { 
+                                Link link = new Link(station1node, station2node, punten2[j,1]);
+                                dataModel.AddLinkrouting(link);
+                                station1node.addBuur(station2node);
+                                station1node.addLink(new Link(station1node, station2node, punten2[j,1]));
+                                station2node.addBuur(station1node);
+                                station2node.addLink(new Link(station2node, station1node, punten2[j,1]));
+                        }
+                    }
+                }
+
+            }
             int g = 0; string na = "";
             puntenklaar = new string[punten8.Length / 8, 9];
             for (int i = 0; i < punten8.Length / 8; i++)
             {
-
                 na = na + "1" + punten8[i, 0] + punten8[i, 1] + "\n";
                 dupFound = false;
                 puntenklaar[g, 0] = punten8[i, 0];
@@ -1124,33 +983,25 @@ namespace manderijntje
                 puntenklaar[g, 6] = punten8[i, 6];
                 puntenklaar[g, 7] = punten8[i, 7];
                 puntenklaar[g, 8] = "true";
-                for (int a = 0; a < punten2.Length / 9; a++)
+                for (int a = 0; a < punten2.Length / 3; a++)
                 {
                     if (punten8[i, 0] == punten2[a, 1] && punten8[i, 1] == punten2[a, 2])
                     {
                         dupFound = true;
                         break;
                     }
-
                 }
-
                 if (!dupFound)
                 {
-
-
                     puntenklaar[g, 8] = "false";
-
                 }
-
-
                 double x1 = double.Parse(puntenklaar[g, 2]);
                 double y1 = double.Parse(puntenklaar[g, 3]);
                 bool stop = bool.Parse(puntenklaar[g, 8]);
                 dataModel.AddNode(new Node(puntenklaar[g, 4], x1, y1, puntenklaar[g, 0], puntenklaar[g, 1], puntenklaar[g, 5], puntenklaar[g, 6], puntenklaar[g, 7], stop,0));
                 g++;
+
             }
-
-
 
             for (int i = 0; i < puntenklaar.Length / 9; i++)
             {
@@ -1159,30 +1010,52 @@ namespace manderijntje
                     if (puntenklaar[i, 0] == puntenklaar[i + 1, 0])
                     {
                         Node station1node = dataModel.GetNode(puntenklaar[i, 4], dataModel.GetNodes());
-
                         Node station2node = dataModel.GetNode(puntenklaar[i + 1, 4], dataModel.GetNodes());
-
-                        Link link = new Link(station1node, station2node);
+                        Link link = new Link(station1node, station2node, puntenklaar[i,0]);
                         dataModel.AddLink(link);
                         station1node.addBuur(station2node);
-                        station1node.addLink(new Link(station1node, station2node));
+                        //station1node.addLink(new Link(station1node, station2node, puntenklaar[g,0]));
                         station2node.addBuur(station1node);
-                        station2node.addLink(new Link(station2node, station1node));
-
+                        //station2node.addLink(new Link(station2node, station1node, puntenklaar[g,0]));
                     }
+                }
 
+                if (puntenklaar[i, 8] == "true")
+                {
 
+                    double x1 = double.Parse(puntenklaar[i, 2]);
+                    double y1 = double.Parse(puntenklaar[i, 3]);
+                    bool stop = bool.Parse(puntenklaar[i, 8]);
+                    dataModel.AddNodestop(new Node(puntenklaar[i, 4], x1, y1, puntenklaar[i, 0], puntenklaar[i, 1], puntenklaar[i, 5], puntenklaar[i, 6], puntenklaar[i, 7], stop, 0));
+
+                }
+            }
+            
+
+            for (int i = 0; i < dataModel.stopnodes.Count; i++)
+            {
+
+                if (i + 1 < dataModel.stopnodes.Count)
+                {
+                    if (dataModel.stopnodes[i].routnaam == dataModel.stopnodes[i+1].routnaam)
+                    {
+                        Node station1node = dataModel.stopnodes[i];
+                        Node station2node = dataModel.stopnodes[i+1];
+                        Link link = new Link(station1node, station2node, puntenklaar[i,0]);
+                        dataModel.AddLinkstop(link);
+                        station1node.addBuur(station2node);
+                        station1node.addLink(new Link(station1node, station2node, puntenklaar[i,0]));
+                        station2node.addBuur(station1node);
+                        station2node.addLink(new Link(station2node, station1node, puntenklaar[i,0]));
+                    }
                 }
 
             }
-
             puntenklaar2 = new string[puntenklaar.Length / 9, 9];
-
             dataModel.get_unique_nodes();
             dataModel.get_unique_links();
         }
-
-        static double distance(double x1, double y1, double x2, double y2)
+        public static double distance(double x1, double y1, double x2, double y2)
         {
             // Calculating distance 
             return Math.Sqrt(Math.Pow(x2 - x1, 2) +
@@ -1212,40 +1085,30 @@ namespace manderijntje
             Array.Copy(input, output, temp.Length * n);
             return output;
         }
-
-        
-
-
-        
-
-
-           
-
-
-      
-
-
     }
     [Serializable]
     public class DataModel
     {
-        List<Node> nodes;
-        List<Link> links;
-
+        public List<Node> nodes;
+        public List<Node> nodesrouting;
+        public List<Node> stopnodes;
+        public List<Link> links;
+        public List<Link> linksrouting;
         public List<Node> unique_nodes;
         public List<Link> unique_links;
-
+        public List<Link> stop_links;
         public DataModel()
         {
             nodes = new List<Node>();
+            nodesrouting = new List<Node>();
+            stopnodes = new List<Node>();
             links = new List<Link>();
-
+            linksrouting = new List<Link>();
             unique_nodes = new List<Node>();
             unique_links = new List<Link>();
+            stop_links = new List<Link>();
         }
-
         // populate unique lists:
-
         public void get_unique_nodes()
         {
             for (int i = 0; i < nodes.Count; i++)
@@ -1256,7 +1119,6 @@ namespace manderijntje
                 }
             }
         }
-
         public void get_unique_links()
         {
             for (int i = 0; i < links.Count; i++)
@@ -1267,7 +1129,6 @@ namespace manderijntje
                 }
             }
         }
-
         private bool node_in_unique_nodes(Node n)
         {
             for (int i = 0; i < unique_nodes.Count; i++)
@@ -1290,21 +1151,37 @@ namespace manderijntje
             }
             return false;
         }
-
         // end populate
-
         public void AddNode(Node n)
         {
             nodes.Add(n);
-            
         }
-
-        
+        public void AddNodestop(Node n)
+        {
+            stopnodes.Add(n);
+        }
+        public void AddNoderouting(Node n)
+        {
+            nodesrouting.Add(n);
+        }
         public List<Node> GetNodes()
         {
             return nodes;
         }
+        public List<Node> GetNodesrouting()
+        {
+            return nodesrouting;
+        }
+        
+        public List<Node> GetStopNodes()
+        {
+            return stopnodes;
+        }
 
+        public List<Node> GetNodesRouting()
+        {
+            return nodesrouting;
+        }
         public Node GetNode(string name, List<Node> lijst)
         {
             foreach (Node node in lijst)
@@ -1314,44 +1191,60 @@ namespace manderijntje
             }
             return null;
         }
+        public Node GetNoderouting(string name, List<Node> lijst)
+        {
+            foreach (Node node in lijst)
+            {
+                if (name == node.stationnaam)
+                    return node;
+            }
+            return null;
+        }
+
+        public Node GetNodeName(string name, List<Node> lijst)
+        {
+            foreach (Node node in lijst)
+            {
+                if (name == node.stationnaam)
+                    return node;
+            }
+            return null;
+        }
 
         public void AddLink(Link l)
         {
             links.Add(l);
         }
+        public void AddLinkrouting(Link l)
+        {
+            linksrouting.Add(l);
+        }
 
+        public void AddLinkstop(Link l)
+        {
+            stop_links.Add(l);
+        }
         public List<Link> GetLinks()
         {
             return links;
         }
     }
-
     [Serializable]
     public class Node
     {
         // array met pointers naar alle andere nodes waarmee deze verbonden is
         public List<Node> Buren;
-
         // array met pointers naar alle links die verbonden zijn met deze node
         public List<Link> Connecties;
-
         // 'echte' coordinaten
         public double x, y;
         public int number;
         // unieke indentifier, naam in de vorm van een string
         public string name_id, routnaam, stationnaam, soortrout, routid, vervoersmiddels;
-
         public bool stops;
-
         public Node NearestToStart;
-
         public double MinCostToStart = Double.MaxValue;
-
         public bool Visited = false;
-
-
-
-
         public Node(string name, double coordx, double coordy, string routenaam, string stationsnaam, string soortroute, string routeid, string vervoersmiddel, bool stop, int i)
         {
             number = i;
@@ -1364,11 +1257,9 @@ namespace manderijntje
             routid = routeid;
             vervoersmiddels = vervoersmiddel;
             stops = stop;
-
             Buren = new List<Node>();
             Connecties = new List<Link>();
         }
-
         public void addBuur(Node buur)
         {
             bool buurtest = true;
@@ -1380,35 +1271,35 @@ namespace manderijntje
             if (buurtest)
                 Buren.Add(buur);
         }
-
         public void addLink(Link link)
         {
             Connecties.Add(link);
         }
-    }
 
+        public double DistanceToNode(Node u)
+        {
+            return DataControl.distance(this.x, this.y, u.x, u.y);
+        }
+    }
     [Serializable]
     public class Link
     {
         // twee pointers die wijzen naar de twee nodes die deze link verbind
         public Node Start, End;
 
-        public double Weight;
+        public string RouteName;
+
+        public List<Node> driveBystation;
+
+        public double Weight = 1;
 
 
 
-        public Link(Node startpunt, Node eindpunt)
+        public Link(Node startpunt, Node eindpunt, string RouteName)
         {
             Start = startpunt;
             End = eindpunt;
-
+            RouteName = RouteName;
         }
     }
-
 }
-
-
-
-
-
-

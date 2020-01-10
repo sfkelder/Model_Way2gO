@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace manderijntje
+namespace manderijntje  
 {
 
         /*Deze class bevat alle methodes die de connectie zijn tussen de visuele classes (alles in deze file) en de andere classes*/
@@ -18,32 +18,32 @@ namespace manderijntje
         {
             private lists_bewerkingen l = new lists_bewerkingen();
             private  bewerkingen b = new bewerkingen();
-            public VisueelModel toegang;
+            public VisueelModel toegang;// = new VisueelModel(); //new visueelmodel weghalen voor originele versie
+            private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
 
             public connecties (DataModel data)
             {
-                toegang = (new parsing(data)).getModel(false);
+                if (File.Exists(filepath) && !Program.reimport)
+                {
+                    files.inlezen(this, filepath);
+                }
+                else
+                {
+                    toegang = (new parsing(data)).getModel(false);
+
+                    if (Directory.Exists(filepath))
+                    {
+                        files.schrijven(toegang, FileMode.Open, filepath);
+                    }
+                    else
+                    {
+                        files.schrijven(toegang, FileMode.Create, filepath);
+                    }
+                }
         }
 
-        
-            //word eenmalig aangeropen bij het opstarten van het programma en kijkt of de benodigde file al bestaat of nog aangemaakt moet worden
-            public void opstarten()
-            {
-                try
-                {
-                    files.inlezen(toegang);
-                }
-
-                catch (Exception)
-                {
-                    files.schrijven(toegang);
-                }
-
-            }
-
-
             //wordt vanuit andere classes aangeroepen en stuurt alles in dit form aan
-            public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen)
+            public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen, List<VisueelNode> n)
             {
                 int number = b.zoom(factor, zoomgrote);
 
@@ -56,23 +56,23 @@ namespace manderijntje
                         Point T = l.zoekpunt(st, toegang);
                         punten.Add(T);
                     }
-
+                      
                     Point kleinstepunt = b.getpoints(punten).kleinste;
                     Point grootstepunt = b.getpoints(punten).groteste;
 
                     int numberchange = b.factor(kleinstepunt, grootstepunt, schermhogte, zoomgrote);
 
-                    l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, numberchange);
+                    l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, numberchange, n);
 
                     return numberchange;
                 }
                 else
                 {
-                    l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), number);
+                    l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), number, n);
                 }
 
                 return factor;
-
+            
 
             }
 
@@ -92,12 +92,12 @@ namespace manderijntje
         [Serializable]
         public class lists_bewerkingen
         {
-
+            
             int totverschuivingX, totverschuivingY;
 
 
             //set de bool waarde van nodes naar true of false afhankelijk van de ingevoerde data
-            public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number)
+            public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number, List<VisueelNode> n)
             {
 
                 Point verschuiving = b.movemap(start, end);
@@ -110,11 +110,11 @@ namespace manderijntje
                     {
                         if (stations && v.punt.X > startpoint.X && v.punt.X > startpoint.Y && v.punt.X < endpoint.X && v.punt.Y < endpoint.Y)
                         {
-                            switching(v, factor);
+                            switching(v, factor, n);
                         }
                         else
                         {
-                            switching(v, factor);
+                            switching(v, factor, n);
                         }
 
                     }
@@ -142,24 +142,32 @@ namespace manderijntje
             }
 
             //hulp methode valuenode
-            public void switching(VisueelNode v, int zoom)
+            public void switching(VisueelNode v, int zoom, List<VisueelNode> n)
             {
+            //List<VisueelNode> nodes = new List<VisueelNode>();
                 switch (zoom)
                 {
                     case 0:
-                        v.paint = (v.prioriteit < 5) ? false : true;
+                    //v.paint = (v.prioriteit < 5) ? false : true;
+                    v.paint = true;
+                         if (v.paint) n.Add(v);
+                   
                         break;
                     case 1:
-                        v.paint = (v.prioriteit < 4) ? false : true;
-                        break;
+                       // v.paint = (v.prioriteit < 4) ? false : true;
+                         if (v.paint) n.Add(v);
+                         break;
                     case 2:
-                        v.paint = (v.prioriteit < 3) ? false : true;
+                        //v.paint = (v.prioriteit < 3) ? false : true;
+                        if (v.paint) n.Add(v);
                         break;
                     case 3:
-                        v.paint = (v.prioriteit < 2) ? false : true;
-                        break;
+                       // v.paint = (v.prioriteit < 2) ? false : true;
+                         if (v.paint) n.Add(v);
+                         break;
                     default:
-                        break;
+                        if (v.paint) n.Add(v);
+                         break;
                 }
             }
 
@@ -228,37 +236,37 @@ namespace manderijntje
         /*Deze classen bevat methodes die zorgen voor het inlzen en schrijven van de benodigde files*/
         public class files
         {
-            private static string filepath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/appdata.txt";
-
             //zorgt voor het inlezen van de file
-            public static void inlezen(VisueelModel l)
+            public static void inlezen(connecties c, string path)
             {
-                using (Stream str = File.Open(filepath, FileMode.Open))
+                try
                 {
-                    var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    l.nodes = (List<VisueelNode>)formater.Deserialize(str);
+                    using (Stream str = File.Open(path, FileMode.Open))
+                    {
+                        var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                        c.toegang = (VisueelModel)formater.Deserialize(str);
+                    }
+                }
+                catch
+                {
+                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
                 }
             }
 
             //zorgt voor het schrijven van een file
-            public static void schrijven(VisueelModel l)
+            public static void schrijven(VisueelModel l, FileMode fm, string path)
             {
                 try
                 {
-                    using (Stream str = File.Open(filepath, FileMode.Open))
+                    using (Stream str = File.Open(path, fm))
                     {
                         var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                        formater.Serialize(str, l.nodes); 
+                        formater.Serialize(str, l); 
                     }
                 } 
-
-                catch (Exception)
-                { 
-                    using (Stream str = File.Open(filepath, FileMode.Create))
-                    {
-                        var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                        formater.Serialize(str, l.nodes);
-                    }
+                catch
+                {
+                    MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
                 }
 
             }
