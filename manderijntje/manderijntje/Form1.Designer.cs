@@ -199,7 +199,7 @@
             this.beginInput.Name = "beginInput";
             this.beginInput.Size = new System.Drawing.Size(182, 20);
             this.beginInput.TabIndex = 0;
-            this.beginInput.TextChanged += new System.EventHandler(this.beginInput_TextChanged);
+            this.beginInput.TextChanged += new System.EventHandler(this.departureInput_TextChanged);
             // 
             // eindInput
             // 
@@ -210,7 +210,7 @@
             this.eindInput.Name = "eindInput";
             this.eindInput.Size = new System.Drawing.Size(181, 20);
             this.eindInput.TabIndex = 1;
-            this.eindInput.TextChanged += new System.EventHandler(this.eindInput_TextChanged);
+            this.eindInput.TextChanged += new System.EventHandler(this.destinationInput_TextChanged);
             // 
             // flowLayoutPanel
             // 

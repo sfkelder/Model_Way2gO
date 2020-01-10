@@ -31,7 +31,8 @@ namespace manderijntje
             mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
             setupView();
-            mapView.GetVisueel(visueelControl);
+
+            //mapView.GetVisueel(visueelControl);
 
             Console.WriteLine("Nodes: " + visual.nodes.Count);
             for (int i = 0; i < visual.nodes.Count; i++)
@@ -181,7 +182,7 @@ namespace manderijntje
         //
         // Round time to minutes that cant be diveded by 5
         //
-        DateTime Round(DateTime dt, TimeSpan d)
+        private DateTime Round(DateTime dt, TimeSpan d)
         {
             return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
         }
@@ -215,8 +216,8 @@ namespace manderijntje
             }
         }
 
-        // SHows flowControl with all the possible tripOptions
-            public void setupTripOptions()
+        // Shows flowControl with all the possible tripOptions
+        public void setupTripOptions()
         {
             show(flowLayoutPanel);
             flowLayoutPanel.Location = new Point(0, logoHeader.Height);
@@ -226,12 +227,15 @@ namespace manderijntje
             List<string> list = new List<string>();
             list.Add(departureLocation);
             list.Add(destinationLocation);
-            visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes);
+            //visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes);
 
             chosenTime = Convert.ToDateTime(departureTijd);
             tripOptions.Add(r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
-            //reisOpties = fakeLijst(chosenTime);
-
+            Route route = r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
+            foreach (Node station in route.shortestPath)
+            {
+                Console.WriteLine(station.stationnaam);
+            }
             fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
         }
 
