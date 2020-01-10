@@ -39,7 +39,26 @@ namespace manderijntje
                 LoadWay(sFile);
                 dataModel = new DataModel();
                 puntensamenvoegen();//samen naar een tweedimensionale array
-                // graad verifieeren
+                
+                foreach (Node node in dataModel.unique_nodes)
+                {
+                    if (node.Buren.Count > 8)
+                    {
+                        CheckDegree(node);
+                    }
+                    
+                }
+                //dataModel.get_unique_links();
+                int deg = 0; 
+                for(int i = 0; i < dataModel.unique_nodes.Count; i++)
+                {
+                    if (dataModel.unique_nodes[i].Buren.Count > deg)
+                    {
+                        deg = dataModel.unique_nodes[i].Buren.Count;
+                    }
+                }
+
+                Console.WriteLine("real: " + deg);
 
                 if (Directory.Exists(filepath))
                 {
@@ -86,6 +105,42 @@ namespace manderijntje
                 MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
             }
         }
+
+        private void CheckDegree (Node n)
+        {
+            Node[] neighours = n.Buren.ToArray();
+            Array.Sort(neighours, (x, y) => n.DistanceToNode(x).CompareTo(n.DistanceToNode(y)));
+            Array.Reverse(neighours);
+
+            int toCheck = (n.Buren.Count - 8);
+            Console.WriteLine("check: " + toCheck);
+            for (int i = 0; i < toCheck; i++)
+            {
+                //n.Buren.Remove(neighours[0]);
+                //neighours[0].Buren.Remove(n);
+                dataModel.unique_links.Remove(getLink(n, neighours[i]));
+                Console.WriteLine("removed: ");
+            }
+
+
+
+
+
+        }
+
+        private Link getLink (Node u, Node v)
+        {
+            for (int i = 0; i < dataModel.unique_links.Count; i++)
+            {
+                if ((dataModel.unique_links[i].Start == u || dataModel.unique_links[i].End == v) && (dataModel.unique_links[i].Start == v || dataModel.unique_links[i].End == u))
+                {
+                    Console.WriteLine("found");
+                    return dataModel.unique_links[i];
+                }
+            }
+            return dataModel.unique_links[0];
+        }
+
 
 
         public DataModel GetDataModel()
@@ -1000,7 +1055,7 @@ namespace manderijntje
             dataModel.get_unique_nodes();
             dataModel.get_unique_links();
         }
-        static double distance(double x1, double y1, double x2, double y2)
+        public static double distance(double x1, double y1, double x2, double y2)
         {
             // Calculating distance 
             return Math.Sqrt(Math.Pow(x2 - x1, 2) +
@@ -1219,6 +1274,11 @@ namespace manderijntje
         public void addLink(Link link)
         {
             Connecties.Add(link);
+        }
+
+        public double DistanceToNode(Node u)
+        {
+            return DataControl.distance(this.x, this.y, u.x, u.y);
         }
     }
     [Serializable]

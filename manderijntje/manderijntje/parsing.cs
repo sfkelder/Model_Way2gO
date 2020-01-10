@@ -19,7 +19,7 @@ namespace manderijntje
         {
             if (model.unique_nodes.Count != 0 && model.unique_links.Count != 0)
             {
-                setNodes(model.unique_nodes);   // mogelijk een bug met de coordinaten van het datamodel. mogelijk lat en long omgewisseld. kan problemen veroorzaken
+                setNodes(model.unique_nodes);
                 setLinks(model.unique_links);
 
                 enforcePlanarity();
