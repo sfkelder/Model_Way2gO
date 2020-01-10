@@ -217,7 +217,7 @@ namespace manderijntje
             List<string> list = new List<string>();
             list.Add(beginLocatie);
             list.Add(eindLocatie);
-            visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true);
+            visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, null);
 
             gekozenTijd = Convert.ToDateTime(vertrekTijd);
             Routing r = new Routing();
