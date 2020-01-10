@@ -12,16 +12,16 @@ namespace manderijntje
 {
     public partial class autoSuggesCell : UserControl
     {
-        private string _stationNaam;
+        private string _stationName;
         private string _stationType;
-        private bool _beginInput;
+        private bool _departureInput;
         autoSuggestie _auto;
         Form1 _form;
 
-        public string stationNaam
+        public string stationName
         {
-            get { return _stationNaam; }
-            set { _stationNaam = value; stationLBL.Text = value; }
+            get { return _stationName; }
+            set { _stationName = value; stationLBL.Text = value; }
         }
         public string stationType
         {
@@ -38,10 +38,10 @@ namespace manderijntje
             
             }
         }
-        public bool beginInput
+        public bool departureInput
         {
-            get { return _beginInput; }
-            set { _beginInput = value; }
+            get { return _departureInput; }
+            set { _departureInput = value; }
         }
         //
         // Zorgt ervoor dat de cell weet wie de parent is en dus waar die de methodes moet aanroepen wanneer er op de label wordt geklikt.
@@ -56,19 +56,19 @@ namespace manderijntje
         //
         // Geeft de variabelen een waarde die wordt meegegeven als parameters.
         //
-        public autoSuggesCell(string stationNaam, string stationType, bool beginInput)
+        public autoSuggesCell(string stationName, string stationType, bool departureInput)
         {
-            this._stationNaam = stationNaam;
+            this._stationName = stationName;
             this._stationType = stationType;
-            this._beginInput = beginInput;
+            this._departureInput = departureInput;
         }
 
         //
         // Pakt alle variabelen in en geeft een nieuwe autoSuggesCell terug. Dit hebben we nodig voor de autosuggescell methode in de Form.
         //
-        public static autoSuggesCell getautoSuggestDetails(string stationNaam, string stationType, bool beginInput)
+        public static autoSuggesCell getautoSuggestDetails(string stationName, string stationType, bool departureInput)
         {
-            autoSuggesCell auto = new autoSuggesCell(stationNaam, stationType, beginInput);
+            autoSuggesCell auto = new autoSuggesCell(stationName, stationType, departureInput);
             return auto;
         }
 
@@ -78,7 +78,7 @@ namespace manderijntje
         private void stationLBL_Click(object sender, EventArgs e)
         {
             autoSuggestie a = new autoSuggestie(_form);
-            a.fillTextbox(_stationNaam, _beginInput);
+            a.fillTextbox(_stationName, _departureInput);
         }
     }
 }

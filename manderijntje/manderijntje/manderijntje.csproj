@@ -134,7 +134,6 @@
     <EmbeddedResource Include="UserControls\DetailsControl.resx">
       <DependentUpon>DetailsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\hideControl.resx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

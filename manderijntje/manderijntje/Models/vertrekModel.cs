@@ -8,15 +8,15 @@ namespace manderijntje
 {
     public class Vertrek
     {
-        public string beginLocatie { get; set; }
-        public string eindLocatie { get; set; }
-        public string vertrekTijd { get; set; }
+        public string departureLocation { get; set; }
+        public string destinationLocation { get; set; }
+        public string departureTijd { get; set; }
 
-        public Vertrek(string beginLocatie, string eindLocatie, string vertrekTijd)
+        public Vertrek(string departureLocation, string destinationLocation, string departureTijd)
         {
-            this.beginLocatie = beginLocatie;
-            this.eindLocatie = eindLocatie;
-            this.vertrekTijd = vertrekTijd;
+            this.departureLocation = departureLocation;
+            this.destinationLocation = destinationLocation;
+            this.departureTijd = departureTijd;
         }
         public Vertrek()
         {
@@ -25,9 +25,9 @@ namespace manderijntje
         //
         // Geeft een vertrekModel model terug.
         //
-        public Vertrek vertrekModel(string bLocatie, string eLocatie, string vTijd)
+        public Vertrek vertrekModel(string departureLocation, string destinationLocation, string departureTijd)
         {
-            return new Vertrek(bLocatie, eLocatie, vTijd);
+            return new Vertrek(departureLocation, destinationLocation, departureTijd);
         }
 
     }
