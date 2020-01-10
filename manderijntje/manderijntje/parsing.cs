@@ -325,7 +325,7 @@ namespace manderijntje
                 VisueelNode newNode = new VisueelNode(new Point(), "", 0);
                 newNode.index = nodes[i].index;
                 newNode.punt = new Point(nodes[i].x, nodes[i].y);
-                newNode.dummynode = nodes[i].draw;
+                newNode.dummynode = !nodes[i].draw;
 
                 dNodes.Add(newNode);
             }
