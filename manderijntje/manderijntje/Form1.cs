@@ -13,6 +13,7 @@ namespace manderijntje
         DataControl dataControl;
         connecties visueelControl;
         MapView mapView;
+        Routing r = new Routing();
         List<Route> tripOptions = new List<Route>();
         List<departureTimeModel> timeList = new List<departureTimeModel>();
         public tripOptionsCell tripOptionscell { get; set; }
@@ -20,6 +21,7 @@ namespace manderijntje
         string departureLocation, destinationLocation, departureTijd, depLocation, desLocation;
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
         VisueelModel visual = new VisueelModel();
+
         //List<reisOpties> reisOpties = new List<reisOpties>();
 
         public Form1()
@@ -28,14 +30,12 @@ namespace manderijntje
             dataControl = new DataControl();
             visueelControl = new connecties(dataControl.GetDataModel());
             mapView = new MapView(visueelControl);
-            mapView.Location = new Point(447, 22);
-            mapView.Size = new Size(230, 147);
             mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
 
-            mapView.GetVisueel(visueelControl);
+            //mapView.GetVisueel(visueelControl);
 
-            Console.WriteLine(visual.nodes.Count);
+            Console.WriteLine("Nodes: " + visual.nodes.Count);
             for (int i = 0; i < visual.nodes.Count; i++)
             {
                 Console.WriteLine("Naam: " + visual.nodes[i].name_id);
@@ -43,7 +43,6 @@ namespace manderijntje
             setupView();
 
             //test
-            Routing r = new Routing();
             Route route = r.GetRoute("Utrecht Centraal", "Den Haag Centraal", DateTime.Now, dataControl.GetDataModel());
             foreach (Node station in route.shortestPath)
             {
@@ -249,14 +248,15 @@ namespace manderijntje
             List<string> list = new List<string>();
             list.Add(departureLocation);
             list.Add(destinationLocation);
-            visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true);
+            //visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes);
 
             chosenTime = Convert.ToDateTime(departureTijd);
-
-            Routing r = new Routing();
-
             tripOptions.Add(r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
-
+            Route route = r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
+            foreach (Node station in route.shortestPath)
+            {
+                Console.WriteLine(station.stationnaam);
+            }
             //reisOpties = fakeLijst(chosenTime);
 
             fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
