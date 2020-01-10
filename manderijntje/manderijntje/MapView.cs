@@ -14,7 +14,7 @@ namespace manderijntje
     {
         List<VisueelNode> nodes = new List<VisueelNode>();
 
-        int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 50, height = 0, width = 0;
+        int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 0, height = 0, width = 0;
         Point start, end;
         connecties Connecties;
 
@@ -76,7 +76,7 @@ namespace manderijntje
 
             points = coordinates.ScalePointsToSize(points, width, height);
 
-            for(int i = 0; i < points.Length ; i++)
+            for(int i = 0; i < points.Length - 1 ; i++)
             {
                 try
                 {
@@ -95,11 +95,13 @@ namespace manderijntje
         {
             SacleCoordinates();
 
+            //pea.Graphics.FillRectangle(Brushes.Black, 30 - totverschuivingX, 30 - totverschuivingY, 10, 10);
+
             for (int m = 0; m < nodes.Count - 1; m++)
             {
                 if (nodes[m].paint == true)
                 {
-                    pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 10, 10);
+                    pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 10, 10);   
                 }
             }
 
