@@ -9,8 +9,10 @@ namespace manderijntje
     {
         public int transfers;
 
-        public List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel dataModel)
+        public List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel DataModel)
         {
+            DataModel dataModel = new DataModel();
+            dataModel = DataModel;
             Node start = dataModel.GetNodeName(startName, dataModel.GetNodesRouting());
             Node end = dataModel.GetNodeName(endName, dataModel.GetNodesRouting());
             DijkstraSearch(start, end, time);
@@ -61,6 +63,23 @@ namespace manderijntje
         {
             Route fastestRoute = new Route(startName, endName, time, dataModel);
             return fastestRoute;
+        }
+
+        public bool CheckForRouteDijkstra(string startName, string endName, DateTime time, DataModel DataModel)
+        {
+            DataModel dataModel = new DataModel();
+            dataModel = DataModel;
+            Node start = dataModel.GetNodeName(startName, dataModel.unique_nodes);
+            Node end = dataModel.GetNodeName(endName, dataModel.unique_nodes);
+            DijkstraSearch(start, end, time);
+            var shortestPath = new List<Node> { end };
+            BuildShortestPath(shortestPath, end);
+            shortestPath.Reverse();
+            if (shortestPath.Count == 0)
+                return false;
+            else
+                return true;
+
         }
     }
 
