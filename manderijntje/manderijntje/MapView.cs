@@ -98,9 +98,9 @@ namespace manderijntje
                 {
                     break;
                 }
-            }
+            } 
 
-            
+             
         }
 
         public void painting(object o, PaintEventArgs pea)
