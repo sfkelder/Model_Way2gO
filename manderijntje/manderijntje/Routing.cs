@@ -19,7 +19,7 @@ namespace manderijntje
             shortestPath.Reverse();
             return shortestPath;
         }
-
+         
         private void BuildShortestPath(List<Node> list, Node node)
         {
             if (node.NearestToStart == null)
@@ -76,7 +76,7 @@ namespace manderijntje
             Routing r = new Routing();
             shortestPath = r.GetShortestPathDijkstra(startName, endName, time, dataModel);
             startTime = time;
-            //endTime = time.Add(TimeSpan.FromMinutes(shortestPath.Last().MinCostToStart));
+            endTime = time.Add(TimeSpan.FromMinutes(shortestPath.Last().MinCostToStart));
             transfers = r.transfers;
         }
     }
