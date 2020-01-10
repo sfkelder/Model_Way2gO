@@ -22,8 +22,6 @@ namespace manderijntje
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
         VisueelModel visual = new VisueelModel();
 
-        //List<reisOpties> reisOpties = new List<reisOpties>();
-
         public Form1()
         {
             InitializeComponent();
@@ -85,7 +83,6 @@ namespace manderijntje
         private void setElement()
         {
             sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
-            hideBar.Location = new Point(hideBar.Location.X, 0);
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
             flowLayoutPanel.Size = new Size(flowLayoutPanel.Width, mapView.Height);
@@ -197,6 +194,14 @@ namespace manderijntje
             }
         }
 
+        //
+        // ROND DE TIJDINPUT AF NAAR 5-TALLEN
+        //
+        DateTime Round(DateTime dt, TimeSpan d)
+        {
+            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
+        }
+
         private static bool checkIfEmpty(string departureLocation, string destinationLocation)
         {
             if (departureLocation != "Departure" && destinationLocation != "Destination")
@@ -228,14 +233,6 @@ namespace manderijntje
         }
 
         //
-        // ROND DE TIJDINPUT AF NAAR 5-TALLEN
-        //
-        DateTime Round(DateTime dt, TimeSpan d)
-        {
-            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
-        }
-
-        //
         // Laat de flowcontrol met alle reisopties zien.
         //
         public void setupTripOptions()
@@ -248,15 +245,10 @@ namespace manderijntje
             List<string> list = new List<string>();
             list.Add(departureLocation);
             list.Add(destinationLocation);
-            //visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes);
+            visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes);
 
             chosenTime = Convert.ToDateTime(departureTijd);
             tripOptions.Add(r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
-            Route route = r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
-            foreach (Node station in route.shortestPath)
-            {
-                Console.WriteLine(station.stationnaam);
-            }
             //reisOpties = fakeLijst(chosenTime);
 
             fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
@@ -271,8 +263,8 @@ namespace manderijntje
             {
 
                 listItems[i] = new tripOptionsCell(this);
-                listItems[i].beginTijd = Convert.ToString(tripOptions[i].startTime);
-                listItems[i].eindTijd = Convert.ToString(tripOptions[i].endTime);
+                listItems[i].beginTijd = Convert.ToString(tripOptions[i].startTime.ToShortTimeString());
+                listItems[i].eindTijd = Convert.ToString(tripOptions[i].endTime.ToShortTimeString());
                 listItems[i].typeVervoer = tripOptions[i].shortestPath[0].vervoersmiddels;
                 listItems[i].totaleTijd = Convert.ToString(tripOptions[i].endTime.Subtract(tripOptions[i].startTime));
                 listItems[i].aantalOverstappen = tripOptions[i].transfers.ToString();
@@ -281,7 +273,6 @@ namespace manderijntje
 
                 //listItems[i].perron = reisOpties[i].shortestPath[0].perron;
                 //listItems[i].naamVervoer = reisOpties[i].shortestPath[0].;
-
 
                 //listItems[i].vervoerder = reisOpties[i].shortestPath[0].vervoersmiddels;
                 //listItems[i].busLijn = reisOpties[i].busLijn;
@@ -318,7 +309,7 @@ namespace manderijntje
         public void setupTripDetails()
         {
             showTripDetails();
-            fillTransfersStops(new tussenstopCell[this.detailsUserControl.shortestPath.Count()]);
+            fillTransfersStops(new tussenstopCell[detailsUserControl.shortestPath.Count()]);
         }
 
         //
@@ -339,6 +330,7 @@ namespace manderijntje
             this.detailsUserControl.totaleTijd = tripOptionscell.totaleTijd;
             this.detailsUserControl.aantalOverstappen = tripOptionscell.aantalOverstappen;
             this.detailsUserControl.perron = tripOptionscell.perron;
+            this.detailsUserControl.shortestPath = tripOptionscell.shortestPath;
         }
 
         //
@@ -666,6 +658,7 @@ namespace manderijntje
         private void hideBarLocation(int x, int y)
         {
             hideBar.Location = new Point(x - hideBarOrangePanel.Width, y);
+            setElement();
         }
 
 

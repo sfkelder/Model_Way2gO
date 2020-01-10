@@ -35,6 +35,7 @@ namespace manderijntje
         {
             height = y;
             width = x;
+            nodes.Clear();
             Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
             Invalidate();
         }
@@ -46,16 +47,19 @@ namespace manderijntje
             {
                 zoom--;
 
+                nodes.Clear();
                 Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
             }
             else if (ea.Button == MouseButtons.Middle)
             {
                 zoom++;
 
+                nodes.Clear();
                 Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false,  nodes);
             }
             else
             {
+                nodes.Clear();
                 Connecties.visualcontrol(width, zoom, zoomgrote, start, end, null, false, nodes);
                 totverschuivingX += start.X - end.X;
                 totverschuivingY += start.Y - end.Y;
@@ -71,12 +75,20 @@ namespace manderijntje
             
             for(int i = 0; i < nodes.Count - 1; i++)
             {
-                points[i] = nodes[i].punt;
+                try
+                {
+                    points[i] = nodes[i].punt;
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+                
             }
 
             points = coordinates.ScalePointsToSize(points, width, height);
 
-            for(int i = 0; i < points.Length ; i++)
+            for(int i = 0; i < points.Length - 1 ; i++)
             {
                 try
                 {
@@ -86,24 +98,26 @@ namespace manderijntje
                 {
                     break;
                 }
-            }
+            } 
 
-            
+             
         }
 
         public void painting(object o, PaintEventArgs pea)
         {
-            SacleCoordinates();
+             SacleCoordinates();
+
+            //pea.Graphics.FillRectangle(Brushes.Black, 30 - totverschuivingX, 30 - totverschuivingY, 10, 10);
 
             for (int m = 0; m < nodes.Count - 1; m++)
             {
                 if (nodes[m].paint == true)
                 {
-                    pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 10, 10);
+                    pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 10, 10);   
                 }
             }
 
-            nodes.Clear();
+            //nodes.Clear();
         }
     }
 }

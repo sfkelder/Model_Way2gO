@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace manderijntje
+namespace manderijntje  
 {
 
         /*Deze class bevat alle methodes die de connectie zijn tussen de visuele classes (alles in deze file) en de andere classes*/
@@ -144,26 +144,30 @@ namespace manderijntje
             //hulp methode valuenode
             public void switching(VisueelNode v, int zoom, List<VisueelNode> n)
             {
+            //List<VisueelNode> nodes = new List<VisueelNode>();
                 switch (zoom)
                 {
                     case 0:
-                        v.paint = (v.prioriteit < 5) ? false : true;
+                    //v.paint = (v.prioriteit < 5) ? false : true;
+                    v.paint = true;
                          if (v.paint) n.Add(v);
+                   
                         break;
                     case 1:
-                        v.paint = (v.prioriteit < 4) ? false : true;
+                       // v.paint = (v.prioriteit < 4) ? false : true;
                          if (v.paint) n.Add(v);
                          break;
                     case 2:
-                        v.paint = (v.prioriteit < 3) ? false : true;
+                        //v.paint = (v.prioriteit < 3) ? false : true;
                         if (v.paint) n.Add(v);
                         break;
                     case 3:
-                        v.paint = (v.prioriteit < 2) ? false : true;
+                       // v.paint = (v.prioriteit < 2) ? false : true;
                          if (v.paint) n.Add(v);
                          break;
                     default:
-                        break;
+                        if (v.paint) n.Add(v);
+                         break;
                 }
             }
 
