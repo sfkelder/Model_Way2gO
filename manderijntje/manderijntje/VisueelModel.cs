@@ -18,7 +18,7 @@ namespace manderijntje
         {
             private lists_bewerkingen l = new lists_bewerkingen();
             private  bewerkingen b = new bewerkingen();
-            public VisueelModel toegang;// = new VisueelModel(); //new visueelmodel weghalen voor originele versie
+            public VisueelModel toegang;
             private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
 
             public connecties (DataModel data)
@@ -40,7 +40,40 @@ namespace manderijntje
                         files.schrijven(toegang, FileMode.Create, filepath);
                     }
                 }
-        }
+            } 
+
+            public void SetSizeMap(int width, int height)
+            {
+                 Point[] points = new Point[1000];
+            
+                for(int i = 0; i < toegang.nodes.Count - 1; i++)
+                {
+                     try
+                     {
+                        points[i] = toegang.nodes[i].punt;
+                     }
+                        catch (Exception)
+                     {
+                         break;
+                     }
+                
+                }
+
+                points = coordinates.ScalePointsToSize(points, width, height);
+             
+                 for(int i = 0; i < points.Length - 1 ; i++)
+                 {
+                      try
+                      {
+                             toegang.nodes[i].punt = points[i];
+                      }
+                       catch (Exception)
+                      {
+                             break;
+                      }
+                 }  
+                
+            }
 
             //wordt vanuit andere classes aangeroepen en stuurt alles in dit form aan
             public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen, List<VisueelNode> n)

@@ -31,8 +31,7 @@ namespace manderijntje
             mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
             setupView();
-
-            //mapView.GetVisueel(visueelControl);
+ 
 
             Console.WriteLine("Nodes: " + visual.nodes.Count);
             for (int i = 0; i < visual.nodes.Count; i++)
