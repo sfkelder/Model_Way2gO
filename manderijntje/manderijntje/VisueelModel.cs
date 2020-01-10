@@ -18,14 +18,14 @@ namespace manderijntje
         {
             private lists_bewerkingen l = new lists_bewerkingen();
             private  bewerkingen b = new bewerkingen();
-        public VisueelModel toegang;// = new VisueelModel(); //new visueelmodel weghalen voor originele versie
+            public VisueelModel toegang;// = new VisueelModel(); //new visueelmodel weghalen voor originele versie
             private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
 
             public connecties (DataModel data)
             {
                 if (File.Exists(filepath) && !Program.reimport)
                 {
-                    files.inlezen(toegang, filepath);
+                    files.inlezen(this, filepath);
                 }
                 else
                 {
@@ -233,14 +233,14 @@ namespace manderijntje
         public class files
         {
             //zorgt voor het inlezen van de file
-            public static void inlezen(VisueelModel l, string path)
+            public static void inlezen(connecties c, string path)
             {
                 try
                 {
                     using (Stream str = File.Open(path, FileMode.Open))
                     {
                         var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                        l = (VisueelModel)formater.Deserialize(str);
+                        c.toegang = (VisueelModel)formater.Deserialize(str);
                     }
                 }
                 catch
