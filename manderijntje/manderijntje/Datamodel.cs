@@ -27,9 +27,8 @@ namespace manderijntje
         //string sFile = "C:/Way2Go/subway europa.xml";
         public DataControl()
         {
-            if (//File.Exists(filepath) && !Program.reimport//)
-            false)
-                {
+            if (File.Exists(filepath) && !Program.reimport)
+            {
 
                 ReadDataFromDisk();
             } 
@@ -152,33 +151,15 @@ namespace manderijntje
                     {
                         //pakt coordinaat met punt en doet dan naar een met , zodat het parsebaar is
                         string[] latitude = wpt.Latitude.Split('.');
-                        string latitude2 = latitude[0] + "," + latitude[1];
+                        string latitude2 = latitude[0] + "." + latitude[1];
                         string[] longitude = wpt.Longitude.Split('.');
-                        string longitude2 = longitude[0] + "," + longitude[1];
+                        string longitude2 = longitude[0] + "." + longitude[1];
                         //berekend min en max hoeken kaart
-                        if (lamin > double.Parse(latitude2))
-                        {
-                            lamin = double.Parse(latitude2);
-                        }
-                        if (lomin > double.Parse(longitude2))
-                        {
-                            lomin = double.Parse(longitude2);
-                        }
-                        if (lamax < double.Parse(latitude2))
-                        {
-                            lamax = double.Parse(latitude2);
-                        }
-                        if (lomax < double.Parse(longitude2))
-                        {
-                            lomax = double.Parse(longitude2);
-                        }
                         a++;
                     }
                 }
             }
-            //berekend verschil
-            lamid = lamax - lamin;
-            lomid = lomax - lomin;
+
             //label1.Text = lamin.ToString();
             int n = 0;//teller
             punten1 = new string[a, 4];//eerste puntenstring
@@ -900,38 +881,38 @@ namespace manderijntje
                 {
                     punten2[j, 2] = punten1[t, 3];
 
-                    bool dubbel = true;
-                    for (int i = 0; i < dataModel.nodesrouting.Count(); i++)
+                    bool dubbel = false;
+                    foreach (Node node in dataModel.nodesrouting)
                     {
-                        if (dataModel.nodesrouting[i].stationnaam == punten2[j, 2])
-                        {
-                            dubbel = false;
-                        }
-                         
+                        if (node.stationnaam == punten1[t, 3])
+                            dubbel = true;
                     }
-                    if (dubbel)
-                    {
-                        dataModel.AddNoderouting(new Node(punten2[j, 0], 0, 0, punten2[j, 1], punten2[j, 2], "0", "0", "0", true, 0));
 
+                    if (!dubbel)
+                    {
+                        dataModel.AddNoderouting(new Node(punten1[t, 0], double.Parse(punten1[t,1]), double.Parse(punten1[t,2]), "", punten1[t, 3], "0", "0", "0", true, 0));
                     }
                 }
             }
 
-            for (int j = 0; j < dataModel.nodesrouting.Count(); j++)
+            for (int j = 0; j < punten2.GetLength(0); j++)
             {
-                if (j+ 1 < dataModel.nodesrouting.Count())
+                if (j + 1 < punten2.GetLength(0)) 
                 {
                     
-                    if (dataModel.nodesrouting[j].routnaam == dataModel.nodesrouting[j+1].routnaam)
+                    if (punten2[j,1] == punten2[j+1,1])
                     {
-                        Node station1node = dataModel.nodesrouting[j];
-                        Node station2node = dataModel.nodesrouting[j + 1]; 
-                        Link link = new Link(station1node, station2node);
-                        dataModel.AddLinkrouting(link);
-                        station1node.addBuur(station2node);
-                        station1node.addLink(new Link(station1node, station2node));
-                        station2node.addBuur(station1node);
-                        station2node.addLink(new Link(station2node, station1node));
+                        Node station1node = dataModel.GetNodeName(punten2[j, 2], dataModel.GetNodesRouting());
+                        Node station2node = dataModel.GetNodeName(punten2[j + 1, 2], dataModel.GetNodesRouting());
+                        if (!(station1node == null || station2node == null))
+                        { 
+                                Link link = new Link(station1node, station2node, punten2[j,1]);
+                                dataModel.AddLinkrouting(link);
+                                station1node.addBuur(station2node);
+                                station1node.addLink(new Link(station1node, station2node, punten2[j,1]));
+                                station2node.addBuur(station1node);
+                                station2node.addLink(new Link(station2node, station1node, punten2[j,1]));
+                        }
                     }
                 }
 
@@ -979,12 +960,12 @@ namespace manderijntje
                     {
                         Node station1node = dataModel.GetNode(puntenklaar[i, 4], dataModel.GetNodes());
                         Node station2node = dataModel.GetNode(puntenklaar[i + 1, 4], dataModel.GetNodes());
-                        Link link = new Link(station1node, station2node);
+                        Link link = new Link(station1node, station2node, puntenklaar[i,0]);
                         dataModel.AddLink(link);
                         station1node.addBuur(station2node);
-                        station1node.addLink(new Link(station1node, station2node));
+                        //station1node.addLink(new Link(station1node, station2node, puntenklaar[g,0]));
                         station2node.addBuur(station1node);
-                        station2node.addLink(new Link(station2node, station1node));
+                        //station2node.addLink(new Link(station2node, station1node, puntenklaar[g,0]));
                     }
                 }
 
@@ -1009,12 +990,12 @@ namespace manderijntje
                     {
                         Node station1node = dataModel.stopnodes[i];
                         Node station2node = dataModel.stopnodes[i+1];
-                        Link link = new Link(station1node, station2node);
+                        Link link = new Link(station1node, station2node, puntenklaar[i,0]);
                         dataModel.AddLinkstop(link);
                         station1node.addBuur(station2node);
-                        station1node.addLink(new Link(station1node, station2node));
+                        station1node.addLink(new Link(station1node, station2node, puntenklaar[i,0]));
                         station2node.addBuur(station1node);
-                        station2node.addLink(new Link(station2node, station1node));
+                        station2node.addLink(new Link(station2node, station1node, puntenklaar[i,0]));
                     }
                 }
 
@@ -1250,16 +1231,19 @@ namespace manderijntje
         // twee pointers die wijzen naar de twee nodes die deze link verbind
         public Node Start, End;
 
+        public string RouteName;
+
         public List<Node> driveBystation;
 
         public double Weight = 1;
 
 
 
-        public Link(Node startpunt, Node eindpunt)
+        public Link(Node startpunt, Node eindpunt, string RouteName)
         {
             Start = startpunt;
             End = eindpunt;
+            RouteName = RouteName;
         }
     }
 }
