@@ -33,17 +33,17 @@ namespace manderijntje
         public string totaleTijd
         {
             get { return _totaleTijd; }
-            set { _totaleTijd = value; }
+            set { _totaleTijd = value; totaleTijdLBL.Text = value; }
         }
         public string aantalOverstappen
         {
             get { return _aantalOverstappen; }
-            set { _aantalOverstappen = value; }
+            set { _aantalOverstappen = value; aantalOverstappenLBL.Text = value; }
         }
         public string perron
         {
             get { return _perron; }
-            set { _perron = value; }
+            set { _perron = value; PerronLBL.Text = value; }
         }
 
         public List<tussenStops> tussenstop
