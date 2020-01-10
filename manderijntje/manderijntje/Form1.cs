@@ -22,8 +22,6 @@ namespace manderijntje
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
         VisueelModel visual = new VisueelModel();
 
-        //List<reisOpties> reisOpties = new List<reisOpties>();
-
         public Form1()
         {
             InitializeComponent();
@@ -33,7 +31,7 @@ namespace manderijntje
             mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
 
-            mapView.GetVisueel(visueelControl);
+            //mapView.GetVisueel(visueelControl);
 
             Console.WriteLine("Nodes: " + visual.nodes.Count);
             for (int i = 0; i < visual.nodes.Count; i++)
@@ -196,6 +194,14 @@ namespace manderijntje
             }
         }
 
+        //
+        // ROND DE TIJDINPUT AF NAAR 5-TALLEN
+        //
+        DateTime Round(DateTime dt, TimeSpan d)
+        {
+            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
+        }
+
         private static bool checkIfEmpty(string departureLocation, string destinationLocation)
         {
             if (departureLocation != "Departure" && destinationLocation != "Destination")
@@ -224,14 +230,6 @@ namespace manderijntje
                     checkDepartureLocation(departureLocation, autosuggest.stationList),
                     checkDestinationLocation(destinationLocation, autosuggest.stationList));
             }
-        }
-
-        //
-        // ROND DE TIJDINPUT AF NAAR 5-TALLEN
-        //
-        DateTime Round(DateTime dt, TimeSpan d)
-        {
-            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
         }
 
         //
