@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace manderijntje
 {
-    class tijdenModel
+    class departureTimeModel
     {
-        public string vertrekTijd { get; set; }
+        public string departureTijd { get; set; }
     }
 }

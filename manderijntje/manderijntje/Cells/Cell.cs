@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace manderijntje
 {
-    public partial class Cell : UserControl
+    public partial class tripOptionsCell : UserControl
     {
         private string _beginTijd;
         private string _eindTijd;
@@ -97,7 +97,7 @@ namespace manderijntje
         //
         // Zorgt ervoor dat de cell weet wie de parent is en dus waar die de methodes moet aanroepen wanneer er op de label wordt geklikt.
         //
-        public Cell(Form1 parent)
+        public tripOptionsCell(Form1 parent)
         {
             InitializeComponent();
             this._parent = parent;
@@ -106,7 +106,7 @@ namespace manderijntje
         //
         // Geeft de variabelen een waarde die wordt meegegeven als parameters.
         //
-        public Cell(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
+        public tripOptionsCell(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
             string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
         {
             this._beginTijd = beginTijd;
@@ -125,10 +125,10 @@ namespace manderijntje
         //
         // Pakt alle variabelen in en geeft een nieuwe Cell terug. Dit hebben we nodig voor de cell in de Form.
         //
-        public static Cell getCellDetails(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
+        public static tripOptionsCell getCellDetails(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
             string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
         {
-            Cell c = new Cell(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange);
+            tripOptionsCell c = new tripOptionsCell(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange);
             return c;
         }
 
@@ -138,8 +138,8 @@ namespace manderijntje
         private void eindTijdLBL_Click(object sender, EventArgs e)
         {
             orange = true;
-            this._parent.cell = getCellDetails(_beginTijd, _eindTijd, _vervoerder, _typeVervoer, _naamVervoer, _busLijn, _totaleTijd, _aantalOverstappen, _perron, _tussenstop, _orange);
-            this._parent.setupReisDetails();
+            this._parent.tripOptionscell = getCellDetails(_beginTijd, _eindTijd, _vervoerder, _typeVervoer, _naamVervoer, _busLijn, _totaleTijd, _aantalOverstappen, _perron, _tussenstop, _orange);
+            this._parent.setupTripDetails();
         }
 
         private void changeColor(bool Orange)
