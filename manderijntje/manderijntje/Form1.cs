@@ -19,13 +19,20 @@ namespace manderijntje
         DateTime chosenTime { get; set; }
         string departureLocation, destinationLocation, departureTijd, depLocation, desLocation;
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
+        MapView mapView;
+        VisueelModel visual = new VisueelModel();
+        //List<reisOpties> reisOpties = new List<reisOpties>();
 
         public Form1()
         {
             InitializeComponent();
             dataControl = new DataControl();
             visueelControl = new connecties(dataControl.GetDataModel());
-            VisueelModel v = new VisueelModel();
+            mapView = new MapView(visueelControl);
+            mapView.Location = new Point(447, 22);
+            mapView.Size = new Size(230, 147);
+            mapView.BackColor = Color.Blue;
+            this.Controls.Add(mapView);
 
             Console.WriteLine(v.nodes.Count);
             for(int i = 0; i < v.nodes.Count; i++)
@@ -38,7 +45,7 @@ namespace manderijntje
 
             //test
             Routing r = new Routing();
-            Route route = r.GetRoute("Arnhem Centraal", "Den Haag Centraal", DateTime.Now, dataControl.GetDataModel());
+            Route route = r.GetRoute("Gouda", "Utrecht Centraal", DateTime.Now, dataControl.GetDataModel());
             foreach (Node station in route.shortestPath)
             {
                 Console.WriteLine(station.stationnaam);
@@ -517,8 +524,8 @@ namespace manderijntje
         // Geeft de mapView de juiste locatie en size.
         private void sizeMap(int x, int y, int width, int height)
         {
-            mapViewControl.Size = new Size(width, height);
-            mapViewControl.Location = new Point(x, y);
+            mapView.Size = new Size(width, height);
+            mapView.Location = new Point(x, y);
             mapView.setMap(width, height);
         }
 

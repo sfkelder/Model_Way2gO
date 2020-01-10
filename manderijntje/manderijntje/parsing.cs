@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
+using System.IO;
 
 namespace manderijntje
 {
@@ -26,6 +27,10 @@ namespace manderijntje
 
                 getLinkPairs();
                 getBendLinks();
+
+                Console.WriteLine(getDegree());
+
+                //test();
             }
         }
 
@@ -36,6 +41,25 @@ namespace manderijntje
                 nodes = (new solver(nodes, links, linkpairs, bendlinks, width, height)).getSolution();
             }
             return createModel();
+        }
+
+        public void test ()
+        {
+            using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes.txt"))
+            {
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    w.WriteLine(i + "," + nodes[i].x + "," + nodes[i].y + ",0,0");
+                }
+            }
+            using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_links.txt"))
+            {
+                for (int i = 0; i < links.Count; i++)
+                {
+                    w.WriteLine(i + "," + links[i].u.index + "," + links[i].v.index);
+                }
+            }
+
         }
 
 
@@ -229,7 +253,7 @@ namespace manderijntje
             for (int i = 0; i < dNodes.Count; i++)
             {
                 // first argument is Lat, and the second argument is Long:
-                Coordinates.Add(coordinates.GetLogicalCoordinate(dNodes[i].x, dNodes[i].y, 100000, 100000));
+                Coordinates.Add(coordinates.GetLogicalCoordinate(dNodes[i].y, dNodes[i].x, 100000, 100000));
             }
             Point[] ScaledCoordinates = coordinates.ScalePointsToSize(Coordinates.ToArray(), width, height);
             for (int i = 0; i < dNodes.Count; i++)
@@ -303,7 +327,7 @@ namespace manderijntje
                 VisueelNode newNode = new VisueelNode(new Point(), "", 0);
                 newNode.index = nodes[i].index;
                 newNode.punt = new Point(nodes[i].x, nodes[i].y);
-                newNode.dummynode = nodes[i].draw;
+                newNode.dummynode = !nodes[i].draw;
 
                 dNodes.Add(newNode);
             }

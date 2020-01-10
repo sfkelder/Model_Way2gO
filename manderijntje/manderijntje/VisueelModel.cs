@@ -17,15 +17,15 @@ namespace manderijntje
         public class connecties
         {
             private lists_bewerkingen l = new lists_bewerkingen();
-            private bewerkingen b = new bewerkingen();
-            public VisueelModel toegang;
+            private  bewerkingen b = new bewerkingen();
+            public VisueelModel toegang;// = new VisueelModel(); //new visueelmodel weghalen voor originele versie
             private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
 
             public connecties (DataModel data)
             {
                 if (File.Exists(filepath) && !Program.reimport)
                 {
-                    files.inlezen(toegang, filepath);
+                    files.inlezen(this, filepath);
                 }
                 else
                 {
@@ -43,7 +43,7 @@ namespace manderijntje
         }
 
             //wordt vanuit andere classes aangeroepen en stuurt alles in dit form aan
-            public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen)
+            public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen, List<VisueelNode> n)
             {
                 int number = b.zoom(factor, zoomgrote);
 
@@ -56,23 +56,23 @@ namespace manderijntje
                         Point T = l.zoekpunt(st, toegang);
                         punten.Add(T);
                     }
-
+                      
                     Point kleinstepunt = b.getpoints(punten).kleinste;
                     Point grootstepunt = b.getpoints(punten).groteste;
 
                     int numberchange = b.factor(kleinstepunt, grootstepunt, schermhogte, zoomgrote);
 
-                    l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, numberchange);
+                    l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, numberchange, n);
 
                     return numberchange;
                 }
                 else
                 {
-                    l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), number);
+                    l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), number, n);
                 }
 
                 return factor;
-
+            
 
             }
 
@@ -92,12 +92,12 @@ namespace manderijntje
         [Serializable]
         public class lists_bewerkingen
         {
-
+            
             int totverschuivingX, totverschuivingY;
 
 
             //set de bool waarde van nodes naar true of false afhankelijk van de ingevoerde data
-            public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number)
+            public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number, List<VisueelNode> n)
             {
 
                 Point verschuiving = b.movemap(start, end);
@@ -110,11 +110,11 @@ namespace manderijntje
                     {
                         if (stations && v.punt.X > startpoint.X && v.punt.X > startpoint.Y && v.punt.X < endpoint.X && v.punt.Y < endpoint.Y)
                         {
-                            switching(v, factor);
+                            switching(v, factor, n);
                         }
                         else
                         {
-                            switching(v, factor);
+                            switching(v, factor, n);
                         }
 
                     }
@@ -142,22 +142,26 @@ namespace manderijntje
             }
 
             //hulp methode valuenode
-            public void switching(VisueelNode v, int zoom)
+            public void switching(VisueelNode v, int zoom, List<VisueelNode> n)
             {
                 switch (zoom)
                 {
                     case 0:
                         v.paint = (v.prioriteit < 5) ? false : true;
+                         if (v.paint) n.Add(v);
                         break;
                     case 1:
                         v.paint = (v.prioriteit < 4) ? false : true;
-                        break;
+                         if (v.paint) n.Add(v);
+                         break;
                     case 2:
                         v.paint = (v.prioriteit < 3) ? false : true;
+                        if (v.paint) n.Add(v);
                         break;
                     case 3:
                         v.paint = (v.prioriteit < 2) ? false : true;
-                        break;
+                         if (v.paint) n.Add(v);
+                         break;
                     default:
                         break;
                 }
@@ -229,14 +233,14 @@ namespace manderijntje
         public class files
         {
             //zorgt voor het inlezen van de file
-            public static void inlezen(VisueelModel l, string path)
+            public static void inlezen(connecties c, string path)
             {
                 try
                 {
                     using (Stream str = File.Open(path, FileMode.Open))
                     {
                         var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                        l = (VisueelModel)formater.Deserialize(str);
+                        c.toegang = (VisueelModel)formater.Deserialize(str);
                     }
                 }
                 catch
