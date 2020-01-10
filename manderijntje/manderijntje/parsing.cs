@@ -28,6 +28,8 @@ namespace manderijntje
                 getLinkPairs();
                 getBendLinks();
 
+                Console.WriteLine(getDegree());
+
                 //test();
             }
         }
