@@ -44,7 +44,7 @@ namespace manderijntje
 
             //test
             Routing r = new Routing();
-            Route route = r.GetRoute("Gouda", "Utrecht Centraal", DateTime.Now, dataControl.GetDataModel());
+            Route route = r.GetRoute("Utrecht Centraal", "Den Haag Centraal", DateTime.Now, dataControl.GetDataModel());
             foreach (Node station in route.shortestPath)
             {
                 Console.WriteLine(station.stationnaam);
