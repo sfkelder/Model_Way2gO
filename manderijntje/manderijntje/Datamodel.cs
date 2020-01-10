@@ -150,12 +150,7 @@ namespace manderijntje
                 {
                     if (wptSeg.k == "name")
                     {
-                        //pakt coordinaat met punt en doet dan naar een met , zodat het parsebaar is
-                        string[] latitude = wpt.Latitude.Split('.');
-                        string latitude2 = latitude[0] + "." + latitude[1];
-                        string[] longitude = wpt.Longitude.Split('.');
-                        string longitude2 = longitude[0] + "." + longitude[1];
-                        //berekend min en max hoeken kaart
+                      
                         a++;
                     }
                 }
@@ -177,8 +172,8 @@ namespace manderijntje
                         string longitude2 = longitude[0] + "." + longitude[1];
                         //weer . eraf , erbij
                         punten1[n, 0] = wpt.ID.PadLeft(10, '9');
-                        punten1[n, 1] = longitude2; //longitude
-                        punten1[n, 2] = latitude2; //latitude
+                        punten1[n, 1] = wpt.Longitude; //longitude
+                        punten1[n, 2] = wpt.Latitude; //latitude
                         ID[n] = double.Parse(wpt.ID);
                         punten1[n, 3] = wptSeg.v;
                         n++;
