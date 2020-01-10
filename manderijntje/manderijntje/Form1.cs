@@ -23,15 +23,15 @@ namespace manderijntje
 
         public Form1()
         {
-            InitializeComponent();
+            
             dataControl = new DataControl();
             visueelControl = new connecties(dataControl.GetDataModel());
             mapView = new MapView(visueelControl);
-            mapView.Location = new Point(447, 22);
-            mapView.Size = new Size(230, 147);
+           // mapView.Location = new Point(447, 22);
+            //mapView.Size = new Size(230, 147);
             mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
-
+            InitializeComponent();
             setupView();
 
             //test

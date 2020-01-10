@@ -144,11 +144,14 @@ namespace manderijntje
             //hulp methode valuenode
             public void switching(VisueelNode v, int zoom, List<VisueelNode> n)
             {
+            //List<VisueelNode> nodes = new List<VisueelNode>();
                 switch (zoom)
                 {
                     case 0:
-                        //v.paint = (v.prioriteit < 5) ? false : true;
+                    //v.paint = (v.prioriteit < 5) ? false : true;
+                    v.paint = true;
                          if (v.paint) n.Add(v);
+                   
                         break;
                     case 1:
                        // v.paint = (v.prioriteit < 4) ? false : true;

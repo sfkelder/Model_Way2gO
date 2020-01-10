@@ -14,7 +14,7 @@ namespace manderijntje
     {
         List<VisueelNode> nodes = new List<VisueelNode>();
 
-        int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 0, height = 0, width = 0;
+        int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 50, height = 0, width = 0;
         Point start, end;
         connecties Connecties;
 
@@ -35,6 +35,7 @@ namespace manderijntje
         {
             height = y;
             width = x;
+            nodes.Clear();
             Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
             Invalidate();
         }
@@ -46,16 +47,19 @@ namespace manderijntje
             {
                 zoom--;
 
+                nodes.Clear();
                 Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
             }
             else if (ea.Button == MouseButtons.Middle)
             {
                 zoom++;
 
+                nodes.Clear();
                 Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false,  nodes);
             }
             else
             {
+                nodes.Clear();
                 Connecties.visualcontrol(width, zoom, zoomgrote, start, end, null, false, nodes);
                 totverschuivingX += start.X - end.X;
                 totverschuivingY += start.Y - end.Y;
@@ -71,7 +75,15 @@ namespace manderijntje
             
             for(int i = 0; i < nodes.Count - 1; i++)
             {
-                points[i] = nodes[i].punt;
+                try
+                {
+                    points[i] = nodes[i].punt;
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+                
             }
 
             points = coordinates.ScalePointsToSize(points, width, height);
@@ -93,7 +105,7 @@ namespace manderijntje
 
         public void painting(object o, PaintEventArgs pea)
         {
-            SacleCoordinates();
+             SacleCoordinates();
 
             //pea.Graphics.FillRectangle(Brushes.Black, 30 - totverschuivingX, 30 - totverschuivingY, 10, 10);
 
@@ -105,7 +117,7 @@ namespace manderijntje
                 }
             }
 
-            nodes.Clear();
+            //nodes.Clear();
         }
     }
 }
