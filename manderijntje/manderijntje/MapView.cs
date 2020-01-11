@@ -43,7 +43,7 @@ namespace manderijntje
             if (startingUp)
             {
                 Connecties.SetSizeMap(width, height);
-               // startingUp = false;
+               // startingUp = false; 
             }
 
             Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);  
