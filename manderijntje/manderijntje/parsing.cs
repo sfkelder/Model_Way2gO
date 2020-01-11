@@ -30,7 +30,7 @@ namespace manderijntje
 
                 Console.WriteLine(getDegree());
 
-                //test();
+                test();
             }
         }
 
@@ -45,14 +45,14 @@ namespace manderijntje
 
         public void test ()
         {
-            using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes.txt"))
+            using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes2.txt"))
             {
                 for (int i = 0; i < nodes.Count; i++)
                 {
                     w.WriteLine(i + "," + nodes[i].x + "," + nodes[i].y + ",0,0");
                 }
             }
-            using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_links.txt"))
+            using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_links2.txt"))
             {
                 for (int i = 0; i < links.Count; i++)
                 {
@@ -328,6 +328,7 @@ namespace manderijntje
                 newNode.index = nodes[i].index;
                 newNode.punt = new Point(nodes[i].x, nodes[i].y);
                 newNode.dummynode = !nodes[i].draw;
+                newNode.prioriteit = nodes[i].neighbours.Count;
 
                 dNodes.Add(newNode);
             }

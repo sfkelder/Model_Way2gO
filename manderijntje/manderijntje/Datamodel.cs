@@ -132,7 +132,7 @@ namespace manderijntje
         {
             for (int i = 0; i < dataModel.unique_links.Count; i++)
             {
-                if ((dataModel.unique_links[i].Start == u || dataModel.unique_links[i].End == v) && (dataModel.unique_links[i].Start == v || dataModel.unique_links[i].End == u))
+                if ((dataModel.unique_links[i].Start.stationnaam == u.stationnaam && dataModel.unique_links[i].End.stationnaam == v.stationnaam) || (dataModel.unique_links[i].Start.stationnaam == v.stationnaam && dataModel.unique_links[i].End.stationnaam == u.stationnaam))
                 {
                     Console.WriteLine("found");
                     return dataModel.unique_links[i];
@@ -221,10 +221,10 @@ namespace manderijntje
                 {
                     if (wptSeg.k == "name")
                     {
-                        string[] latitude = wpt.Latitude.Split('.');
-                        string latitude2 = latitude[0] + "." + latitude[1];
-                        string[] longitude = wpt.Longitude.Split('.');
-                        string longitude2 = longitude[0] + "." + longitude[1];
+                        //string[] latitude = wpt.Latitude.Split('.');
+                        //string latitude2 = latitude[0] + "," + latitude[1];
+                        //string[] longitude = wpt.Longitude.Split('.');
+                        //string longitude2 = longitude[0] + "," + longitude[1];
                         //weer . eraf , erbij
                         punten1[n, 0] = wpt.ID.PadLeft(10, '9');
                         punten1[n, 1] = wpt.Longitude; //longitude
