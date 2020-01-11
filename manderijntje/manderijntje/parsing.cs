@@ -30,7 +30,7 @@ namespace manderijntje
 
                 Console.WriteLine(getDegree());
 
-                test();
+                //test();
             }
         }
 
