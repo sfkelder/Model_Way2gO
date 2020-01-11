@@ -8,6 +8,6 @@ namespace manderijntje
 {
     class departureTimeModel
     {
-        public string departureTijd { get; set; }
+        public string departureTime { get; set; }
     }
 }

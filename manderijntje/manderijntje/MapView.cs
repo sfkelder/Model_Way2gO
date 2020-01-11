@@ -14,17 +14,20 @@ namespace manderijntje
     {
         List<VisueelNode> nodes = new List<VisueelNode>();
 
-        int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 50, height = 0, width = 0;
+        int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 50, height, width;
         Point start, end;
+        private bool startingUp = true;
         connecties Connecties;
-
+       
+        
 
         public MapView(connecties c)
         {
             Connecties = c;
             InitializeComponent();
-            Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
-            BackColor = Color.Blue;
+           
+           // Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
+         
             this.Paint += this.painting;
             this.MouseClick += this.onclick;
             this.MouseDown += (object o, MouseEventArgs mea) => { start = mea.Location; };
@@ -36,7 +39,14 @@ namespace manderijntje
             height = y;
             width = x;
             nodes.Clear();
-            Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
+     
+            if (startingUp)
+            {
+                Connecties.SetSizeMap(width, height);
+               // startingUp = false; 
+            }
+
+            Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);  
             Invalidate();
         }
          
@@ -71,7 +81,7 @@ namespace manderijntje
 
         public void SacleCoordinates()
         {
-            Point[] points = new Point[200];
+            Point[] points = new Point[1000];
             
             for(int i = 0; i < nodes.Count - 1; i++)
             {
@@ -98,14 +108,14 @@ namespace manderijntje
                 {
                     break;
                 }
-            } 
+            }  
 
              
         }
 
         public void painting(object o, PaintEventArgs pea)
         {
-             SacleCoordinates();
+            // SacleCoordinates();
 
             //pea.Graphics.FillRectangle(Brushes.Black, 30 - totverschuivingX, 30 - totverschuivingY, 10, 10);
 
@@ -117,7 +127,7 @@ namespace manderijntje
                 }
             }
 
-            //nodes.Clear();
+           
         }
     }
 }
