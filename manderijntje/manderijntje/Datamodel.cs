@@ -1059,7 +1059,7 @@ namespace manderijntje
             links();
 
             dataModel.get_unique_nodes();
-            dataModel.get_unique_links();
+            dataModel.get_unique_links(); 
         }
         public static double distance(double x1, double y1, double x2, double y2)
         {
