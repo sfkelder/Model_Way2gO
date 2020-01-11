@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace manderijntje
 {
-    public class tussenStops
+    public class transferModel
     {
         public string station { get; set; }
         public string perron { get; set; }
@@ -15,7 +15,7 @@ namespace manderijntje
         public string typeVervoer { get; set; }
         public string richtingVervoer { get; set; }
 
-        public tussenStops(string station, string perron, string aankomstTijd, string vertrekTijd, string typeVervoer, string richtingVervoer)
+        public transferModel(string station, string perron, string aankomstTijd, string vertrekTijd, string typeVervoer, string richtingVervoer)
         {
             this.station = station;
             this.perron = perron;
@@ -25,14 +25,14 @@ namespace manderijntje
             this.richtingVervoer = richtingVervoer;
         }
 
-        public tussenStops()
+        public transferModel()
         { 
         }
 
         // Gives tussenStops model back
-        public tussenStops tussenstopsModel(string station, string perron, string aankomstTijd, string vertrekTijd, string typeVervoer, string richtingVervoer)
+        public transferModel tussenstopsModel(string station, string perron, string aankomstTijd, string vertrekTijd, string typeVervoer, string richtingVervoer)
         {
-            return new tussenStops(station, perron, aankomstTijd, vertrekTijd, typeVervoer, richtingVervoer);
+            return new transferModel(station, perron, aankomstTijd, vertrekTijd, typeVervoer, richtingVervoer);
         }
     }
 }

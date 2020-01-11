@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace manderijntje
 {
-    public class Vertrek
+    public class departureModel
     {
         public string departureLocation { get; set; }
         public string destinationLocation { get; set; }
         public string departureTijd { get; set; }
 
-        public Vertrek(string departureLocation, string destinationLocation, string departureTijd)
+        public departureModel(string departureLocation, string destinationLocation, string departureTijd)
         {
             this.departureLocation = departureLocation;
             this.destinationLocation = destinationLocation;
             this.departureTijd = departureTijd;
         }
-        public Vertrek()
+        public departureModel()
         {
         }
 
         // Gives vertrekModel model back
-        public Vertrek vertrekModel(string departureLocation, string destinationLocation, string departureTijd)
+        public departureModel vertrekModel(string departureLocation, string destinationLocation, string departureTijd)
         {
-            return new Vertrek(departureLocation, destinationLocation, departureTijd);
+            return new departureModel(departureLocation, destinationLocation, departureTijd);
         }
 
     }

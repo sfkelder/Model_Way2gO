@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace manderijntje
 {
-    public partial class tussenstopCell : UserControl
+    public partial class transferCell : UserControl
     {
         private string _vertrekTijd;
         private string _stationNaam;
@@ -24,7 +24,7 @@ namespace manderijntje
         public string vertrekTijd
         {
             get { return _vertrekTijd; }
-            set { _vertrekTijd = value; vertrekTijdLBL.Text = value; }
+            set { _vertrekTijd = value; departuretimeLBL.Text = value; }
         }
         public string stationNaam
         {
@@ -34,12 +34,12 @@ namespace manderijntje
         public string perron
         {
             get { return _perron; }
-            set { _perron = value; perronLBL.Text = "Spoor " + value; }
+            set { _perron = value; platformLBL.Text = "Platform " + value; }
         }
         public string richting
         {
             get { return _richting; }
-            set { _richting = value; richtingLBL.Text = "Richting " + value; }
+            set { _richting = value; directionLBL.Text = "To " + value; }
         }
 
         public string typeVervoer
@@ -47,13 +47,13 @@ namespace manderijntje
             get { return _typeVervoer; }
             set { _typeVervoer = value;
                 
-                if(_typeVervoer == "Trein")
+                if(_typeVervoer == "train")
                 {
-                    typeVervoerIcon.Image = Properties.Resources.OrangeTrain;
+                    typetransportIcon.Image = Properties.Resources.OrangeTrain;
                 }
-                else if (_typeVervoer == "Bus")
+                else if (_typeVervoer == "bus")
                 {
-                    typeVervoerIcon.Image = Properties.Resources.busIcon;
+                    typetransportIcon.Image = Properties.Resources.busIcon;
                 }
             }
         }
@@ -65,8 +65,8 @@ namespace manderijntje
                 // Checks wich image it need to have
                 if (_last)
                 {
-                    lijnImage.Image = Properties.Resources.eindSpoor;
-                    typeVervoerIcon.Visible = false;
+                    lineImage.Image = Properties.Resources.eindSpoor;
+                    typetransportIcon.Visible = false;
                 }    
             }
         }
@@ -77,7 +77,7 @@ namespace manderijntje
                 // Checks wich image it need to have
                 if (_first)
                 {
-                    lijnImage.Image = Properties.Resources.beginSpoor;
+                    lineImage.Image = Properties.Resources.beginSpoor;
                 }
             }
         }
@@ -89,12 +89,12 @@ namespace manderijntje
                 // Checks wich image it need to have
                 if (_mid)
                 {
-                    lijnImage.Image = Properties.Resources.middenSpoor;
+                    lineImage.Image = Properties.Resources.middenSpoor;
                 }
             }
         }
 
-        public tussenstopCell()
+        public transferCell()
         {
             InitializeComponent();
         }

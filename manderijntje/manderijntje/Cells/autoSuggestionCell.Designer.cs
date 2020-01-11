@@ -1,6 +1,6 @@
 ﻿namespace manderijntje
 {
-    partial class autoSuggesCell
+    partial class autoSuggestionCell
     {
         /// <summary> 
         /// Required designer variable.

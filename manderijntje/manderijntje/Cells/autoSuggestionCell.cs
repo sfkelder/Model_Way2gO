@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace manderijntje
 {
-    public partial class autoSuggesCell : UserControl
+    public partial class autoSuggestionCell : UserControl
     {
         private string _stationName;
         private string _stationType;
         private bool _departureInput;
-        autoSuggestie _auto;
+        autoSuggestion _auto;
         Form1 _form;
 
         public string stationName
@@ -43,13 +43,13 @@ namespace manderijntje
             get { return _departureInput; }
             set { _departureInput = value; }
         }
-        public autoSuggesCell(autoSuggestie auto, Form1 form)
+        public autoSuggestionCell(autoSuggestion auto, Form1 form)
         {
             InitializeComponent();
             this._auto = auto;
             this._form = form;
         }
-        public autoSuggesCell(string stationName, string stationType, bool departureInput)
+        public autoSuggestionCell(string stationName, string stationType, bool departureInput)
         {
             this._stationName = stationName;
             this._stationType = stationType;
@@ -57,16 +57,16 @@ namespace manderijntje
         }
 
         // Gives a autoSuggesCell back
-        public static autoSuggesCell getautoSuggestDetails(string stationName, string stationType, bool departureInput)
+        public static autoSuggestionCell getautoSuggestDetails(string stationName, string stationType, bool departureInput)
         {
-            autoSuggesCell auto = new autoSuggesCell(stationName, stationType, departureInput);
+            autoSuggestionCell auto = new autoSuggestionCell(stationName, stationType, departureInput);
             return auto;
         }
 
         // Calls methods in the form call when clicked on a label.
         private void stationLBL_Click(object sender, EventArgs e)
         {
-            autoSuggestie a = new autoSuggestie(_form);
+            autoSuggestion a = new autoSuggestion(_form);
             a.fillTextbox(_stationName, _departureInput);
         }
     }
