@@ -67,10 +67,10 @@ namespace manderijntje
             if (sender.Equals(_parent.beginInput))
             {
                 bInput = true;
-                _parent.setFlowControl(_parent.beginInput.Location.Y + _parent.beginInput.Height + _parent.textboxPanel.Location.Y + _parent.inputPanel.Location.Y, suggestionsList.Count);
+                _parent.setLocationAutosuggestion(_parent.beginInput.Location.Y + _parent.beginInput.Height + _parent.textboxPanel.Location.Y + _parent.inputPanel.Location.Y, suggestionsList.Count);
             }
             else
-                _parent.setFlowControl(_parent.eindInput.Location.Y + _parent.eindInput.Height + _parent.textboxPanel.Location.Y + _parent.inputPanel.Location.Y, suggestionsList.Count);
+                _parent.setLocationAutosuggestion(_parent.eindInput.Location.Y + _parent.eindInput.Height + _parent.textboxPanel.Location.Y + _parent.inputPanel.Location.Y, suggestionsList.Count);
 
             _parent.clearFlowControl(autosuggestFlowControl);
             _parent.fillAutosuggestie(new autoSuggesCell[suggestionsList.Count()], bInput, suggestionsList);

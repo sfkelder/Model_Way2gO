@@ -18,7 +18,7 @@ namespace manderijntje
         List<departureTimeModel> timeList = new List<departureTimeModel>();
         public tripOptionsCell tripOptionscell { get; set; }
         DateTime chosenTime { get; set; }
-        string departureLocation, destinationLocation, departureTijd, depLocation, desLocation;
+        string departureLocation, destinationLocation, departureTime, depLocation, desLocation;
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
         VisueelModel visual = new VisueelModel();
 
@@ -69,7 +69,7 @@ namespace manderijntje
             eindInput.ForeColor = Color.LightGray;
             tijdInput.DropDownStyle = ComboBoxStyle.DropDownList;
             tijdInput.DataSource = timeList;
-            tijdInput.DisplayMember = "departureTijd";
+            tijdInput.DisplayMember = "departureTime";
         }
         
         // When screenSize is changed, call the method "setElement"
@@ -173,7 +173,7 @@ namespace manderijntje
             for (int i = 0; i < 20; i++)
             {
                 extraMinutes = previouseMin.AddMinutes(5);
-                timeList.Add(new departureTimeModel() { departureTijd = extraMinutes.ToString("HH:mm") });
+                timeList.Add(new departureTimeModel() { departureTime = extraMinutes.ToString("HH:mm") });
                 previouseMin = extraMinutes;
             }
         }
@@ -200,11 +200,11 @@ namespace manderijntje
             autoSuggestie autosuggest = new autoSuggestie(this);
             departureLocation = beginInput.Text;
             destinationLocation = eindInput.Text;
-            departureTijd = tijdInput.Text;
+            departureTime = tijdInput.Text;
             if (checkDepartureLocation(departureLocation, autosuggest.stationList) &&
                     checkDestinationLocation(destinationLocation, autosuggest.stationList))
             {
-                //v.vertrekModel(beginLocatie, eindLocatie, departureTijd);
+                //v.vertrekModel(beginLocatie, eindLocatie, departureTime);
                 setupTripOptions();
             }
             else
@@ -228,7 +228,7 @@ namespace manderijntje
             list.Add(destinationLocation);
             //visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes);
 
-            chosenTime = Convert.ToDateTime(departureTijd);
+            chosenTime = Convert.ToDateTime(departureTime);
             tripOptions.Add(r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
             Route route = r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
             foreach (Node station in route.shortestPath)
@@ -412,8 +412,8 @@ namespace manderijntje
             }
         }
 
-        // Set the usercontrol on the right Y coordinate en setup the right height ogf the flowControl
-        public void setFlowControl(int yLocation, int aantalElementen)
+        // Set the autosuggestion userControl on the right Y coordinate en setup the right height of the userControl
+        public void setLocationAutosuggestion(int yLocation, int aantalElementen)
         {
             if (aantalElementen >= 5)
             {
@@ -674,10 +674,10 @@ namespace manderijntje
         //
         // FAKE DATA
         //
-        private tussenStops fakeTussenStops(string station, string perron, string aankomstTijd, string departureTijd,
+        private tussenStops fakeTussenStops(string station, string perron, string aankomstTijd, string departureTime,
            string typeVervoer, string richtingVervoer)
         {
-            tussenStops t = new tussenStops(station, perron, aankomstTijd, departureTijd, typeVervoer, richtingVervoer);
+            tussenStops t = new tussenStops(station, perron, aankomstTijd, departureTime, typeVervoer, richtingVervoer);
             return t;
         }
     }
