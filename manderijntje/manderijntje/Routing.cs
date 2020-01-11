@@ -6,13 +6,10 @@ using System.Linq;
 namespace manderijntje
 { 
     class Routing
-    {
-        public int transfers;
+    { 
 
-        public List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel DataModel)
+        public static List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel dataModel)
         {
-            DataModel dataModel = new DataModel();
-            dataModel = DataModel;
             Node start = dataModel.GetNodeName(startName, dataModel.GetNodesRouting());
             Node end = dataModel.GetNodeName(endName, dataModel.GetNodesRouting());
             DijkstraSearch(start, end, time);
@@ -22,7 +19,7 @@ namespace manderijntje
             return shortestPath;
         }
          
-        private void BuildShortestPath(List<Node> list, Node node)
+        private static void BuildShortestPath(List<Node> list, Node node)
         {
             if (node.NearestToStart == null)
                 return;
@@ -30,7 +27,7 @@ namespace manderijntje
             BuildShortestPath(list, node.NearestToStart);
         }
 
-        private void DijkstraSearch(Node start, Node end, DateTime time)
+        private static void DijkstraSearch(Node start, Node end, DateTime time)
         {
             start.MinCostToStart = 0;
             var prioQueue = new List<Node> {start};
@@ -59,27 +56,11 @@ namespace manderijntje
             }
         }
 
-        public Route GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
+        public static Route GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
         {
-            Route fastestRoute = new Route(startName, endName, time, dataModel);
+            int transfers = 0;
+            Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
             return fastestRoute;
-        }
-
-        public bool CheckForRouteDijkstra(string startName, string endName, DateTime time, DataModel DataModel)
-        {
-            DataModel dataModel = new DataModel();
-            dataModel = DataModel;
-            Node start = dataModel.GetNodeName(startName, dataModel.unique_nodes);
-            Node end = dataModel.GetNodeName(endName, dataModel.unique_nodes);
-            DijkstraSearch(start, end, time);
-            var shortestPath = new List<Node> { end };
-            BuildShortestPath(shortestPath, end);
-            shortestPath.Reverse();
-            if (shortestPath.Count == 0)
-                return false;
-            else
-                return true;
-
         }
     }
 
@@ -90,13 +71,18 @@ namespace manderijntje
         public DateTime endTime;
         public int transfers;
 
-        public Route(string startName, string endName, DateTime time, DataModel dataModel)
+        public Route(string startName, string endName, int totaltransfers, DateTime time, DataModel dataModel)
         {
-            Routing r = new Routing();
-            shortestPath = r.GetShortestPathDijkstra(startName, endName, time, dataModel);
+            shortestPath = Routing.GetShortestPathDijkstra(startName, endName, time, dataModel);
             startTime = time;
             endTime = time.Add(TimeSpan.FromMinutes(shortestPath.Last().MinCostToStart));
-            transfers = r.transfers;
+            transfers = totaltransfers;
         }
     }
 }
+
+/* mincosttostart
+ *visited
+ * nearest to start
+ * weight
+ */

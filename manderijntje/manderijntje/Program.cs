@@ -10,8 +10,8 @@ namespace manderijntje
     static class Program
     {
         public const string baseDir = "C:/Way2Go/";
-        public const bool reimport = true; // deze waarde is een override als er wel een file op disk staat maar je wenst toch de gegevens opnieuw in te lezen van disk
-        
+        public const bool reimport = false; // deze waarde is een override als er wel een file op disk staat maar je wenst toch de gegevens opnieuw in te lezen van disk
+
 
         /// <summary>
         /// The main entry point for the application.

@@ -17,7 +17,7 @@ namespace manderijntje
         private string _totaleTijd;
         private string _aantalOverstappen;
         private string _perron;
-        private List<tussenStops> _tussenstop;
+        private List<transferModel> _tussenstop;
         private List<Node> _shortestPath;
 
         public string beginTijd
@@ -33,20 +33,20 @@ namespace manderijntje
         public string totaleTijd
         {
             get { return _totaleTijd; }
-            set { _totaleTijd = value; totaleTijdLBL.Text = value; }
+            set { _totaleTijd = value; totaltimeLBL.Text = value; }
         }
         public string aantalOverstappen
         {
             get { return _aantalOverstappen; }
-            set { _aantalOverstappen = value; aantalOverstappenLBL.Text = value; }
+            set { _aantalOverstappen = value; transfersLBL.Text = value; }
         }
         public string perron
         {
             get { return _perron; }
-            set { _perron = value; PerronLBL.Text = value; }
+            set { _perron = value; platformLBL.Text = value; }
         }
 
-        public List<tussenStops> tussenstop
+        public List<transferModel> tussenstop
         {
             get { return _tussenstop; }
             set { _tussenstop = value; }

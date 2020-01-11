@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace manderijntje
 {
-    public class reisOpties
+    public class tripOptionsModel
     {
         public string beginTijd { get; set; }
         public string eindTijd { get; set; }
@@ -19,11 +19,11 @@ namespace manderijntje
         public string  aantalOverstappen { get; set; }
         public string perron { get; set; }
         public bool orange { get; set; }
-        public List<tussenStops> tussenstop { get; set; }
+        public List<transferModel> tussenstop { get; set; }
  
 
-        public reisOpties(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
+        public tripOptionsModel(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
+            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<transferModel> tussenstop, bool orange)
         {
             this.beginTijd = beginTijd;
             this.eindTijd = eindTijd;
@@ -38,17 +38,17 @@ namespace manderijntje
             this.orange = orange;
         }
 
-        public reisOpties()
+        public tripOptionsModel()
         {
         }
 
         //
         // Geeft een reisOptie model terug.
         //
-        public reisOpties reisOptiesModel(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange)
+        public tripOptionsModel reisOptiesModel(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
+            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<transferModel> tussenstop, bool orange)
         {
-            return new reisOpties(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange);
+            return new tripOptionsModel(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange);
         }
     }
 }

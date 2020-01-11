@@ -13,14 +13,15 @@ namespace manderijntje
         DataControl dataControl;
         connecties visueelControl;
         MapView mapView;
-        Routing r = new Routing();
         List<Route> tripOptions = new List<Route>();
+        List<Node> nodeList = new List<Node>();
         List<departureTimeModel> timeList = new List<departureTimeModel>();
         public tripOptionsCell tripOptionscell { get; set; }
         DateTime chosenTime { get; set; }
         string departureLocation, destinationLocation, departureTime, depLocation, desLocation;
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
         VisueelModel visual = new VisueelModel();
+
 
         public Form1()
         {
@@ -31,16 +32,9 @@ namespace manderijntje
             mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
             setupView();
- 
-
-            Console.WriteLine("Nodes: " + visual.nodes.Count);
-            for (int i = 0; i < visual.nodes.Count; i++)
-            {
-                Console.WriteLine("Naam: " + visual.nodes[i].name_id);
-            }
 
             //test
-            Route route = r.GetRoute("Utrecht Centraal", "Den Haag Centraal", DateTime.Now, dataControl.GetDataModel());
+            Route route = Routing.GetRoute("Utrecht Centraal", "Gouda", DateTime.Now, dataControl.GetDataModel());
             foreach (Node station in route.shortestPath)
             {
                 Console.WriteLine(station.stationnaam);
@@ -57,19 +51,21 @@ namespace manderijntje
             hideshowBack();
             fillTimeInput();
             setElement();
+            DataModel datamodel = dataControl.GetDataModel();
+            nodeList = datamodel.nodesrouting;
             SizeChanged += new EventHandler(screenSizeChanged);
-            beginInput.GotFocus += new EventHandler(this.removeText);
-            beginInput.LostFocus += new EventHandler(this.addText);
-            eindInput.GotFocus += new EventHandler(this.removeText);
-            eindInput.LostFocus += new EventHandler(this.addText);
+            departureInput.GotFocus += new EventHandler(this.removeText);
+            departureInput.LostFocus += new EventHandler(this.addText);
+            destinationInput.GotFocus += new EventHandler(this.removeText);
+            destinationInput.LostFocus += new EventHandler(this.addText);
             detailsUserControl.Visible = false;
-            beginInput.Text = "Departure";
-            beginInput.ForeColor = Color.LightGray;
-            eindInput.Text = "Destination";
-            eindInput.ForeColor = Color.LightGray;
-            tijdInput.DropDownStyle = ComboBoxStyle.DropDownList;
-            tijdInput.DataSource = timeList;
-            tijdInput.DisplayMember = "departureTime";
+            departureInput.Text = "Departure";
+            departureInput.ForeColor = Color.LightGray;
+            destinationInput.Text = "Destination";
+            destinationInput.ForeColor = Color.LightGray;
+            timeInput.DropDownStyle = ComboBoxStyle.DropDownList;
+            timeInput.DataSource = timeList;
+            timeInput.DisplayMember = "departureTime";
         }
         
         // When screenSize is changed, call the method "setElement"
@@ -84,7 +80,7 @@ namespace manderijntje
             sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
-            flowLayoutPanel.Size = new Size(flowLayoutPanel.Width, mapView.Height);
+            tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height);
             detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height);
             if (Height > 450)
             {
@@ -109,8 +105,8 @@ namespace manderijntje
         {
             bool departureInputBool = true;
             TextBox textbox = (TextBox)sender;
-            sender.Equals(eindInput);
-            if (sender.Equals(eindInput))
+            sender.Equals(destinationInput);
+            if (sender.Equals(destinationInput))
                 departureInputBool = false;
 
             if (string.IsNullOrWhiteSpace(textbox.Text))
@@ -123,24 +119,21 @@ namespace manderijntje
             }
         }
 
-        // Checks if the departure location is filled in correctly
-        private static bool checkDepartureLocation(string departureLocation, List<autoSuggestModel> stationList)
+        // Checks if the location is filled in correctly and exist
+        private static bool checkLocation(string departureLocation, string destinationLocation, List<Node> nodesList)
         {
-            foreach (autoSuggestModel item in stationList)
+            foreach (Node node in nodesList)
             {
-                if (item.stationName == departureLocation)
-                    return true;
-            }
-            return false;
-        }
-
-        // Checks if the destination location is filled in correctly
-        private static bool checkDestinationLocation(string destinationLocation, List<autoSuggestModel> stationList)
-        {
-            foreach (autoSuggestModel item in stationList)
-            {
-                if (item.stationName == destinationLocation)
-                    return true;
+                if (departureLocation.Length != 0)
+                {
+                    if (node.stationnaam == departureLocation)
+                        return true;
+                }
+                else
+                {
+                    if (node.stationnaam == destinationLocation)
+                        return true;
+                }
             }
             return false;
         }
@@ -149,13 +142,13 @@ namespace manderijntje
         private void checkFout(string departureLocation, string destinationLocation, bool departureBool, bool destinationBool)
         {
             if (departureLocation == "Departure")
-                highlightTextBox(beginInput, "Departure is empty");
+                highlightTextBox(departureInput, "Departure is empty");
             else if (destinationLocation == "Destination")
-                highlightTextBox(eindInput, "Destination is empty");
+                highlightTextBox(destinationInput, "Destination is empty");
             else if (!departureBool)
-                highlightTextBox(beginInput, "Departure is wrong");
+                highlightTextBox(departureInput, "Departure is wrong");
             else if (!destinationBool)
-                highlightTextBox(eindInput, "Destination is wrong");
+                highlightTextBox(destinationInput, "Destination is wrong");
         }
 
         // Highlight textBox with the error
@@ -197,12 +190,11 @@ namespace manderijntje
         // If there is no error it will call the "setupTripOptions" method for further setup for displaying some tripOptions
         private void searchButton_Click(object sender, EventArgs e)
         {
-            autoSuggestie autosuggest = new autoSuggestie(this);
-            departureLocation = beginInput.Text;
-            destinationLocation = eindInput.Text;
-            departureTime = tijdInput.Text;
-            if (checkDepartureLocation(departureLocation, autosuggest.stationList) &&
-                    checkDestinationLocation(destinationLocation, autosuggest.stationList))
+            departureLocation = departureInput.Text;
+            destinationLocation = destinationInput.Text;
+            departureTime = timeInput.Text;
+            if (checkLocation(departureLocation, "", nodeList) &&
+                    checkLocation("", destinationLocation, nodeList))
             {
                 //v.vertrekModel(beginLocatie, eindLocatie, departureTime);
                 setupTripOptions();
@@ -210,17 +202,17 @@ namespace manderijntje
             else
             {
                 checkFout(departureLocation, destinationLocation,
-                    checkDepartureLocation(departureLocation, autosuggest.stationList),
-                    checkDestinationLocation(destinationLocation, autosuggest.stationList));
+                    checkLocation(departureLocation, "", nodeList),
+                    checkLocation("", destinationLocation, nodeList));
             }
         }
 
         // Shows flowControl with all the possible tripOptions
         public void setupTripOptions()
         {
-            show(flowLayoutPanel);
-            flowLayoutPanel.Location = new Point(0, logoHeader.Height);
-            clearFlowControl(this.flowLayoutPanel);
+            show(tripOptionsFlowControl);
+            tripOptionsFlowControl.Location = new Point(0, logoHeader.Height);
+            clearFlowControl(this.tripOptionsFlowControl);
             tripOptions.Clear();
 
             List<string> list = new List<string>();
@@ -229,8 +221,8 @@ namespace manderijntje
             //visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes, null);
 
             chosenTime = Convert.ToDateTime(departureTime);
-            tripOptions.Add(r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
-            Route route = r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
+            tripOptions.Add(Routing.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
+            Route route = Routing.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
             foreach (Node station in route.shortestPath)
             {
                 Console.WriteLine(station.stationnaam);
@@ -278,10 +270,10 @@ namespace manderijntje
                 listItems[i].orange = false;*/
 
 
-                if (flowLayoutPanel.Controls.Count < 0)
-                    clearFlowControl(this.flowLayoutPanel);
+                if (tripOptionsFlowControl.Controls.Count < 0)
+                    clearFlowControl(this.tripOptionsFlowControl);
                 else
-                    flowLayoutPanel.Controls.Add(listItems[i]);
+                    tripOptionsFlowControl.Controls.Add(listItems[i]);
             }
         }
 
@@ -289,7 +281,7 @@ namespace manderijntje
         public void setupTripDetails()
         {
             showTripDetails();
-            fillTransfersStops(new tussenstopCell[detailsUserControl.shortestPath.Count()]);
+            fillTransfersStops(new transferCell[detailsUserControl.shortestPath.Count()]);
         }
 
         // Gives the right information from the tripOptionscell to the detailsUserControl
@@ -298,7 +290,7 @@ namespace manderijntje
             this.detailsUserControl.Visible = true;
             if (!detailsControl)
             {
-                this.detailsUserControl.Location = new Point(flowLayoutPanel.Location.X + flowLayoutPanel.Width, flowLayoutPanel.Location.Y);
+                this.detailsUserControl.Location = new Point(tripOptionsFlowControl.Location.X + tripOptionsFlowControl.Width, tripOptionsFlowControl.Location.Y);
                 show(detailsControl);
             }
             this.detailsUserControl.tussenstopsPanel.Controls.Clear();
@@ -312,11 +304,11 @@ namespace manderijntje
         }
 
         // Fills the flowcontrol with the usercontrol called "tussenstopCell" and gives the needed data to tussenstopCell.
-        private void fillTransfersStops(tussenstopCell[] listItems)
+        private void fillTransfersStops(transferCell[] listItems)
         {
             for (int i = 0; i < this.detailsUserControl.shortestPath.Count; i++)
             {
-                listItems[i] = new tussenstopCell();
+                listItems[i] = new transferCell();
                 listItems[i].stationNaam = detailsUserControl.shortestPath[i].stationnaam;
                 listItems[i].richting = detailsUserControl.shortestPath[i].routnaam;
                 listItems[i].typeVervoer = detailsUserControl.shortestPath[i].vervoersmiddels;
@@ -351,10 +343,11 @@ namespace manderijntje
         // After departureInput of the user it will show an autosuggestion or removes the autosuggestions
         private void departureInput_TextChanged(object sender, EventArgs e)
         {
-            autoSuggestie autosuggest = new autoSuggestie(this);
-            if (beginInput.Text != "" && changeInput == false)
+            autoSuggestion autosuggest = new autoSuggestion(this);
+            autosuggest.setList(nodeList);
+            if (departureInput.Text != "" && changeInput == false)
             {
-                autosuggest.checkInput(beginInput.Text);
+                autosuggest.checkInput(departureInput.Text);
                 if (autosuggest.suggestionsList.Count > 0)
                 {
                     autosuggestVisible();
@@ -375,10 +368,11 @@ namespace manderijntje
         // After destinationInput of the user it will show an autosuggestion or removes the autosuggestions
         private void destinationInput_TextChanged(object sender, EventArgs e)
         {
-            autoSuggestie autosuggest = new autoSuggestie(this);
-            if (eindInput.Text != "" && changeInput == false)
+            autoSuggestion autosuggest = new autoSuggestion(this);
+            autosuggest.setList(nodeList);
+            if (destinationInput.Text != "" && changeInput == false)
             {
-                autosuggest.checkInput(eindInput.Text);
+                autosuggest.checkInput(destinationInput.Text);
                 if (autosuggest.suggestionsList.Count > 0)
                 {
                     autosuggestVisible();
@@ -397,18 +391,18 @@ namespace manderijntje
         }
 
         // Fills the flowcontrol with the usercontrol called "autoSuggesCell" and gives the needed data to autoSuggesCell.
-        public void fillAutosuggestie(autoSuggesCell[] listItems, bool departureInput, List<autoSuggestModel> suggestionsList)
+        public void fillAutosuggestie(autoSuggestionCell[] listItems, bool departureInput, List<autoSuggestionModel> suggestionsList)
         {
             for (int i = 0; i < suggestionsList.Count; i++)
             {
-                listItems[i] = new autoSuggesCell(this.autoSuggestie1, this);
+                listItems[i] = new autoSuggestionCell(this.autoSuggestion, this);
                 listItems[i].stationName = suggestionsList[i].stationName;
                 listItems[i].stationType = suggestionsList[i].stationType;
                 listItems[i].departureInput = departureInput;
-                if (this.autoSuggestie1.autosuggestFlowControl.Controls.Count < 0)
-                    clearFlowControl(this.autoSuggestie1.autosuggestFlowControl);
+                if (this.autoSuggestion.autosuggestFlowControl.Controls.Count < 0)
+                    clearFlowControl(this.autoSuggestion.autosuggestFlowControl);
                 else
-                    this.autoSuggestie1.autosuggestFlowControl.Controls.Add(listItems[i]);
+                    this.autoSuggestion.autosuggestFlowControl.Controls.Add(listItems[i]);
             }
         }
 
@@ -417,13 +411,13 @@ namespace manderijntje
         {
             if (aantalElementen >= 5)
             {
-                this.autoSuggestie1.Height = 40 * 5;
+                this.autoSuggestion.Height = 40 * 5;
             }
             else
             {
-                this.autoSuggestie1.Height = 40 * aantalElementen;
+                this.autoSuggestion.Height = 40 * aantalElementen;
             }
-            this.autoSuggestie1.Location = new Point(autoSuggestie1.Location.X, yLocation);
+            this.autoSuggestion.Location = new Point(autoSuggestion.Location.X, yLocation);
         }
 
         // Clears flowControl
@@ -431,23 +425,23 @@ namespace manderijntje
         {
             if (sender.Equals(detailsUserControl))
                 this.detailsUserControl.tussenstopsPanel.Controls.Clear();
-            else if (sender.Equals(flowLayoutPanel))
-                this.flowLayoutPanel.Controls.Clear();
+            else if (sender.Equals(tripOptionsFlowControl))
+                this.tripOptionsFlowControl.Controls.Clear();
             else
-                this.autoSuggestie1.autosuggestFlowControl.Controls.Clear();
+                this.autoSuggestion.autosuggestFlowControl.Controls.Clear();
         }
 
         // Shows autosuggestion UserControl
         public void autosuggestVisible()
         {
-            this.autoSuggestie1.Visible = true;
+            this.autoSuggestion.Visible = true;
         }
         //
         // Removes autosuggestion UserControl
         //
         public void autosuggesInVisible()
         {
-            this.autoSuggestie1.Visible = false;
+            this.autoSuggestion.Visible = false;
         }
 
         // Will set the right bools for removal of the userControls
@@ -468,7 +462,7 @@ namespace manderijntje
                 hideBarLocation(logoHeader.Width, logoHeader.Height);
                 backIcon.Visible = false;
                 detailsUserControl.Visible = false;
-                flowLayoutPanel.Visible = false;
+                tripOptionsFlowControl.Visible = false;
                 optionSelected = false;
                 optiesControl = false;
             }
@@ -500,8 +494,8 @@ namespace manderijntje
             }
             else if (optiesControl)
             {
-                flowLayoutPanel.Visible = false;
-                hide(flowLayoutPanel);
+                tripOptionsFlowControl.Visible = false;
+                hide(tripOptionsFlowControl);
                 sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height);
 
             }
@@ -519,8 +513,8 @@ namespace manderijntje
             }
             else if (!inputControl && !optiesControl && !detailsControl && optionSelected)
             {
-                flowLayoutPanel.Visible = true;
-                show(flowLayoutPanel);
+                tripOptionsFlowControl.Visible = true;
+                show(tripOptionsFlowControl);
                 sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             }
         }
@@ -528,17 +522,17 @@ namespace manderijntje
         // Changed departureInput to Destionation and the otherway around
         private void changeTextImage_Click(object sender, EventArgs e)
         {
-            if (checkIfEmpty(beginInput.Text, eindInput.Text))
+            if (checkIfEmpty(departureInput.Text, destinationInput.Text))
             {
                 changeInput = true;
-                depLocation = beginInput.Text;
-                desLocation = eindInput.Text;
-                Color bKleur = beginInput.ForeColor;
-                Color eKleur = eindInput.ForeColor;
-                beginInput.Text = desLocation;
-                beginInput.ForeColor = eKleur;
-                eindInput.Text = depLocation;
-                eindInput.ForeColor = bKleur;
+                depLocation = departureInput.Text;
+                desLocation = destinationInput.Text;
+                Color bKleur = departureInput.ForeColor;
+                Color eKleur = destinationInput.ForeColor;
+                departureInput.Text = desLocation;
+                departureInput.ForeColor = eKleur;
+                destinationInput.Text = depLocation;
+                destinationInput.ForeColor = bKleur;
                 changeInput = false;
             }
         }
@@ -556,9 +550,9 @@ namespace manderijntje
                 hideBarLocation(logoHeader.Width, logoHeader.Height);
                 changeBackIcon(false);
             }
-            else if (sender.Equals(flowLayoutPanel))
+            else if (sender.Equals(tripOptionsFlowControl))
             {
-                flowLayoutPanel.Visible = true;
+                tripOptionsFlowControl.Visible = true;
                 inputControl = false;
                 optiesControl = true;
                 detailsControl = false;
@@ -600,7 +594,7 @@ namespace manderijntje
                 hideBarLocation(0, logoHeader.Height);
                 changeBackIcon(true);
             }
-            else if (sender.Equals(flowLayoutPanel))
+            else if (sender.Equals(tripOptionsFlowControl))
             {
                 inputControl = false;
                 optiesControl = false;
@@ -617,7 +611,7 @@ namespace manderijntje
                 detailsControl = false;
                 hideBarLocation(logoHeader.Width, logoHeader.Height);
                 logoHeader.Width = 390;
-                show(flowLayoutPanel);
+                show(tripOptionsFlowControl);
                 changeBackIcon(false);
             }
         }
@@ -641,9 +635,9 @@ namespace manderijntje
         //
         // FAKE DATA
         //
-        private List<reisOpties> fakeLijst(DateTime chosenTime)
+        private List<tripOptionsModel> fakeLijst(DateTime chosenTime)
         {
-            List<reisOpties> opties = new List<reisOpties>();
+            List<tripOptionsModel> opties = new List<tripOptionsModel>();
             for (int i = 0; i < 20; i++)
             {
                 chosenTime = chosenTime.AddMinutes(6);
@@ -656,8 +650,8 @@ namespace manderijntje
         //
         // FAKE DATA
         //
-        List<tussenStops> l = new List<tussenStops>();
-        private reisOpties FakeData(string huidigTijd, string eindTijd,
+        List<transferModel> l = new List<transferModel>();
+        private tripOptionsModel FakeData(string huidigTijd, string eindTijd,
            string vervoerder, string typeVervoer, string naamVervoer, string busLijn, string totaleTijd, string aantalOverstappen, string perron)
         {
             l.Clear();
@@ -666,7 +660,7 @@ namespace manderijntje
             l.Add(fakeTussenStops("Nijmegen", perron, "19:35", "19:50", "Trein", "Driebergen-Zeist"));
             l.Add(fakeTussenStops("Nijmegen", perron, "19:35", "20:05", "Bus", "Utrecht Centraal"));
             l.Add(fakeTussenStops("Nijmegen", perron, "20:12", "20:20", "", "Oorsprong-Park"));
-            reisOpties r = new reisOpties(huidigTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn,
+            tripOptionsModel r = new tripOptionsModel(huidigTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn,
                     totaleTijd, aantalOverstappen, perron, l, false);
             return r;
         }
@@ -674,10 +668,10 @@ namespace manderijntje
         //
         // FAKE DATA
         //
-        private tussenStops fakeTussenStops(string station, string perron, string aankomstTijd, string departureTime,
+        private transferModel fakeTussenStops(string station, string perron, string aankomstTijd, string departureTime,
            string typeVervoer, string richtingVervoer)
         {
-            tussenStops t = new tussenStops(station, perron, aankomstTijd, departureTime, typeVervoer, richtingVervoer);
+            transferModel t = new transferModel(station, perron, aankomstTijd, departureTime, typeVervoer, richtingVervoer);
             return t;
         }
     }

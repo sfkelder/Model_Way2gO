@@ -22,7 +22,7 @@ namespace manderijntje
         private string _aantalOverstappen;
         private string _perron;
         private bool _orange;
-        private List<tussenStops> _tussenstop = new List<tussenStops>();
+        private List<transferModel> _tussenstop = new List<transferModel>();
         private List<Node> _shortestPath = new List<Node>();
         Form1 _parent;
         public string beginTijd 
@@ -33,7 +33,7 @@ namespace manderijntje
         public string eindTijd
         {
             get { return _eindTijd; }
-            set { _eindTijd = value; eindTijdLBL.Text = _beginTijd + " - " + value; }
+            set { _eindTijd = value; TimeLBL.Text = _beginTijd + " - " + value; }
         }
         public string vervoerder
         {
@@ -48,7 +48,7 @@ namespace manderijntje
         public string naamVervoer
         {
             get { return _naamVervoer; }
-            set { _naamVervoer = value; VervoerderLBL.Text = vervoerder + " - " + value; }
+            set { _naamVervoer = value; carrierLBL.Text = vervoerder + " - " + value; }
         }
         public string busLijn
         {
@@ -60,23 +60,23 @@ namespace manderijntje
             get { return _totaleTijd; }
             set { _totaleTijd = value; 
                 clockIcon.Image = Properties.Resources.OrangeClock;
-                totaleTijdLBL.Text = value; }
+                totaltimeLBL.Text = value; }
         }
         public string aantalOverstappen
         {
             get { return _aantalOverstappen; }
             set { _aantalOverstappen = value;
-                this.overstappenIcon.Image = Properties.Resources.OverstappenOrange;
-                aantalOverstappenLBL.Text = value + "x";
+                this.transferIcon.Image = Properties.Resources.OverstappenOrange;
+                transferLBL.Text = value + "x";
                 Console.WriteLine(value);
             }
         }
         public string perron
         {
             get { return _perron; }
-            set { _perron = value; PerronLBL.Text = value; }
+            set { _perron = value; platformLBL.Text = value; }
         }
-        public List<tussenStops> tussenstop {
+        public List<transferModel> tussenstop {
             get { return _tussenstop; }
             set { _tussenstop = value; }
         }
@@ -100,7 +100,7 @@ namespace manderijntje
             this._parent = parent;
         }
         public tripOptionsCell(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange, List<Node> shortestPath)
+            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<transferModel> tussenstop, bool orange, List<Node> shortestPath)
         {
             this._beginTijd = beginTijd;
             this._eindTijd = eindTijd;
@@ -120,14 +120,15 @@ namespace manderijntje
         // Gives a tripOptionsCell back
         //
         public static tripOptionsCell getCellDetails(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<tussenStops> tussenstop, bool orange, List<Node> shortestPath)
+            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<transferModel> tussenstop, bool orange, List<Node> shortestPath)
         {
             tripOptionsCell c = new tripOptionsCell(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange, shortestPath);
             return c;
         }
 
         // Calls methods in the form call when clicked on a label.
-        private void eindTijdLBL_Click(object sender, EventArgs e)
+
+        private void click()
         {
             orange = true;
             this._parent.tripOptionscell = getCellDetails(_beginTijd, _eindTijd, _vervoerder, _typeVervoer, _naamVervoer, _busLijn, _totaleTijd, _aantalOverstappen, _perron, _tussenstop, _orange, _shortestPath);
@@ -139,25 +140,50 @@ namespace manderijntje
             if (Orange)
             {
                 this.BackColor = Color.FromArgb(255,122,0);
-                this.eindTijdLBL.ForeColor = Color.White;
-                this.VervoerderLBL.ForeColor = Color.White;
-                this.aantalOverstappenLBL.ForeColor = Color.White;
-                this.totaleTijdLBL.ForeColor = Color.White;
-                this.PerronLBL.ForeColor = Color.White;
-                this.overstappenIcon.Image = Properties.Resources.OverstappenWhite;
-                this.overstappenIcon.Image = Properties.Resources.WhiteClock;
+                this.TimeLBL.ForeColor = Color.White;
+                this.carrierLBL.ForeColor = Color.White;
+                this.transferLBL.ForeColor = Color.White;
+                this.totaltimeLBL.ForeColor = Color.White;
+                this.platformLBL.ForeColor = Color.White;
+                this.transferIcon.Image = Properties.Resources.OverstappenWhite;
+                this.transferIcon.Image = Properties.Resources.WhiteClock;
             }
             else
             {
                 this.BackColor = Color.White;
-                this.eindTijdLBL.ForeColor = Color.Black;
-                this.VervoerderLBL.ForeColor = Color.DimGray;
-                this.aantalOverstappenLBL.ForeColor = Color.FromArgb(255, 122, 0);
-                this.totaleTijdLBL.ForeColor = Color.FromArgb(255, 122, 0);
-                this.PerronLBL.ForeColor = Color.FromArgb(255, 122, 0);
-                this.overstappenIcon.Image = manderijntje.Properties.Resources.OverstappenOrange;
+                this.TimeLBL.ForeColor = Color.Black;
+                this.carrierLBL.ForeColor = Color.DimGray;
+                this.transferLBL.ForeColor = Color.FromArgb(255, 122, 0);
+                this.totaltimeLBL.ForeColor = Color.FromArgb(255, 122, 0);
+                this.platformLBL.ForeColor = Color.FromArgb(255, 122, 0);
+                this.transferIcon.Image = manderijntje.Properties.Resources.OverstappenOrange;
                 this.clockIcon.Image = manderijntje.Properties.Resources.OrangeClock;
             } 
+        }
+
+        private void eindTijdLBL_Click(object sender, EventArgs e)
+        {
+            click();
+        }
+
+        private void carrierLBL_Click(object sender, EventArgs e)
+        {
+            click();
+        }
+
+        private void totaltimeLBL_Click(object sender, EventArgs e)
+        {
+            click();
+        }
+
+        private void transferLBL_Click(object sender, EventArgs e)
+        {
+            click();
+        }
+
+        private void platformLBL_Click(object sender, EventArgs e)
+        {
+            click();
         }
     }
 }
