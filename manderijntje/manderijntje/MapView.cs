@@ -18,7 +18,8 @@ namespace manderijntje
         Point start, end;
         private bool startingUp = true;
         connecties Connecties;
-
+       
+        
 
         public MapView(connecties c)
         {
@@ -38,11 +39,11 @@ namespace manderijntje
             height = y;
             width = x;
             nodes.Clear();
-
+     
             if (startingUp)
             {
                 Connecties.SetSizeMap(width, height);
-                startingUp = false;
+               // startingUp = false; 
             }
 
             Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);  
