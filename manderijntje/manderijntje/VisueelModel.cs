@@ -20,7 +20,7 @@ namespace manderijntje
             private  bewerkingen b = new bewerkingen();
             public VisueelModel toegang;
             private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
-
+        
             public connecties (DataModel data)
             {
                 if (File.Exists(filepath) && !Program.reimport)
@@ -45,7 +45,7 @@ namespace manderijntje
             public void SetSizeMap(int width, int height)
             {
                  Point[] points = new Point[1000];
-            
+        
                 for(int i = 0; i < toegang.nodes.Count - 1; i++)
                 {
                      try
