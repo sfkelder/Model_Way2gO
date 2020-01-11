@@ -13,10 +13,11 @@ namespace manderijntje
     public partial class MapView : UserControl
     {
         List<VisueelNode> nodes = new List<VisueelNode>();
+        List<VisueelLink> links = new List<VisueelLink>();
 
         int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 50, height, width;
-        Point start, end;
-        private bool startingUp = true;
+        Point start, end, newEnd;
+        private bool startingUp = true, mouseMoved = false;
         connecties Connecties;
        
         
@@ -29,9 +30,10 @@ namespace manderijntje
            // Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
          
             this.Paint += this.painting;
+            
+            this.MouseDown += (object o, MouseEventArgs mea) => { if (mea.Button == MouseButtons.Left) start = mea.Location; };
+            this.MouseMove += (object o, MouseEventArgs mea) => { if (mea.Button == MouseButtons.Left) end = mea.Location; if (end != newEnd) { mouseMoved = true; } newEnd = end; };
             this.MouseClick += this.onclick;
-            this.MouseDown += (object o, MouseEventArgs mea) => { start = mea.Location; };
-            this.MouseUp += (object o, MouseEventArgs mea) => { end = mea.Location; };
         }
          
         public void setMap(int x, int y)
@@ -39,14 +41,15 @@ namespace manderijntje
             height = y;
             width = x;
             nodes.Clear();
+            links.Clear();
      
             if (startingUp)
             {
                 Connecties.SetSizeMap(width, height);
-               // startingUp = false; 
+                startingUp = false; 
             }
 
-            Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);  
+            Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes, links);  
             Invalidate();
         }
          
@@ -55,28 +58,45 @@ namespace manderijntje
 
             if (ea.Button == MouseButtons.Right)
             {
-                zoom--;
-
-                nodes.Clear();
-                Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
+                if(zoom > 0)
+                {
+                    zoom--;
+                    nodes.Clear();
+                    links.Clear();
+                    Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes, links);
+                    Invalidate();
+                }
+               
             }
             else if (ea.Button == MouseButtons.Middle)
             {
-                zoom++;
-
-                nodes.Clear();
-                Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false,  nodes);
+                if(zoom < 8)
+                {
+                    zoom++;
+                    nodes.Clear();
+                    links.Clear();
+                    Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes, links);
+                    Invalidate();
+                }
+                                   
             }
             else
             {
-                nodes.Clear();
-                Connecties.visualcontrol(width, zoom, zoomgrote, start, end, null, false, nodes);
-                totverschuivingX += start.X - end.X;
-                totverschuivingY += start.Y - end.Y;
+                if (mouseMoved)
+                {
+                    nodes.Clear();
+                    links.Clear();
+                    Connecties.visualcontrol(width, zoom, zoomgrote, start, end, null, false, nodes, links);
+                    totverschuivingX += start.X - end.X;
+                    totverschuivingY += start.Y - end.Y;
+                    mouseMoved = false;
+                    Invalidate();
+                }
+               
 
             }
 
-            Invalidate();
+            
         }
 
         public void SacleCoordinates()
@@ -115,19 +135,28 @@ namespace manderijntje
 
         public void painting(object o, PaintEventArgs pea)
         {
-            // SacleCoordinates();
-
-            //pea.Graphics.FillRectangle(Brushes.Black, 30 - totverschuivingX, 30 - totverschuivingY, 10, 10);
+             SacleCoordinates();
+            Pen blackPen = new Pen(Color.Black, 2);
+            
 
             for (int m = 0; m < nodes.Count - 1; m++)
             {
-                if (nodes[m].paint == true)
+                if (nodes[m].paint == true && nodes[m].dummynode == false)
                 {
-                    pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 10, 10);   
+                    pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 5, 5);   
                 }
             }
 
-           
+            for (int n = 0; n < links.Count - 1; n++)
+            {
+                if (links[n].paint)
+                {
+                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.punt.X -totverschuivingX, links[n].u.punt.Y - totverschuivingY), new Point(links[n].v.punt.X - totverschuivingX, links[n].v.punt.Y - totverschuivingY));
+                }
+            }
+
+
+
         }
     }
 }

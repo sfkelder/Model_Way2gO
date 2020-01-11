@@ -226,7 +226,7 @@ namespace manderijntje
             List<string> list = new List<string>();
             list.Add(departureLocation);
             list.Add(destinationLocation);
-            //visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes);
+            //visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes, null);
 
             chosenTime = Convert.ToDateTime(departureTime);
             tripOptions.Add(r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
