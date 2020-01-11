@@ -227,8 +227,8 @@ namespace manderijntje
                         //string longitude2 = longitude[0] + "," + longitude[1];
                         //weer . eraf , erbij
                         punten1[n, 0] = wpt.ID.PadLeft(10, '9');
-                        punten1[n, 1] = wpt.Longitude; //longitude
-                        punten1[n, 2] = wpt.Latitude; //latitude
+                        punten1[n, 1] = getCoordinateFormatting(wpt.Longitude); //longitude with the correct formatting for the local settings
+                        punten1[n, 2] = getCoordinateFormatting(wpt.Latitude); //latitude with the correct formatting for the local settings
                         ID[n] = double.Parse(wpt.ID);
                         punten1[n, 3] = wptSeg.v;
                         n++;
@@ -238,6 +238,30 @@ namespace manderijntje
             Sort(punten1, 0, "ASC");
             punten1ID = GetColumn(punten1, 0);
         }
+
+        // this function makes sure that whatever the formatting settings are for the decimal separator, the parsing class always gets the correct double value from the string
+        private string getCoordinateFormatting (string c)
+        {
+            string dot_format = c;
+
+            string[] comma_format_array = c.Split('.');
+            string comma_format = comma_format_array[0] + "," + comma_format_array[1];
+
+            double dot_value = double.Parse(dot_format);
+            double comma_value = double.Parse(comma_format);
+
+            if (dot_value > 1000.0 || dot_value < -1000.0)
+            {
+                return comma_format;
+            } else if (comma_value > 1000.0 || comma_value < -1000.0)
+            {
+                return dot_format;
+            } else
+            {
+                return c; 
+            }
+        }
+
         public string[] GetColumn(string[,] matrix, int columnNumber)
         {
             return Enumerable.Range(0, matrix.GetLength(0))
