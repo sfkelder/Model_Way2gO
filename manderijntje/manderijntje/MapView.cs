@@ -16,6 +16,7 @@ namespace manderijntje
 
         int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 50, height, width;
         Point start, end;
+        private bool startingUp = true;
         connecties Connecties;
 
 
@@ -23,7 +24,7 @@ namespace manderijntje
         {
             Connecties = c;
             InitializeComponent();
-           Connecties.SetSizeMap(width, height);
+           
            // Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);
          
             this.Paint += this.painting;
@@ -37,6 +38,13 @@ namespace manderijntje
             height = y;
             width = x;
             nodes.Clear();
+
+            if (startingUp)
+            {
+                Connecties.SetSizeMap(width, height);
+                startingUp = false;
+            }
+
             Connecties.visualcontrol(width, zoom, zoomgrote, new Point(0, 0), new Point(0, 0), null, false, nodes);  
             Invalidate();
         }
