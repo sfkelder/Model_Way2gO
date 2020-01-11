@@ -169,12 +169,9 @@ namespace manderijntje
         string[,] punten3;
         string[,] punten4;
         string[,] puntenklaar; // klaar
-        string[,] puntenklaar2; // lat en long verandererd
+        string[,] puntenklaar2;
         int lengthjag2;
         string[] punten1ID;
-        double lamin = 100000000, lomin = 100000000; //min
-        double lamax = 0, lomax = 0;//max
-        double lamid = 0, lomid = 0;//midden ervan
         List<string> routes;
         string[] id; List<string> routids;
         string[][] jag; string[][] jag2;
@@ -1295,11 +1292,11 @@ namespace manderijntje
 
 
 
-        public Link(Node startpunt, Node eindpunt, string RouteName)
+        public Link(Node startpunt, Node eindpunt, string RoutName)
         {
             Start = startpunt;
             End = eindpunt;
-            RouteName = RouteName;
+            RouteName = RoutName;
         }
     }
 }
