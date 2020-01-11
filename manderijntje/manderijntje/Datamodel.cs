@@ -1285,8 +1285,6 @@ namespace manderijntje
 
         public string RouteName;
 
-        public List<Node> driveBystation;
-
         public double Weight = 1;
 
 

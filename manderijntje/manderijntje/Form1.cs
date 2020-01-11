@@ -13,7 +13,6 @@ namespace manderijntje
         DataControl dataControl;
         connecties visueelControl;
         MapView mapView;
-        Routing r = new Routing();
         List<Route> tripOptions = new List<Route>();
         List<departureTimeModel> timeList = new List<departureTimeModel>();
         public tripOptionsCell tripOptionscell { get; set; }
@@ -40,7 +39,7 @@ namespace manderijntje
             }
 
             //test
-            Route route = r.GetRoute("Utrecht Centraal", "Den Haag Centraal", DateTime.Now, dataControl.GetDataModel());
+            Route route = Routing.GetRoute("Utrecht Centraal", "Gouda", DateTime.Now, dataControl.GetDataModel());
             foreach (Node station in route.shortestPath)
             {
                 Console.WriteLine(station.stationnaam);
@@ -229,8 +228,8 @@ namespace manderijntje
             //visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes);
 
             chosenTime = Convert.ToDateTime(departureTime);
-            tripOptions.Add(r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
-            Route route = r.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
+            tripOptions.Add(Routing.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
+            Route route = Routing.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
             foreach (Node station in route.shortestPath)
             {
                 Console.WriteLine(station.stationnaam);
