@@ -38,8 +38,7 @@ namespace manderijntje
             }
             Console.ReadLine();
 
-                test end 
-            */
+        
         }
 
         // Calls every method that needs to be called to setup the view Correctly

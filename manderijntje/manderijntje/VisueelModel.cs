@@ -76,7 +76,7 @@ namespace manderijntje
         }
 
         //wordt vanuit andere classes aangeroepen en stuurt alles in dit form aan
-        public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen, List<VisueelNode> n, List<VisueelLink> links)
+        public void visualcontrol(int schermhogte, int factor, Point startmouse, Point endmouse, List<string> s, bool stationnamen, MapView map)
         {
             
 
@@ -95,13 +95,10 @@ namespace manderijntje
 
                 l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, map);
 
-                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, numberchange, n, links);
-
-                return numberchange;
             }
             else
             {
-                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), number, n, links);
+                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), map);
             }
 
 
@@ -140,7 +137,7 @@ namespace manderijntje
         }
 
         //set de bool waarde van nodes naar true of false afhankelijk van de ingevoerde data
-        public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number, List<VisueelNode> n, List<VisueelLink> links)
+        public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, MapView map)
         {
 
             Point verschuiving = b.movemap(start, end);
@@ -154,11 +151,11 @@ namespace manderijntje
                 {
                     if (stations && v.punt.X > startpoint.X && v.punt.X > startpoint.Y && v.punt.X < endpoint.X && v.punt.Y < endpoint.Y)
                     {
-                        switching(v, factor, n);
+                        switching(v, factor, map);
                     }
                     else
                     {
-                        switching(v, factor, n);
+                        switching(v, factor, map);
                     }
 
                 }
@@ -171,7 +168,7 @@ namespace manderijntje
            foreach(VisueelLink v in toegang.links)
             {
                if (v.u.paint && v.v.paint)
-                    links.Add(v);
+                    map.links.Add(v);
             }
            
         }
@@ -193,7 +190,7 @@ namespace manderijntje
         }
 
         //hulp methode valuenode
-        public void switching(VisueelNode v, int zoom, List<VisueelNode> n)
+        public void switching(VisueelNode v, int zoom, MapView map)
         {
             //List<VisueelNode> nodes = new List<VisueelNode>();
             switch (zoom)
@@ -201,27 +198,27 @@ namespace manderijntje
                 case 0:
                    // v.paint = (v.prioriteit < 5) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v); 
+                    if (v.paint) map.nodes.Add(v); 
 
                     break;
                 case 1:
                     // v.paint = (v.prioriteit < 4) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) map.nodes.Add(v);
                     break;
                 case 2:
                     //v.paint = (v.prioriteit < 3) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) map.nodes.Add(v);
                     break;
                 case 3:
                     // v.paint = (v.prioriteit < 2) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) map.nodes.Add(v);
                     break;
                 default:
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) map.nodes.Add(v);
                     break;
             }
         }

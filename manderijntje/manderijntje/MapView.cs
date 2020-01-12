@@ -12,8 +12,8 @@ namespace manderijntje
 {
     public partial class MapView : UserControl
     {
-        List<VisueelNode> nodes = new List<VisueelNode>();
-        List<VisueelLink> links = new List<VisueelLink>();
+       public List<VisueelNode> nodes = new List<VisueelNode>();
+        public List<VisueelLink> links = new List<VisueelLink>();
 
         int totverschuivingX, totverschuivingY, zoom = 1, height, width;
         Point start, end, newEnd;
@@ -126,17 +126,17 @@ namespace manderijntje
         {
                   
 
-            for (int m = 0; m < nodes.Count - 1; m++)
+            for (int m = 0; m < nodes.Count; m++)
             { 
                 SolidBrush brush = new SolidBrush(nodes[m].kleur);
 
                 if (nodes[m].paint == true && nodes[m].dummynode == false)
                 {
-                    pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 5, 5);   
+                    pea.Graphics.FillRectangle(brush, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 5, 5);   
                 }
             }
 
-            for (int n = 0; n < links.Count - 1; n++) 
+            for (int n = 0; n < links.Count; n++) 
             {
                 Pen blackPen = new Pen(links[n].kleur, 1);
 
