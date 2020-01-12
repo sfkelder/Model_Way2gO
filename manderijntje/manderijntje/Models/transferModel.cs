@@ -9,30 +9,20 @@ namespace manderijntje
     public class transferModel
     {
         public string station { get; set; }
-        public string perron { get; set; }
-        public string aankomstTijd { get; set; }
-        public string vertrekTijd { get; set; }
-        public string typeVervoer { get; set; }
-        public string richtingVervoer { get; set; }
+        public string platform { get; set; }
+        public string arrivalTime { get; set; }
+        public string departureTime { get; set; }
+        public string typeTranssport { get; set; }
+        public string toStation { get; set; }
 
-        public transferModel(string station, string perron, string aankomstTijd, string vertrekTijd, string typeVervoer, string richtingVervoer)
+        public transferModel(string station, string platform, string arrivalTime, string departureTime, string typeTranssport, string toStation)
         {
             this.station = station;
-            this.perron = perron;
-            this.aankomstTijd = aankomstTijd;
-            this.vertrekTijd = vertrekTijd;
-            this.typeVervoer = typeVervoer;
-            this.richtingVervoer = richtingVervoer;
-        }
-
-        public transferModel()
-        { 
-        }
-
-        // Gives tussenStops model back
-        public transferModel tussenstopsModel(string station, string perron, string aankomstTijd, string vertrekTijd, string typeVervoer, string richtingVervoer)
-        {
-            return new transferModel(station, perron, aankomstTijd, vertrekTijd, typeVervoer, richtingVervoer);
+            this.platform = platform;
+            this.arrivalTime = arrivalTime;
+            this.departureTime = departureTime;
+            this.typeTranssport = typeTranssport;
+            this.toStation = toStation;
         }
     }
 }
