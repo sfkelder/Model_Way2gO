@@ -120,7 +120,7 @@ namespace manderijntje
                 else
                     textbox.Text = "Destination";
                 textbox.ForeColor = Color.LightGray;
-            }
+            } 
         }
 
         // Checks if the location is filled in correctly and exist

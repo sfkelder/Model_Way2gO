@@ -17,7 +17,7 @@ namespace manderijntje
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main() 
         {
             if (!Directory.Exists(baseDir)) {
                 Directory.CreateDirectory(baseDir);
