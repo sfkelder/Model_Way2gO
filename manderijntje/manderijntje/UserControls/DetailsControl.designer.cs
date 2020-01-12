@@ -35,9 +35,9 @@
             this.transfersLBL = new System.Windows.Forms.Label();
             this.totaltimeLBL = new System.Windows.Forms.Label();
             this.arrivalLBL = new System.Windows.Forms.Label();
-            this.tijdenLBL = new System.Windows.Forms.Label();
+            this.timesLBL = new System.Windows.Forms.Label();
             this.departureLBL = new System.Windows.Forms.Label();
-            this.tussenstopsPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.transfersPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.headerDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.transferIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clockIcon)).BeginInit();
@@ -52,7 +52,7 @@
             this.headerDetails.Controls.Add(this.transfersLBL);
             this.headerDetails.Controls.Add(this.totaltimeLBL);
             this.headerDetails.Controls.Add(this.arrivalLBL);
-            this.headerDetails.Controls.Add(this.tijdenLBL);
+            this.headerDetails.Controls.Add(this.timesLBL);
             this.headerDetails.Controls.Add(this.departureLBL);
             this.headerDetails.Location = new System.Drawing.Point(0, 0);
             this.headerDetails.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -63,10 +63,10 @@
             // transferIcon
             // 
             this.transferIcon.Image = global::manderijntje.Properties.Resources.OverstappenWhite;
-            this.transferIcon.Location = new System.Drawing.Point(668, 35);
-            this.transferIcon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.transferIcon.Location = new System.Drawing.Point(663, 29);
+            this.transferIcon.Margin = new System.Windows.Forms.Padding(4);
             this.transferIcon.Name = "transferIcon";
-            this.transferIcon.Size = new System.Drawing.Size(27, 25);
+            this.transferIcon.Size = new System.Drawing.Size(38, 36);
             this.transferIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.transferIcon.TabIndex = 11;
             this.transferIcon.TabStop = false;
@@ -74,10 +74,10 @@
             // clockIcon
             // 
             this.clockIcon.Image = global::manderijntje.Properties.Resources.WhiteClock;
-            this.clockIcon.Location = new System.Drawing.Point(548, 32);
-            this.clockIcon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.clockIcon.Location = new System.Drawing.Point(522, 28);
+            this.clockIcon.Margin = new System.Windows.Forms.Padding(4);
             this.clockIcon.Name = "clockIcon";
-            this.clockIcon.Size = new System.Drawing.Size(27, 25);
+            this.clockIcon.Size = new System.Drawing.Size(38, 38);
             this.clockIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.clockIcon.TabIndex = 10;
             this.clockIcon.TabStop = false;
@@ -88,7 +88,7 @@
             this.platformLBL.BackColor = System.Drawing.Color.Transparent;
             this.platformLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.platformLBL.ForeColor = System.Drawing.Color.White;
-            this.platformLBL.Location = new System.Drawing.Point(759, 29);
+            this.platformLBL.Location = new System.Drawing.Point(762, 29);
             this.platformLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.platformLBL.Name = "platformLBL";
             this.platformLBL.Size = new System.Drawing.Size(50, 36);
@@ -101,7 +101,7 @@
             this.transfersLBL.BackColor = System.Drawing.Color.Transparent;
             this.transfersLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.transfersLBL.ForeColor = System.Drawing.Color.White;
-            this.transfersLBL.Location = new System.Drawing.Point(696, 29);
+            this.transfersLBL.Location = new System.Drawing.Point(703, 28);
             this.transfersLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.transfersLBL.Name = "transfersLBL";
             this.transfersLBL.Size = new System.Drawing.Size(49, 36);
@@ -114,7 +114,7 @@
             this.totaltimeLBL.BackColor = System.Drawing.Color.Transparent;
             this.totaltimeLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totaltimeLBL.ForeColor = System.Drawing.Color.White;
-            this.totaltimeLBL.Location = new System.Drawing.Point(576, 29);
+            this.totaltimeLBL.Location = new System.Drawing.Point(569, 30);
             this.totaltimeLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.totaltimeLBL.Name = "totaltimeLBL";
             this.totaltimeLBL.Size = new System.Drawing.Size(78, 36);
@@ -133,17 +133,17 @@
             this.arrivalLBL.TabIndex = 2;
             this.arrivalLBL.Text = "Arrival";
             // 
-            // tijdenLBL
+            // timesLBL
             // 
-            this.tijdenLBL.AutoSize = true;
-            this.tijdenLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tijdenLBL.ForeColor = System.Drawing.Color.White;
-            this.tijdenLBL.Location = new System.Drawing.Point(32, 80);
-            this.tijdenLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.tijdenLBL.Name = "tijdenLBL";
-            this.tijdenLBL.Size = new System.Drawing.Size(235, 36);
-            this.tijdenLBL.TabIndex = 1;
-            this.tijdenLBL.Text = "12:01 --> 12:20";
+            this.timesLBL.AutoSize = true;
+            this.timesLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timesLBL.ForeColor = System.Drawing.Color.White;
+            this.timesLBL.Location = new System.Drawing.Point(32, 80);
+            this.timesLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.timesLBL.Name = "timesLBL";
+            this.timesLBL.Size = new System.Drawing.Size(235, 36);
+            this.timesLBL.TabIndex = 1;
+            this.timesLBL.Text = "12:01 --> 12:20";
             // 
             // departureLBL
             // 
@@ -157,20 +157,20 @@
             this.departureLBL.TabIndex = 0;
             this.departureLBL.Text = "Departure";
             // 
-            // tussenstopsPanel
+            // transfersPanel
             // 
-            this.tussenstopsPanel.AutoScroll = true;
-            this.tussenstopsPanel.Location = new System.Drawing.Point(0, 146);
-            this.tussenstopsPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.tussenstopsPanel.Name = "tussenstopsPanel";
-            this.tussenstopsPanel.Size = new System.Drawing.Size(845, 1139);
-            this.tussenstopsPanel.TabIndex = 1;
+            this.transfersPanel.AutoScroll = true;
+            this.transfersPanel.Location = new System.Drawing.Point(0, 146);
+            this.transfersPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.transfersPanel.Name = "transfersPanel";
+            this.transfersPanel.Size = new System.Drawing.Size(845, 1139);
+            this.transfersPanel.TabIndex = 1;
             // 
             // DetailsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tussenstopsPanel);
+            this.Controls.Add(this.transfersPanel);
             this.Controls.Add(this.headerDetails);
             this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.Name = "DetailsControl";
@@ -187,12 +187,12 @@
 
         private System.Windows.Forms.Panel headerDetails;
         private System.Windows.Forms.Label arrivalLBL;
-        private System.Windows.Forms.Label tijdenLBL;
+        private System.Windows.Forms.Label timesLBL;
         private System.Windows.Forms.Label departureLBL;
         private System.Windows.Forms.Label platformLBL;
         private System.Windows.Forms.Label transfersLBL;
         private System.Windows.Forms.Label totaltimeLBL;
-        public System.Windows.Forms.FlowLayoutPanel tussenstopsPanel;
+        public System.Windows.Forms.FlowLayoutPanel transfersPanel;
         private System.Windows.Forms.PictureBox transferIcon;
         private System.Windows.Forms.PictureBox clockIcon;
     }

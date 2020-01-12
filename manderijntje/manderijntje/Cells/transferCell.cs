@@ -12,46 +12,46 @@ namespace manderijntje
 {
     public partial class transferCell : UserControl
     {
-        private string _vertrekTijd;
-        private string _stationNaam;
-        private string _perron;
-        private string _richting;
-        private string _typeVervoer;
+        private string _departureTime;
+        private string _stationName;
+        private string _platform;
+        private string _toStation;
+        private string _typeTransport;
         private bool _last;
         private bool _first;
         private bool _mid;
 
-        public string vertrekTijd
+        public string departureTime
         {
-            get { return _vertrekTijd; }
-            set { _vertrekTijd = value; departuretimeLBL.Text = value; }
+            get { return _departureTime; }
+            set { _departureTime = value; departuretimeLBL.Text = value; }
         }
-        public string stationNaam
+        public string stationName
         {
-            get { return _stationNaam; }
-            set { _stationNaam = value; stationLBL.Text = value; }
+            get { return _stationName; }
+            set { _stationName = value; stationLBL.Text = value; }
         }
-        public string perron
+        public string platform
         {
-            get { return _perron; }
-            set { _perron = value; platformLBL.Text = "Platform " + value; }
+            get { return _platform; }
+            set { _platform = value; platformLBL.Text = "Platform " + value; }
         }
-        public string richting
+        public string toStation
         {
-            get { return _richting; }
-            set { _richting = value; directionLBL.Text = "To " + value; }
+            get { return _toStation; }
+            set { _toStation = value; directionLBL.Text = "To " + value; }
         }
 
-        public string typeVervoer
+        public string typeTransport
         {
-            get { return _typeVervoer; }
-            set { _typeVervoer = value;
+            get { return _typeTransport; }
+            set { _typeTransport = value;
                 
-                if(_typeVervoer == "train")
+                if(_typeTransport == "train")
                 {
                     typetransportIcon.Image = Properties.Resources.OrangeTrain;
                 }
-                else if (_typeVervoer == "bus")
+                else if (_typeTransport == "bus")
                 {
                     typetransportIcon.Image = Properties.Resources.busIcon;
                 }

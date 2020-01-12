@@ -12,8 +12,8 @@ namespace manderijntje
 {
     public partial class MapView : UserControl
     {
-        List<VisueelNode> nodes = new List<VisueelNode>();
-        List<VisueelLink> links = new List<VisueelLink>();
+       List<VisueelNode> nodes = new List<VisueelNode>();
+       List<VisueelLink> links = new List<VisueelLink>();
 
         int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 50, height, width;
         Point start, end, newEnd;
@@ -143,7 +143,7 @@ namespace manderijntje
             {
                 if (nodes[m].paint == true && nodes[m].dummynode == false)
                 {
-                    pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 5, 5);   
+                    pea.Graphics.FillRectangle(Brushes.Black, (nodes[m].punt.X - totverschuivingX) - 3, (nodes[m].punt.Y - totverschuivingY) - 3, 6, 6);   
                 }
             }
 
