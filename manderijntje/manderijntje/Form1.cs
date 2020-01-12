@@ -222,7 +222,6 @@ namespace manderijntje
 
             chosenTime = Convert.ToDateTime(departureTime);
             tripOptions.Add(Routing.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
-            Route route = Routing.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
             fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
         }
 
