@@ -35,7 +35,7 @@
             this.logoIcon = new System.Windows.Forms.PictureBox();
             this.inputPanel = new System.Windows.Forms.Panel();
             this.planTripLBL = new System.Windows.Forms.Label();
-            this.searchButton = new System.Windows.Forms.Button();
+            this.searchBTN = new System.Windows.Forms.Button();
             this.tijdPanel = new System.Windows.Forms.Panel();
             this.timeLBL = new System.Windows.Forms.Label();
             this.timeInput = new System.Windows.Forms.ComboBox();
@@ -103,7 +103,7 @@
             // inputPanel
             // 
             this.inputPanel.Controls.Add(this.planTripLBL);
-            this.inputPanel.Controls.Add(this.searchButton);
+            this.inputPanel.Controls.Add(this.searchBTN);
             this.inputPanel.Controls.Add(this.tijdPanel);
             this.inputPanel.Controls.Add(this.textboxPanel);
             this.inputPanel.Location = new System.Drawing.Point(87, 265);
@@ -123,21 +123,21 @@
             this.planTripLBL.TabIndex = 3;
             this.planTripLBL.Text = "Plan your trip";
             // 
-            // searchButton
+            // searchBTN
             // 
-            this.searchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
-            this.searchButton.FlatAppearance.BorderSize = 0;
-            this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchButton.ForeColor = System.Drawing.Color.White;
-            this.searchButton.Location = new System.Drawing.Point(39, 144);
-            this.searchButton.Margin = new System.Windows.Forms.Padding(2);
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(147, 36);
-            this.searchButton.TabIndex = 2;
-            this.searchButton.Text = "Get your Trip";
-            this.searchButton.UseVisualStyleBackColor = false;
-            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            this.searchBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
+            this.searchBTN.FlatAppearance.BorderSize = 0;
+            this.searchBTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.searchBTN.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchBTN.ForeColor = System.Drawing.Color.White;
+            this.searchBTN.Location = new System.Drawing.Point(39, 144);
+            this.searchBTN.Margin = new System.Windows.Forms.Padding(2);
+            this.searchBTN.Name = "searchBTN";
+            this.searchBTN.Size = new System.Drawing.Size(147, 36);
+            this.searchBTN.TabIndex = 2;
+            this.searchBTN.Text = "Get your Trip";
+            this.searchBTN.UseVisualStyleBackColor = false;
+            this.searchBTN.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // tijdPanel
             // 
@@ -266,18 +266,17 @@
             // 
             // detailsUserControl
             // 
-            this.detailsUserControl.aantalOverstappen = null;
-            this.detailsUserControl.beginTijd = null;
-            this.detailsUserControl.eindTijd = null;
+            this.detailsUserControl.departureTime = null;
+            this.detailsUserControl.destinationTime = null;
             this.detailsUserControl.Location = new System.Drawing.Point(771, 62);
             this.detailsUserControl.Margin = new System.Windows.Forms.Padding(4);
             this.detailsUserControl.Name = "detailsUserControl";
-            this.detailsUserControl.perron = null;
+            this.detailsUserControl.platform = null;
             this.detailsUserControl.shortestPath = null;
             this.detailsUserControl.Size = new System.Drawing.Size(422, 685);
             this.detailsUserControl.TabIndex = 14;
-            this.detailsUserControl.totaleTijd = null;
-            this.detailsUserControl.tussenstop = null;
+            this.detailsUserControl.totalTime = null;
+            this.detailsUserControl.transfers = null;
             // 
             // Form1
             // 
@@ -312,7 +311,7 @@
         private System.Windows.Forms.Panel logoHeader;
         public System.Windows.Forms.Panel inputPanel;
         private System.Windows.Forms.Label planTripLBL;
-        private System.Windows.Forms.Button searchButton;
+        private System.Windows.Forms.Button searchBTN;
         private System.Windows.Forms.Panel tijdPanel;
         private System.Windows.Forms.Label timeLBL;
         private System.Windows.Forms.ComboBox timeInput;

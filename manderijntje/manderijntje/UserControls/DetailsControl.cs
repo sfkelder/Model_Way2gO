@@ -12,44 +12,42 @@ namespace manderijntje
 {
     public partial class DetailsControl : UserControl
     {
-        private string _beginTijd;
-        private string _eindTijd;
-        private string _totaleTijd;
-        private string _aantalOverstappen;
-        private string _perron;
-        private List<transferModel> _tussenstop;
+        private string _departureTime;
+        private string _destinationTime;
+        private string _totalTime;
+        private string _transfers;
+        private string _platform;
         private List<Node> _shortestPath;
 
-        public string beginTijd
+        public string departureTime
         {
-            get { return _beginTijd; }
-            set { _beginTijd = value; }
-        }
-        public string eindTijd
-        {
-            get { return _eindTijd; }
-            set { _eindTijd = value; tijdenLBL.Text = _beginTijd + " - " + value; }
-        }
-        public string totaleTijd
-        {
-            get { return _totaleTijd; }
-            set { _totaleTijd = value; totaltimeLBL.Text = value; }
-        }
-        public string aantalOverstappen
-        {
-            get { return _aantalOverstappen; }
-            set { _aantalOverstappen = value; transfersLBL.Text = value; }
-        }
-        public string perron
-        {
-            get { return _perron; }
-            set { _perron = value; platformLBL.Text = value; }
+            get { return _departureTime; }
+            set { _departureTime = value; }
         }
 
-        public List<transferModel> tussenstop
+        public string destinationTime
         {
-            get { return _tussenstop; }
-            set { _tussenstop = value; }
+            get { return _destinationTime; }
+            set { _destinationTime = value; timesLBL.Text = _departureTime + " - " + value; }
+        }
+
+        public string totalTime
+        {
+            get { return _totalTime; }
+            set { _totalTime = value; totaltimeLBL.Text = value;
+            }
+        }
+
+        public string transfers
+        {
+            get { return _transfers; }
+            set { _transfers = value; transfersLBL.Text = value + "x"; }
+        }
+
+        public string platform
+        {
+            get { return _platform; }
+            set { _platform = value; platformLBL.Text = value; }
         }
 
         public List<Node> shortestPath
@@ -57,7 +55,6 @@ namespace manderijntje
             get { return _shortestPath; }
             set { _shortestPath = value; }
         }
-
 
         public DetailsControl()
         {
