@@ -44,7 +44,7 @@ namespace manderijntje
 
         public void SetSizeMap(int width, int height)
         {
-            Point[] points = new Point[1000];
+            Point[] points = new Point[1000]; 
 
             for (int i = 0; i < toegang.nodes.Count; i++)
             {
