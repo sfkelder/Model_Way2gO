@@ -42,7 +42,7 @@
             // 
             this.departuretimeLBL.AutoSize = true;
             this.departuretimeLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.departuretimeLBL.Location = new System.Drawing.Point(36, 71);
+            this.departuretimeLBL.Location = new System.Drawing.Point(36, 65);
             this.departuretimeLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.departuretimeLBL.Name = "departuretimeLBL";
             this.departuretimeLBL.Size = new System.Drawing.Size(96, 36);
@@ -95,14 +95,14 @@
             // typetransportIcon
             // 
             this.typetransportIcon.Location = new System.Drawing.Point(740, 99);
-            this.typetransportIcon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.typetransportIcon.Margin = new System.Windows.Forms.Padding(4);
             this.typetransportIcon.Name = "typetransportIcon";
             this.typetransportIcon.Size = new System.Drawing.Size(32, 41);
             this.typetransportIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.typetransportIcon.TabIndex = 5;
             this.typetransportIcon.TabStop = false;
             // 
-            // tussenstopCell
+            // transferCell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -113,7 +113,7 @@
             this.Controls.Add(this.stationLBL);
             this.Controls.Add(this.departuretimeLBL);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "tussenstopCell";
+            this.Name = "transferCell";
             this.Size = new System.Drawing.Size(808, 178);
             ((System.ComponentModel.ISupportInitialize)(this.lineImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.typetransportIcon)).EndInit();

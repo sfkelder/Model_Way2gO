@@ -87,10 +87,8 @@
       <DependentUpon>MapView.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\autoSuggestionModel.cs" />
-    <Compile Include="Models\tripOptionsModel.cs" />
     <Compile Include="Models\departureTimeModel.cs" />
     <Compile Include="Models\transferModel.cs" />
-    <Compile Include="Models\departureModel.cs" />
     <Compile Include="parsing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

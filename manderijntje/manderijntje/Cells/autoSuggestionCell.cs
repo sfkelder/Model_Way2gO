@@ -15,7 +15,6 @@ namespace manderijntje
         private string _stationName;
         private string _stationType;
         private bool _departureInput;
-        autoSuggestion _auto;
         Form1 _form;
 
         public string stationName
@@ -43,24 +42,10 @@ namespace manderijntje
             get { return _departureInput; }
             set { _departureInput = value; }
         }
-        public autoSuggestionCell(autoSuggestion auto, Form1 form)
+        public autoSuggestionCell(Form1 form)
         {
             InitializeComponent();
-            this._auto = auto;
             this._form = form;
-        }
-        public autoSuggestionCell(string stationName, string stationType, bool departureInput)
-        {
-            this._stationName = stationName;
-            this._stationType = stationType;
-            this._departureInput = departureInput;
-        }
-
-        // Gives a autoSuggesCell back
-        public static autoSuggestionCell getautoSuggestDetails(string stationName, string stationType, bool departureInput)
-        {
-            autoSuggestionCell auto = new autoSuggestionCell(stationName, stationType, departureInput);
-            return auto;
         }
 
         // Calls methods in the form call when clicked on a label.

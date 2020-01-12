@@ -28,10 +28,7 @@ namespace manderijntje
         {
             nodeList = nodes;
             foreach (Node node in nodeList)
-            {
-                stationList.Add(new autoSuggestionModel(node.stationnaam, node.vervoersmiddels));
-                Console.WriteLine("Vervoers" + node.soortrout);
-            }
+                stationList.Add(new autoSuggestionModel(node.stationnaam, node.vehicle));
         }
         public autoSuggestion()
         {
@@ -42,7 +39,7 @@ namespace manderijntje
         {
             _parent.autosuggesInVisible();
             suggestionsList.Clear();
-            autosuggestFlowControl.Controls.Clear();
+            autoSuggestFlowControl.Controls.Clear();
         }
 
         // Fill the stationName of the autosuggestions to the right TextBox
@@ -81,7 +78,7 @@ namespace manderijntje
             else
                 _parent.setLocationAutosuggestion(_parent.destinationInput.Location.Y + _parent.destinationInput.Height + _parent.textboxPanel.Location.Y + _parent.inputPanel.Location.Y, suggestionsList.Count);
 
-            _parent.clearFlowControl(autosuggestFlowControl);
+            _parent.clearFlowControl(autoSuggestFlowControl);
             _parent.fillAutosuggestie(new autoSuggestionCell[suggestionsList.Count()], bInput, suggestionsList);
         }
     }

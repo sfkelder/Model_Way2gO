@@ -12,81 +12,75 @@ namespace manderijntje
 {
     public partial class tripOptionsCell : UserControl
     {
-        private string _beginTijd;
-        private string _eindTijd;
-        private string _vervoerder;
-        private string _typeVervoer;
-        private string _naamVervoer;
-        private string _busLijn;
-        private string _totaleTijd;
-        private string _aantalOverstappen;
-        private string _perron;
-        private bool _orange;
-        private List<transferModel> _tussenstop = new List<transferModel>();
+        private string _departureTime;
+        private string _destinationTime;
+        private string _carrier;
+        private string _typeCarrier;
+        private string _nameTransport;
+        private string _busLine;
+        private string _totalTime;
+        private string _transfersCount;
+        private string _platform;
         private List<Node> _shortestPath = new List<Node>();
         Form1 _parent;
-        public string beginTijd 
+
+        public string departureTime 
         {
-            get { return _beginTijd; }
-            set { _beginTijd = value; }
+            get { return _departureTime; }
+            set { _departureTime = value; }
         }
-        public string eindTijd
+
+        public string destinationTime
         {
-            get { return _eindTijd; }
-            set { _eindTijd = value; TimeLBL.Text = _beginTijd + " - " + value; }
+            get { return _destinationTime; }
+            set { _destinationTime = value; TimeLBL.Text = _departureTime + " - " + value; }
         }
-        public string vervoerder
+
+        public string carrier
         {
-            get { return _vervoerder; }
-            set { _vervoerder = value; }
+            get { return _carrier; }
+            set { _carrier = value; }
         }
-        public string typeVervoer
+
+        public string typeCarrier
         {
-            get { return _typeVervoer; }
-            set { _typeVervoer = value; }
+            get { return _typeCarrier; }
+            set { _typeCarrier = value; }
         }
-        public string naamVervoer
+
+        public string nameTransport
         {
-            get { return _naamVervoer; }
-            set { _naamVervoer = value; carrierLBL.Text = vervoerder + " - " + value; }
+            get { return _nameTransport; }
+            set { _nameTransport = value; carrierLBL.Text = carrierLBL + " - " + value; }
         }
-        public string busLijn
+
+        // This is needed form possible new features
+        public string busLine
         {
-            get { return _busLijn; }
-            set { _busLijn = value; }
+            get { return _busLine; }
+            set { _busLine = value; }
         }
-        public string totaleTijd
+
+        public string totalTime
         {
-            get { return _totaleTijd; }
-            set { _totaleTijd = value; 
+            get { return _totalTime; }
+            set { _totalTime = value; 
                 clockIcon.Image = Properties.Resources.OrangeClock;
                 totaltimeLBL.Text = value; }
         }
-        public string aantalOverstappen
+        public string transferCount
         {
-            get { return _aantalOverstappen; }
-            set { _aantalOverstappen = value;
-                this.transferIcon.Image = Properties.Resources.OverstappenOrange;
+            get { return _transfersCount; }
+            set { _transfersCount = value;
+                transferIcon.Image = Properties.Resources.OverstappenOrange;
                 transferLBL.Text = value + "x";
-                Console.WriteLine(value);
             }
-        }
-        public string perron
-        {
-            get { return _perron; }
-            set { _perron = value; platformLBL.Text = value; }
-        }
-        public List<transferModel> tussenstop {
-            get { return _tussenstop; }
-            set { _tussenstop = value; }
         }
 
-        public bool orange
-        { 
-            get { return _orange; }
-            set { _orange = value;
-                //changeColor(_orange);
-            }
+        public string platform
+        {
+            get { return _platform; }
+            set { _platform = value; platformLBL.Text = value; }
         }
 
         public List<Node> shortestPath
@@ -94,35 +88,33 @@ namespace manderijntje
             get { return _shortestPath; }
             set { _shortestPath = value; }
         }
+
         public tripOptionsCell(Form1 parent)
         {
             InitializeComponent();
             this._parent = parent;
         }
-        public tripOptionsCell(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<transferModel> tussenstop, bool orange, List<Node> shortestPath)
+
+        public tripOptionsCell(string departureTime, string destinationTime, string carrier, string typeCarrier, string nameTransport,
+            string busLine, string totalTime, string transferCount, string platform, List<Node> shortestPath)
         {
-            this._beginTijd = beginTijd;
-            this._eindTijd = eindTijd;
-            this._vervoerder = vervoerder;
-            this._typeVervoer = typeVervoer;
-            this._naamVervoer = naamVervoer;
-            this._busLijn = busLijn;
-            this._totaleTijd = totaleTijd;
-            this._aantalOverstappen = aantalOverstappen;
-            this._perron = perron;
-            this._tussenstop = tussenstop;
-            this._orange = orange;
+            this._departureTime = departureTime;
+            this._destinationTime = destinationTime;
+            this._carrier = carrier;
+            this._typeCarrier = typeCarrier;
+            this._nameTransport = nameTransport;
+            this._busLine = busLine;
+            this._totalTime = totalTime;
+            this._transfersCount = transferCount;
+            this._platform = platform;
             this._shortestPath = shortestPath;
         }
 
-        //
         // Gives a tripOptionsCell back
-        //
-        public static tripOptionsCell getCellDetails(string beginTijd, string eindTijd, string vervoerder, string typeVervoer, string naamVervoer,
-            string busLijn, string totaleTijd, string aantalOverstappen, string perron, List<transferModel> tussenstop, bool orange, List<Node> shortestPath)
+        public static tripOptionsCell getCellDetails(string departureTime, string destinationTime, string carrier, string typeCarrier, string nameTransport,
+            string busLine, string totalTime, string transferCount, string platform, List<Node> shortestPath)
         {
-            tripOptionsCell c = new tripOptionsCell(beginTijd, eindTijd, vervoerder, typeVervoer, naamVervoer, busLijn, totaleTijd, aantalOverstappen, perron, tussenstop, orange, shortestPath);
+            tripOptionsCell c = new tripOptionsCell(departureTime, destinationTime, carrier, typeCarrier, nameTransport, busLine, totalTime, transferCount, platform, shortestPath);
             return c;
         }
 
@@ -130,37 +122,11 @@ namespace manderijntje
 
         private void click()
         {
-            orange = true;
-            this._parent.tripOptionscell = getCellDetails(_beginTijd, _eindTijd, _vervoerder, _typeVervoer, _naamVervoer, _busLijn, _totaleTijd, _aantalOverstappen, _perron, _tussenstop, _orange, _shortestPath);
+            this._parent.tripOptionscell = getCellDetails(_departureTime, _destinationTime, _carrier, _typeCarrier, _nameTransport, _busLine, _totalTime, _transfersCount, _platform, _shortestPath);
             this._parent.setupTripDetails();
         }
 
-        private void changeColor(bool Orange)
-        {
-            if (Orange)
-            {
-                this.BackColor = Color.FromArgb(255,122,0);
-                this.TimeLBL.ForeColor = Color.White;
-                this.carrierLBL.ForeColor = Color.White;
-                this.transferLBL.ForeColor = Color.White;
-                this.totaltimeLBL.ForeColor = Color.White;
-                this.platformLBL.ForeColor = Color.White;
-                this.transferIcon.Image = Properties.Resources.OverstappenWhite;
-                this.transferIcon.Image = Properties.Resources.WhiteClock;
-            }
-            else
-            {
-                this.BackColor = Color.White;
-                this.TimeLBL.ForeColor = Color.Black;
-                this.carrierLBL.ForeColor = Color.DimGray;
-                this.transferLBL.ForeColor = Color.FromArgb(255, 122, 0);
-                this.totaltimeLBL.ForeColor = Color.FromArgb(255, 122, 0);
-                this.platformLBL.ForeColor = Color.FromArgb(255, 122, 0);
-                this.transferIcon.Image = manderijntje.Properties.Resources.OverstappenOrange;
-                this.clockIcon.Image = manderijntje.Properties.Resources.OrangeClock;
-            } 
-        }
-
+        // Label Clicked call "click" method
         private void eindTijdLBL_Click(object sender, EventArgs e)
         {
             click();
