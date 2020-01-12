@@ -29,7 +29,7 @@ namespace manderijntje
             nodeList = nodes;
             foreach (Node node in nodeList)
             {
-                stationList.Add(new autoSuggestionModel(node.stationnaam, node.vervoersmiddels));
+                stationList.Add(new autoSuggestionModel(node.stationnaam, node.vehicle));
                 Console.WriteLine("Vervoers" + node.soortrout);
             }
         }

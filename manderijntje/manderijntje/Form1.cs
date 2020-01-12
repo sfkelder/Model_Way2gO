@@ -239,7 +239,7 @@ namespace manderijntje
                 listItems[i] = new tripOptionsCell(this);
                 listItems[i].beginTijd = Convert.ToString(tripOptions[i].startTime.ToShortTimeString());
                 listItems[i].eindTijd = Convert.ToString(tripOptions[i].endTime.ToShortTimeString());
-                listItems[i].typeVervoer = tripOptions[i].shortestPath[0].vervoersmiddels;
+                listItems[i].typeVervoer = tripOptions[i].shortestPath[0].vehicle;
                 listItems[i].totaleTijd = Convert.ToString(tripOptions[i].endTime.Subtract(tripOptions[i].startTime));
                 listItems[i].aantalOverstappen = tripOptions[i].transfers.ToString();
                 listItems[i].shortestPath = tripOptions[i].shortestPath;
@@ -311,7 +311,7 @@ namespace manderijntje
                 listItems[i] = new transferCell();
                 listItems[i].stationNaam = detailsUserControl.shortestPath[i].stationnaam;
                 listItems[i].richting = detailsUserControl.shortestPath[i].routnaam;
-                listItems[i].typeVervoer = detailsUserControl.shortestPath[i].vervoersmiddels;
+                listItems[i].typeVervoer = detailsUserControl.shortestPath[i].vehicle;
 
                 //listItems[i].perron = detailsUserControl.shortestPath[i].perron;
                 //listItems[i].vertrekTijd = detailsUserControl.shortestPath[i].;
