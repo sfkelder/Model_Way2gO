@@ -235,7 +235,7 @@ namespace manderijntje
                 listItems[i] = new tripOptionsCell(this);
                 listItems[i].departureTime = tripOptions[i].startTime.ToShortTimeString();
                 listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
-                listItems[i].typeCarrier = tripOptions[i].shortestPath[0].vervoersmiddels;
+                listItems[i].typeCarrier = tripOptions[i].shortestPath[0].vehicle;
                 listItems[i].totalTime = (tripOptions[i].endTime.Subtract(tripOptions[i].startTime)).ToString(@"hh\:mm");
                 listItems[i].transferCount = tripOptions[i].transfers.ToString();
                 listItems[i].shortestPath = tripOptions[i].shortestPath;
@@ -289,7 +289,7 @@ namespace manderijntje
                 listItems[i] = new transferCell();
                 listItems[i].stationName = detailsUserControl.shortestPath[i].stationnaam;
                 listItems[i].toStation = detailsUserControl.shortestPath[i].routnaam;
-                listItems[i].typeTransport = detailsUserControl.shortestPath[i].vervoersmiddels;
+                listItems[i].typeTransport = detailsUserControl.shortestPath[i].vehicle;
 
                 // Needs to have platform and departureTime from node
 
