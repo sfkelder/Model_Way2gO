@@ -12,8 +12,8 @@ namespace manderijntje
 {
     public partial class MapView : UserControl
     {
-       List<VisueelNode> nodes = new List<VisueelNode>();
-       List<VisueelLink> links = new List<VisueelLink>();
+       public List<VisueelNode> nodes = new List<VisueelNode>();
+       public List<VisueelLink> links = new List<VisueelLink>();
 
         int totverschuivingX, totverschuivingY, zoom = 0, zoomgrote = 50, height, width;
         Point start, end, newEnd;
