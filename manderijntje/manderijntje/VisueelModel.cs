@@ -19,8 +19,7 @@ namespace manderijntje
         private lists_bewerkingen l = new lists_bewerkingen();
         private bewerkingen b = new bewerkingen();
         public VisueelModel toegang;
-        private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
-        
+        private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";        
 
         public connecties(DataModel data)
         {
@@ -47,7 +46,7 @@ namespace manderijntje
         {
             Point[] points = new Point[1000];
 
-            for (int i = 0; i < toegang.nodes.Count - 1; i++)
+            for (int i = 0; i < toegang.nodes.Count; i++)
             {
                 try
                 {
@@ -62,7 +61,7 @@ namespace manderijntje
 
             points = coordinates.ScalePointsToSize(points, width, height);
 
-            for (int i = 0; i < points.Length - 1; i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 try
                 {
@@ -77,7 +76,7 @@ namespace manderijntje
         }
 
         //wordt vanuit andere classes aangeroepen en stuurt alles in dit form aan
-        public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen, List<VisueelNode> n, List<VisueelLink> links)
+        public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen, MapView mv)
         {
             int number = b.zoom(factor, zoomgrote);
 
@@ -96,13 +95,13 @@ namespace manderijntje
 
                 int numberchange = b.factor(kleinstepunt, grootstepunt, schermhogte, zoomgrote);
 
-                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, numberchange, n, links);
+                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, numberchange, mv);
 
                 return numberchange;
             }
             else
             {
-                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), number, n, links);
+                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), number, mv);
             }
 
             return factor;
@@ -131,7 +130,7 @@ namespace manderijntje
 
 
         //set de bool waarde van nodes naar true of false afhankelijk van de ingevoerde data
-        public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number, List<VisueelNode> n, List<VisueelLink> links)
+        public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number, MapView mv)
         {
 
             Point verschuiving = b.movemap(start, end);
@@ -144,11 +143,11 @@ namespace manderijntje
                 {
                     if (stations && v.punt.X > startpoint.X && v.punt.X > startpoint.Y && v.punt.X < endpoint.X && v.punt.Y < endpoint.Y)
                     {
-                        switching(v, factor, n);
+                        switching(v, factor, mv);
                     }
                     else
                     {
-                        switching(v, factor, n);
+                        switching(v, factor, mv);
                     }
 
                 }
@@ -161,7 +160,7 @@ namespace manderijntje
            foreach(VisueelLink v in toegang.links)
             {
                if (v.u.paint && v.v.paint)
-                    links.Add(v);
+                    mv.links.Add(v);
             }
            
         }
@@ -183,7 +182,7 @@ namespace manderijntje
         }
 
         //hulp methode valuenode
-        public void switching(VisueelNode v, int zoom, List<VisueelNode> n)
+        public void switching(VisueelNode v, int zoom, MapView mv)
         {
             //List<VisueelNode> nodes = new List<VisueelNode>();
             switch (zoom)
@@ -191,27 +190,27 @@ namespace manderijntje
                 case 0:
                    // v.paint = (v.prioriteit < 5) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) mv.nodes.Add(v);
 
                     break;
                 case 1:
                     // v.paint = (v.prioriteit < 4) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) mv.nodes.Add(v);
                     break;
                 case 2:
                     //v.paint = (v.prioriteit < 3) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) mv.nodes.Add(v);
                     break;
                 case 3:
                     // v.paint = (v.prioriteit < 2) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) mv.nodes.Add(v);
                     break;
                 default:
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) mv.nodes.Add(v);
                     break;
             }
         }
