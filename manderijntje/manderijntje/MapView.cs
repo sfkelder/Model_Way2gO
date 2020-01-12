@@ -143,7 +143,7 @@ namespace manderijntje
             {
                 if (nodes[m].paint == true && nodes[m].dummynode == false)
                 {
-                    pea.Graphics.FillRectangle(Brushes.Black, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 5, 5);   
+                    pea.Graphics.FillRectangle(Brushes.Black, (nodes[m].punt.X - totverschuivingX) - 3, (nodes[m].punt.Y - totverschuivingY) - 3, 6, 6);   
                 }
             }
 
