@@ -201,7 +201,7 @@ namespace manderijntje
                 case 0:
                    // v.paint = (v.prioriteit < 5) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) n.Add(v); 
 
                     break;
                 case 1:

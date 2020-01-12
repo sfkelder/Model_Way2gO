@@ -124,7 +124,7 @@ namespace manderijntje
 
         public void painting(object o, PaintEventArgs pea)
         {
-                 
+                  
 
             for (int m = 0; m < nodes.Count - 1; m++)
             { 
