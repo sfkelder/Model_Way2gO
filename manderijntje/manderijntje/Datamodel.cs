@@ -1147,7 +1147,7 @@ namespace manderijntje
             stationnaam = stationsnaam;  
             soortrout = soortroute;
             routid = routeid;
-            vehicle = vehicles;
+            vehicle = vehicles; 
             stops = stop;
             Buren = new List<Node>();
             Connecties = new List<Link>();
