@@ -10,6 +10,12 @@ namespace manderijntje
 {
     public class DataControl
     {
+        DataModel dataModel;
+        private const string filepath = "C:/Way2Go/datamodel_binary.txt";
+
+
+        //different files if you want to load different datasets
+
         //string sFile = "C:/Way2Go/groningen test2.xml";
         // string sFile = "C:/Way2Go/enkhuizen test 4.xml";
         //string sFile = "C:/Way2Go/amsterdam test tram subway train.xml";
@@ -25,6 +31,8 @@ namespace manderijntje
         //string sFile = "C:/Way2Go/train europa.xml";
         //string sFile = "C:/Way2Go/train westeuropa.xml";
         //string sFile = "C:/Way2Go/subway europa.xml";
+
+        //Creating the DataControl and DataModel dataset.
         public DataControl()
         {
             if (File.Exists(filepath) && !Program.reimport)
@@ -46,16 +54,7 @@ namespace manderijntje
                         CheckDegree(node);
                     }
                 }
-                //dataModel.get_unique_links();
-                int deg = 0;
-                for (int i = 0; i < dataModel.unique_nodes.Count; i++)
-                {
-                    if (dataModel.unique_nodes[i].Buren.Count > deg)
-                    {
-                        deg = dataModel.unique_nodes[i].Buren.Count;
-                    }
-                }
-                Console.WriteLine("real: " + deg);
+
                 if (Directory.Exists(filepath))
                 {
                     WriteDataToDisk(FileMode.Open);
@@ -66,8 +65,8 @@ namespace manderijntje
                 }
             }
         }
-        DataModel dataModel;
-        private const string filepath = "C:/Way2Go/datamodel_binary.txt";
+
+        //Reading the serialized dataModel from the disk
         private void ReadDataFromDisk()
         {
             try
@@ -83,6 +82,7 @@ namespace manderijntje
                 MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
             }
         }
+        //Writing the serialized dataModel to the disk
         private void WriteDataToDisk(FileMode fm)
         {
             try
@@ -98,6 +98,8 @@ namespace manderijntje
                 MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
             }
         }
+
+        //checks the amount of neighbours to ensure there are no more then 8 neighbours so the parsing class can handle it.
         private void CheckDegree(Node n)
         {
             Node[] neighours = n.Buren.ToArray();
@@ -107,12 +109,12 @@ namespace manderijntje
             Console.WriteLine("check: " + toCheck);
             for (int i = 0; i < toCheck; i++)
             {
-                //n.Buren.Remove(neighours[0]);
-                //neighours[0].Buren.Remove(n);
+                n.Buren.Remove(neighours[0]);
+                neighours[0].Buren.Remove(n);
                 dataModel.unique_links.Remove(getLink(n, neighours[i]));
-                Console.WriteLine("removed: ");
             }
         }
+        //tries to find a specific link in unique_links.Count
         private Link getLink(Node u, Node v)
         {
             for (int i = 0; i < dataModel.unique_links.Count; i++)
@@ -125,11 +127,13 @@ namespace manderijntje
             }
             return dataModel.unique_links[0];
         }
+        //returns the dataModel
         public DataModel GetDataModel()
         {
             return dataModel;
         }
-        //deze twee methodes zijn nodig om de data uit de file te halen
+
+        //this method is needed to get data out of a xml file
         private XDocument GetGpxDoc(string sFile)
         {
             XDocument gpxDoc = XDocument.Load(sFile);
@@ -148,18 +152,19 @@ namespace manderijntje
         string[,] points1;//met de NodeIDs and stationnamen and coordinates
         string[,] points2; // where they stop
         string[,] points3; // where they pass by
-        string[,] points4; //which nodes belong to witch ways
-        string[] pointsstop; // stopyesorno
+        string[,] points4; //which nodes belong to which ways
+        string[] pointsstop; // stop yes or no
         string[] points1ID;//all nodeID with names
         string[] id; //all WayIDs
         List<string> routids = new List<string>();// all routIDs
         string[][] jag; //jagged array of all NodeIDs where index is the same as id(points4)
         string[][] jag2; // jagged array of all wayIDs where index is the same as routids(points3)
         int lengthjag2; // length of jag2
+        
         public void Loadnodes(string sFile)
         {//load data of all nodes
             XDocument gpxDoc = GetGpxDoc(sFile);
-            //gets coordinaten and names form file
+            //gets coordinates and names from file
             var waypoints = from waypoint in gpxDoc.Descendants("node")
                             select new
                             {
@@ -522,6 +527,8 @@ namespace manderijntje
             routids.RemoveAll(item => item == null);
             jag2 = jag2.Where(x => x != null).ToArray();
         }
+
+        //Checks for double routes and ensure there are no doubles anymore
         public bool nodoubleroutes(List<string> P, List<string> Q, List<string> R, List<string> U, List<string> S, List<string> T,
             string refr, string net, string op, string w, string to, string from)
         {
@@ -537,6 +544,7 @@ namespace manderijntje
             }
             return false;
         }
+        //loads routes out of a file
         public void LoadWay(string sFile)
         {
             XDocument gpxDoc = GetGpxDoc(sFile);
@@ -651,6 +659,8 @@ namespace manderijntje
                 z++;
             }
         }
+
+        //returns the nodes in a route in order
         public void testfirstandlast(bool contains, string[] arrayid, int e, int a, string first, string last, bool turn)
         {
             if (inorder[e, 0] == 0 || inorder[e, 2] == 0)
@@ -768,6 +778,8 @@ namespace manderijntje
                 }
             }
         }
+
+        //comines the points to make the datamodel
         public void combinepoints()
         {
             four_and_one_to_y();
