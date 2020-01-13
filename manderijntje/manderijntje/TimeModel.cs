@@ -88,7 +88,6 @@ namespace manderijntje
             {
                 return null;
             }
-            return null;
         }
 
         //Sends a Request without key

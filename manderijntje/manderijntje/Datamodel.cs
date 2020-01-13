@@ -49,7 +49,7 @@ namespace manderijntje
                 combinepoints();//combine data
                 foreach (Node node in dataModel.unique_nodes)
                 {
-                    if (node.Buren.Count > 8)
+                    if (node.neighbours.Count > 8)
                     {
                         CheckDegree(node);
                     }
@@ -102,16 +102,16 @@ namespace manderijntje
         //checks the amount of neighbours to ensure there are no more then 8 neighbours so the parsing class can handle it.
         private void CheckDegree(Node n)
         {
-            Node[] neighours = n.Buren.ToArray();
-            Array.Sort(neighours, (x, y) => n.DistanceToNode(x).CompareTo(n.DistanceToNode(y)));
-            Array.Reverse(neighours);
-            int toCheck = (n.Buren.Count - 8);
+            Node[] array = n.neighbours.ToArray();
+            Array.Sort(array, (x, y) => n.DistanceToNode(x).CompareTo(n.DistanceToNode(y)));
+            Array.Reverse(array);
+            int toCheck = (n.neighbours.Count - 8);
             Console.WriteLine("check: " + toCheck);
             for (int i = 0; i < toCheck; i++)
             {
-                n.Buren.Remove(neighours[0]);
-                neighours[0].Buren.Remove(n);
-                dataModel.unique_links.Remove(getLink(n, neighours[i]));
+                n.neighbours.Remove(array[0]);
+                array[0].neighbours.Remove(n);
+                dataModel.unique_links.Remove(getLink(n, array[i]));
             }
         }
         //tries to find a specific link in unique_links.Count
@@ -299,7 +299,7 @@ namespace manderijntje
                                 }
                               )
                          };
-            // to determine the rigth number for points2
+            // to determine the right number for points2
             int l = 0;//counter
             int k = 0;//counter
             int h = 0;//counter
@@ -983,9 +983,9 @@ namespace manderijntje
                         {
                             Link link = new Link(station1node, station2node, points2[j, 1]);
                             dataModel.AddLinkrouting(link);
-                            station1node.addBuur(station2node);
+                            station1node.addneighbour(station2node);
                             station1node.addLink(new Link(station1node, station2node, points2[j, 1]));
-                            station2node.addBuur(station1node);
+                            station2node.addneighbour(station1node);
                             station2node.addLink(new Link(station2node, station1node, points2[j, 1]));
                         }
                     }
@@ -1035,8 +1035,8 @@ namespace manderijntje
                         Node station2node = dataModel.GetNode(points8[i + 1, 4], dataModel.GetNodes());
                         Link link = new Link(station1node, station2node, points8[i, 0]);
                         dataModel.AddLink(link);
-                        station1node.addBuur(station2node);
-                        station2node.addBuur(station1node);
+                        station1node.addneighbour(station2node);
+                        station2node.addneighbour(station1node);
                     }
                 }
             }
@@ -1173,9 +1173,9 @@ namespace manderijntje
     public class Node
     {
         // array met pointers naar alle andere nodes waarmee deze verbonden is
-        public List<Node> Buren;
+        public List<Node> neighbours;
         // array met pointers naar alle links die verbonden zijn met deze node
-        public List<Link> Connecties;
+        public List<Link> Connections;
         // 'echte' coordinaten
         public double x, y;
         public int number;
@@ -1197,23 +1197,23 @@ namespace manderijntje
             routid = routeid;
             vehicle = vehicles; 
             stops = stop;
-            Buren = new List<Node>();
-            Connecties = new List<Link>();
+            neighbours = new List<Node>();
+            Connections = new List<Link>();
         }
-        public void addBuur(Node buur)
+        public void addneighbour(Node neighbour)
         {
-            bool buurtest = true;
-            foreach (Node naaste in Buren)
+            bool neighbourtest = true;
+            foreach (Node naaste in neighbours)
             {
-                if (naaste == buur)
-                    buurtest = false;
+                if (naaste == neighbour)
+                    neighbourtest = false;
             }
-            if (buurtest)
-                Buren.Add(buur);
+            if (neighbourtest)
+                neighbours.Add(neighbour);
         }
         public void addLink(Link link)
         {
-            Connecties.Add(link);
+            Connections.Add(link);
         }
         public double DistanceToNode(Node u)
         {
@@ -1226,7 +1226,7 @@ namespace manderijntje
         // twee pointers die wijzen naar de twee nodes die deze link verbind
         public Node Start, End;
         public string RouteName;
-        public int Weight = 1;
+        public int Weight = 1;//the weight will be variable based on time and place but not for now
         public Link(Node startpunt, Node eindpunt, string RouteNames) 
         {
             Start = startpunt;
