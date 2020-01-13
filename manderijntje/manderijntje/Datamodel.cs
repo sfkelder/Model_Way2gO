@@ -1227,7 +1227,7 @@ namespace manderijntje
         public Node Start, End;
         public string RouteName;
         public int Weight = 1;
-        public Link(Node startpunt, Node eindpunt, string RouteNames)
+        public Link(Node startpunt, Node eindpunt, string RouteNames) 
         {
             Start = startpunt;
             End = eindpunt;
