@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Windows.Forms.VisualStyles;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
@@ -11,6 +12,7 @@ namespace manderijntje
         #region Parameters: Links and Keys
         const string errorMessage = "404";
         const int error = -404;
+        private int test = 0;
 
         //NS API:
         private const string getStationsURLNetherlands = @"https://gateway.apiportal.ns.nl/reisinformatie-api/api/v2/stations";
@@ -127,7 +129,7 @@ namespace manderijntje
         }
         #endregion
         #region GetTravelCost
-        static int GetTravelCost(DateTime time, string vertrekStation, string aankomstStation)
+        public static int GetTravelCost(DateTime time, string vertrekStation, string aankomstStation)
         {
             if ((GetUICCode(vertrekStation) != errorMessage) && (GetUICCode(vertrekStation) != errorMessage)) return GetTravelCostNS(time, vertrekStation, aankomstStation);
             if ((GetStationIDBelgium(vertrekStation) != errorMessage) && (GetStationIDBelgium(aankomstStation) != errorMessage)) return GetTravelCostBelgium(time, vertrekStation, aankomstStation);

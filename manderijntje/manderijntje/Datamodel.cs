@@ -1239,7 +1239,7 @@ namespace manderijntje
         public string name_id, routnaam, stationnaam, soortrout, routid, vervoersmiddels;
         public bool stops;
         public Node NearestToStart;
-        public double MinCostToStart = Double.MaxValue;
+        public int MinCostToStart = int.MaxValue;
         public bool Visited = false;
         public Node(string name, double coordx, double coordy, string routenaam, string stationsnaam, string soortroute, string routeid, string vervoersmiddel, bool stop, int i)
         {
@@ -1285,7 +1285,7 @@ namespace manderijntje
 
         public string RouteName;
 
-        public double Weight = 1;
+        public int Weight = 1;
 
 
 

@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace manderijntje
 { 
@@ -36,14 +37,15 @@ namespace manderijntje
                 prioQueue = prioQueue.OrderBy(x => x.MinCostToStart).ToList();
                 var node = prioQueue.First();
                 prioQueue.Remove(node);
-                foreach (var link in node. Connecties.OrderBy(x => x.Weight))
+                foreach (var link in node.Connecties.OrderBy(x => x.Weight))
                 {
+                    int tempCost = node.MinCostToStart + link.Weight;
                     var childNode = link.End;
                     if (childNode.Visited)
                         continue;
-                    if (node.MinCostToStart + link.Weight < childNode.MinCostToStart)
+                    if (tempCost < childNode.MinCostToStart)
                     {
-                        childNode.MinCostToStart = node.MinCostToStart + link.Weight;
+                        childNode.MinCostToStart = tempCost;
                         childNode.NearestToStart = node;
                         if (!prioQueue.Contains(childNode))
                             prioQueue.Add(childNode);
@@ -56,11 +58,24 @@ namespace manderijntje
             }
         }
 
-        public static Route GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
+        public static List<Route> GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
         {
             int transfers = 0;
-            Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
-            return fastestRoute;
+            List<Route> ListRoute = new List<Route>();
+            DateTime starttime = time;
+            for (int i = 0; i < 10; i++)
+            {
+                Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
+                ListRoute.Add(fastestRoute);
+                starttime = fastestRoute.startTime.AddMinutes(1);
+                foreach (Node node in dataModel.nodesrouting)
+                {
+                    node.MinCostToStart = int.MaxValue;
+                    node.NearestToStart = null;
+                    node.Visited = false;
+                }
+            }
+            return ListRoute;
         }
     }
 
@@ -81,8 +96,8 @@ namespace manderijntje
     }
 }
 
-/* mincosttostart
- *visited
- * nearest to start
- * weight
+/* mincosttostart - nodes
+ * visited - nodes
+ * nearest to start - nodes
+ * weight - links
  */

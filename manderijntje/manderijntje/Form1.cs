@@ -37,15 +37,6 @@ namespace manderijntje
             {
                 Console.WriteLine("Naam: " + visual.nodes[i].name_id);
             }
-
-            //test
-            Route route = Routing.GetRoute("Utrecht Centraal", "Gouda", DateTime.Now, dataControl.GetDataModel());
-            foreach (Node station in route.shortestPath)
-            {
-                Console.WriteLine(station.stationnaam);
-            }
-            Console.ReadLine();
-            //test end
         }
 
         // Calls every method that needs to be called to setup the view Correctly
@@ -228,12 +219,16 @@ namespace manderijntje
             //visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, visual.nodes);
 
             chosenTime = Convert.ToDateTime(departureTime);
-            tripOptions.Add(Routing.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
-            Route route = Routing.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel());
-            foreach (Node station in route.shortestPath)
+            foreach (Route route in Routing.GetRoute(departureLocation, destinationLocation, chosenTime,
+                dataControl.GetDataModel()))
             {
-                Console.WriteLine(station.stationnaam);
+                tripOptions.Add(route);
+                foreach (Node station in route.shortestPath)
+                {
+                    Console.WriteLine(station.stationnaam);
+                }
             }
+
             fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
         }
 
