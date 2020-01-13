@@ -1156,10 +1156,10 @@ namespace manderijntje
             x = coordx;
             y = coordy;
             routnaam = routenaam;
-            stationnaam = stationsnaam;
+            stationnaam = stationsnaam;  
             soortrout = soortroute;
             routid = routeid;
-            vehicle = vehicles;
+            vehicle = vehicles; 
             stops = stop;
             Buren = new List<Node>();
             Connecties = new List<Link>();
