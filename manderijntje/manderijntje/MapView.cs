@@ -13,18 +13,18 @@ namespace manderijntje
     public partial class MapView : UserControl
     {
        public List<VisueelNode> nodes = new List<VisueelNode>();
-        public List<VisueelLink> links = new List<VisueelLink>();
+        public List<VisualLink> links = new List<VisualLink>();
 
         int totverschuivingX, totverschuivingY, zoom = 1, height, width;
         Point start, end, newEnd;
         private bool startingUp = true, mouseMoved = false;
-        connecties Connecties;
+        Connecion_to_files _connecionToFiles;
         public MapView mapView;
         
 
-        public MapView(connecties c)
+        public MapView(Connecion_to_files c)
         {
-            Connecties = c;
+            _connecionToFiles = c;
             InitializeComponent();
            
          
@@ -44,11 +44,11 @@ namespace manderijntje
      
             if (startingUp)
             {
-                Connecties.SetSizeMap(width, height);
+                _connecionToFiles.SetSizeMap(width, height);
                 startingUp = false; 
             }
 
-            Connecties.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);  
+            _connecionToFiles.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);  
             Invalidate();
         }
          
@@ -63,15 +63,15 @@ namespace manderijntje
                     nodes.Clear();
                     links.Clear();
 
-                    Connecties.SetSizeMap(width*zoom, height*zoom);
+                    _connecionToFiles.SetSizeMap(width*zoom, height*zoom);
 
-                    Connecties.l.aanpassenz(zoom, width, height);
+                    _connecionToFiles.l.changez(zoom, width, height);
                     totverschuivingX +=  ((width / 2) * zoom) - ((width / 2) * (zoom + 1));
                     totverschuivingY +=  ((height / 2) * zoom) - ((height / 2) * (zoom + 1));
 
 
 
-                    Connecties.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);
+                    _connecionToFiles.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);
 
                  
 
@@ -88,13 +88,13 @@ namespace manderijntje
                     nodes.Clear();
                     links.Clear();
 
-                    Connecties.l.aanpassen(zoom, width, height);
+                    _connecionToFiles.l.change(zoom, width, height);
                     totverschuivingX += ((width/2) *(zoom - 1)) - ((width/2)*(zoom-2));
                     totverschuivingY += ((height/2) * (zoom - 1)) - ((height/2) * (zoom-2));
 
 
-                    Connecties.SetSizeMap(width*zoom, height*zoom);
-                    Connecties.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);
+                    _connecionToFiles.SetSizeMap(width*zoom, height*zoom);
+                    _connecionToFiles.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);
                    
                     Invalidate();
                 }
@@ -106,7 +106,7 @@ namespace manderijntje
                 {
                     nodes.Clear();
                     links.Clear();
-                    Connecties.visualcontrol(width, zoom, start, end, null, false, mapView);
+                    _connecionToFiles.visualcontrol(width, zoom, start, end, null, false, mapView);
                     totverschuivingX += start.X - end.X;
                     totverschuivingY += start.Y - end.Y;
                     mouseMoved = false;
@@ -128,11 +128,11 @@ namespace manderijntje
 
             for (int m = 0; m < nodes.Count; m++)
             { 
-                SolidBrush brush = new SolidBrush(nodes[m].kleur);
+                SolidBrush brush = new SolidBrush(nodes[m].Color);
 
                 if (nodes[m].paint == true && nodes[m].dummynode == false)
                 {
-                    pea.Graphics.FillRectangle(brush, nodes[m].punt.X - totverschuivingX, nodes[m].punt.Y - totverschuivingY, 5, 5);   
+                    pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 5, 5);   
                 }
             }
 
@@ -142,7 +142,7 @@ namespace manderijntje
 
                 if (links[n].paint)
                 {
-                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.punt.X -totverschuivingX + 2, links[n].u.punt.Y - totverschuivingY + 2), new Point(links[n].v.punt.X - totverschuivingX + 2, links[n].v.punt.Y - totverschuivingY + 2));
+                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X -totverschuivingX + 2, links[n].u.point.Y - totverschuivingY + 2), new Point(links[n].v.point.X - totverschuivingX + 2, links[n].v.point.Y - totverschuivingY + 2));
                 }
             }
 

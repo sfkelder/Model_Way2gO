@@ -9,7 +9,7 @@ namespace manderijntje
     public partial class Form1 : Form
     {
         DataControl dataControl;
-        connecties visueelControl;
+        Connecion_to_files visueelControl;
         MapView mapView;
         List<Route> tripOptions = new List<Route>();
         List<Node> nodeList = new List<Node>();
@@ -23,7 +23,7 @@ namespace manderijntje
         {
             InitializeComponent();
             dataControl = new DataControl();
-            visueelControl = new connecties(dataControl.GetDataModel());
+            visueelControl = new Connecion_to_files(dataControl.GetDataModel());
             mapView = new MapView(visueelControl);
             mapView.mapView = mapView;
             this.Controls.Add(mapView);

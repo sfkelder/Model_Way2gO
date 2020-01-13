@@ -12,32 +12,31 @@ using System.Runtime.Serialization;
 
 namespace manderijntje
 {
-
-    /*Deze class bevat alle methodes die de connectie zijn tussen de visuele classes (alles in deze file) en de andere classes*/
-    public class connecties
+    //this class contains all the methods for the connection between the visual classes (in this file) and other classes
+    public class Connecion_to_files
     {
-        public lists_bewerkingen l = new lists_bewerkingen();
-        private bewerkingen b = new bewerkingen();
-        public VisueelModel toegang;
+        public lists_change l = new lists_change();
+        private changes b = new changes();
+        public VisueelModel access;
         private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";        
 
-        public connecties(DataModel data)
+        public Connecion_to_files(DataModel data)
         {
             if (File.Exists(filepath) && !Program.reimport)
             {
-                files.inlezen(this, filepath);
+                files.disk_read(this, filepath);
             }
             else
             {
-                toegang = (new parsing(data)).getModel(false);
+                access = (new parsing(data)).getModel(false);
 
                 if (Directory.Exists(filepath))
                 {
-                    files.schrijven(toegang, FileMode.Open, filepath);
+                    files.writing_disk(access, FileMode.Open, filepath);
                 }
                 else
                 {
-                    files.schrijven(toegang, FileMode.Create, filepath);
+                    files.writing_disk(access, FileMode.Create, filepath);
                 }
             }
         }
@@ -46,11 +45,11 @@ namespace manderijntje
         {
             Point[] points = new Point[1000]; 
 
-            for (int i = 0; i < toegang.nodes.Count; i++)
+            for (int i = 0; i < access.nodes.Count; i++)
             {
                 try
                 {
-                    points[i] = toegang.nodes[i].punt;
+                    points[i] = access.nodes[i].point;
                 }
                 catch (Exception)
                 {
@@ -65,7 +64,7 @@ namespace manderijntje
             {
                 try
                 {
-                    toegang.nodes[i].punt = points[i];
+                    access.nodes[i].point = points[i];
                 }
                 catch (Exception)
                 {
@@ -75,30 +74,30 @@ namespace manderijntje
 
         }
 
-        //wordt vanuit andere classes aangeroepen en stuurt alles in dit form aan
-        public void visualcontrol(int schermhogte, int factor, Point startmouse, Point endmouse, List<string> s, bool stationnamen, MapView map)
+        //controlls everything on this form
+        public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<string> s, bool stationnames, MapView map)
         {
             
 
-            if (stationnamen)
+            if (stationnames)
             {
-                List<Point> punten = new List<Point>();
+                List<Point> points = new List<Point>();
 
                 foreach (string st in s)
                 {
-                    Point T = l.zoekpunt(st, toegang);
-                    punten.Add(T);
+                    Point T = l.searchpoint(st, access);
+                    points.Add(T);
                 }
 
-                Point kleinstepunt = b.getpoints(punten).kleinste;
-                Point grootstepunt = b.getpoints(punten).groteste;
+                Point smallestpoint = b.getpoints(points).smallest;
+                Point biggestpoint = b.getpoints(points).biggest;
 
-                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, map);
+                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, smallestpoint, biggestpoint, map);
 
             }
             else
             {
-                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), map);
+                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, new Point(0, 0), new Point(0, 0), map);
             }
 
 
@@ -112,44 +111,44 @@ namespace manderijntje
     public class VisueelModel
     {
         public List<VisueelNode> nodes = new List<VisueelNode>();
-        public List<VisueelLink> links = new List<VisueelLink>();
+        public List<VisualLink> links = new List<VisualLink>();
     }
 
 
-    /*Deze classe beheert de lijsten*/
+    /*this class controls the lists*/
     [Serializable]
-    public class lists_bewerkingen
+    public class lists_change
     {
         
-        int totverschuivingX, totverschuivingY;
+        int toshiftX, toshifty;
 
-        public void aanpassenz(int factor, int width, int height)
+        public void changez(int factor, int width, int height)
         {
 
-            totverschuivingX += ((width / 2) * factor) - ((width / 2) * (factor + 1));
-            totverschuivingY += ((height / 2) * factor) - ((height / 2) * (factor + 1));
+            toshiftX += ((width / 2) * factor) - ((width / 2) * (factor + 1));
+            toshifty += ((height / 2) * factor) - ((height / 2) * (factor + 1));
         }
-        public void aanpassen(int factor, int width, int height)
+        public void change(int factor, int width, int height)
         {
 
-            totverschuivingX += ((width/2) * (factor - 1)) - ((width/2) * (factor - 2));
-            totverschuivingY += ((height/2) * (factor - 1)) - ((height/2) * (factor-2));
+            toshiftX += ((width/2) * (factor - 1)) - ((width/2) * (factor - 2));
+            toshifty += ((height/2) * (factor - 1)) - ((height/2) * (factor-2));
         }
 
-        //set de bool waarde van nodes naar true of false afhankelijk van de ingevoerde data
-        public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, MapView map)
+        //set bool value to true or false dending the given variables
+        public void valuenode(VisueelModel access, int factor, int screenwidth, changes b, Point start, Point end, bool stations, Point startpoint, Point endpoint, MapView map)
         {
 
-            Point verschuiving = b.movemap(start, end);
-            totverschuivingX += verschuiving.X;
-            totverschuivingY += verschuiving.Y;
+            Point shift = b.movemap(start, end);
+            toshiftX += shift.X;
+            toshifty += shift.Y;
 
 
-            foreach (VisueelNode v in toegang.nodes)
+            foreach (VisueelNode v in access.nodes)
             {
-                if ((v.punt.X - totverschuivingX) > 0 && (v.punt.X - totverschuivingX) < (schermbrete) && (v.punt.Y - totverschuivingY) > 0 && (v.punt.Y - totverschuivingY) < (schermbrete))
+                if ((v.point.X - toshiftX) > 0 && (v.point.X - toshiftX) < (screenwidth) && (v.point.Y - toshifty) > 0 && (v.point.Y - toshifty) < (screenwidth))
                 {
-                    if (stations && v.punt.X > startpoint.X && v.punt.X > startpoint.Y && v.punt.X < endpoint.X && v.punt.Y < endpoint.Y)
+                    if (stations && v.point.X > startpoint.X && v.point.X > startpoint.Y && v.point.X < endpoint.X && v.point.Y < endpoint.Y)
                     {
                         switching(v, factor, map);
                     }
@@ -165,7 +164,7 @@ namespace manderijntje
                 }
             }
             
-           foreach(VisueelLink v in toegang.links)
+           foreach(VisualLink v in access.links)
             {
                if (v.u.paint && v.v.paint)
                     map.links.Add(v);
@@ -174,22 +173,22 @@ namespace manderijntje
         }
 
 
-        //methode voor het veranderen van de kleur
-        public void kleurverandering(List<Point> l, VisueelModel list)
+        //method to change the color
+        public void Colorchange(List<Point> l, VisueelModel list)
         {
             foreach (Point p in l)
             {
-                list.nodes.Find(item => item.punt == p).kleur = Color.Orange;
+                list.nodes.Find(item => item.point == p).Color = Color.Orange;
             }
         }
 
-        //methode die kijkt welke punten bij welke namen horen
-        public Point zoekpunt(string naamstation, VisueelModel toegang)
+        //method to look which name belongs to which node
+        public Point searchpoint(string namestation, VisueelModel access)
         {
-            return toegang.nodes.Find(item => item.name_id == naamstation).punt;
+            return access.nodes.Find(item => item.name_id == namestation).point;
         }
 
-        //hulp methode valuenode
+        //helping method valuenode
         public void switching(VisueelNode v, int zoom, MapView map)
         {
             //List<VisueelNode> nodes = new List<VisueelNode>();
@@ -226,31 +225,29 @@ namespace manderijntje
     }
 
 
-
-    /*Deze classen bevat alle methode die direct of indirect user input nodig hebben en vervolgens worden gebruikt voor een bewerking op de kaart*/
-    public class bewerkingen
+    /*this classes contain all methods with direct or indirect user input and change the map according to the input */
+    public class changes
     {
-
-        //returnt verschijving over de x en y richting in de vorm van een punt
+        //returns shift over x and y direction as a point
         public Point movemap(Point startmouse, Point endmouse)
         {
             return new Point(startmouse.X - endmouse.X, startmouse.Y - endmouse.Y);
         }
 
-        //wordt gebrukt om twee punten te kunnen returnen in getzoom
-        public struct zoomopsations
+        // uses 2 points to return in getzoom
+        public struct zoomtostations
         {
-            public Point groteste, kleinste;
+            public Point biggest, smallest;
         }
 
-        //returnt coordinat meet kleinste x,y en eentje met grotste x,y
-        public zoomopsations getpoints(List<Point> p)
+        //returns coordinate with smallest x,y and one with biggest x,y
+        public zoomtostations getpoints(List<Point> p)
         {
-            zoomopsations stations = new zoomopsations();
-            int speling = 15;
+            zoomtostations stations = new zoomtostations();
+            int tolerance = 15;
 
-            stations.kleinste = new Point(p.Min(Point => Point.X) - speling, p.Min(Point => Point.Y) - speling);
-            stations.groteste = new Point(p.Max(Point => Point.X) + speling, p.Max(Point => Point.Y) + speling);
+            stations.smallest = new Point(p.Min(Point => Point.X) - tolerance, p.Min(Point => Point.Y) - tolerance);
+            stations.biggest = new Point(p.Max(Point => Point.X) + tolerance, p.Max(Point => Point.Y) + tolerance);
 
             return stations;
         }
@@ -267,19 +264,18 @@ namespace manderijntje
         
     }
 
-
-    /*Deze classen bevat methodes die zorgen voor het inlzen en schrijven van de benodigde files*/
+    //these classes contain methods for reading and writing to the disk
     public class files
     {
-        //zorgt voor het inlezen van de file
-        public static void inlezen(connecties c, string path)
+        //method for reading from the disk
+        public static void disk_read(Connecion_to_files c, string path)
         {
             try
             {
                 using (Stream str = File.Open(path, FileMode.Open))
                 {
                     var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    c.toegang = (VisueelModel)formater.Deserialize(str);
+                    c.access = (VisueelModel)formater.Deserialize(str);
                 }
             }
             catch
@@ -288,8 +284,8 @@ namespace manderijntje
             }
         }
 
-        //zorgt voor het schrijven van een file
-        public static void schrijven(VisueelModel l, FileMode fm, string path)
+        //writing to the disk
+        public static void writing_disk(VisueelModel l, FileMode fm, string path)
         {
             try
             {
@@ -309,27 +305,27 @@ namespace manderijntje
 
 
     //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //Part 3: aanspassing verwerken in echte programma
+    //Part 3: changes processing to the program
 
 
-    /*Deze classe is een constructor classe voor een list*/
+    /*this class is a constructor for the list*/
     [Serializable]
     public class VisueelNode
     {
         public int prioriteit, index;
-        public Point punt;
+        public Point point;
         public string name_id;
-        public Color kleur = Color.Gray;
+        public Color Color = Color.Gray;
         public bool paint = true;
         public bool dummynode = false;
 
-        public VisueelNode(Point punt, string name_id, int prioriteit)
+        public VisueelNode(Point point, string name_id, int prioriteit)
         {
-            // pointer naar de Node in het data model
+            // pointer to the node in datamodel
             //Node dataNode;
 
 
-            this.punt = punt;
+            this.point = point;
             this.name_id = name_id;
             this.prioriteit = prioriteit;
 
@@ -338,19 +334,18 @@ namespace manderijntje
     }
 
 
-
-    /*Deze classe is een constructor classe voor een list*/
+    //this method is a constructor for the list
     [Serializable]
-    public class VisueelLink
+    public class VisualLink
     {
         public string name_id;
         public Color kleur = Color.Gray;
         public bool paint = true;
         public VisueelNode u, v;
 
-        public VisueelLink(string name_id)
+        public VisualLink(string name_id)
         {
-            // pointer naar de Link in het data model
+            // pointer to the link in datamodel
             //Link dataLink;
 
             this.name_id = name_id;
