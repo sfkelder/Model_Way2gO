@@ -346,13 +346,13 @@ namespace manderijntje
             VisueelModel model = new VisueelModel();
 
             List<VisueelNode> dNodes = new List<VisueelNode>();
-            List<VisueelLink> dLinks = new List<VisueelLink>();
+            List<VisualLink> dLinks = new List<VisualLink>();
 
             for (int i = 0; i < nodes.Count; i++)
             {
                 VisueelNode newNode = new VisueelNode(new Point(), "", 0);
                 newNode.index = nodes[i].index;
-                newNode.punt = new Point(nodes[i].x, nodes[i].y);
+                newNode.point = new Point(nodes[i].x, nodes[i].y);
                 newNode.dummynode = !nodes[i].draw;
                 newNode.prioriteit = nodes[i].neighbours.Count;
 
@@ -361,7 +361,7 @@ namespace manderijntje
 
             for (int i = 0; i < links.Count; i++)
             {
-                VisueelLink newLink = new VisueelLink("");
+                VisualLink newLink = new VisualLink("");
                 newLink.u = getNode(links[i].u.index, dNodes);
                 newLink.v = getNode(links[i].v.index, dNodes);
 

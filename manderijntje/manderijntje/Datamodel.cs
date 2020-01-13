@@ -37,34 +37,46 @@ namespace manderijntje
         {
             if (File.Exists(filepath) && !Program.reimport)
             {
-                ReadDataFromDisk();
+                try
+                {
+                    ReadDataFromDisk();
+                }
+                catch
+                {
+                    MakeDataForDisk();
+                }
             }
             else
             {
-                Loadnodes(sFile);//points with coordinates and stationnames
-                Loadroutes(sFile);//points with routes
-                LoadWay(sFile);//points with ways
-                dataModel = new DataModel();
-                waysinorder();//sets ways in right order
-                combinepoints();//combine data
-                foreach (Node node in dataModel.unique_nodes)
-                {
-                    if (node.neighbours.Count > 8)
-                    {
-                        CheckDegree(node);
-                    }
-                }
-
-                if (Directory.Exists(filepath))
-                {
-                    WriteDataToDisk(FileMode.Open);
-                }
-                else
-                {
-                    WriteDataToDisk(FileMode.Create);
-                }
+                MakeDataForDisk();
             }
         }
+        private void MakeDataForDisk()
+        {
+            Loadnodes(sFile);//points with coordinates and stationnames
+            Loadroutes(sFile);//points with routes
+            LoadWay(sFile);//points with ways
+            dataModel = new DataModel();
+            waysinorder();//sets ways in right order
+            combinepoints();//combine data
+            foreach (Node node in dataModel.unique_nodes)
+            {
+                if (node.neighbours.Count > 8)
+                {
+                    CheckDegree(node);
+                }
+            }
+
+            if (Directory.Exists(filepath))
+            {
+                WriteDataToDisk(FileMode.Open);
+            }
+            else
+            {
+                WriteDataToDisk(FileMode.Create);
+            }
+        }
+
 
         //Reading the serialized dataModel from the disk
         private void ReadDataFromDisk()
