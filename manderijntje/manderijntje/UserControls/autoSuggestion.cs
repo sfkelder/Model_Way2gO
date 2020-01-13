@@ -56,13 +56,15 @@ namespace manderijntje
         // Looks if there is a station that begin with the string parameter, if so it will put it in a suggestion list.
         public void checkInput(string toCheck)
         {
+
             suggestionsList.Clear();
+            // This reduces lagg of the program when typing a station name
+            if (toCheck.Length < 3)
+                return;
             foreach (autoSuggestionModel station in stationList)
             {
                 if (station.stationName.ToLower().StartsWith(toCheck.ToLower()))
-                {
                     suggestionsList.Add(station);
-                }
             }
         }
 
