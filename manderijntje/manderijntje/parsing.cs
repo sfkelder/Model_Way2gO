@@ -39,7 +39,7 @@ namespace manderijntje
         {
             if (solve && getDegree() <= 8)
             {
-                //nodes = (new solver(nodes, links, linkpairs, bendlinks)).getSolution(width, height);
+                nodes = (new solver(nodes, links, linkpairs, bendlinks)).getSolution(width, height);
             }
             return createModel();
         }
