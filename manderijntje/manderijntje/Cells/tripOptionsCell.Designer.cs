@@ -43,7 +43,7 @@
             // 
             this.TimeLBL.AutoSize = true;
             this.TimeLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeLBL.Location = new System.Drawing.Point(37, 29);
+            this.TimeLBL.Location = new System.Drawing.Point(31, 29);
             this.TimeLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.TimeLBL.Name = "TimeLBL";
             this.TimeLBL.Size = new System.Drawing.Size(215, 36);

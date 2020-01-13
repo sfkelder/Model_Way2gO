@@ -16,11 +16,10 @@ namespace manderijntje
     /*Deze class bevat alle methodes die de connectie zijn tussen de visuele classes (alles in deze file) en de andere classes*/
     public class connecties
     {
-        private lists_bewerkingen l = new lists_bewerkingen();
+        public lists_bewerkingen l = new lists_bewerkingen();
         private bewerkingen b = new bewerkingen();
         public VisueelModel toegang;
-        private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
-        
+        private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";        
 
         public connecties(DataModel data)
         {
@@ -45,9 +44,9 @@ namespace manderijntje
 
         public void SetSizeMap(int width, int height)
         {
-            Point[] points = new Point[1000];
+            Point[] points = new Point[1000]; 
 
-            for (int i = 0; i < toegang.nodes.Count - 1; i++)
+            for (int i = 0; i < toegang.nodes.Count; i++)
             {
                 try
                 {
@@ -62,7 +61,7 @@ namespace manderijntje
 
             points = coordinates.ScalePointsToSize(points, width, height);
 
-            for (int i = 0; i < points.Length - 1; i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 try
                 {
@@ -77,9 +76,9 @@ namespace manderijntje
         }
 
         //wordt vanuit andere classes aangeroepen en stuurt alles in dit form aan
-        public int visualcontrol(int schermhogte, int factor, int zoomgrote, Point startmouse, Point endmouse, List<string> s, bool stationnamen, List<VisueelNode> n, List<VisueelLink> links)
+        public void visualcontrol(int schermhogte, int factor, Point startmouse, Point endmouse, List<string> s, bool stationnamen, MapView map)
         {
-            int number = b.zoom(factor, zoomgrote);
+            
 
             if (stationnamen)
             {
@@ -94,18 +93,13 @@ namespace manderijntje
                 Point kleinstepunt = b.getpoints(punten).kleinste;
                 Point grootstepunt = b.getpoints(punten).groteste;
 
-                int numberchange = b.factor(kleinstepunt, grootstepunt, schermhogte, zoomgrote);
+                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, map);
 
-                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, kleinstepunt, grootstepunt, numberchange, n, links);
-
-                return numberchange;
             }
             else
             {
-                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), number, n, links);
+                l.valuenode(toegang, factor, schermhogte, b, startmouse, endmouse, stationnamen, new Point(0, 0), new Point(0, 0), map);
             }
-
-            return factor;
 
 
         }
@@ -129,26 +123,39 @@ namespace manderijntje
         
         int totverschuivingX, totverschuivingY;
 
+        public void aanpassenz(int factor, int width, int height)
+        {
+
+            totverschuivingX += ((width / 2) * factor) - ((width / 2) * (factor + 1));
+            totverschuivingY += ((height / 2) * factor) - ((height / 2) * (factor + 1));
+        }
+        public void aanpassen(int factor, int width, int height)
+        {
+
+            totverschuivingX += ((width/2) * (factor - 1)) - ((width/2) * (factor - 2));
+            totverschuivingY += ((height/2) * (factor - 1)) - ((height/2) * (factor-2));
+        }
 
         //set de bool waarde van nodes naar true of false afhankelijk van de ingevoerde data
-        public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, int number, List<VisueelNode> n, List<VisueelLink> links)
+        public void valuenode(VisueelModel toegang, int factor, int schermbrete, bewerkingen b, Point start, Point end, bool stations, Point startpoint, Point endpoint, MapView map)
         {
 
             Point verschuiving = b.movemap(start, end);
             totverschuivingX += verschuiving.X;
             totverschuivingY += verschuiving.Y;
 
+
             foreach (VisueelNode v in toegang.nodes)
             {
-                if ((v.punt.X - totverschuivingX) > number && (v.punt.X - totverschuivingX) < (schermbrete - number) && (v.punt.Y - totverschuivingY) > number && (v.punt.Y - totverschuivingY) < (schermbrete - number))
+                if ((v.punt.X - totverschuivingX) > 0 && (v.punt.X - totverschuivingX) < (schermbrete) && (v.punt.Y - totverschuivingY) > 0 && (v.punt.Y - totverschuivingY) < (schermbrete))
                 {
                     if (stations && v.punt.X > startpoint.X && v.punt.X > startpoint.Y && v.punt.X < endpoint.X && v.punt.Y < endpoint.Y)
                     {
-                        switching(v, factor, n);
+                        switching(v, factor, map);
                     }
                     else
                     {
-                        switching(v, factor, n);
+                        switching(v, factor, map);
                     }
 
                 }
@@ -161,7 +168,7 @@ namespace manderijntje
            foreach(VisueelLink v in toegang.links)
             {
                if (v.u.paint && v.v.paint)
-                    links.Add(v);
+                    map.links.Add(v);
             }
            
         }
@@ -183,7 +190,7 @@ namespace manderijntje
         }
 
         //hulp methode valuenode
-        public void switching(VisueelNode v, int zoom, List<VisueelNode> n)
+        public void switching(VisueelNode v, int zoom, MapView map)
         {
             //List<VisueelNode> nodes = new List<VisueelNode>();
             switch (zoom)
@@ -191,27 +198,27 @@ namespace manderijntje
                 case 0:
                    // v.paint = (v.prioriteit < 5) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) map.nodes.Add(v); 
 
                     break;
                 case 1:
                     // v.paint = (v.prioriteit < 4) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) map.nodes.Add(v);
                     break;
                 case 2:
                     //v.paint = (v.prioriteit < 3) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) map.nodes.Add(v);
                     break;
                 case 3:
                     // v.paint = (v.prioriteit < 2) ? false : true;
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) map.nodes.Add(v);
                     break;
                 default:
                     v.paint = true;
-                    if (v.paint) n.Add(v);
+                    if (v.paint) map.nodes.Add(v);
                     break;
             }
         }
@@ -223,11 +230,6 @@ namespace manderijntje
     /*Deze classen bevat alle methode die direct of indirect user input nodig hebben en vervolgens worden gebruikt voor een bewerking op de kaart*/
     public class bewerkingen
     {
-        //returnt hoe ver er is ingezoomt op de kaart
-        public int zoom(int factor, int zoomgrote)
-        {
-            return factor * zoomgrote;
-        }
 
         //returnt verschijving over de x en y richting in de vorm van een punt
         public Point movemap(Point startmouse, Point endmouse)
@@ -250,31 +252,19 @@ namespace manderijntje
             stations.kleinste = new Point(p.Min(Point => Point.X) - speling, p.Min(Point => Point.Y) - speling);
             stations.groteste = new Point(p.Max(Point => Point.X) + speling, p.Max(Point => Point.Y) + speling);
 
-            //stations.kleinste = new Point(Math.Min(station1.X - speling, station2.X - speling), Math.Min(station1.Y - speling, station2.Y - speling));
-            //stations.groteste = new Point(Math.Max(station1.X + speling, station2.X + speling), Math.Max(station1.Y + speling, station2.Y + speling));
-
             return stations;
         }
 
-        //returnt een factor afhankelijk van de geselecteerde stations
-        public int factor(Point punt1, Point punt2, int schermhogte, int zoomgrote)
+        public void LargeandSmalPoints(VisueelModel v)
         {
-            int x, y;
-
-            x = Math.Abs(punt1.X) + Math.Abs(punt2.X);
-            y = Math.Abs(punt1.Y) + Math.Abs(punt2.Y);
-
-            if (x < y)
-            {
-                return (schermhogte - y) / zoomgrote;
-            }
-            else
-            {
-                return (schermhogte - x) / zoomgrote;
-            }
-
+            Point minX, minY, maxX, MaxY;
+           
+ 
+            
+           
+                
         }
-
+        
     }
 
 

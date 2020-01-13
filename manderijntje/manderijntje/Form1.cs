@@ -25,22 +25,10 @@ namespace manderijntje
             dataControl = new DataControl();
             visueelControl = new connecties(dataControl.GetDataModel());
             mapView = new MapView(visueelControl);
+            mapView.mapView = mapView;
             mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
             setupView();
-
-            /*
-                test
-
-            Route route = Routing.GetRoute("Utrecht Centraal", "Gouda", DateTime.Now, dataControl.GetDataModel());
-            foreach (Node station in route.shortestPath)
-            {
-                Console.WriteLine(station.stationnaam);
-            }
-            Console.ReadLine();
-
-                test end 
-            */
         }
 
         // Calls every method that needs to be called to setup the view Correctly
@@ -88,6 +76,7 @@ namespace manderijntje
                 hideArrowIcon.Location = new Point(hideArrowIcon.Location.X, (hideBar.Height / 2) - (logoHeader.Height));
                 inputPanel.Location = new Point(inputPanel.Location.X, hideArrowIcon.Location.Y - (inputPanel.Height / 2));
             }
+
         }
 
         // Removes the placeholder text in the right inputBoxes
@@ -117,15 +106,18 @@ namespace manderijntje
                 else
                     textbox.Text = "Destination";
                 textbox.ForeColor = Color.LightGray;
-            }
+            } 
         }
 
         // Checks if the location is filled in correctly and exist
-        private static bool checkLocation(string departureLocation, string destinationLocation, List<Node> nodesList)
+        private static bool checkLocation(string departureLocation, string destinationLocation, bool checkDeparture, List<Node> nodesList)
         {
+            if (departureLocation == destinationLocation)
+                return false;
+
             foreach (Node node in nodesList)
             {
-                if (departureLocation.Length != 0)
+                if (checkDeparture)
                 {
                     if (node.stationnaam == departureLocation)
                         return true;
@@ -142,20 +134,22 @@ namespace manderijntje
         // Checks in which textBox an error is
         private void checkFout(string departureLocation, string destinationLocation, bool departureBool, bool destinationBool)
         {
-            if (departureLocation == "Departure")
-                highlightTextBox(departureInput, "Departure is empty");
+            if (departureLocation == destinationLocation)
+                highlightTextBox(destinationInput, "Destination location can't be the same as the departure location");
+            else if (departureLocation == "Departure")
+                highlightTextBox(departureInput, "Departure textBox is empty");
             else if (destinationLocation == "Destination")
-                highlightTextBox(destinationInput, "Destination is empty");
+                highlightTextBox(destinationInput, "Destination textBox is empty");
             else if (!departureBool)
-                highlightTextBox(departureInput, "Departure is wrong");
+                highlightTextBox(departureInput, "Departure location is wrong");
             else if (!destinationBool)
-                highlightTextBox(destinationInput, "Destination is wrong");
+                highlightTextBox(destinationInput, "Destination location is wrong");
         }
 
         // Highlight textBox with the error
         private void highlightTextBox(TextBox textbox, string text)
         {
-            MessageBox.Show(text + ", Try again", "Something went wrong");
+            MessageBox.Show(text + ", please try again", "Something went wrong");
             textbox.ForeColor = Color.Red;
         }
 
@@ -182,8 +176,8 @@ namespace manderijntje
         private static bool checkIfEmpty(string departureLocation, string destinationLocation)
         {
             if (departureLocation != "Departure" && destinationLocation != "Destination")
-                return true;
-            return false;
+                return false;
+            return true;
         }
 
         // If there is no error it will call the "setupTripOptions" method for further setup for displaying some tripOptions
@@ -192,17 +186,13 @@ namespace manderijntje
             departureLocation = departureInput.Text;
             destinationLocation = destinationInput.Text;
             departureTime = timeInput.Text;
-            if (checkLocation(departureLocation, "", nodeList) &&
-                    checkLocation("", destinationLocation, nodeList))
-            {
+            if (checkLocation(departureLocation, destinationLocation, true, nodeList) &&
+                    checkLocation(departureLocation, destinationLocation, false, nodeList))
                 setupTripOptions();
-            }
             else
-            {
                 checkFout(departureLocation, destinationLocation,
-                    checkLocation(departureLocation, "", nodeList),
-                    checkLocation("", destinationLocation, nodeList));
-            }
+                    checkLocation(departureLocation, destinationLocation, true, nodeList),
+                    checkLocation(departureLocation, destinationLocation, false, nodeList));
         }
 
         // Shows flowControl with all the possible tripOptions
@@ -216,11 +206,17 @@ namespace manderijntje
             List<string> list = new List<string>();
             list.Add(departureLocation);
             list.Add(destinationLocation);
+
             // Will crash the build
             // visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, , );
 
             chosenTime = Convert.ToDateTime(departureTime);
-            tripOptions.Add(Routing.GetRoute(departureLocation, destinationLocation, chosenTime, dataControl.GetDataModel()));
+            foreach (Route route in Routing.GetRoute(departureLocation, destinationLocation, chosenTime,
+                dataControl.GetDataModel()))
+            {
+                tripOptions.Add(route);
+            }
+
             fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
         }
 
@@ -328,9 +324,7 @@ namespace manderijntje
                 }
             }
             else
-            {
                 autosuggesInVisible();
-            }
         }
 
         // After destinationInput of the user it will show an autosuggestion or removes the autosuggestions
@@ -353,9 +347,7 @@ namespace manderijntje
                 }
             }
             else
-            {
                 autosuggesInVisible();
-            }
         }
 
         // Fills the flowcontrol with the usercontrol called "autoSuggesCell" and gives the needed data to autoSuggesCell.
@@ -484,19 +476,33 @@ namespace manderijntje
         // Changed departureInput to Destionation and the otherway around
         private void changeTextImage_Click(object sender, EventArgs e)
         {
-            if (checkIfEmpty(departureInput.Text, destinationInput.Text))
-            {
-                changeInput = true;
-                depLocation = departureInput.Text;
-                desLocation = destinationInput.Text;
-                Color bKleur = departureInput.ForeColor;
-                Color eKleur = destinationInput.ForeColor;
+            changeInput = true;
+            depLocation = departureInput.Text;
+            desLocation = destinationInput.Text;
+            Color bKleur = departureInput.ForeColor;
+            Color eKleur = destinationInput.ForeColor;
+            destinationInput.ForeColor = bKleur;
+            departureInput.ForeColor = eKleur;
+
+            if (!checkIfEmpty(departureInput.Text, destinationInput.Text))
+            { 
                 departureInput.Text = desLocation;
-                departureInput.ForeColor = eKleur;
                 destinationInput.Text = depLocation;
-                destinationInput.ForeColor = bKleur;
-                changeInput = false;
             }
+            else
+            { 
+                if (depLocation != "Departure")
+                {
+                    destinationInput.Text = depLocation;
+                    departureInput.Text = "Departure";
+                }
+                if (desLocation != "Destination")
+                {
+                    departureInput.Text = desLocation;
+                    destinationInput.Text = "Destination";
+                }
+            }
+            changeInput = false;
         }
 
         // Shows the right UserControl

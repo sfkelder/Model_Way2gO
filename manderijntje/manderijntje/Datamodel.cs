@@ -1135,7 +1135,7 @@ namespace manderijntje
         public string name_id, routnaam, stationnaam, soortrout, routid, vehicle;
         public bool stops;
         public Node NearestToStart;
-        public double MinCostToStart = Double.MaxValue;
+        public int MinCostToStart = int.MaxValue;
         public bool Visited = false;
         public Node(string name, double coordx, double coordy, string routenaam, string stationsnaam, string soortroute, string routeid, string vehicles, bool stop, int i)
         {
@@ -1178,7 +1178,7 @@ namespace manderijntje
         // twee pointers die wijzen naar de twee nodes die deze link verbind
         public Node Start, End;
         public string RouteName;
-        public double Weight = 1;
+        public int Weight = 1;
         public Link(Node startpunt, Node eindpunt, string RouteNames)
         {
             Start = startpunt;

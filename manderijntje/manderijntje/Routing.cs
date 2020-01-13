@@ -2,12 +2,13 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace manderijntje
 { 
     class Routing
     { 
-
+        //starts the dijkstra search algorithm and returns the fastest route through the datamodel
         public static List<Node> GetShortestPathDijkstra(string startName, string endName, DateTime time, DataModel dataModel)
         {
             Node start = dataModel.GetNodeName(startName, dataModel.GetNodesRouting());
@@ -18,7 +19,7 @@ namespace manderijntje
             shortestPath.Reverse();
             return shortestPath;
         }
-         
+        //After DijkstraSearch BuildShortestPath does make the shortest path to the end so GetShortestPathDijkstra can return a list of the shortest path.
         private static void BuildShortestPath(List<Node> list, Node node)
         {
             if (node.NearestToStart == null)
@@ -26,7 +27,9 @@ namespace manderijntje
             list.Add(node.NearestToStart);
             BuildShortestPath(list, node.NearestToStart);
         }
-
+        /*DijkstraSearch searches for the fastest route through the network by arranging the nodes and links from fastest to slowest.
+         If DijkstaSearch finds the end, it will stop searching and the fastest route is found*/
+        
         private static void DijkstraSearch(Node start, Node end, DateTime time)
         {
             start.MinCostToStart = 0;
@@ -36,14 +39,15 @@ namespace manderijntje
                 prioQueue = prioQueue.OrderBy(x => x.MinCostToStart).ToList();
                 var node = prioQueue.First();
                 prioQueue.Remove(node);
-                foreach (var link in node. Connecties.OrderBy(x => x.Weight))
+                foreach (var link in node.Connecties.OrderBy(x => x.Weight))
                 {
+                    int tempCost = node.MinCostToStart + link.Weight;
                     var childNode = link.End;
                     if (childNode.Visited)
                         continue;
-                    if (node.MinCostToStart + link.Weight < childNode.MinCostToStart)
+                    if (tempCost < childNode.MinCostToStart)
                     {
-                        childNode.MinCostToStart = node.MinCostToStart + link.Weight;
+                        childNode.MinCostToStart = tempCost;
                         childNode.NearestToStart = node;
                         if (!prioQueue.Contains(childNode))
                             prioQueue.Add(childNode);
@@ -55,21 +59,35 @@ namespace manderijntje
                     return;
             }
         }
-
-        public static Route GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
+        //GetRoute is the method to call for getting the shortest path and all the information needed to show
+        public static List<Route> GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
         {
             int transfers = 0;
-            Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
-            return fastestRoute;
+            List<Route> ListRoute = new List<Route>();
+            DateTime starttime = time;
+            for (int i = 0; i < 10; i++)
+            {
+                Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
+                ListRoute.Add(fastestRoute);
+                starttime = fastestRoute.startTime.AddMinutes(1);
+                foreach (Node node in dataModel.nodesrouting)
+                {
+                    node.MinCostToStart = int.MaxValue;
+                    node.NearestToStart = null;
+                    node.Visited = false;
+                }
+            }
+            return ListRoute;
         }
     }
 
+    //Route is an object to show all the information
     class Route
     {
-        public List<Node> shortestPath;
-        public DateTime startTime;
-        public DateTime endTime;
-        public int transfers;
+        public List<Node> shortestPath; //list of the shortest path
+        public DateTime startTime; //time the train will depart from the first station
+        public DateTime endTime; //time the train should arrive at the destination
+        public int transfers; //amount of transfers to another train
 
         public Route(string startName, string endName, int totaltransfers, DateTime time, DataModel dataModel)
         {
@@ -80,9 +98,3 @@ namespace manderijntje
         }
     }
 }
-
-/* mincosttostart
- *visited
- * nearest to start
- * weight
- */
