@@ -1144,7 +1144,7 @@ namespace manderijntje
             x = coordx;
             y = coordy;
             routnaam = routenaam;
-            stationnaam = stationsnaam;
+            stationnaam = stationsnaam;  
             soortrout = soortroute;
             routid = routeid;
             vehicle = vehicles;
