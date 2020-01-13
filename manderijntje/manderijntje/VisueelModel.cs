@@ -24,23 +24,34 @@ namespace manderijntje
         {
             if (File.Exists(filepath) && !Program.reimport)
             {
-                files.disk_read(this, filepath);
+                try
+                {
+                    files.disk_read(this, filepath);
+                }
+                catch
+                {
+                    MakeDataForDisk(data);
+                }
             }
             else
             {
-                access = (new parsing(data)).getModel(false);
-
-                if (Directory.Exists(filepath))
-                {
-                    files.writing_disk(access, FileMode.Open, filepath);
-                }
-                else
-                {
-                    files.writing_disk(access, FileMode.Create, filepath);
-                }
+                MakeDataForDisk(data);
             }
         }
 
+        private void MakeDataForDisk(DataModel data)
+        {
+            access = (new parsing(data)).getModel(false);
+
+            if (Directory.Exists(filepath))
+            {
+                files.writing_disk(access, FileMode.Open, filepath);
+            }
+            else
+            {
+                files.writing_disk(access, FileMode.Create, filepath);
+            }
+        }
         public void SetSizeMap(int width, int height)
         {
             Point[] points = new Point[1000]; 
