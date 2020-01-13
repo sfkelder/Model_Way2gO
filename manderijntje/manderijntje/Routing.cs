@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
-using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace manderijntje
 { 
@@ -39,7 +37,7 @@ namespace manderijntje
                 prioQueue = prioQueue.OrderBy(x => x.MinCostToStart).ToList();
                 var node = prioQueue.First();
                 prioQueue.Remove(node);
-                foreach (var link in node.Connecties.OrderBy(x => x.Weight))
+                foreach (var link in node.Connections.OrderBy(x => x.Weight))
                 {
                     int tempCost = node.MinCostToStart + link.Weight;
                     var childNode = link.End;
@@ -80,7 +78,6 @@ namespace manderijntje
             return ListRoute;
         }
     }
-
     //Route is an object to show all the information
     class Route
     {
