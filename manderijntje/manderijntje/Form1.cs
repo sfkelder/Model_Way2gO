@@ -33,6 +33,8 @@ namespace manderijntje
         // Calls every method that needs to be called to setup the view Correctly
         private void setupView()
         {
+            // Full screen
+            WindowState = FormWindowState.Maximized;
             changeBackIcon(false);
             show(inputPanel);
             hideshowBack();
@@ -67,7 +69,7 @@ namespace manderijntje
             sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
-            tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height);
+            tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height - 80);
             detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height);
             detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 174;
             if (Height > 450)
