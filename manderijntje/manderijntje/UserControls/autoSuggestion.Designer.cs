@@ -1,6 +1,6 @@
 ﻿namespace manderijntje
 {
-    partial class autoSuggestie
+    partial class autoSuggestion
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,32 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.autosuggestFlowControl = new System.Windows.Forms.FlowLayoutPanel();
+            this.autoSuggestFlowControl = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
-            // autosuggestFlowControl
+            // autoSuggestFlowControl
             // 
-            this.autosuggestFlowControl.AutoScroll = true;
-            this.autosuggestFlowControl.Location = new System.Drawing.Point(0, 0);
-            this.autosuggestFlowControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.autosuggestFlowControl.Name = "autosuggestFlowControl";
-            this.autosuggestFlowControl.Size = new System.Drawing.Size(280, 231);
-            this.autosuggestFlowControl.TabIndex = 0;
+            this.autoSuggestFlowControl.AutoScroll = true;
+            this.autoSuggestFlowControl.Location = new System.Drawing.Point(0, 0);
+            this.autoSuggestFlowControl.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.autoSuggestFlowControl.Name = "autoSuggestFlowControl";
+            this.autoSuggestFlowControl.Size = new System.Drawing.Size(373, 289);
+            this.autoSuggestFlowControl.TabIndex = 0;
             // 
-            // autoSuggestie
+            // autoSuggestion
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.autosuggestFlowControl);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "autoSuggestie";
-            this.Size = new System.Drawing.Size(280, 231);
+            this.Controls.Add(this.autoSuggestFlowControl);
+            this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.Name = "autoSuggestion";
+            this.Size = new System.Drawing.Size(373, 289);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        public System.Windows.Forms.FlowLayoutPanel autosuggestFlowControl;
+        public System.Windows.Forms.FlowLayoutPanel autoSuggestFlowControl;
     }
 }

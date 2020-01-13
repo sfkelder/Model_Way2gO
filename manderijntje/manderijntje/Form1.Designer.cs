@@ -34,21 +34,21 @@
             this.backIcon = new System.Windows.Forms.PictureBox();
             this.logoIcon = new System.Windows.Forms.PictureBox();
             this.inputPanel = new System.Windows.Forms.Panel();
-            this.planTripLabel = new System.Windows.Forms.Label();
-            this.searchButton = new System.Windows.Forms.Button();
+            this.planTripLBL = new System.Windows.Forms.Label();
+            this.searchBTN = new System.Windows.Forms.Button();
             this.tijdPanel = new System.Windows.Forms.Panel();
-            this.vertrekLabel = new System.Windows.Forms.Label();
-            this.tijdInput = new System.Windows.Forms.ComboBox();
+            this.timeLBL = new System.Windows.Forms.Label();
+            this.timeInput = new System.Windows.Forms.ComboBox();
             this.textboxPanel = new System.Windows.Forms.Panel();
             this.changeTextImage = new System.Windows.Forms.PictureBox();
-            this.beginInput = new System.Windows.Forms.TextBox();
-            this.eindInput = new System.Windows.Forms.TextBox();
-            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.departureInput = new System.Windows.Forms.TextBox();
+            this.destinationInput = new System.Windows.Forms.TextBox();
+            this.tripOptionsFlowControl = new System.Windows.Forms.FlowLayoutPanel();
             this.hideBar = new System.Windows.Forms.Panel();
             this.hideArrowIcon = new System.Windows.Forms.PictureBox();
             this.hideBarOrangePanel = new System.Windows.Forms.Panel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.autoSuggestie1 = new manderijntje.autoSuggestie();
+            this.autoSuggestion = new manderijntje.autoSuggestion();
             this.detailsUserControl = new manderijntje.DetailsControl();
             this.logoHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backIcon)).BeginInit();
@@ -102,8 +102,8 @@
             // 
             // inputPanel
             // 
-            this.inputPanel.Controls.Add(this.planTripLabel);
-            this.inputPanel.Controls.Add(this.searchButton);
+            this.inputPanel.Controls.Add(this.planTripLBL);
+            this.inputPanel.Controls.Add(this.searchBTN);
             this.inputPanel.Controls.Add(this.tijdPanel);
             this.inputPanel.Controls.Add(this.textboxPanel);
             this.inputPanel.Location = new System.Drawing.Point(87, 265);
@@ -112,68 +112,68 @@
             this.inputPanel.Size = new System.Drawing.Size(238, 185);
             this.inputPanel.TabIndex = 8;
             // 
-            // planTripLabel
+            // planTripLBL
             // 
-            this.planTripLabel.AutoSize = true;
-            this.planTripLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.planTripLabel.Location = new System.Drawing.Point(2, 6);
-            this.planTripLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.planTripLabel.Name = "planTripLabel";
-            this.planTripLabel.Size = new System.Drawing.Size(154, 26);
-            this.planTripLabel.TabIndex = 3;
-            this.planTripLabel.Text = "Plan your trip";
+            this.planTripLBL.AutoSize = true;
+            this.planTripLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.planTripLBL.Location = new System.Drawing.Point(2, 6);
+            this.planTripLBL.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.planTripLBL.Name = "planTripLBL";
+            this.planTripLBL.Size = new System.Drawing.Size(289, 51);
+            this.planTripLBL.TabIndex = 3;
+            this.planTripLBL.Text = "Plan your trip";
             // 
-            // searchButton
+            // searchBTN
             // 
-            this.searchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
-            this.searchButton.FlatAppearance.BorderSize = 0;
-            this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchButton.ForeColor = System.Drawing.Color.White;
-            this.searchButton.Location = new System.Drawing.Point(39, 144);
-            this.searchButton.Margin = new System.Windows.Forms.Padding(2);
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(147, 36);
-            this.searchButton.TabIndex = 2;
-            this.searchButton.Text = "Get your Trip";
-            this.searchButton.UseVisualStyleBackColor = false;
-            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            this.searchBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
+            this.searchBTN.FlatAppearance.BorderSize = 0;
+            this.searchBTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.searchBTN.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchBTN.ForeColor = System.Drawing.Color.White;
+            this.searchBTN.Location = new System.Drawing.Point(39, 144);
+            this.searchBTN.Margin = new System.Windows.Forms.Padding(2);
+            this.searchBTN.Name = "searchBTN";
+            this.searchBTN.Size = new System.Drawing.Size(147, 36);
+            this.searchBTN.TabIndex = 2;
+            this.searchBTN.Text = "Get your Trip";
+            this.searchBTN.UseVisualStyleBackColor = false;
+            this.searchBTN.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // tijdPanel
             // 
-            this.tijdPanel.Controls.Add(this.vertrekLabel);
-            this.tijdPanel.Controls.Add(this.tijdInput);
+            this.tijdPanel.Controls.Add(this.timeLBL);
+            this.tijdPanel.Controls.Add(this.timeInput);
             this.tijdPanel.Location = new System.Drawing.Point(0, 111);
             this.tijdPanel.Margin = new System.Windows.Forms.Padding(2);
             this.tijdPanel.Name = "tijdPanel";
             this.tijdPanel.Size = new System.Drawing.Size(234, 31);
             this.tijdPanel.TabIndex = 6;
             // 
-            // vertrekLabel
+            // timeLBL
             // 
-            this.vertrekLabel.AutoSize = true;
-            this.vertrekLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.vertrekLabel.Location = new System.Drawing.Point(3, 5);
-            this.vertrekLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.vertrekLabel.Name = "vertrekLabel";
-            this.vertrekLabel.Size = new System.Drawing.Size(48, 13);
-            this.vertrekLabel.TabIndex = 6;
-            this.vertrekLabel.Text = "Vertrek";
+            this.timeLBL.AutoSize = true;
+            this.timeLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timeLBL.Location = new System.Drawing.Point(3, 5);
+            this.timeLBL.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.timeLBL.Name = "timeLBL";
+            this.timeLBL.Size = new System.Drawing.Size(64, 26);
+            this.timeLBL.TabIndex = 6;
+            this.timeLBL.Text = "Time";
             // 
-            // tijdInput
+            // timeInput
             // 
-            this.tijdInput.FormattingEnabled = true;
-            this.tijdInput.Location = new System.Drawing.Point(75, 1);
-            this.tijdInput.Margin = new System.Windows.Forms.Padding(2);
-            this.tijdInput.Name = "tijdInput";
-            this.tijdInput.Size = new System.Drawing.Size(111, 21);
-            this.tijdInput.TabIndex = 5;
+            this.timeInput.FormattingEnabled = true;
+            this.timeInput.Location = new System.Drawing.Point(54, 1);
+            this.timeInput.Margin = new System.Windows.Forms.Padding(2);
+            this.timeInput.Name = "timeInput";
+            this.timeInput.Size = new System.Drawing.Size(132, 33);
+            this.timeInput.TabIndex = 5;
             // 
             // textboxPanel
             // 
             this.textboxPanel.Controls.Add(this.changeTextImage);
-            this.textboxPanel.Controls.Add(this.beginInput);
-            this.textboxPanel.Controls.Add(this.eindInput);
+            this.textboxPanel.Controls.Add(this.departureInput);
+            this.textboxPanel.Controls.Add(this.destinationInput);
             this.textboxPanel.Location = new System.Drawing.Point(2, 43);
             this.textboxPanel.Margin = new System.Windows.Forms.Padding(2);
             this.textboxPanel.Name = "textboxPanel";
@@ -191,34 +191,34 @@
             this.changeTextImage.TabStop = false;
             this.changeTextImage.Click += new System.EventHandler(this.changeTextImage_Click);
             // 
-            // beginInput
+            // departureInput
             // 
-            this.beginInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.beginInput.Location = new System.Drawing.Point(2, 2);
-            this.beginInput.Margin = new System.Windows.Forms.Padding(2);
-            this.beginInput.Name = "beginInput";
-            this.beginInput.Size = new System.Drawing.Size(182, 20);
-            this.beginInput.TabIndex = 0;
-            this.beginInput.TextChanged += new System.EventHandler(this.departureInput_TextChanged);
+            this.departureInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.departureInput.Location = new System.Drawing.Point(2, 2);
+            this.departureInput.Margin = new System.Windows.Forms.Padding(2);
+            this.departureInput.Name = "departureInput";
+            this.departureInput.Size = new System.Drawing.Size(182, 32);
+            this.departureInput.TabIndex = 0;
+            this.departureInput.TextChanged += new System.EventHandler(this.departureInput_TextChanged);
             // 
-            // eindInput
+            // destinationInput
             // 
-            this.eindInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.eindInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.eindInput.Location = new System.Drawing.Point(3, 32);
-            this.eindInput.Margin = new System.Windows.Forms.Padding(2);
-            this.eindInput.Name = "eindInput";
-            this.eindInput.Size = new System.Drawing.Size(181, 20);
-            this.eindInput.TabIndex = 1;
-            this.eindInput.TextChanged += new System.EventHandler(this.destinationInput_TextChanged);
+            this.destinationInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.destinationInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.destinationInput.Location = new System.Drawing.Point(3, 32);
+            this.destinationInput.Margin = new System.Windows.Forms.Padding(2);
+            this.destinationInput.Name = "destinationInput";
+            this.destinationInput.Size = new System.Drawing.Size(181, 32);
+            this.destinationInput.TabIndex = 1;
+            this.destinationInput.TextChanged += new System.EventHandler(this.destinationInput_TextChanged);
             // 
-            // flowLayoutPanel
+            // tripOptionsFlowControl
             // 
-            this.flowLayoutPanel.AutoScroll = true;
-            this.flowLayoutPanel.Location = new System.Drawing.Point(383, 62);
-            this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(381, 685);
-            this.flowLayoutPanel.TabIndex = 9;
+            this.tripOptionsFlowControl.AutoScroll = true;
+            this.tripOptionsFlowControl.Location = new System.Drawing.Point(383, 62);
+            this.tripOptionsFlowControl.Name = "tripOptionsFlowControl";
+            this.tripOptionsFlowControl.Size = new System.Drawing.Size(381, 685);
+            this.tripOptionsFlowControl.TabIndex = 9;
             // 
             // hideBar
             // 
@@ -250,37 +250,42 @@
             this.hideBarOrangePanel.Size = new System.Drawing.Size(10, 734);
             this.hideBarOrangePanel.TabIndex = 0;
             // 
-            // autoSuggestie1
+            // imageList1
             // 
-            this.autoSuggestie1.Location = new System.Drawing.Point(87, 456);
-            this.autoSuggestie1.Margin = new System.Windows.Forms.Padding(4);
-            this.autoSuggestie1.Name = "autoSuggestie1";
-            this.autoSuggestie1.Size = new System.Drawing.Size(186, 124);
-            this.autoSuggestie1.TabIndex = 15;
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // autoSuggestion
+            // 
+            this.autoSuggestion.Location = new System.Drawing.Point(87, 456);
+            this.autoSuggestion.Margin = new System.Windows.Forms.Padding(4);
+            this.autoSuggestion.Name = "autoSuggestion";
+            this.autoSuggestion.Size = new System.Drawing.Size(186, 124);
+            this.autoSuggestion.TabIndex = 15;
             // 
             // detailsUserControl
             // 
-            this.detailsUserControl.aantalOverstappen = null;
-            this.detailsUserControl.beginTijd = null;
-            this.detailsUserControl.eindTijd = null;
+            this.detailsUserControl.departureTime = null;
+            this.detailsUserControl.destinationTime = null;
             this.detailsUserControl.Location = new System.Drawing.Point(771, 62);
             this.detailsUserControl.Margin = new System.Windows.Forms.Padding(4);
             this.detailsUserControl.Name = "detailsUserControl";
-            this.detailsUserControl.perron = null;
+            this.detailsUserControl.platform = null;
             this.detailsUserControl.shortestPath = null;
             this.detailsUserControl.Size = new System.Drawing.Size(422, 685);
             this.detailsUserControl.TabIndex = 14;
-            this.detailsUserControl.totaleTijd = null;
-            this.detailsUserControl.tussenstop = null;
+            this.detailsUserControl.totalTime = null;
+            this.detailsUserControl.transfers = null;
             // 
             // Form1
             // 
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1365, 726);
-            this.Controls.Add(this.autoSuggestie1);
+            this.Controls.Add(this.autoSuggestion);
             this.Controls.Add(this.detailsUserControl);
             this.Controls.Add(this.hideBar);
-            this.Controls.Add(this.flowLayoutPanel);
+            this.Controls.Add(this.tripOptionsFlowControl);
             this.Controls.Add(this.inputPanel);
             this.Controls.Add(this.logoHeader);
             this.Name = "Form1";
@@ -305,15 +310,15 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel logoHeader;
         public System.Windows.Forms.Panel inputPanel;
-        private System.Windows.Forms.Label planTripLabel;
-        private System.Windows.Forms.Button searchButton;
+        private System.Windows.Forms.Label planTripLBL;
+        private System.Windows.Forms.Button searchBTN;
         private System.Windows.Forms.Panel tijdPanel;
-        private System.Windows.Forms.Label vertrekLabel;
-        private System.Windows.Forms.ComboBox tijdInput;
+        private System.Windows.Forms.Label timeLBL;
+        private System.Windows.Forms.ComboBox timeInput;
         public System.Windows.Forms.Panel textboxPanel;
-        public System.Windows.Forms.TextBox beginInput;
-        public System.Windows.Forms.TextBox eindInput;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
+        public System.Windows.Forms.TextBox departureInput;
+        public System.Windows.Forms.TextBox destinationInput;
+        private System.Windows.Forms.FlowLayoutPanel tripOptionsFlowControl;
         private System.Windows.Forms.Panel hideBar;
         private System.Windows.Forms.Panel hideBarOrangePanel;
         private System.Windows.Forms.PictureBox logoIcon;
@@ -322,7 +327,7 @@
         private System.Windows.Forms.PictureBox changeTextImage;
         private System.Windows.Forms.ImageList imageList1;
         private DetailsControl detailsUserControl;
-        private autoSuggestie autoSuggestie1;
+        private autoSuggestion autoSuggestion;
     }
 }
 

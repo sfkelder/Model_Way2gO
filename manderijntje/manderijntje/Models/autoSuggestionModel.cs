@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace manderijntje
 {
-    public class autoSuggestModel
+    public class autoSuggestionModel
     {
         public string stationName { get; set; }
         public string stationType { get; set; }
 
-        public autoSuggestModel(string stationName, string stationType)
+        public autoSuggestionModel(string stationName, string stationType)
         {
             this.stationName = stationName;
             this.stationType = stationType;

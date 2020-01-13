@@ -29,25 +29,22 @@ namespace manderijntje
         {
             if (File.Exists(filepath) && !Program.reimport)
             {
-
                 ReadDataFromDisk();
             }
             else
             {
-                Loadnodes(sFile);//punten met stationnamen
-                Loadroutes(sFile);//punten met routes
-                LoadWay(sFile);
+                Loadnodes(sFile);//points with coordinates and stationnames
+                Loadroutes(sFile);//points with routes
+                LoadWay(sFile);//points with ways
                 dataModel = new DataModel();
-                waysinorder();
-                combinepoints();//samen naar een tweedimensionale array
-
+                waysinorder();//sets ways in right order
+                combinepoints();//combine data
                 foreach (Node node in dataModel.unique_nodes)
                 {
                     if (node.Buren.Count > 8)
                     {
                         CheckDegree(node);
                     }
-
                 }
                 //dataModel.get_unique_links();
                 int deg = 0;
@@ -58,9 +55,7 @@ namespace manderijntje
                         deg = dataModel.unique_nodes[i].Buren.Count;
                     }
                 }
-
                 Console.WriteLine("real: " + deg);
-
                 if (Directory.Exists(filepath))
                 {
                     WriteDataToDisk(FileMode.Open);
@@ -69,13 +64,10 @@ namespace manderijntje
                 {
                     WriteDataToDisk(FileMode.Create);
                 }
-
             }
         }
-
         DataModel dataModel;
         private const string filepath = "C:/Way2Go/datamodel_binary.txt";
-
         private void ReadDataFromDisk()
         {
             try
@@ -91,7 +83,6 @@ namespace manderijntje
                 MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
             }
         }
-
         private void WriteDataToDisk(FileMode fm)
         {
             try
@@ -107,13 +98,11 @@ namespace manderijntje
                 MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
             }
         }
-
         private void CheckDegree(Node n)
         {
             Node[] neighours = n.Buren.ToArray();
             Array.Sort(neighours, (x, y) => n.DistanceToNode(x).CompareTo(n.DistanceToNode(y)));
             Array.Reverse(neighours);
-
             int toCheck = (n.Buren.Count - 8);
             Console.WriteLine("check: " + toCheck);
             for (int i = 0; i < toCheck; i++)
@@ -123,13 +112,7 @@ namespace manderijntje
                 dataModel.unique_links.Remove(getLink(n, neighours[i]));
                 Console.WriteLine("removed: ");
             }
-
-
-
-
-
         }
-
         private Link getLink(Node u, Node v)
         {
             for (int i = 0; i < dataModel.unique_links.Count; i++)
@@ -142,9 +125,6 @@ namespace manderijntje
             }
             return dataModel.unique_links[0];
         }
-
-
-
         public DataModel GetDataModel()
         {
             return dataModel;
@@ -156,32 +136,30 @@ namespace manderijntje
             return gpxDoc;
         }
         /*
-         je krijgt 4 datagroepen van de xml file,
-         punten1 met de nodeID en coordinaten en stationnaam,
-         punten2 met de nodeID en routenaam waar de trein ook echt stopt,
-         punten3 met de wayID en routeID(dus alle ways waar de trein langskomt),
-         en punten4 met de wayID en de NodeID die bij die way horen.
-        de wayID van de routeID van punten3 staan soms in de verkeerde volgorde, 
-        daarom moet je naar de eerste en de laatste(soms ook andersom) nodeID van elke wayID kijken 
-        of die de dezelfde is als de volgende wayID om ze op volgorde te zetten.
-        daarna moet je de data van alle datagroepen samenvoegen.
+         there are 4 twodimensional arrays of data,
+         points1 with the nodeID and the coordinates and stationname,
+         points2 with nodeID and routename where all the trains realy stop,
+         points3 with wayID and routeID where the trains pass by,
+         and points4 with wayID and the NodeID that belong to that way.
+         the wayID of the Route is sometimes not in the right order so in waysinorder that is done in the right order,
+         in combinepoints we combine all the data from all the groups.
+         
         */
-        string[,] punten1;//met de stationnamen
-        string[,] punten2; // met de routenamen
-        string[,] punten3;
-        string[,] punten4;
-        string[,] pointsdone; // klaar
-
-        int lengthjag2;
-        string[] punten1ID;
-
-        List<string> routes;
-        string[] id; List<string> routids;
-        string[][] jag; string[][] jag2;
+        string[,] points1;//met de NodeIDs and stationnamen and coordinates
+        string[,] points2; // where they stop
+        string[,] points3; // where they pass by
+        string[,] points4; //which nodes belong to witch ways
+        string[] pointsstop; // stopyesorno
+        string[] points1ID;//all nodeID with names
+        string[] id; //all WayIDs
+        List<string> routids = new List<string>();// all routIDs
+        string[][] jag; //jagged array of all NodeIDs where index is the same as id(points4)
+        string[][] jag2; // jagged array of all wayIDs where index is the same as routids(points3)
+        int lengthjag2; // length of jag2
         public void Loadnodes(string sFile)
-        {
+        {//load data of all nodes
             XDocument gpxDoc = GetGpxDoc(sFile);
-            //krijgt punten en namen uit file
+            //gets coordinaten and names form file
             var waypoints = from waypoint in gpxDoc.Descendants("node")
                             select new
                             {
@@ -205,63 +183,50 @@ namespace manderijntje
                 {
                     if (wptSeg.k == "name")
                     {
-
                         a++;
                     }
                 }
             }
-
-            //label1.Text = lamin.ToString();
-            int n = 0;//teller
-            punten1 = new string[a, 4];//eerste puntenstring
-            double[] ID = new double[a];
+            int n = 0;//counter
+            points1 = new string[a, 4];
             foreach (var wpt in waypoints)
             {
                 foreach (var wptSeg in wpt.Segs)
                 {
                     if (wptSeg.k == "name")
                     {
-                        //string[] latitude = wpt.Latitude.Split('.');
-                        //string latitude2 = latitude[0] + "," + latitude[1];
-                        //string[] longitude = wpt.Longitude.Split('.');
-                        //string longitude2 = longitude[0] + "," + longitude[1];
-                        //weer . eraf , erbij
-                        punten1[n, 0] = wpt.ID.PadLeft(10, '9');
-                        punten1[n, 1] = getCoordinateFormatting(wpt.Longitude); //longitude with the correct formatting for the local settings
-                        punten1[n, 2] = getCoordinateFormatting(wpt.Latitude); //latitude with the correct formatting for the local settings
-                        ID[n] = double.Parse(wpt.ID);
-                        punten1[n, 3] = wptSeg.v;
+                        points1[n, 0] = wpt.ID.PadLeft(10, '9');//NodeID
+                        points1[n, 1] = getCoordinateFormatting(wpt.Longitude); //longitude with the correct formatting for the local settings
+                        points1[n, 2] = getCoordinateFormatting(wpt.Latitude); //latitude with the correct formatting for the local settings
+                        points1[n, 3] = wptSeg.v;//Name
                         n++;
                     }
                 }
             }
-            Sort(punten1, 0, "ASC");
-            punten1ID = GetColumn(punten1, 0);
+            Sort(points1, 0, "ASC");
+            points1ID = GetColumn(points1, 0);
         }
-
         // this function makes sure that whatever the formatting settings are for the decimal separator, the parsing class always gets the correct double value from the string
-        private string getCoordinateFormatting (string c)
+        private string getCoordinateFormatting(string c)
         {
             string dot_format = c;
-
             string[] comma_format_array = c.Split('.');
             string comma_format = comma_format_array[0] + "," + comma_format_array[1];
-
             double dot_value = double.Parse(dot_format);
             double comma_value = double.Parse(comma_format);
-
             if (dot_value > 1000.0 || dot_value < -1000.0)
             {
                 return comma_format;
-            } else if (comma_value > 1000.0 || comma_value < -1000.0)
+            }
+            else if (comma_value > 1000.0 || comma_value < -1000.0)
             {
                 return dot_format;
-            } else
+            }
+            else
             {
-                return c; 
+                return c;
             }
         }
-
         public string[] GetColumn(string[,] matrix, int columnNumber)
         {
             return Enumerable.Range(0, matrix.GetLength(0))
@@ -301,9 +266,8 @@ namespace manderijntje
             dt.Dispose();
         }
         public void Loadroutes(string sFile)
-        {
+        { //loads all routes
             XDocument gpxDoc = GetGpxDoc(sFile);
-
             var tracks = from track in gpxDoc.Descendants("relation")
                          select new
                          {
@@ -324,14 +288,16 @@ namespace manderijntje
                                 {
                                     k = trackpoint.Attribute("k").Value,
                                     v = trackpoint.Attribute("v").Value,
-
                                 }
                               )
                          };
-            // om voor punten2 juiste aantal te bepalen
-            int l = 0;//teller
-            int k = 0;//teller
-            int h = 0;
+            // to determine the rigth number for points2
+            int l = 0;//counter
+            int k = 0;//counter
+            int h = 0;//counter
+            //I make lists of properties of each route. than i check of those properties already exist to make sure 
+            // there are no double routes(each going in an other direchtion)
+            //the routeID and name are diffrent in these double routes.
             List<string> P = new List<string>();
             List<string> Q = new List<string>();
             List<string> R = new List<string>();
@@ -340,15 +306,14 @@ namespace manderijntje
             List<string> U = new List<string>();
             foreach (var trk in tracks)
             {
-
-                string refr = "ref";
-                string net = "net";
-                string op = "op";
-                string from = "des";
-                string to = "des";
-                string pt2 = "pt2";
-                string w = "w";
-                string type = "type";
+                string refr = "ref";//a number of a letter mostly
+                string net = "net";//networtk
+                string op = "op";//operator
+                string from = "des";//from
+                string to = "des";//to
+                string pt2 = "pt2";//public_transport
+                string w = "w";//wikidata
+                string type = "type";//type
                 foreach (var trkSeg2 in trk.Segs2)
                 {
                     if (trkSeg2.k == "ref")
@@ -392,7 +357,6 @@ namespace manderijntje
                     S.Add(from);
                     T.Add(to);
                     U.Add(w);
-
                     if (!nodoubleroutes(P, Q, R, U, S, T,
              refr, net, op, w, to, from))
                     {
@@ -420,12 +384,11 @@ namespace manderijntje
             List<string> K = new List<string>();
             List<string> L = new List<string>();
             List<string> J = new List<string>();
-            punten2 = new string[l, 3];
-            punten3 = new string[k, 6];
-            int n = 0;//teller
-            int m = 0;//teller
-            int o = 0;//teller
-            string[] routid = new string[k];
+            points2 = new string[l, 3];
+            points3 = new string[k, 6];
+            int n = 0;//counter
+            int m = 0;//counter
+            int o = 0;//counter
             jag2 = new string[h][];
             int j = 0;
             foreach (var trk in tracks)
@@ -482,7 +445,6 @@ namespace manderijntje
                     K.Add(from);
                     L.Add(to);
                     J.Add(w);
-
                     if (!nodoubleroutes(N, M, O, J, K, L,
              refr, net, op, w, to, from))
                     {
@@ -504,13 +466,13 @@ namespace manderijntje
                         {
                             if (trkSeg.type == "node")
                             {
-                                punten2[n, 0] = trkSeg.refr.PadLeft(10, '9');
-                                punten2[n, 1] = "route" + " " + m;
+                                points2[n, 0] = trkSeg.refr.PadLeft(10, '9');//nodeID
+                                points2[n, 1] = "route" + " " + m;//routename
                                 foreach (var trkSeg2 in trk.Segs2)
                                 {
                                     if (trkSeg2.k == "name")
                                     {
-                                        punten2[n, 1] = trkSeg2.v;
+                                        points2[n, 1] = trkSeg2.v;//routename
                                     }
                                 }
                                 n++;
@@ -519,30 +481,29 @@ namespace manderijntje
                             {
                                 if (trkSeg.role == "")
                                 {
-                                    punten3[o, 0] = trkSeg.refr.PadLeft(10, '9');
-                                    punten3[o, 1] = trk.ID;
-                                    punten3[o, 2] = "route" + " " + m;
-                                    routid[j] = trk.ID;
-                                    punten3[o, 3] = "-";
-                                    punten3[o, 4] = "ref";
-                                    punten3[o, 5] = "vehicle";
+                                    points3[o, 0] = trkSeg.refr.PadLeft(10, '9');//nodeID
+                                    points3[o, 1] = trk.ID;//wayID
+                                    points3[o, 2] = "route" + " " + m;
+                                    points3[o, 3] = "-";//sort route, for example: long_distance
+                                    points3[o, 4] = "ref";//mostly numbers or letters
+                                    points3[o, 5] = "vehicle";//type vehicle
                                     foreach (var trkSeg2 in trk.Segs2)
                                     {
                                         if (trkSeg2.k == "name")
                                         {
-                                            punten3[o, 2] = trkSeg2.v;
+                                            points3[o, 2] = trkSeg2.v;
                                         }
                                         if (trkSeg2.k == "route")
                                         {
-                                            punten3[o, 5] = trkSeg2.v;
+                                            points3[o, 5] = trkSeg2.v;
                                         }
                                         if (trkSeg2.k == "service")
                                         {
-                                            punten3[o, 3] = trkSeg2.v;
+                                            points3[o, 3] = trkSeg2.v;
                                         }
                                         if (trkSeg2.k == "ref")
                                         {
-                                            punten3[o, 4] = trkSeg2.v;
+                                            points3[o, 4] = trkSeg2.v;
                                         }
                                     }
                                     o++;
@@ -553,14 +514,13 @@ namespace manderijntje
                             }
                         }
                     }
+                    routids.Add(trk.ID);
                     j++;
                 }
                 m++;
             }
-            routids = routid.Distinct().ToList();
             routids.RemoveAll(item => item == null);
             jag2 = jag2.Where(x => x != null).ToArray();
-
         }
         public bool nodoubleroutes(List<string> P, List<string> Q, List<string> R, List<string> U, List<string> S, List<string> T,
             string refr, string net, string op, string w, string to, string from)
@@ -576,9 +536,7 @@ namespace manderijntje
                 }
             }
             return false;
-
         }
-
         public void LoadWay(string sFile)
         {
             XDocument gpxDoc = GetGpxDoc(sFile);
@@ -606,7 +564,7 @@ namespace manderijntje
                 h++;
             }
             int o = 0;
-            punten4 = new string[k, 2];
+            points4 = new string[k, 2];
             id = new string[h];
             jag = new string[h][];
             int j = 0;
@@ -616,8 +574,8 @@ namespace manderijntje
                 id[j] = wpt.ID.PadLeft(10, '9');
                 foreach (var wptSeg in wpt.Segs)
                 {
-                    punten4[o, 0] = wpt.ID.PadLeft(10, '9');
-                    punten4[o, 1] = wptSeg.refr.PadLeft(10, '9');
+                    points4[o, 0] = wpt.ID.PadLeft(10, '9');//wayid
+                    points4[o, 1] = wptSeg.refr.PadLeft(10, '9');//nodeid
                     o++;
                     i++;
                 }
@@ -632,18 +590,18 @@ namespace manderijntje
                 }
                 j++;
             }
-            Sort(punten4, 0, "ASC");
+            Sort(points4, 0, "ASC");
         }
-        string[,] puntenc;
-        int[,] opvz;
+        string[,] pointsc;
+        int[,] inorder;
         public void waysinorder()
-        {
-            puntenc = new string[lengthjag2, 2];
+        {//sets ways in order based (mostly) on the first and last of each node in the way
+            pointsc = new string[lengthjag2, 2];
             int q = 0; int z = 0;
             foreach (string[] array in jag2)
             {
-                List<int> puntenv = new List<int>();
-                opvz = new int[array.Length, 3];
+                List<int> pointsv = new List<int>();
+                inorder = new int[array.Length, 3];
                 string[] arrayid = new string[array.Length];
                 for (int e = 0; e < array.Length; e++)
                 {
@@ -651,6 +609,7 @@ namespace manderijntje
                     if (t >= 0)
                     {
                         arrayid[e] = t.ToString();
+                        //makes a array of all the indexes of the wayids that are in this specific route.
                     }
                 }
                 for (int e = 0; e < arrayid.Length; e++)
@@ -660,44 +619,41 @@ namespace manderijntje
                     int t = int.Parse(arrayid[e]);
                     first = jag[t][0];
                     last = jag[t][jag[t].Length - 1];
-
-                    opvz[e, 1] = t + 1;
+                    //finds the first and last nodeID
+                    inorder[e, 1] = t + 1;
                     a = t;
+                    //test the first and last node against first and last, last en first and rest of other nodeids
                     testfirstandlast(false, arrayid, e, a, first, last, true);
                     testfirstandlast(false, arrayid, e, a, first, last, false);
                     testfirstandlast(true, arrayid, e, a, first, last, false);
-
                 }
-
-                insertpuntenv(puntenv);
-                string[] puntenl = new string[puntenv.Count()];
-                for (int e = 0; e < puntenv.Count(); e++)
+                insertpointsv(pointsv);//insert inorder in the right order in pointsv
+                string[] pointsl = new string[pointsv.Count()];
+                for (int e = 0; e < pointsv.Count(); e++)
                 {
-                    if (puntenv[e] != 0)
+                    if (pointsv[e] != 0)
                     {
-                        puntenl[e] = id[puntenv[e] - 1];
+                        pointsl[e] = id[pointsv[e] - 1];//gets the index from pointsv
                     }
                 }
                 int l = 0;
-                for (int t = 0; t < puntenl.Length; t++)
+                for (int t = 0; t < pointsl.Length; t++)
                 {
-                    int k = Array.IndexOf(id, puntenl[t]);
+                    int k = Array.IndexOf(id, pointsl[t]);
                     if (k >= 0)
                     {
-                        puntenc[q, 0] = id[k];
-                        puntenc[q, 1] = routids[z];
+                        pointsc[q, 0] = id[k];//wayid
+                        pointsc[q, 1] = routids[z];//routeid
                         q++;
                         l++;
                     }
                 }
-
                 z++;
             }
         }
-
         public void testfirstandlast(bool contains, string[] arrayid, int e, int a, string first, string last, bool turn)
         {
-            if (opvz[e, 0] == 0 || opvz[e, 2] == 0)
+            if (inorder[e, 0] == 0 || inorder[e, 2] == 0)
             {
                 for (int d = 0; d < arrayid.Length; d++)
                 {
@@ -709,45 +665,44 @@ namespace manderijntje
                             if (turn)
                                 if (first == jag[i][0])
                                 {
-                                    opvz[e, 2] = i + 1;
+                                    inorder[e, 2] = i + 1;
                                 }
                             if (last == jag[i][jag[i].Length - 1])
                             {
-                                opvz[e, 0] = i + 1;
+                                inorder[e, 0] = i + 1;
                             }
                             if (!turn)
                             {
-                                if (opvz[e, 2] == 0)
+                                if (inorder[e, 2] == 0)
                                 {
-
                                     if (first == jag[i][0])
                                     {
-                                        opvz[e, 2] = i + 1;
+                                        inorder[e, 2] = i + 1;
                                     }
                                 }
-                                if (opvz[e, 0] == 0)
+                                if (inorder[e, 0] == 0)
                                 {
                                     if (last == jag[i][jag[i].Length - 1])
                                     {
-                                        opvz[e, 0] = i + 1;
+                                        inorder[e, 0] = i + 1;
                                     }
                                 }
                             }
                         }
                         else
                         {
-                            if (opvz[e, 2] == 0)
+                            if (inorder[e, 2] == 0)
                             {
                                 if (jag[i].Contains(first))
                                 {
-                                    opvz[e, 2] = i + 1;
+                                    inorder[e, 2] = i + 1;
                                 }
                             }
-                            if (opvz[e, 0] == 0)
+                            if (inorder[e, 0] == 0)
                             {
                                 if (jag[i].Contains(last))
                                 {
-                                    opvz[e, 0] = i + 1;
+                                    inorder[e, 0] = i + 1;
                                 }
                             }
                         }
@@ -755,296 +710,62 @@ namespace manderijntje
                 }
             }
         }
-        public void insertpuntenv(List<int> puntenv)
+        public void insertpointsv(List<int> pointsv)
         {
-            if (opvz[0, 0] != 0)
+            if (inorder[0, 0] != 0)
             {
-                puntenv.Add(opvz[0, 0]);
+                pointsv.Add(inorder[0, 0]);
             }
-            puntenv.Add(opvz[0, 1]);
-            if (opvz[0, 2] != 0)
+            pointsv.Add(inorder[0, 1]);
+            if (inorder[0, 2] != 0)
             {
-                puntenv.Add(opvz[0, 2]);
+                pointsv.Add(inorder[0, 2]);
             }
-            if (opvz.Length / 3 > 1)
+            if (inorder.Length / 3 > 1)
             {
-                if (opvz[0, 2] == 0 && opvz[0, 0] == 0)
+                if (inorder[0, 2] == 0 && inorder[0, 0] == 0)
                 {
-                    if (opvz[1, 0] != 0)
+                    if (inorder[1, 0] != 0)
                     {
-                        puntenv.Add(opvz[1, 0]);
+                        pointsv.Add(inorder[1, 0]);
                     }
-                    puntenv.Add(opvz[1, 1]);
-                    if (opvz[1, 2] != 0)
+                    pointsv.Add(inorder[1, 1]);
+                    if (inorder[1, 2] != 0)
                     {
-                        puntenv.Add(opvz[1, 2]);
+                        pointsv.Add(inorder[1, 2]);
                     }
                 }
             }
-            for (int t = 0; puntenv.Count() != (opvz.Length / 3) && t < (opvz.Length / 3) + 10; t++)
+            for (int t = 0; pointsv.Count() != (inorder.Length / 3) && t < (inorder.Length / 3) + 10; t++)
             {
                 int j = 0;
-                for (int e = 1; e < opvz.Length / 3; e++)
+                for (int e = 1; e < inorder.Length / 3; e++)
                 {
-                    if (puntenv[0] == opvz[e, 1] && puntenv[1] == opvz[e, 2] && (opvz[e, 0] != 0 || j != e))
+                    if (pointsv[0] == inorder[e, 1] && pointsv[1] == inorder[e, 2] && (inorder[e, 0] != 0 || j != e))
                     {
-                        int index = puntenv.IndexOf(opvz[e, 1]);
-                        puntenv.Insert(index, opvz[e, 0]);
+                        int index = pointsv.IndexOf(inorder[e, 1]);
+                        pointsv.Insert(index, inorder[e, 0]);
                         j = e;
                     }
-                    if (puntenv[0] == opvz[e, 1] && puntenv[1] == opvz[e, 0] && (opvz[e, 2] != 0 || j != e))
+                    if (pointsv[0] == inorder[e, 1] && pointsv[1] == inorder[e, 0] && (inorder[e, 2] != 0 || j != e))
                     {
-                        int index = puntenv.IndexOf(opvz[e, 1]);
-                        puntenv.Insert(index, opvz[e, 2]);
+                        int index = pointsv.IndexOf(inorder[e, 1]);
+                        pointsv.Insert(index, inorder[e, 2]);
                         j = e;
                     }
-                    if (puntenv[puntenv.Count() - 2] == opvz[e, 0] && puntenv[puntenv.Count() - 1] == opvz[e, 1] && (opvz[e, 2] != 0 || j != e))
+                    if (pointsv[pointsv.Count() - 2] == inorder[e, 0] && pointsv[pointsv.Count() - 1] == inorder[e, 1] && (inorder[e, 2] != 0 || j != e))
                     {
-                        int index = puntenv.IndexOf(opvz[e, 1]);
-                        puntenv.Insert(index + 1, opvz[e, 2]);
+                        int index = pointsv.IndexOf(inorder[e, 1]);
+                        pointsv.Insert(index + 1, inorder[e, 2]);
                         j = e;
                     }
-                    if (puntenv[puntenv.Count() - 2] == opvz[e, 2] && puntenv[puntenv.Count() - 1] == opvz[e, 1] && (opvz[e, 0] != 0 || j != e))
+                    if (pointsv[pointsv.Count() - 2] == inorder[e, 2] && pointsv[pointsv.Count() - 1] == inorder[e, 1] && (inorder[e, 0] != 0 || j != e))
                     {
-                        int index = puntenv.IndexOf(opvz[e, 1]);
-                        puntenv.Insert(index + 1, opvz[e, 0]);
+                        int index = pointsv.IndexOf(inorder[e, 1]);
+                        pointsv.Insert(index + 1, inorder[e, 0]);
                         j = e;
                     }
                 }
-            }
-
-        }
-        string[,] punteny;
-        public void four_and_one_to_y()
-        {
-            string[,] punten44 = new string[punten4.Length / 2, 3];
-
-
-
-            int x = 0;
-            for (int j = 0; j < punten4.Length / 2; j++)
-            {
-                int t = Array.BinarySearch(punten1ID, punten4[j, 1]);
-                if (t >= 0)
-                {
-                    punten44[x, 0] = punten4[j, 0];
-                    punten44[x, 1] = punten4[j, 1];
-                    punten44[x, 2] = punten1[t, 3];
-                    x++;
-                }
-            }
-            punteny = clear_array_nulls(punten44);
-        }
-        string[,] puntens;
-        public void y_and_tree_to_f()
-        {
-            string[] punten4ID = GetColumn(punteny, 0);
-            string[,] puntend = clear_array_nulls(puntenc);
-            int f = 0;
-            string[,] puntenf = new string[((punten4.Length / 2) + (punten3.Length / 6)) * 5, 6];
-
-            for (int j = 0; j < puntend.Length / 2; j++)
-            {
-                int t = Array.BinarySearch(punten4ID, puntend[j, 0]);
-                if (t >= 0)
-                {
-                    puntenf[f, 0] = punteny[t, 1];
-                    puntenf[f, 5] = punteny[t, 2];
-                    for (int d = 0; d < punten3.Length / 6; d++)
-                    {
-                        if (punten3[d, 0] == puntend[j, 0] && punten3[d, 1] == puntend[j, 1])
-                        {
-                            puntenf[f, 1] = punten3[d, 2];
-                            puntenf[f, 2] = punten3[d, 3];
-                            puntenf[f, 3] = punten3[d, 4];
-                            puntenf[f, 4] = punten3[d, 5];
-                            break;
-                        }
-                    }
-                    f++;
-                }
-            }
-            puntens = clear_array_nulls(puntenf);
-        }
-        string[,] punten6;
-        public void f_and_one_to_five()
-        {
-            string[,] punten5 = new string[puntens.Length / 6, 8];
-            int r = 0;
-            for (int c = 0; c < puntens.Length / 6; c++)
-            {
-                int t = Array.BinarySearch(punten1ID, puntens[c, 0]);
-                if (t >= 0)
-                {
-                    punten5[r, 0] = puntens[c, 1];
-                    punten5[r, 1] = punten1[t, 3];
-
-                    punten5[r, 2] = punten1[t, 1];
-                    punten5[r, 3] = punten1[t, 2];
-                    punten5[r, 4] = punten1[t, 0];
-                    punten5[r, 5] = puntens[c, 2];
-                    punten5[r, 6] = puntens[c, 3];
-                    punten5[r, 7] = puntens[c, 4];
-                    r++;
-                }
-                if (r - 1 >= 0)
-                    if (punten5[r - 1, 4] != null)
-                    {
-                        for (int y = 0; y < punten5.Length / 8; y++)
-                        {
-                            if (punten5[r - 1, 1] == punten5[y, 1] && punten5[y, 1] != null)
-                            {
-                                if (distance(double.Parse(punten5[r - 1, 2]), double.Parse(punten5[r - 1, 3]), double.Parse(punten5[y, 2]), double.Parse(punten5[y, 3])) < 0.05)
-                                {
-                                    punten5[r - 1, 4] = punten5[y, 4];
-                                    punten5[r - 1, 2] = punten5[y, 2];
-                                    punten5[r - 1, 3] = punten5[y, 3];
-                                    break;
-                                }
-                            }
-                        }
-                    }
-            }
-            punten6 = clear_array_nulls(punten5);
-        }
-        string[,] punten8;
-        public void five_to_seven()
-        {
-            string[,] punten7 = new string[punten6.Length / 8, 8];
-            bool dupFound;
-            int h = 0;
-            for (int i = 0; i < punten6.Length / 8; i++)
-            {
-                dupFound = false;
-                for (int a = i + 1; a < i + 5 && a < punten6.Length / 8; a++)
-                {
-                    if ((i != a) && punten6[a, 0] == punten6[i, 0] && punten6[a, 1] == punten6[i, 1])
-                    {
-                        dupFound = true;
-                        break;
-                    }
-                }
-                if (!dupFound)
-                {
-                    punten7[h, 0] = punten6[i, 0];
-                    punten7[h, 1] = punten6[i, 1];
-                    punten7[h, 2] = punten6[i, 2];
-                    punten7[h, 3] = punten6[i, 3];
-                    punten7[h, 4] = punten6[i, 4];
-                    punten7[h, 5] = punten6[i, 5];
-                    punten7[h, 6] = punten6[i, 6];
-                    punten7[h, 7] = punten6[i, 7];
-                    h++;
-                }
-            }
-            punten8 = clear_array_nulls(punten7);
-        }
-        public void noderouting()
-        {
-            for (int j = 0; j < punten2.Length / 3; j++)
-            {
-                int t = Array.BinarySearch(punten1ID, punten2[j, 0]);
-                if (t >= 0)
-                {
-                    punten2[j, 2] = punten1[t, 3];
-
-                    bool dubbel = false;
-                    foreach (Node node in dataModel.nodesrouting)
-                    {
-                        if (node.stationnaam == punten1[t, 3])
-                            dubbel = true;
-                    }
-
-                    if (!dubbel)
-                    {
-                        dataModel.AddNoderouting(new Node(punten1[t, 0], double.Parse(punten1[t, 1]), double.Parse(punten1[t, 2]), "", punten1[t, 3], "0", "0", "0", true, 0));
-                    }
-                }
-            }
-        }
-        public void linkrouting()
-        {
-
-            for (int j = 0; j < punten2.GetLength(0); j++)
-            {
-                if (j + 1 < punten2.GetLength(0))
-                {
-
-                    if (punten2[j, 1] == punten2[j + 1, 1])
-                    {
-                        Node station1node = dataModel.GetNodeName(punten2[j, 2], dataModel.GetNodesRouting());
-                        Node station2node = dataModel.GetNodeName(punten2[j + 1, 2], dataModel.GetNodesRouting());
-                        if (!(station1node == null || station2node == null))
-                        {
-                            Link link = new Link(station1node, station2node, punten2[j, 1]);
-                            dataModel.AddLinkrouting(link);
-                            station1node.addBuur(station2node);
-                            station1node.addLink(new Link(station1node, station2node, punten2[j, 1]));
-                            station2node.addBuur(station1node);
-                            station2node.addLink(new Link(station2node, station1node, punten2[j, 1]));
-                        }
-                    }
-                }
-
-            }
-        }
-        public void seven_to_doneandnode()
-        {
-            int g = 0;
-            pointsdone = new string[punten8.Length / 8, 9];
-            bool dupFound;
-            for (int i = 0; i < punten8.Length / 8; i++)
-            {
-
-                dupFound = false;
-                pointsdone[g, 0] = punten8[i, 0];
-                pointsdone[g, 1] = punten8[i, 1];
-                pointsdone[g, 2] = punten8[i, 2];
-                pointsdone[g, 3] = punten8[i, 3];
-                pointsdone[g, 4] = punten8[i, 4];
-                pointsdone[g, 5] = punten8[i, 5];
-                pointsdone[g, 6] = punten8[i, 6];
-                pointsdone[g, 7] = punten8[i, 7];
-                pointsdone[g, 8] = "true";
-                for (int a = 0; a < punten2.Length / 3; a++)
-                {
-                    if (punten8[i, 0] == punten2[a, 1] && punten8[i, 1] == punten2[a, 2])
-                    {
-                        dupFound = true;
-                        break;
-                    }
-                }
-                if (!dupFound)
-                {
-                    pointsdone[g, 8] = "false";
-                }
-                double x1 = double.Parse(pointsdone[g, 2]);
-                double y1 = double.Parse(pointsdone[g, 3]);
-                bool stop = bool.Parse(pointsdone[g, 8]);
-                dataModel.AddNode(new Node(pointsdone[g, 4], x1, y1, pointsdone[g, 0], pointsdone[g, 1], pointsdone[g, 5], pointsdone[g, 6], pointsdone[g, 7], stop, 0));
-                g++;
-
-            }
-        }
-        public void links()
-        {
-            for (int i = 0; i < pointsdone.Length / 9; i++)
-            {
-                if (i + 1 < pointsdone.Length / 9)
-                {
-                    if (pointsdone[i, 0] == pointsdone[i + 1, 0])
-                    {
-                        Node station1node = dataModel.GetNode(pointsdone[i, 4], dataModel.GetNodes());
-                        Node station2node = dataModel.GetNode(pointsdone[i + 1, 4], dataModel.GetNodes());
-                        Link link = new Link(station1node, station2node, pointsdone[i, 0]);
-                        dataModel.AddLink(link);
-                        station1node.addBuur(station2node);
-                        //station1node.addLink(new Link(station1node, station2node, puntenklaar[g,0]));
-                        station2node.addBuur(station1node);
-                        //station2node.addLink(new Link(station2node, station1node, puntenklaar[g,0]));
-                    }
-                }
-
             }
         }
         public void combinepoints()
@@ -1055,11 +776,222 @@ namespace manderijntje
             five_to_seven();
             noderouting();
             linkrouting();
-            seven_to_doneandnode();
+            seven_to_stop_and_node();
             links();
-
             dataModel.get_unique_nodes();
-            dataModel.get_unique_links(); 
+            dataModel.get_unique_links();
+        }
+        string[,] pointsy;
+        public void four_and_one_to_y()
+        {
+            string[,] pointso = new string[points4.Length / 2, 3];
+            int x = 0;
+            for (int j = 0; j < points4.Length / 2; j++)
+            {
+                int t = Array.BinarySearch(points1ID, points4[j, 1]);
+                if (t >= 0)
+                {
+                    pointso[x, 0] = points4[j, 0];//wayid
+                    pointso[x, 1] = points4[j, 1];//nodeid
+                    pointso[x, 2] = points1[t, 3];//stationname
+                    x++;
+                }
+            }
+            pointsy = clear_array_nulls(pointso);
+        }
+        string[,] pointsw;
+        public void y_and_tree_to_f()
+        {
+            string[] points4ID = GetColumn(pointsy, 0);
+            string[,] pointsd = clear_array_nulls(pointsc);
+            int f = 0;
+            string[,] pointsf = new string[pointsd.Length / 2, 6];
+            for (int j = 0; j < pointsd.Length / 2; j++)
+            {
+                int t = Array.BinarySearch(points4ID, pointsd[j, 0]);
+                if (t >= 0)
+                {
+                    pointsf[f, 0] = pointsy[t, 1];//nodeid
+                    pointsf[f, 5] = pointsy[t, 2];//stationname
+                    for (int d = 0; d < points3.Length / 6; d++)
+                    {
+                        if (points3[d, 0] == pointsd[j, 0] && points3[d, 1] == pointsd[j, 1])
+                        {
+                            pointsf[f, 1] = points3[d, 2];//routename
+                            pointsf[f, 2] = points3[d, 3];//kind of route
+                            pointsf[f, 3] = points3[d, 4];//ref of routename
+                            pointsf[f, 4] = points3[d, 5];//sort vehicle
+                            break;
+                        }
+                    }
+                    f++;
+                }
+            }
+            pointsw = clear_array_nulls(pointsf);
+        }
+        string[,] points6;
+        public void f_and_one_to_five()
+        {
+            string[,] points5 = new string[pointsw.Length / 6, 8];
+            int r = 0;
+            for (int c = 0; c < pointsw.Length / 6; c++)
+            {
+                int t = Array.BinarySearch(points1ID, pointsw[c, 0]);
+                if (t >= 0)
+                {
+                    points5[r, 0] = pointsw[c, 1];//routename
+                    points5[r, 1] = points1[t, 3];//stationname
+                    points5[r, 2] = points1[t, 1];//x
+                    points5[r, 3] = points1[t, 2];//y
+                    points5[r, 4] = points1[t, 0];//nodeid
+                    points5[r, 5] = pointsw[c, 2];//sort route
+                    points5[r, 6] = pointsw[c, 3];//ref routename
+                    points5[r, 7] = pointsw[c, 4];//sort vehicle
+                    r++;
+                }
+                if (r - 1 >= 0)
+                    if (points5[r - 1, 4] != null)
+                    {
+                        for (int y = 0; y < points5.Length / 8; y++)
+                        {
+                            if (points5[r - 1, 1] == points5[y, 1] && points5[y, 1] != null)
+                            {
+                                if (distance(double.Parse(points5[r - 1, 2]), double.Parse(points5[r - 1, 3]), double.Parse(points5[y, 2]), double.Parse(points5[y, 3])) < 0.05)
+                                {
+                                    points5[r - 1, 4] = points5[y, 4];
+                                    points5[r - 1, 2] = points5[y, 2];
+                                    points5[r - 1, 3] = points5[y, 3];
+                                    //makes sure all 
+                                    break;
+                                }
+                            }
+                        }
+                    }
+            }
+            points6 = clear_array_nulls(points5);
+        }
+        string[,] points8;
+        public void five_to_seven()
+        {
+            string[,] points7 = new string[points6.Length / 8, 8];
+            bool dupFound;
+            int h = 0;
+            //removes double enries from list
+            for (int i = 0; i < points6.Length / 8; i++)
+            {
+                dupFound = false;
+                for (int a = i + 1; a < i + 5 && a < points6.Length / 8; a++)
+                {
+                    if ((i != a) && points6[a, 0] == points6[i, 0] && points6[a, 1] == points6[i, 1])
+                    {
+                        dupFound = true;
+                        break;
+                    }
+                }
+                if (!dupFound)
+                {
+                    points7[h, 0] = points6[i, 0];
+                    points7[h, 1] = points6[i, 1];
+                    points7[h, 2] = points6[i, 2];
+                    points7[h, 3] = points6[i, 3];
+                    points7[h, 4] = points6[i, 4];
+                    points7[h, 5] = points6[i, 5];
+                    points7[h, 6] = points6[i, 6];
+                    points7[h, 7] = points6[i, 7];
+                    h++;
+                }
+            }
+            points8 = clear_array_nulls(points7);
+        }
+        public void noderouting()
+        {
+            for (int j = 0; j < points2.Length / 3; j++)
+            {
+                int t = Array.BinarySearch(points1ID, points2[j, 0]);
+                if (t >= 0)
+                {
+                    points2[j, 2] = points1[t, 3];
+                    bool dubbel = false;
+                    foreach (Node node in dataModel.nodesrouting)
+                    {
+                        if (node.stationnaam == points1[t, 3])
+                            dubbel = true;
+                    }
+                    if (!dubbel)
+                    {
+                        dataModel.AddNoderouting(new Node(points1[t, 0], double.Parse(points1[t, 1]), double.Parse(points1[t, 2]), "", points1[t, 3], "0", "0", "0", true, 0));
+                    }
+                }
+            }
+        }
+        public void linkrouting()
+        {
+            for (int j = 0; j < points2.GetLength(0); j++)
+            {
+                if (j + 1 < points2.GetLength(0))
+                {
+                    if (points2[j, 1] == points2[j + 1, 1])
+                    {
+                        Node station1node = dataModel.GetNodeName(points2[j, 2], dataModel.GetNodesRouting());
+                        Node station2node = dataModel.GetNodeName(points2[j + 1, 2], dataModel.GetNodesRouting());
+                        if (!(station1node == null || station2node == null))
+                        {
+                            Link link = new Link(station1node, station2node, points2[j, 1]);
+                            dataModel.AddLinkrouting(link);
+                            station1node.addBuur(station2node);
+                            station1node.addLink(new Link(station1node, station2node, points2[j, 1]));
+                            station2node.addBuur(station1node);
+                            station2node.addLink(new Link(station2node, station1node, points2[j, 1]));
+                        }
+                    }
+                }
+            }
+        }
+        public void seven_to_stop_and_node()
+        {
+            int g = 0;
+            pointsstop = new string[points8.Length / 8];
+            bool dupFound;
+            for (int i = 0; i < points8.Length / 8; i++)
+            {
+                dupFound = false;
+                pointsstop[g] = "true";
+                for (int a = 0; a < points2.Length / 3; a++)
+                {
+                    if (points8[i, 0] == points2[a, 1] && points8[i, 1] == points2[a, 2])
+                    {
+                        dupFound = true;
+                        break;
+                    }
+                }
+                if (!dupFound)
+                {
+                    pointsstop[g] = "false";
+                }
+                double x1 = double.Parse(points8[g, 2]);
+                double y1 = double.Parse(points8[g, 3]);
+                bool stop = bool.Parse(pointsstop[g]);
+                dataModel.AddNode(new Node(points8[g, 4], x1, y1, points8[g, 0], points8[g, 1], points8[g, 5], points8[g, 6], points8[g, 7], stop, 0));
+                g++;
+            }
+        }
+        public void links()
+        {
+            for (int i = 0; i < points8.Length / 8; i++)
+            {
+                if (i + 1 < points8.Length / 8)
+                {
+                    if (points8[i, 0] == points8[i + 1, 0])
+                    {
+                        Node station1node = dataModel.GetNode(points8[i, 4], dataModel.GetNodes());
+                        Node station2node = dataModel.GetNode(points8[i + 1, 4], dataModel.GetNodes());
+                        Link link = new Link(station1node, station2node, points8[i, 0]);
+                        dataModel.AddLink(link);
+                        station1node.addBuur(station2node);
+                        station2node.addBuur(station1node);
+                    }
+                }
+            }
         }
         public static double distance(double x1, double y1, double x2, double y2)
         {
@@ -1079,40 +1011,24 @@ namespace manderijntje
             Array.Copy(input, output, temp.Length * n);
             return output;
         }
-        public int[,] clear_array_nulls(int[,] input)
-        {
-            int m = input.GetUpperBound(0);
-            int n = input.GetUpperBound(1) + 1;
-            int[] temp = new int[input.GetUpperBound(0)];
-            for (int x = 0; x < m; x++)
-                temp[x] = input[x, 0];
-            temp = temp.Where(s => !object.Equals(s, 0)).ToArray();
-            int[,] output = new int[temp.Length, n];
-            Array.Copy(input, output, temp.Length * n);
-            return output;
-        }
     }
     [Serializable]
     public class DataModel
     {
         public List<Node> nodes;
         public List<Node> nodesrouting;
-
         public List<Link> links;
         public List<Link> linksrouting;
         public List<Node> unique_nodes;
         public List<Link> unique_links;
-
         public DataModel()
         {
             nodes = new List<Node>();
             nodesrouting = new List<Node>();
-
             links = new List<Link>();
             linksrouting = new List<Link>();
             unique_nodes = new List<Node>();
             unique_links = new List<Link>();
-
         }
         // populate unique lists:
         public void get_unique_nodes()
@@ -1162,7 +1078,6 @@ namespace manderijntje
         {
             nodes.Add(n);
         }
-
         public void AddNoderouting(Node n)
         {
             nodesrouting.Add(n);
@@ -1171,12 +1086,6 @@ namespace manderijntje
         {
             return nodes;
         }
-        public List<Node> GetNodesrouting()
-        {
-            return nodesrouting;
-        }
-
-
         public List<Node> GetNodesRouting()
         {
             return nodesrouting;
@@ -1190,16 +1099,6 @@ namespace manderijntje
             }
             return null;
         }
-        public Node GetNoderouting(string name, List<Node> lijst)
-        {
-            foreach (Node node in lijst)
-            {
-                if (name == node.stationnaam)
-                    return node;
-            }
-            return null;
-        }
-
         public Node GetNodeName(string name, List<Node> lijst)
         {
             foreach (Node node in lijst)
@@ -1209,7 +1108,6 @@ namespace manderijntje
             }
             return null;
         }
-
         public void AddLink(Link l)
         {
             links.Add(l);
@@ -1218,8 +1116,6 @@ namespace manderijntje
         {
             linksrouting.Add(l);
         }
-
-
         public List<Link> GetLinks()
         {
             return links;
@@ -1236,12 +1132,12 @@ namespace manderijntje
         public double x, y;
         public int number;
         // unieke indentifier, naam in de vorm van een string
-        public string name_id, routnaam, stationnaam, soortrout, routid, vervoersmiddels;
+        public string name_id, routnaam, stationnaam, soortrout, routid, vehicle;
         public bool stops;
         public Node NearestToStart;
         public int MinCostToStart = int.MaxValue;
         public bool Visited = false;
-        public Node(string name, double coordx, double coordy, string routenaam, string stationsnaam, string soortroute, string routeid, string vervoersmiddel, bool stop, int i)
+        public Node(string name, double coordx, double coordy, string routenaam, string stationsnaam, string soortroute, string routeid, string vehicles, bool stop, int i)
         {
             number = i;
             name_id = name;
@@ -1251,7 +1147,7 @@ namespace manderijntje
             stationnaam = stationsnaam;
             soortrout = soortroute;
             routid = routeid;
-            vervoersmiddels = vervoersmiddel;
+            vehicle = vehicles;
             stops = stop;
             Buren = new List<Node>();
             Connecties = new List<Link>();
@@ -1271,7 +1167,6 @@ namespace manderijntje
         {
             Connecties.Add(link);
         }
-
         public double DistanceToNode(Node u)
         {
             return DataControl.distance(this.x, this.y, u.x, u.y);
@@ -1282,13 +1177,8 @@ namespace manderijntje
     {
         // twee pointers die wijzen naar de twee nodes die deze link verbind
         public Node Start, End;
-
         public string RouteName;
-
         public int Weight = 1;
-
-
-
         public Link(Node startpunt, Node eindpunt, string RouteNames)
         {
             Start = startpunt;
