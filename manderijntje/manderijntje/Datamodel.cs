@@ -1049,9 +1049,9 @@ namespace manderijntje
         }
         public string[,] clear_array_nulls(string[,] input)
         {
-            int m = input.GetUpperBound(0);
+            int m = input.GetUpperBound(0) + 1;
             int n = input.GetUpperBound(1) + 1;
-            string[] temp = new string[input.GetUpperBound(0)];
+            string[] temp = new string[input.GetUpperBound(0) + 1];
             for (int x = 0; x < m; x++)
                 temp[x] = input[x, 0];
             temp = temp.Where(s => !object.Equals(s, null)).ToArray();
