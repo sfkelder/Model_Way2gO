@@ -129,7 +129,7 @@ namespace manderijntje
         {
             return dataModel;
         }
-        //deze twee methodes zijn nodig om de data uit de file te halen
+        //this method is needed to retreive data from a file
         private XDocument GetGpxDoc(string sFile)
         {
             XDocument gpxDoc = XDocument.Load(sFile);
@@ -524,7 +524,7 @@ namespace manderijntje
         }
         public bool nodoubleroutes(List<string> P, List<string> Q, List<string> R, List<string> U, List<string> S, List<string> T,
             string refr, string net, string op, string w, string to, string from)
-        {
+        {//checks if there are no double routes
             for (int e = 0; e < Q.Count - 1; e++)
             {
                 if (P[e] == refr && Q[e] == net && R[e] == op && U[e] == w)
@@ -538,7 +538,7 @@ namespace manderijntje
             return false;
         }
         public void LoadWay(string sFile)
-        {
+        {//loads ways
             XDocument gpxDoc = GetGpxDoc(sFile);
             var waypoints = from waypoint in gpxDoc.Descendants("way")
                             select new
@@ -652,7 +652,7 @@ namespace manderijntje
             }
         }
         public void testfirstandlast(bool contains, string[] arrayid, int e, int a, string first, string last, bool turn)
-        {
+        {//test if first and last is same as last and first or first and last of in a way somewhere
             if (inorder[e, 0] == 0 || inorder[e, 2] == 0)
             {
                 for (int d = 0; d < arrayid.Length; d++)
@@ -711,7 +711,8 @@ namespace manderijntje
             }
         }
         public void insertpointsv(List<int> pointsv)
-        {
+        { //insert inorder in the right order in pointsv
+            //first the first numbers
             if (inorder[0, 0] != 0)
             {
                 pointsv.Add(inorder[0, 0]);
