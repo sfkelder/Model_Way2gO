@@ -270,8 +270,10 @@ namespace manderijntje
             }
             dt.Dispose();
         }
+        //this is a long method because it is hard to it make smaller.
         public void Loadroutes(string sFile)
         { //loads all routes
+            
             XDocument gpxDoc = GetGpxDoc(sFile);
             var tracks = from track in gpxDoc.Descendants("relation")
                          select new
@@ -282,9 +284,9 @@ namespace manderijntje
                                 from trackpoint in track.Descendants("member")
                                 select new
                                 {
-                                    type = trackpoint.Attribute("type").Value,
-                                    refr = trackpoint.Attribute("ref").Value,
-                                    role = trackpoint.Attribute("role").Value,
+                                    type = trackpoint.Attribute("type").Value,//way or node
+                                    refr = trackpoint.Attribute("ref").Value,//wayID or nodeID
+                                    role = trackpoint.Attribute("role").Value,//stop, platform or ""
                                 }
                               ),
                              Segs2 = (
@@ -293,6 +295,7 @@ namespace manderijntje
                                 {
                                     k = trackpoint.Attribute("k").Value,
                                     v = trackpoint.Attribute("v").Value,
+                                    //more information about each route
                                 }
                               )
                          };
@@ -302,7 +305,7 @@ namespace manderijntje
             int h = 0;//counter
             //I make lists of properties of each route. than i check of those properties already exist to make sure 
             // there are no double routes(each going in an other direchtion)
-            //the routeID and name are diffrent in these double routes.
+            //the routeID and  routename are diffrent in these double routes, so i cant check those.
             List<string> P = new List<string>();
             List<string> Q = new List<string>();
             List<string> R = new List<string>();
@@ -354,7 +357,7 @@ namespace manderijntje
                         type = trkSeg2.v;
                     }
                 }
-                if (pt2 != "stop_area" && pt2 != "platform" && type == "route")
+                if (pt2 != "stop_area" && pt2 != "platform" && type == "route")//only routes
                 {
                     P.Add(refr);
                     Q.Add(net);
@@ -363,50 +366,52 @@ namespace manderijntje
                     T.Add(to);
                     U.Add(w);
                     if (!nodoubleroutes(P, Q, R, U, S, T,
-             refr, net, op, w, to, from))
+             refr, net, op, w, to, from))//checks if there ar no double routes
                     {
                         foreach (var trkSeg in trk.Segs)
                         {
                             if (trkSeg.type == "node")
                             {
-                                l++;
+                                l++;//counts nodes
                             }
                             if (trkSeg.type == "way")
                             {
                                 if (trkSeg.role == "")
                                 {
-                                    k++;
+                                    k++;//counts ways
                                 }
                             }
                         }
                     }
                 }
-                h++;
+                h++;//counts routes
             }
+
+            //exacly the same as before
             List<string> N = new List<string>();
             List<string> M = new List<string>();
             List<string> O = new List<string>();
             List<string> K = new List<string>();
             List<string> L = new List<string>();
             List<string> J = new List<string>();
-            points2 = new string[l, 3];
-            points3 = new string[k, 6];
+            points2 = new string[l, 3];//stops
+            points3 = new string[k, 6];//rides past
             int n = 0;//counter
             int m = 0;//counter
             int o = 0;//counter
-            jag2 = new string[h][];
+            jag2 = new string[h][];//wayids
             int j = 0;
             foreach (var trk in tracks)
             {
                 int g = 0; int i = 0;
-                string refr = "ref";
-                string net = "net";
-                string op = "op";
-                string to = "des";
-                string from = "des";
-                string pt = "pt";
-                string w = "w";
-                string type = "type";
+                string refr = "ref";//refnumber or letter
+                string net = "net";//network
+                string op = "op";//opertor
+                string to = "des";//to
+                string from = "des";//from
+                string pt = "pt";//public_transport
+                string w = "w";//wikidata
+                string type = "type";//type (route)
                 foreach (var trkSeg2 in trk.Segs2)
                 {
                     if (trkSeg2.k == "ref")
@@ -444,6 +449,7 @@ namespace manderijntje
                 }
                 if (pt != "stop_area" && pt != "platform" && type == "route")
                 {
+                    //adds properties to lists
                     N.Add(refr);
                     M.Add(net);
                     O.Add(op);
@@ -451,7 +457,9 @@ namespace manderijntje
                     L.Add(to);
                     J.Add(w);
                     if (!nodoubleroutes(N, M, O, J, K, L,
-             refr, net, op, w, to, from))
+                        refr, net, op, w, to, from))//checks if there ar no double routes
+                        //by checking if these properties dont come for twice(sometimes not all properies are given,
+                        //so checking all is best.
                     {
                         foreach (var trkSeg in trk.Segs)
                         {
@@ -459,17 +467,17 @@ namespace manderijntje
                             {
                                 if (trkSeg.role == "")
                                 {
-                                    i++;
+                                    i++;//counts
                                 }
                             }
                         }
                         if (i > 0)
                         {
-                            jag2[j] = new string[i];
+                            jag2[j] = new string[i];//makes a jagged array with right numbers
                         }
                         foreach (var trkSeg in trk.Segs)
                         {
-                            if (trkSeg.type == "node")
+                            if (trkSeg.type == "node")//stops
                             {
                                 points2[n, 0] = trkSeg.refr.PadLeft(10, '9');//nodeID
                                 points2[n, 1] = "route" + " " + m;//routename
@@ -482,13 +490,13 @@ namespace manderijntje
                                 }
                                 n++;
                             }
-                            if (trkSeg.type == "way")
+                            if (trkSeg.type == "way")//rides past
                             {
                                 if (trkSeg.role == "")
                                 {
                                     points3[o, 0] = trkSeg.refr.PadLeft(10, '9');//nodeID
                                     points3[o, 1] = trk.ID;//wayID
-                                    points3[o, 2] = "route" + " " + m;
+                                    points3[o, 2] = "route" + " " + m;//routename
                                     points3[o, 3] = "-";//sort route, for example: long_distance
                                     points3[o, 4] = "ref";//mostly numbers or letters
                                     points3[o, 5] = "vehicle";//type vehicle
@@ -512,14 +520,14 @@ namespace manderijntje
                                         }
                                     }
                                     o++;
-                                    jag2[j][g] = trkSeg.refr.PadLeft(10, '9');
+                                    jag2[j][g] = trkSeg.refr.PadLeft(10, '9');//all ways in a array for each route
                                     g++;
-                                    lengthjag2++;
+                                    lengthjag2++;//length of jag 2 to use later
                                 }
                             }
                         }
                     }
-                    routids.Add(trk.ID);
+                    routids.Add(trk.ID);//list of all routID
                     j++;
                 }
                 m++;
@@ -531,7 +539,7 @@ namespace manderijntje
         //Checks for double routes and ensure there are no doubles anymore
         public bool nodoubleroutes(List<string> P, List<string> Q, List<string> R, List<string> U, List<string> S, List<string> T,
             string refr, string net, string op, string w, string to, string from)
-        {//checks if there are no double routes
+        {
             for (int e = 0; e < Q.Count - 1; e++)
             {
                 if (P[e] == refr && Q[e] == net && R[e] == op && U[e] == w)
@@ -544,9 +552,9 @@ namespace manderijntje
             }
             return false;
         }
-        //loads routes out of a file
+        //loads ways out of a file
         public void LoadWay(string sFile)
-        {//loads ways
+        {
             XDocument gpxDoc = GetGpxDoc(sFile);
             var waypoints = from waypoint in gpxDoc.Descendants("way")
                             select new
@@ -722,16 +730,17 @@ namespace manderijntje
         }
         public void insertpointsv(List<int> pointsv)
         { //insert inorder in the right order in pointsv
-            //first the first numbers
+            //first the first numbers 
             if (inorder[0, 0] != 0)
             {
                 pointsv.Add(inorder[0, 0]);
             }
             pointsv.Add(inorder[0, 1]);
-            if (inorder[0, 2] != 0)
+            if (inorder[0, 2] != 0) 
             {
                 pointsv.Add(inorder[0, 2]);
             }
+            
             if (inorder.Length / 3 > 1)
             {
                 if (inorder[0, 2] == 0 && inorder[0, 0] == 0)
@@ -747,6 +756,7 @@ namespace manderijntje
                     }
                 }
             }
+            //then the rest of the numbers
             for (int t = 0; pointsv.Count() != (inorder.Length / 3) && t < (inorder.Length / 3) + 10; t++)
             {
                 int j = 0;
@@ -783,18 +793,30 @@ namespace manderijntje
         //comines the points to make the datamodel
         public void combinepoints()
         {
+            //checks if all nodes in four have a name(by checking one)
             four_and_one_to_y();
-            y_and_tree_to_f();
+            //runs past c(from waysinorder) in the right order, gets nodeid and stationname from y 
+            //and gets routedata from tree
+            c_and_y_and_tree_to_f();
+            //gets coordinates from one and makes sure stations with same name that are close to each other have same NodeIDs
             f_and_one_to_five();
+            //checks for double entrys in list
             five_to_seven();
+
+            //makes nodes for routing, based on one and two
             noderouting();
+            //makes links for routing, based on two
             linkrouting();
+            //makes nodes with correct information, including if it stops(two) at that station or not
             seven_to_stop_and_node();
+            //makes links
             links();
-            dataModel.get_unique_nodes();
-            dataModel.get_unique_links();
+            dataModel.get_unique_nodes();//checks for unique nodes
+            dataModel.get_unique_links();// checks for unique links
         }
         string[,] pointsy;
+        //checks if all nodes in four have a name(by checking one)
+
         public void four_and_one_to_y()
         {
             string[,] pointso = new string[points4.Length / 2, 3];
@@ -813,7 +835,9 @@ namespace manderijntje
             pointsy = clear_array_nulls(pointso);
         }
         string[,] pointsw;
-        public void y_and_tree_to_f()
+        //runs past c(from waysinorder) in the right order, gets nodeid and stationname from y 
+        //and gets routedata from tree
+        public void c_and_y_and_tree_to_f()
         {
             string[] points4ID = GetColumn(pointsy, 0);
             string[,] pointsd = clear_array_nulls(pointsc);
@@ -843,6 +867,8 @@ namespace manderijntje
             pointsw = clear_array_nulls(pointsf);
         }
         string[,] points6;
+        //gets coordinates from one and makes sure stations with same name that are close to each other have same NodeIDs
+
         public void f_and_one_to_five()
         {
             string[,] points5 = new string[pointsw.Length / 6, 8];
@@ -884,6 +910,8 @@ namespace manderijntje
             points6 = clear_array_nulls(points5);
         }
         string[,] points8;
+        //checks for double entrys in list
+
         public void five_to_seven()
         {
             string[,] points7 = new string[points6.Length / 8, 8];
@@ -916,6 +944,8 @@ namespace manderijntje
             }
             points8 = clear_array_nulls(points7);
         }
+        //makes nodes for routing, based on one and two
+
         public void noderouting()
         {
             for (int j = 0; j < points2.Length / 3; j++)
@@ -936,7 +966,9 @@ namespace manderijntje
                     }
                 }
             }
-        }
+        }           
+        //makes links for routing, based on two
+
         public void linkrouting()
         {
             for (int j = 0; j < points2.GetLength(0); j++)
@@ -960,6 +992,8 @@ namespace manderijntje
                 }
             }
         }
+        //makes nodes with correct information, including if it stops(two) at that station or not
+
         public void seven_to_stop_and_node()
         {
             int g = 0;
@@ -988,6 +1022,7 @@ namespace manderijntje
                 g++;
             }
         }
+        //makes links
         public void links()
         {
             for (int i = 0; i < points8.Length / 8; i++)
