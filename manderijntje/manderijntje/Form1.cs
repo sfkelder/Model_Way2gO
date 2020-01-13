@@ -26,7 +26,6 @@ namespace manderijntje
             visueelControl = new connecties(dataControl.GetDataModel());
             mapView = new MapView(visueelControl);
             mapView.mapView = mapView;
-            mapView.BackColor = Color.Blue;
             this.Controls.Add(mapView);
             setupView();
         }
@@ -235,13 +234,13 @@ namespace manderijntje
                 listItems[i].shortestPath = tripOptions[i].shortestPath;
 
                 // Needs to have platform and nameTransport from node
-                //listItems[i].platform = reisOpties[i].shortestPath[0].perron;
-                //listItems[i].nameTransport = reisOpties[i].shortestPath[0].;
+                //listItems[i].platform = tripOptions[i].shortestPath[0].vehicle;
+                //listItems[i].nameTransport = tripOptions[i].shortestPath[0].;
 
                 // Optional to have carrier and busLine from node
 
-                //listItems[i].carrier = reisOpties[i].shortestPath[0].vervoersmiddels;
-                //listItems[i].busLine = reisOpties[i].busLijn;
+                //listItems[i].carrier = tripOptions[i].shortestPath[0].vervoersmiddels;
+                //listItems[i].busLine = tripOptions[i].busLijn;
 
                 if (tripOptionsFlowControl.Controls.Count < 0)
                     clearFlowControl(tripOptionsFlowControl);
