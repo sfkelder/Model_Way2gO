@@ -388,7 +388,7 @@ namespace manderijntje
         }
     }
 
-    /*
+    
     class solver
     {
         private List<sNode> nodes;
@@ -877,7 +877,7 @@ namespace manderijntje
             return (alpha * (180 / Math.PI));
         }
     }
-    */
+    
 
     public class sNode
     {
@@ -893,11 +893,11 @@ namespace manderijntje
             x = p.X;
             y = p.Y;
         }
-        /*
+        
         public double getAngle(sNode u, sNode v)
         {
             return solver.calc_angle(u, v);
-        }*/
+        }
     }
 
     public class sLink
