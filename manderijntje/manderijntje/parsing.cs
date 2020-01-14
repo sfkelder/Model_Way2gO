@@ -360,9 +360,10 @@ namespace manderijntje
                         nodes[j].index = j;
                     }
 
-                    nodes[nodes[i].neighbours[0].index].neighbours = getNeighbours(nodes[i].neighbours[0]);
-                    nodes[nodes[i].neighbours[1].index].neighbours = getNeighbours(nodes[i].neighbours[1]);
+                    setNeighbours();
+
                     links.Add(newLink);
+                    i = 0;
                 }
             }
         }
