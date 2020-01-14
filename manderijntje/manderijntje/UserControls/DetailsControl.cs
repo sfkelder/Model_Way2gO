@@ -82,8 +82,8 @@ namespace manderijntje
                         sw.WriteLine("Total Time: " + _totalTime);
                         sw.WriteLine("Transfer Count: " + _transfers);
                         sw.WriteLine("Platform: " + _platform);
-                        sw.WriteLine("Transfers: " + _transfers + "\n\n");
-                        sw.WriteLine("Stations: " + _transfers + "\n");
+                        sw.WriteLine("Transfers: " + _transfers + "\n");
+                        sw.WriteLine("Transfers Stations: \n");
 
                         foreach (Node node in shortestPath)
                         {
@@ -98,7 +98,7 @@ namespace manderijntje
             }
         }
 
-        private void saveBTN_Click(object sender, EventArgs e)
+        private void saveRoute_Click(object sender, EventArgs e)
         {
             saveAsTextFile();
         }
