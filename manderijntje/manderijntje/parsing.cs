@@ -401,6 +401,9 @@ namespace manderijntje
                 if (newNode.dummynode)
                 {
                     newNode.Color = Color.Orange;
+                } else
+                {
+                    newNode.dummynodeDrawLine = true;
                 }
 
                 dNodes.Add(newNode);
