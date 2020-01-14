@@ -66,12 +66,12 @@ namespace manderijntje
         // Set the locations and size of elements corretly
         private void setElement()
         {
-            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width - hideBar.Width, this.Height - logoHeader.Height);
+            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width - (2*hideBar.Width), this.Height - (2*logoHeader.Height));
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
-            tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height - 24);
-            detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height);
-            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 114;
+            tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height + 40);
+            detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height + 20);
+            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 75;
             if (Height > 450)
             {
                 hideArrowIcon.Location = new Point(hideArrowIcon.Location.X, (hideBar.Height / 2) - (logoHeader.Height));
