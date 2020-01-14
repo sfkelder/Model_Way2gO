@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace manderijntje
 {
@@ -18,7 +19,6 @@ namespace manderijntje
         private string _transfers;
         private string _platform;
         private List<Node> _shortestPath;
-
         public string departureTime
         {
             get { return _departureTime; }
@@ -59,6 +59,48 @@ namespace manderijntje
         public DetailsControl()
         {
             InitializeComponent();
+        }
+
+        // Save route as text file
+        private void saveAsTextFile()
+        {
+            Stream myStream;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 2;
+            saveFileDialog.RestoreDirectory = true;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDialog.OpenFile()) != null)
+                {
+                    using (StreamWriter sw = File.CreateText(saveFileDialog.FileName + ".txt"))
+                    {
+                        sw.WriteLine("Depature Time: " + _departureTime);
+                        sw.WriteLine("Arrival Time: " + _destinationTime);
+                        sw.WriteLine("Total Time: " + _totalTime);
+                        sw.WriteLine("Transfer Count: " + _transfers);
+                        sw.WriteLine("Platform: " + _platform);
+                        sw.WriteLine("Transfers: " + _transfers + "\n");
+                        sw.WriteLine("Transfers Stations: \n");
+
+                        foreach (Node node in shortestPath)
+                        {
+                            sw.WriteLine("Station: " + node.stationnaam);
+                            sw.WriteLine("Departure Time: ");
+                            sw.WriteLine("Platform: ");
+                            sw.WriteLine("To Station: " + node.routnaam + "\n");
+                        }
+                    }
+                    myStream.Close();
+                }
+            }
+        }
+
+        private void saveRoute_Click(object sender, EventArgs e)
+        {
+            saveAsTextFile();
         }
     }
 }

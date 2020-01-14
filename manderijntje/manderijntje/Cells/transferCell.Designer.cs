@@ -42,7 +42,7 @@
             // 
             this.departuretimeLBL.AutoSize = true;
             this.departuretimeLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.departuretimeLBL.Location = new System.Drawing.Point(36, 69);
+            this.departuretimeLBL.Location = new System.Drawing.Point(36, 67);
             this.departuretimeLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.departuretimeLBL.Name = "departuretimeLBL";
             this.departuretimeLBL.Size = new System.Drawing.Size(96, 36);
