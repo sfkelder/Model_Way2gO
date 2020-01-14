@@ -27,7 +27,7 @@ namespace manderijntje
         //string sFile = "C:/Way2Go/berlin subway.xml";
         //string sFile = "C:/Way2Go/train frankrijk.xml";
         //string sFile = "C:/Way2Go/train uk.xml";
-        // string sFile = "C:/Way2Go/frankrijk test3.xml";
+         //string sFile = "C:/Way2Go/train frankrijk.xml";
         //string sFile = "C:/Way2Go/train europa.xml";
         //string sFile = "C:/Way2Go/train westeuropa.xml";
         //string sFile = "C:/Way2Go/subway europa.xml";
