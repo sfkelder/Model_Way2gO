@@ -41,7 +41,7 @@ namespace manderijntje
 
         private void MakeDataForDisk(DataModel data)
         {
-            access = (new parsing(data)).getModel(false);
+            access = (new parsing(data, true)).getModel(true);
 
             if (Directory.Exists(filepath))
             {
@@ -86,24 +86,40 @@ namespace manderijntje
         }
 
         //controlls everything on this form
-        public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<string> s, bool stationnames, MapView map)
+        public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
         {
             
 
             if (stationnames)
             {
-                List<Point> points = new List<Point>();
 
-                foreach (string st in s)
+                foreach (Node st in s)
                 {
-                    Point T = l.searchpoint(st, access);
-                    points.Add(T);
+                   // Point T = l.searchpoint(st.stationnaam, access);
+
+                    foreach(VisueelNode v in access.nodes)
+                    {
+                        if(v.name_id == st.stationnaam)
+                        {
+                            v.Color = Color.Orange;
+                        }
+                    }
+
+                           
+
                 }
 
-                Point smallestpoint = b.getpoints(points).smallest;
-                Point biggestpoint = b.getpoints(points).biggest;
+                foreach(VisualLink m in access.links)
+                {
 
-                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, smallestpoint, biggestpoint, map);
+
+                }
+
+
+               // Point smallestpoint = b.getpoints(points).smallest;
+               // Point biggestpoint = b.getpoints(points).biggest;
+
+                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, new Point(0, 0), new Point(0, 0), map);
 
             }
             else
@@ -196,7 +212,8 @@ namespace manderijntje
         //method to look which name belongs to which node
         public Point searchpoint(string namestation, VisueelModel access)
         {
-            return access.nodes.Find(item => item.name_id == namestation).point;
+            return new Point(0, 0);
+            //return access.nodes.Find(item => item.name_id == namestation).point;
         }
 
         //helping method valuenode
@@ -329,6 +346,7 @@ namespace manderijntje
         public Color Color = Color.Gray;
         public bool paint = true;
         public bool dummynode = false;
+        public bool dummynodeDrawLine = false; 
 
         public VisueelNode(Point point, string name_id, int prioriteit)
         {

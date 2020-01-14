@@ -16,12 +16,18 @@ namespace manderijntje
 
         private const int width = 5000, height = 5000;
 
-        public parsing(DataModel model)
+        public parsing(DataModel model, bool colapse)
         {
             if (model.unique_nodes.Count != 0 && model.unique_links.Count != 0)
             {
                 setNodes(model.unique_nodes);
                 setLinks(model.unique_links);
+                setNeighbours();
+
+                if (colapse)
+                {
+                    //colapseGraph();
+                }
 
                 enforcePlanarity();
                 setNeighbours();
@@ -29,9 +35,7 @@ namespace manderijntje
                 getLinkPairs();
                 getBendLinks();
 
-                Console.WriteLine(getDegree());
-
-                //test();
+            
             }
         }
 
@@ -44,7 +48,7 @@ namespace manderijntje
             return createModel();
         }
 
-        public void test ()
+       /* public void test ()
         {
             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes2.txt"))
             {
@@ -61,7 +65,7 @@ namespace manderijntje
                 }
             }
 
-        }
+        }*/
 
 
         // PLANARITY:
@@ -279,7 +283,8 @@ namespace manderijntje
             for (int i = 0; i < dNodes.Count; i++)
             {
                 sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
-                newNode.node_id = dNodes[i].stationnaam;
+                newNode.name = dNodes[i].stationnaam;
+                //newNode.weight = dNodes[i].
                 nodes.Add(newNode);
             }
         }
@@ -292,6 +297,7 @@ namespace manderijntje
             {
                 nodes[i].neighbours = getNeighbours(nodes[i]);
                 nodes[i].deg = nodes[i].neighbours.Count;
+                nodes[i].weight = nodes[i].neighbours.Count;
             }
         }
 
@@ -338,6 +344,41 @@ namespace manderijntje
             return nodes[0];
         }
 
+        private void colapseGraph ()
+        {
+            for(int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i].deg == 2)
+                {
+                    sLink newLink = new sLink(nodes[i].neighbours[0], nodes[i].neighbours[1]);
+                    links.Remove(getLink(nodes[i], nodes[i].neighbours[0]));
+                    links.Remove(getLink(nodes[i], nodes[i].neighbours[1]));
+                    nodes.Remove(nodes[i]);
+
+                    for (int j = 0; j < nodes.Count; j++)
+                    {
+                        nodes[j].index = j;
+                    }
+
+                    setNeighbours();
+
+                    links.Add(newLink);
+                    i = 0;
+                }
+            }
+        }
+
+        private sLink getLink (sNode u, sNode v)
+        {
+            for(int i = 0; i < links.Count; i++)
+            {
+                if ((links[i].u == u && links[i].v == v) || (links[i].u == v && links[i].v == u))
+                {
+                    return links[i];
+                }
+            }
+            return links[0];
+        }
 
         // CREATE VISUAL MODEL OBJECT:
 
@@ -351,18 +392,26 @@ namespace manderijntje
 
             for (int i = 0; i < nodes.Count; i++)
             {
-                VisueelNode newNode = new VisueelNode(new Point(), nodes[i].node_id, 0);
+                VisueelNode newNode = new VisueelNode(new Point(), nodes[i].name, 0);
                 newNode.index = nodes[i].index;
                 newNode.point = new Point(nodes[i].x, nodes[i].y);
                 newNode.dummynode = !nodes[i].draw;
-                newNode.prioriteit = nodes[i].neighbours.Count;
+                newNode.prioriteit = (int)nodes[i].weight;
+
+                if (newNode.dummynode)
+                {
+                    newNode.Color = Color.Orange;
+                } else
+                {
+                    newNode.dummynodeDrawLine = true;
+                }
 
                 dNodes.Add(newNode);
             }
 
             for (int i = 0; i < links.Count; i++)
             {
-                VisualLink newLink = new VisualLink("");
+                VisualLink newLink = new VisualLink(links[i].u.node_id + "__" + links[i].v.node_id);
                 newLink.u = getNode(links[i].u.index, dNodes);
                 newLink.v = getNode(links[i].v.index, dNodes);
 
@@ -885,8 +934,9 @@ namespace manderijntje
         public int x, y, z1, z2, deg, index;
         public List<sNode> neighbours = new List<sNode>();
         public sNode[] neighbours_sorted;
-        public string node_id;
+        public string node_id, name;
         public bool draw = true;
+        public double weight = 0.0;
 
         public sNode(int i, Point p)
         {
