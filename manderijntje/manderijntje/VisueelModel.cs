@@ -41,7 +41,7 @@ namespace manderijntje
 
         private void MakeDataForDisk(DataModel data)
         {
-            access = (new parsing(data)).getModel(false);
+            access = (new parsing(data)).getModel(true);
 
             if (Directory.Exists(filepath))
             {
@@ -86,7 +86,7 @@ namespace manderijntje
         }
 
         //controlls everything on this form
-        public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<string> s, bool stationnames, MapView map)
+        public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
         {
             
 
@@ -94,9 +94,9 @@ namespace manderijntje
             {
                 List<Point> points = new List<Point>();
 
-                foreach (string st in s)
+                foreach (Node st in s)
                 {
-                    Point T = l.searchpoint(st, access);
+                    Point T = l.searchpoint(st.stationnaam, access);
                     points.Add(T);
                 }
 
@@ -196,7 +196,8 @@ namespace manderijntje
         //method to look which name belongs to which node
         public Point searchpoint(string namestation, VisueelModel access)
         {
-            return access.nodes.Find(item => item.name_id == namestation).point;
+            return new Point(0, 0);
+            //return access.nodes.Find(item => item.name_id == namestation).point;
         }
 
         //helping method valuenode

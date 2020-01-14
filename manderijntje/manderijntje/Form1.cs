@@ -66,7 +66,7 @@ namespace manderijntje
         // Set the locations and size of elements corretly
         private void setElement()
         {
-            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
+            sizeMap(logoHeader.Width - hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
             tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height - 80);
@@ -204,13 +204,6 @@ namespace manderijntje
             clearFlowControl(tripOptionsFlowControl);
             tripOptions.Clear();
 
-            List<string> list = new List<string>();
-            list.Add(departureLocation);
-            list.Add(destinationLocation);
-
-            // Will crash the build
-            // visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, , );
-
             chosenTime = Convert.ToDateTime(departureTime);
             foreach (Route route in Routing.GetRoute(departureLocation, destinationLocation, chosenTime,
                 dataControl.GetDataModel()))
@@ -274,6 +267,8 @@ namespace manderijntje
             detailsUserControl.transfers = tripOptionscell.transferCount;
             detailsUserControl.platform = tripOptionscell.platform;
             detailsUserControl.shortestPath = tripOptionscell.shortestPath;
+            // Will crash the build
+            visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
         }
 
         // Fills the flowcontrol with the usercontrol called "tussenstopCell" and gives the needed data to tussenstopCell.
