@@ -109,6 +109,13 @@ namespace manderijntje
 
                 }
 
+                foreach(VisualLink m in access.links)
+                {
+
+
+                }
+
+
                // Point smallestpoint = b.getpoints(points).smallest;
                // Point biggestpoint = b.getpoints(points).biggest;
 

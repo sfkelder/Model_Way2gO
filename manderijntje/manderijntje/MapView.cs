@@ -132,17 +132,24 @@ namespace manderijntje
 
                 if (nodes[m].paint == true && nodes[m].dummynode == false)
                 {
-                    pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 5, 5);   
+                    pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);   
                 }
             }
 
             for (int n = 0; n < links.Count; n++) 
             {
-                Pen blackPen = new Pen(links[n].kleur, 1);
+                int a;
+                Pen blackPen = new Pen(links[n].kleur, a);
 
-                if (links[n].paint)
+                if (links[n].paint && links[n].kleur == Color.Orange)
                 {
-                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X -totverschuivingX + 2, links[n].u.point.Y - totverschuivingY + 2), new Point(links[n].v.point.X - totverschuivingX + 2, links[n].v.point.Y - totverschuivingY + 2));
+                    a = 3;
+                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X -totverschuivingX + 1, links[n].u.point.Y - totverschuivingY + 1), new Point(links[n].v.point.X - totverschuivingX + 1, links[n].v.point.Y - totverschuivingY + 1));
+                }
+                else
+                {
+                    a = 1;
+                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X - totverschuivingX + 3, links[n].u.point.Y - totverschuivingY + 3), new Point(links[n].v.point.X - totverschuivingX + 3, links[n].v.point.Y - totverschuivingY + 3));
                 }
             }
 
