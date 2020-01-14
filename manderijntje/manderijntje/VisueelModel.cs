@@ -41,7 +41,7 @@ namespace manderijntje
 
         private void MakeDataForDisk(DataModel data)
         {
-            access = (new parsing(data)).getModel(true);
+            access = (new parsing(data)).getModel(false);
 
             if (Directory.Exists(filepath))
             {
@@ -92,18 +92,27 @@ namespace manderijntje
 
             if (stationnames)
             {
-                List<Point> points = new List<Point>();
 
                 foreach (Node st in s)
                 {
-                    Point T = l.searchpoint(st.stationnaam, access);
-                    points.Add(T);
+                   // Point T = l.searchpoint(st.stationnaam, access);
+
+                    foreach(VisueelNode v in access.nodes)
+                    {
+                        if(v.name_id == st.stationnaam)
+                        {
+                            v.Color = Color.Orange;
+                        }
+                    }
+
+                           
+
                 }
 
-                Point smallestpoint = b.getpoints(points).smallest;
-                Point biggestpoint = b.getpoints(points).biggest;
+               // Point smallestpoint = b.getpoints(points).smallest;
+               // Point biggestpoint = b.getpoints(points).biggest;
 
-                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, smallestpoint, biggestpoint, map);
+                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, new Point(0, 0), new Point(0, 0), map);
 
             }
             else
@@ -330,6 +339,7 @@ namespace manderijntje
         public Color Color = Color.Gray;
         public bool paint = true;
         public bool dummynode = false;
+        public bool dummynodeDrawLine = false; 
 
         public VisueelNode(Point point, string name_id, int prioriteit)
         {
