@@ -139,7 +139,7 @@ namespace manderijntje
             for (int n = 0; n < links.Count; n++) 
             {
                 int a = 0;
-                Pen blackPen = new Pen(links[n].kleur, a);
+                Pen blackPen = new Pen(links[n].kleur, a); 
 
                 if (links[n].paint && links[n].kleur == Color.Orange)
                 {
