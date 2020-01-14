@@ -14,6 +14,7 @@ namespace manderijntje
         List<Route> tripOptions = new List<Route>();
         List<Node> nodeList = new List<Node>();
         List<departureTimeModel> timeList = new List<departureTimeModel>();
+        List<autoSuggestionModel> backupList = new List<autoSuggestionModel>();
         public tripOptionsCell tripOptionscell { get; set; }
         DateTime chosenTime { get; set; }
         string departureLocation, destinationLocation, departureTime, depLocation, desLocation;
@@ -305,18 +306,25 @@ namespace manderijntje
         {
             autoSuggestion autosuggest = new autoSuggestion(this);
             autosuggest.setList(nodeList);
+            departureInput.ForeColor = Color.Black;
             if (departureInput.Text != "" && changeInput == false)
             {
                 autosuggest.checkInput(departureInput.Text);
                 if (autosuggest.suggestionsList.Count > 0)
                 {
+                    backupList = autosuggest.suggestionsList;
                     autosuggestVisible();
                     autosuggest.setupSuggesties(sender);
                 }
                 else
                 {
-                    autosuggesInVisible();
-                    autosuggest.clearAutosuggest();
+                    if (backupList.Count() != 0)
+                        autosuggest.showBackupList(backupList);
+                    else
+                    {
+                        autosuggesInVisible();
+                        autosuggest.clearAutosuggest();
+                    }
                 }
             }
             else
@@ -328,18 +336,26 @@ namespace manderijntje
         {
             autoSuggestion autosuggest = new autoSuggestion(this);
             autosuggest.setList(nodeList);
+            destinationInput.ForeColor = Color.Black;
             if (destinationInput.Text != "" && changeInput == false)
             {
                 autosuggest.checkInput(destinationInput.Text);
+                
                 if (autosuggest.suggestionsList.Count > 0)
                 {
+                    backupList = autosuggest.suggestionsList;
                     autosuggestVisible();
                     autosuggest.setupSuggesties(sender);
                 }
                 else
                 {
-                    autosuggesInVisible();
-                    autosuggest.clearAutosuggest();
+                    if (backupList.Count() != 0)
+                        autosuggest.showBackupList(backupList);
+                    else
+                    {
+                        autosuggesInVisible();
+                        autosuggest.clearAutosuggest();
+                    }
                 }
             }
             else

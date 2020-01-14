@@ -41,7 +41,7 @@ namespace manderijntje
 
         private void MakeDataForDisk(DataModel data)
         {
-            access = (new parsing(data)).getModel(false);
+            access = (new parsing(data, false)).getModel(false);
 
             if (Directory.Exists(filepath))
             {
