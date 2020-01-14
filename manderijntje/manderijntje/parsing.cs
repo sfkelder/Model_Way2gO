@@ -26,7 +26,7 @@ namespace manderijntje
 
                 if (colapse)
                 {
-                    colapseGraph();
+                    //colapseGraph();
                 }
 
                 enforcePlanarity();
@@ -354,6 +354,14 @@ namespace manderijntje
                     links.Remove(getLink(nodes[i], nodes[i].neighbours[0]));
                     links.Remove(getLink(nodes[i], nodes[i].neighbours[1]));
                     nodes.Remove(nodes[i]);
+
+                    for (int j = 0; j < nodes.Count; j++)
+                    {
+                        nodes[j].index = j;
+                    }
+
+                    nodes[nodes[i].neighbours[0].index].neighbours = getNeighbours(nodes[i].neighbours[0]);
+                    nodes[nodes[i].neighbours[1].index].neighbours = getNeighbours(nodes[i].neighbours[1]);
                     links.Add(newLink);
                 }
             }
