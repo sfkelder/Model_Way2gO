@@ -88,32 +88,74 @@ namespace manderijntje
         //controlls everything on this form
         public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
         {
-            
 
             if (stationnames)
             {
 
-                foreach (Node st in s)
+                foreach (VisueelNode v in access.nodes)
                 {
+                    v.Color = Color.Gray;
+                }
+
+                foreach (Node st in s)
+                { 
                    // Point T = l.searchpoint(st.stationnaam, access);
+
+                 for(int i = 0; i < s.Count; i++)
+                    {
+                        for (int n = 0; n < access.nodes.Count; n++)
+                        {
+                            if (s[i].stationnaam == access.nodes[n].name_id)
+                            {
+                                Console.WriteLine("found: " + i.ToString());
+                            }
+                        }
+                    }
+                  //  Console.WriteLine(s[11].stationnaam);
+
+
+                    /*  for (int i = 0; i < access.nodes.Count; i++)
+                      {
+                          Console.WriteLine(access.nodes[i].name_id);
+                      }*/
+
+                   
 
                     foreach(VisueelNode v in access.nodes)
                     {
+                        
+
                         if(v.name_id == st.stationnaam)
                         {
                             v.Color = Color.Orange;
+                           // Console.WriteLine(v.name_id);
                         }
+                       
+                 
                     }
 
                            
 
                 }
 
-                foreach(VisualLink m in access.links)
+                /*foreach(VisualLink m in access.links)
                 {
+                    if(m.v.Color == Color.Orange && m.u.Color == Color.Orange && (m.v.dummynodeDrawLine || m.u.dummynodeDrawLine))
+                    {
+                        m.kleur = Color.Orange;
 
+                        if (m.v.dummynode)
+                            m.v.dummynodeDrawLine = true;
 
-                }
+                        if (m.u.dummynode)
+                            m.u.dummynodeDrawLine = true;
+                    }
+                    else
+                    {
+                        m.kleur = Color.Gray;
+                    }
+
+                }*/
 
 
                // Point smallestpoint = b.getpoints(points).smallest;
