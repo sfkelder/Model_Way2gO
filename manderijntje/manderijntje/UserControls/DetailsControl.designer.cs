@@ -38,6 +38,7 @@
             this.timesLBL = new System.Windows.Forms.Label();
             this.departureLBL = new System.Windows.Forms.Label();
             this.transfersPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.saveBTN = new System.Windows.Forms.Button();
             this.headerDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.transferIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clockIcon)).BeginInit();
@@ -46,6 +47,7 @@
             // headerDetails
             // 
             this.headerDetails.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
+            this.headerDetails.Controls.Add(this.saveBTN);
             this.headerDetails.Controls.Add(this.transferIcon);
             this.headerDetails.Controls.Add(this.clockIcon);
             this.headerDetails.Controls.Add(this.platformLBL);
@@ -166,6 +168,16 @@
             this.transfersPanel.Size = new System.Drawing.Size(845, 1139);
             this.transfersPanel.TabIndex = 1;
             // 
+            // saveBTN
+            // 
+            this.saveBTN.Location = new System.Drawing.Point(737, 79);
+            this.saveBTN.Name = "saveBTN";
+            this.saveBTN.Size = new System.Drawing.Size(75, 45);
+            this.saveBTN.TabIndex = 12;
+            this.saveBTN.Text = "Save";
+            this.saveBTN.UseVisualStyleBackColor = true;
+            this.saveBTN.Click += new System.EventHandler(this.saveBTN_Click);
+            // 
             // DetailsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -195,5 +207,6 @@
         public System.Windows.Forms.FlowLayoutPanel transfersPanel;
         private System.Windows.Forms.PictureBox transferIcon;
         private System.Windows.Forms.PictureBox clockIcon;
+        private System.Windows.Forms.Button saveBTN;
     }
 }
