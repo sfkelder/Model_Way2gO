@@ -14,6 +14,7 @@ namespace manderijntje
     {
        public List<VisueelNode> nodes = new List<VisueelNode>();
         public List<VisualLink> links = new List<VisualLink>();
+        public List<vLogicalLink> logicallinks = new List<vLogicalLink>();
 
         int totverschuivingX, totverschuivingY, zoom = 1, height, width;
         Point start, end, newEnd;
@@ -133,7 +134,7 @@ namespace manderijntje
                 if (nodes[m].paint == true && nodes[m].dummynode == false) 
                 {
                     pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
-                    //pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                    pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
                 }
                 if (nodes[m].paint == true && nodes[m].dummynode == true)
                 {
@@ -147,16 +148,22 @@ namespace manderijntje
 
                 
 
-                if (links[n].paint && links[n].kleur == Color.Orange)
+               /* if (links[n].paint && links[n].kleur == Color.Orange)
                 {
                     Pen blackPen = new Pen(links[n].kleur, 3);
-                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X -totverschuivingX + 1, links[n].u.point.Y - totverschuivingY + 1), new Point(links[n].v.point.X - totverschuivingX + 1, links[n].v.point.Y - totverschuivingY + 1));
+                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X -totverschuivingX + 2, links[n].u.point.Y - totverschuivingY + 2), new Point(links[n].v.point.X - totverschuivingX + 2, links[n].v.point.Y - totverschuivingY + 2));
                 }
                 else
                 {
                     Pen blackPen = new Pen(links[n].kleur, 1);
                     pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X - totverschuivingX + 3, links[n].u.point.Y - totverschuivingY + 3), new Point(links[n].v.point.X - totverschuivingX + 3, links[n].v.point.Y - totverschuivingY + 3));                 
-                }
+                */
+            }
+
+            foreach(vLogicalLink v in logicallinks)
+            {
+                Pen blackPen = new Pen(Color.Orange, 1);
+                pea.Graphics.DrawLine(blackPen, new Point(v.u.point.X - totverschuivingX + 3, v.u.point.Y - totverschuivingY + 3), new Point(v.v.point.X - totverschuivingX + 3, v.v.point.Y - totverschuivingY + 3));
             }
 
         }

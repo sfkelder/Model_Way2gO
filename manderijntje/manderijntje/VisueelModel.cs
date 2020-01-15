@@ -131,15 +131,10 @@ namespace manderijntje
                    
 
 
-                    if (m.v.Color == Color.Orange && m.u.Color == Color.Orange && (m.v.dummynodeDrawLine || m.u.dummynodeDrawLine))
+                    if (m.v.Color == Color.Orange && m.u.Color == Color.Orange && m.v.dummynodeDrawLine && m.u.dummynodeDrawLine)
                     {
                         m.kleur = Color.Orange;
 
-                        if (m.v.dummynode)
-                            m.v.dummynodeDrawLine = true;
-
-                        if (m.u.dummynode)
-                            m.u.dummynodeDrawLine = true;
                     }
                     else
                     {
@@ -231,7 +226,13 @@ namespace manderijntje
                if (v.u.paint && v.v.paint)
                     map.links.Add(v);
             }
-           
+
+            foreach (vLogicalLink v in access.connections)
+            {
+                if (v.u.paint && v.v.paint)
+                    map.logicallinks.Add(v);
+            }
+            
         }
 
 
