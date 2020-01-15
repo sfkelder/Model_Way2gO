@@ -133,7 +133,12 @@ namespace manderijntje
                 if (nodes[m].paint == true && nodes[m].dummynode == false) 
                 {
                     pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
-                    pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                    //pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                }
+                if (nodes[m].paint == true && nodes[m].dummynode == true)
+                {
+                    pea.Graphics.FillRectangle(Brushes.Red, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
+                    //pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
                 }
             }
 

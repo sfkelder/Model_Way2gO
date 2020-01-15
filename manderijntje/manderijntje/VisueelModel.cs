@@ -41,7 +41,7 @@ namespace manderijntje
 
         private void MakeDataForDisk(DataModel data)
         {
-            access = (new parsing(data, true)).getModel(true);
+            access = (new parsing(data)).getModel(false);
 
             if (Directory.Exists(filepath))
             {
@@ -173,6 +173,7 @@ namespace manderijntje
     {
         public List<VisueelNode> nodes = new List<VisueelNode>();
         public List<VisualLink> links = new List<VisualLink>();
+        public List<vLogicalLink> connections = new List<vLogicalLink>();
     }
 
 
@@ -415,6 +416,49 @@ namespace manderijntje
 
         }
 
+    }
+
+    [Serializable]
+    public class vLogicalLink
+    {
+        public VisueelNode u, v;
+        public List<VisueelNode> nodes = new List<VisueelNode>();
+        public List<VisualLink> links = new List<VisualLink>();
+
+        public vLogicalLink(VisueelNode U, VisueelNode V)
+        {
+            u = U;
+            v = V;
+        }
+
+        public void getLinks(List<VisualLink> l)
+        {
+            List<VisueelNode> booltest = nodes;
+            booltest.Add(u);
+            booltest.Add(v);
+            for (int i = 0; i < booltest.Count; i++)
+            {
+                for (int n = i; n < booltest.Count; n++)
+                {
+                    if (getLink(booltest[i], booltest[n], l) != null)
+                    {
+                        links.Add(getLink(booltest[i], booltest[n], l));
+                    }
+                }
+            }
+        }
+
+        private VisualLink getLink(VisueelNode u, VisueelNode v, List<VisualLink> l)
+        {
+            for (int i = 0; i < l.Count; i++)
+            {
+                if ((l[i].u == u && l[i].v == v) || (l[i].u == v && l[i].v == u))
+                {
+                    return l[i];
+                }
+            }
+            return null;
+        }
     }
 
 }
