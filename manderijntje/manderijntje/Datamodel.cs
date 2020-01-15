@@ -693,26 +693,28 @@ namespace manderijntje
                         if (!contains)
                         {
                             if (turn)
+                            {
                                 if (first == jag[i][0])
                                 {
                                     inorder[e, 2] = i + 1;
                                 }
-                            if (last == jag[i][jag[i].Length - 1])
-                            {
-                                inorder[e, 0] = i + 1;
+                                if (last == jag[i][jag[i].Length - 1])
+                                {
+                                    inorder[e, 0] = i + 1;
+                                }
                             }
                             if (!turn)
                             {
                                 if (inorder[e, 2] == 0)
                                 {
-                                    if (first == jag[i][0])
+                                    if (first == jag[i][jag[i].Length - 1])
                                     {
                                         inorder[e, 2] = i + 1;
                                     }
                                 }
                                 if (inorder[e, 0] == 0)
                                 {
-                                    if (last == jag[i][jag[i].Length - 1])
+                                    if (last == jag[i][0])
                                     {
                                         inorder[e, 0] = i + 1;
                                     }
