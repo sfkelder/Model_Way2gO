@@ -150,7 +150,7 @@ namespace manderijntje
                     pea.Graphics.DrawLine(blackPen, new Point(logicallinks[i].links[n].u.point.X - totverschuivingX + 3, logicallinks[i].links[n].u.point.Y - totverschuivingY + 3), new Point(logicallinks[i].links[n].v.point.X - totverschuivingX + 3, logicallinks[i].links[n].v.point.Y - totverschuivingY + 3));
                 }
             }
-
+            
             for (int m = 0; m < nodes.Count; m++)
             {
                 SolidBrush brush = new SolidBrush(nodes[m].Color);

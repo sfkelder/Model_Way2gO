@@ -259,7 +259,7 @@ namespace manderijntje
             switch (zoom)
             {
                 case 0:
-                   // v.paint = (v.prioriteit < 5) ? false : true;
+                   //v.paint = (v.prioriteit < 5) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v); 
 
