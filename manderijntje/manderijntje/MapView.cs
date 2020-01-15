@@ -144,7 +144,7 @@ namespace manderijntje
 
                 if (links[n].paint && links[n].kleur == Color.Orange)
                 {
-                    Pen blackPen = new Pen(links[n].kleur, 2);
+                    Pen blackPen = new Pen(links[n].kleur, 3);
                     pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X -totverschuivingX + 1, links[n].u.point.Y - totverschuivingY + 1), new Point(links[n].v.point.X - totverschuivingX + 1, links[n].v.point.Y - totverschuivingY + 1));
                 }
                 else
