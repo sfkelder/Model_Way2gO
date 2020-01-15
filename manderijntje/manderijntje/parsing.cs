@@ -14,6 +14,9 @@ namespace manderijntje
         private List<sLinkPair> linkpairs = new List<sLinkPair>();
         private List<sBendLink> bendlinks = new List<sBendLink>();
 
+        private List<sLink> logicallinks = new List<sLink>();
+        private List<sLogical> logicalconnections = new List<sLogical>();
+
         private const int width = 5000, height = 5000;
 
         public parsing(DataModel model)
@@ -22,16 +25,26 @@ namespace manderijntje
             {
                 setNodes(model.unique_nodes);
                 setLinks(model.unique_links);
+                setNeighbours();
 
                 enforcePlanarity();
+                filterLogicalLinks();
                 setNeighbours();
 
                 getLinkPairs();
                 getBendLinks();
 
-                Console.WriteLine(getDegree());
-
-                //test();
+                int dummy = 0;
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    if (!nodes[i].draw)
+                    {
+                        dummy++;
+                    }
+                }
+                Console.WriteLine("dummy nodes: " + dummy);
+                Console.WriteLine("logical links: " + logicallinks.Count);
+                Console.WriteLine("connections: " + logicalconnections.Count);
             }
         }
 
@@ -44,7 +57,7 @@ namespace manderijntje
             return createModel();
         }
 
-        public void test ()
+       /* public void test ()
         {
             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes2.txt"))
             {
@@ -61,7 +74,7 @@ namespace manderijntje
                 }
             }
 
-        }
+        }*/
 
 
         // PLANARITY:
@@ -107,12 +120,37 @@ namespace manderijntje
             links.Remove(e1);
             links.Remove(e2);
 
+            e1.isLogical = true; e1.addedNode = node; logicallinks.Add(e1);
+            e2.isLogical = true; e2.addedNode = node; logicallinks.Add(e2);
+
             links.Add(new sLink(node, e1.u));
             links.Add(new sLink(node, e1.v));
             links.Add(new sLink(node, e2.u));
             links.Add(new sLink(node, e2.v));
 
             nodes.Add(node);
+        }
+
+        private void filterLogicalLinks()
+        {
+            for (int i = 0; i < logicallinks.Count; i++)
+            {
+                if (logicallinks[i].u.draw && logicallinks[i].v.draw)
+                {
+                    logicalconnections.Add(new sLogical(logicallinks[i].u, logicallinks[i].v, logicallinks[i].addedNode));
+
+                } else
+                {
+                    for (int n = 0; n < logicalconnections.Count; n++)
+                    {
+                        if (logicalconnections[n].isSubRoute(logicallinks[i].u, logicallinks[i].v))
+                        {
+                            logicalconnections[n].nodes.Add(logicallinks[i].addedNode);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         // checks if the given links intersects
@@ -279,6 +317,8 @@ namespace manderijntje
             for (int i = 0; i < dNodes.Count; i++)
             {
                 sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
+                newNode.name = dNodes[i].stationnaam;
+                //newNode.weight = dNodes[i].
                 nodes.Add(newNode);
             }
         }
@@ -291,6 +331,7 @@ namespace manderijntje
             {
                 nodes[i].neighbours = getNeighbours(nodes[i]);
                 nodes[i].deg = nodes[i].neighbours.Count;
+                nodes[i].weight = nodes[i].neighbours.Count;
             }
         }
 
@@ -347,29 +388,50 @@ namespace manderijntje
 
             List<VisueelNode> dNodes = new List<VisueelNode>();
             List<VisualLink> dLinks = new List<VisualLink>();
+            List<vLogicalLink> dConnections = new List<vLogicalLink>();
 
             for (int i = 0; i < nodes.Count; i++)
             {
-                VisueelNode newNode = new VisueelNode(new Point(), "", 0);
+                VisueelNode newNode = new VisueelNode(new Point(), nodes[i].name, 0);
                 newNode.index = nodes[i].index;
                 newNode.point = new Point(nodes[i].x, nodes[i].y);
                 newNode.dummynode = !nodes[i].draw;
-                newNode.prioriteit = nodes[i].neighbours.Count;
+                newNode.prioriteit = (int)nodes[i].weight;
+
+                if (newNode.dummynode)
+                {
+                    newNode.Color = Color.Orange;
+                } else
+                {
+                    newNode.dummynodeDrawLine = true;
+                }
 
                 dNodes.Add(newNode);
             }
 
             for (int i = 0; i < links.Count; i++)
             {
-                VisualLink newLink = new VisualLink("");
+                VisualLink newLink = new VisualLink(links[i].u.node_id + "__" + links[i].v.node_id);
                 newLink.u = getNode(links[i].u.index, dNodes);
                 newLink.v = getNode(links[i].v.index, dNodes);
 
                 dLinks.Add(newLink);
             }
 
+            for (int i = 0; i < logicalconnections.Count; i++)
+            {
+                vLogicalLink newLogical = new vLogicalLink(getNode(logicalconnections[i].u.index, dNodes), getNode(logicalconnections[i].v.index, dNodes));
+                for (int n = 0; n < logicalconnections[i].nodes.Count; n++)
+                {
+                    newLogical.nodes.Add(getNode(logicalconnections[i].nodes[n].index, dNodes));
+                }
+                newLogical.getLinks(dLinks);
+                dConnections.Add(newLogical);
+            }
+
             model.nodes = dNodes;
             model.links = dLinks;
+            model.connections = dConnections;
 
             return model;
         }
@@ -400,7 +462,7 @@ namespace manderijntje
         private GRBEnv env;
         private int M;
         // the minimum length of an edge, the minimum distance between two edges, and the weight used in the objective function
-        private double minL = 10.0, minD = 10.0, weightBend = 3.0, weightRpos = 4.0, weightLength = 1.0; 
+        private double minL = 10.0, minD = 10.0, weightBend = 4.0, weightRpos = 3.0, weightLength = 1.0; 
         // the width and height where the solution is calculated over
         private const int width = 100000, height = 100000;
         private bool usePlanarity = false;
@@ -884,8 +946,9 @@ namespace manderijntje
         public int x, y, z1, z2, deg, index;
         public List<sNode> neighbours = new List<sNode>();
         public sNode[] neighbours_sorted;
-        public string node_id;
+        public string node_id, name;
         public bool draw = true;
+        public double weight = 0.0;
 
         public sNode(int i, Point p)
         {
@@ -905,10 +968,41 @@ namespace manderijntje
         public sNode u, v;
         public int sec_u_v, sec_v_u;
 
+        public sNode addedNode;
+        public bool isLogical = false;
+
         public sLink(sNode U, sNode V)
         {
             u = U;
             v = V;
+        }
+    }
+
+    public class sLogical
+    {
+        public sNode u, v;
+        public List<sNode> nodes = new List<sNode>();
+        public List<sLink> links = new List<sLink>();
+
+        public sLogical (sNode U, sNode V, sNode x)
+        {
+            u = U;
+            v = V;
+            nodes.Add(x);
+        }
+
+        public bool isSubRoute(sNode U, sNode V)
+        {
+            List<sNode> booltest = nodes;
+            booltest.Add(u);
+            booltest.Add(v);
+            if (booltest.Contains(U) && booltest.Contains(V))
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
     }
 

@@ -14,6 +14,7 @@ namespace manderijntje
         List<Route> tripOptions = new List<Route>();
         List<Node> nodeList = new List<Node>();
         List<departureTimeModel> timeList = new List<departureTimeModel>();
+        List<autoSuggestionModel> backupList = new List<autoSuggestionModel>();
         public tripOptionsCell tripOptionscell { get; set; }
         DateTime chosenTime { get; set; }
         string departureLocation, destinationLocation, departureTime, depLocation, desLocation;
@@ -33,7 +34,6 @@ namespace manderijntje
         // Calls every method that needs to be called to setup the view Correctly
         private void setupView()
         {
-            // Full screen
             WindowState = FormWindowState.Maximized;
             changeBackIcon(false);
             show(inputPanel);
@@ -66,12 +66,12 @@ namespace manderijntje
         // Set the locations and size of elements corretly
         private void setElement()
         {
-            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
+            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width - (2*hideBar.Width), this.Height - (2*logoHeader.Height));
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
-            tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height - 80);
-            detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height);
-            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 174;
+            tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height + 40);
+            detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height + 20);
+            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 75;
             if (Height > 450)
             {
                 hideArrowIcon.Location = new Point(hideArrowIcon.Location.X, (hideBar.Height / 2) - (logoHeader.Height));
@@ -204,13 +204,6 @@ namespace manderijntje
             clearFlowControl(tripOptionsFlowControl);
             tripOptions.Clear();
 
-            List<string> list = new List<string>();
-            list.Add(departureLocation);
-            list.Add(destinationLocation);
-
-            // Will crash the build
-            // visueelControl.visualcontrol(this.Height, 0, 0, new Point(0, 0), new Point(0, 0), list, true, , );
-
             chosenTime = Convert.ToDateTime(departureTime);
             foreach (Route route in Routing.GetRoute(departureLocation, destinationLocation, chosenTime,
                 dataControl.GetDataModel()))
@@ -274,6 +267,8 @@ namespace manderijntje
             detailsUserControl.transfers = tripOptionscell.transferCount;
             detailsUserControl.platform = tripOptionscell.platform;
             detailsUserControl.shortestPath = tripOptionscell.shortestPath;
+
+            visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
         }
 
         // Fills the flowcontrol with the usercontrol called "tussenstopCell" and gives the needed data to tussenstopCell.
@@ -310,18 +305,25 @@ namespace manderijntje
         {
             autoSuggestion autosuggest = new autoSuggestion(this);
             autosuggest.setList(nodeList);
+            departureInput.ForeColor = Color.Black;
             if (departureInput.Text != "" && changeInput == false)
             {
                 autosuggest.checkInput(departureInput.Text);
                 if (autosuggest.suggestionsList.Count > 0)
                 {
+                    backupList = autosuggest.suggestionsList;
                     autosuggestVisible();
                     autosuggest.setupSuggesties(sender);
                 }
                 else
                 {
-                    autosuggesInVisible();
-                    autosuggest.clearAutosuggest();
+                    if (backupList.Count() != 0)
+                        autosuggest.showBackupList(backupList);
+                    else
+                    {
+                        autosuggesInVisible();
+                        autosuggest.clearAutosuggest();
+                    }
                 }
             }
             else
@@ -333,18 +335,26 @@ namespace manderijntje
         {
             autoSuggestion autosuggest = new autoSuggestion(this);
             autosuggest.setList(nodeList);
+            destinationInput.ForeColor = Color.Black;
             if (destinationInput.Text != "" && changeInput == false)
             {
                 autosuggest.checkInput(destinationInput.Text);
+                
                 if (autosuggest.suggestionsList.Count > 0)
                 {
+                    backupList = autosuggest.suggestionsList;
                     autosuggestVisible();
                     autosuggest.setupSuggesties(sender);
                 }
                 else
                 {
-                    autosuggesInVisible();
-                    autosuggest.clearAutosuggest();
+                    if (backupList.Count() != 0)
+                        autosuggest.showBackupList(backupList);
+                    else
+                    {
+                        autosuggesInVisible();
+                        autosuggest.clearAutosuggest();
+                    }
                 }
             }
             else
@@ -444,33 +454,33 @@ namespace manderijntje
             {
                 inputPanel.Visible = false;
                 hide(inputPanel);
-                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height);
+                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height - logoHeader.Height);
 
             }
             else if (optiesControl)
             {
                 tripOptionsFlowControl.Visible = false;
                 hide(tripOptionsFlowControl);
-                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height);
+                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height - logoHeader.Height);
 
             }
             else if (detailsControl)
             {
                 detailsUserControl.Visible = false;
                 hide(detailsControl);
-                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height - logoHeader.Height);
             }
             else if (!inputControl && !optiesControl && !detailsControl && !optionSelected)
             {
                 inputPanel.Visible = true;
                 show(inputPanel);
-                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height - logoHeader.Height);
             }
             else if (!inputControl && !optiesControl && !detailsControl && optionSelected)
             {
                 tripOptionsFlowControl.Visible = true;
                 show(tripOptionsFlowControl);
-                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height - logoHeader.Height);
             }
         }
 
@@ -537,7 +547,7 @@ namespace manderijntje
                 detailsControl = true;
                 hideshowBack();
                 logoHeader.Width = logoHeader.Width + detailsUserControl.Width;
-                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width, this.Height);
+                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - hideBar.Width - logoHeader.Width, this.Height - logoHeader.Height);
                 hideBarLocation(logoHeader.Width, logoHeader.Height);
                 changeBackIcon(false);
             }

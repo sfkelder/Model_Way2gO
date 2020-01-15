@@ -86,24 +86,82 @@ namespace manderijntje
         }
 
         //controlls everything on this form
-        public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<string> s, bool stationnames, MapView map)
+        public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
         {
-            
 
             if (stationnames)
             {
-                List<Point> points = new List<Point>();
 
-                foreach (string st in s)
+                foreach (VisueelNode v in access.nodes)
                 {
-                    Point T = l.searchpoint(st, access);
-                    points.Add(T);
+                    v.Color = Color.Gray;
                 }
 
-                Point smallestpoint = b.getpoints(points).smallest;
-                Point biggestpoint = b.getpoints(points).biggest;
+                foreach (Node st in s)
+                { 
+                   // Point T = l.searchpoint(st.stationnaam, access);
 
-                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, smallestpoint, biggestpoint, map);
+                 for(int i = 0; i < s.Count; i++)
+                    {
+                        for (int n = 0; n < access.nodes.Count; n++)
+                        {
+                            if (s[i].stationnaam == access.nodes[n].name_id)
+                            {
+                                Console.WriteLine("found: " + i.ToString());
+                            }
+                        }
+                    }
+                  //  Console.WriteLine(s[11].stationnaam);
+
+
+                    /*  for (int i = 0; i < access.nodes.Count; i++)
+                      {
+                          Console.WriteLine(access.nodes[i].name_id);
+                      }*/
+
+                   
+
+                    foreach(VisueelNode v in access.nodes)
+                    {
+                        
+
+                        if(v.name_id == st.stationnaam)
+                        {
+                            v.Color = Color.Orange;
+                           // Console.WriteLine(v.name_id);
+                        }
+                       
+                 
+                    }
+
+                           
+
+                }
+
+                /*foreach(VisualLink m in access.links)
+                {
+                    if(m.v.Color == Color.Orange && m.u.Color == Color.Orange && (m.v.dummynodeDrawLine || m.u.dummynodeDrawLine))
+                    {
+                        m.kleur = Color.Orange;
+
+                        if (m.v.dummynode)
+                            m.v.dummynodeDrawLine = true;
+
+                        if (m.u.dummynode)
+                            m.u.dummynodeDrawLine = true;
+                    }
+                    else
+                    {
+                        m.kleur = Color.Gray;
+                    }
+
+                }*/
+
+
+               // Point smallestpoint = b.getpoints(points).smallest;
+               // Point biggestpoint = b.getpoints(points).biggest;
+
+                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, new Point(0, 0), new Point(0, 0), map);
 
             }
             else
@@ -123,6 +181,7 @@ namespace manderijntje
     {
         public List<VisueelNode> nodes = new List<VisueelNode>();
         public List<VisualLink> links = new List<VisualLink>();
+        public List<vLogicalLink> connections = new List<vLogicalLink>();
     }
 
 
@@ -196,7 +255,8 @@ namespace manderijntje
         //method to look which name belongs to which node
         public Point searchpoint(string namestation, VisueelModel access)
         {
-            return access.nodes.Find(item => item.name_id == namestation).point;
+            return new Point(0, 0);
+            //return access.nodes.Find(item => item.name_id == namestation).point;
         }
 
         //helping method valuenode
@@ -329,6 +389,7 @@ namespace manderijntje
         public Color Color = Color.Gray;
         public bool paint = true;
         public bool dummynode = false;
+        public bool dummynodeDrawLine = false; 
 
         public VisueelNode(Point point, string name_id, int prioriteit)
         {
@@ -363,6 +424,49 @@ namespace manderijntje
 
         }
 
+    }
+
+    [Serializable]
+    public class vLogicalLink
+    {
+        public VisueelNode u, v;
+        public List<VisueelNode> nodes = new List<VisueelNode>();
+        public List<VisualLink> links = new List<VisualLink>();
+
+        public vLogicalLink(VisueelNode U, VisueelNode V)
+        {
+            u = U;
+            v = V;
+        }
+
+        public void getLinks(List<VisualLink> l)
+        {
+            List<VisueelNode> booltest = nodes;
+            booltest.Add(u);
+            booltest.Add(v);
+            for (int i = 0; i < booltest.Count; i++)
+            {
+                for (int n = i; n < booltest.Count; n++)
+                {
+                    if (getLink(booltest[i], booltest[n], l) != null)
+                    {
+                        links.Add(getLink(booltest[i], booltest[n], l));
+                    }
+                }
+            }
+        }
+
+        private VisualLink getLink(VisueelNode u, VisueelNode v, List<VisualLink> l)
+        {
+            for (int i = 0; i < l.Count; i++)
+            {
+                if ((l[i].u == u && l[i].v == v) || (l[i].u == v && l[i].v == u))
+                {
+                    return l[i];
+                }
+            }
+            return null;
+        }
     }
 
 }

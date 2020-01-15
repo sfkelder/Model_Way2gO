@@ -20,14 +20,14 @@ namespace manderijntje
         // string sFile = "C:/Way2Go/enkhuizen test 4.xml";
         //string sFile = "C:/Way2Go/amsterdam test tram subway train.xml";
         //string sFile = "C:/Way2Go/train germany.xml";
-        string sFile = "C:/Way2Go/train netherlands.xml";
+        //string sFile = "C:/Way2Go/train netherlands.xml";
         //string sFile = "C:/Way2Go/groenhart train.xml";
         //string sFile = "C:/Way2Go/amsterdam tram bus.xml";
-        //string sFile = "C:/Way2Go/subway london.xml";
+        string sFile = "C:/Way2Go/subway london.xml";
         //string sFile = "C:/Way2Go/berlin subway.xml";
         //string sFile = "C:/Way2Go/train frankrijk.xml";
         //string sFile = "C:/Way2Go/train uk.xml";
-        // string sFile = "C:/Way2Go/frankrijk test3.xml";
+        //string sFile = "C:/Way2Go/train frankrijk.xml";
         //string sFile = "C:/Way2Go/train europa.xml";
         //string sFile = "C:/Way2Go/train westeuropa.xml";
         //string sFile = "C:/Way2Go/subway europa.xml";
@@ -693,26 +693,28 @@ namespace manderijntje
                         if (!contains)
                         {
                             if (turn)
+                            {
                                 if (first == jag[i][0])
                                 {
                                     inorder[e, 2] = i + 1;
                                 }
-                            if (last == jag[i][jag[i].Length - 1])
-                            {
-                                inorder[e, 0] = i + 1;
+                                if (last == jag[i][jag[i].Length - 1])
+                                {
+                                    inorder[e, 0] = i + 1;
+                                }
                             }
                             if (!turn)
                             {
                                 if (inorder[e, 2] == 0)
                                 {
-                                    if (first == jag[i][0])
+                                    if (first == jag[i][jag[i].Length - 1])
                                     {
                                         inorder[e, 2] = i + 1;
                                     }
                                 }
                                 if (inorder[e, 0] == 0)
                                 {
-                                    if (last == jag[i][jag[i].Length - 1])
+                                    if (last == jag[i][0])
                                     {
                                         inorder[e, 0] = i + 1;
                                     }
@@ -1053,7 +1055,7 @@ namespace manderijntje
                 }
             }
         }
-        public static double distance(double x1, double y1, double x2, double y2)
+        public static double distance(double x1, double y1, double x2, double y2) 
         {
             // Calculating distance 
             return Math.Sqrt(Math.Pow(x2 - x1, 2) +
@@ -1061,9 +1063,9 @@ namespace manderijntje
         }
         public string[,] clear_array_nulls(string[,] input)
         {
-            int m = input.GetUpperBound(0);
+            int m = input.GetUpperBound(0) + 1;
             int n = input.GetUpperBound(1) + 1;
-            string[] temp = new string[input.GetUpperBound(0)];
+            string[] temp = new string[input.GetUpperBound(0) + 1];
             for (int x = 0; x < m; x++)
                 temp[x] = input[x, 0];
             temp = temp.Where(s => !object.Equals(s, null)).ToArray();
@@ -1093,21 +1095,21 @@ namespace manderijntje
         // populate unique lists:
         public void get_unique_nodes()
         {
-            for (int i = 0; i < nodes.Count; i++)
+            for (int i = 0; i < nodesrouting.Count; i++)
             {
-                if (!node_in_unique_nodes(nodes[i]))
+                if (!node_in_unique_nodes(nodesrouting[i]))
                 {
-                    unique_nodes.Add(nodes[i]);
+                    unique_nodes.Add(nodesrouting[i]);
                 }
             }
         }
         public void get_unique_links()
         {
-            for (int i = 0; i < links.Count; i++)
+            for (int i = 0; i < linksrouting.Count; i++)
             {
-                if (!link_in_unique_links(links[i]))
+                if (!link_in_unique_links(linksrouting[i]))
                 {
-                    unique_links.Add(links[i]);
+                    unique_links.Add(linksrouting[i]);
                 }
             }
         }

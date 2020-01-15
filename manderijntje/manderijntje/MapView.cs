@@ -124,7 +124,7 @@ namespace manderijntje
 
         public void painting(object o, PaintEventArgs pea)
         {
-                   
+           Font font = new Font("Times New Roman", 12.0f);
 
             for (int m = 0; m < nodes.Count; m++)
             { 
@@ -132,17 +132,30 @@ namespace manderijntje
 
                 if (nodes[m].paint == true && nodes[m].dummynode == false)
                 {
-                    pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 5, 5);   
+                    pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
+                    //pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                }
+                if (nodes[m].paint == true && nodes[m].dummynode == true)
+                {
+                    pea.Graphics.FillRectangle(Brushes.Red, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
+                    //pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
                 }
             }
 
             for (int n = 0; n < links.Count; n++) 
             {
-                Pen blackPen = new Pen(links[n].kleur, 1);
+                
+                
 
-                if (links[n].paint)
+                if (links[n].paint && links[n].kleur == Color.Orange)
                 {
-                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X -totverschuivingX + 2, links[n].u.point.Y - totverschuivingY + 2), new Point(links[n].v.point.X - totverschuivingX + 2, links[n].v.point.Y - totverschuivingY + 2));
+                    Pen blackPen = new Pen(links[n].kleur, 2);
+                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X -totverschuivingX + 1, links[n].u.point.Y - totverschuivingY + 1), new Point(links[n].v.point.X - totverschuivingX + 1, links[n].v.point.Y - totverschuivingY + 1));
+                }
+                else
+                {
+                    Pen blackPen = new Pen(links[n].kleur, 1);
+                    pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X - totverschuivingX + 3, links[n].u.point.Y - totverschuivingY + 3), new Point(links[n].v.point.X - totverschuivingX + 3, links[n].v.point.Y - totverschuivingY + 3));                 
                 }
             }
 

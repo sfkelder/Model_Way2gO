@@ -183,6 +183,16 @@ namespace manderijntje.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap saveIconWhite {
+            get {
+                object obj = ResourceManager.GetObject("saveIconWhite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Way2GoLogo {
             get {
                 object obj = ResourceManager.GetObject("Way2GoLogo", resourceCulture);
