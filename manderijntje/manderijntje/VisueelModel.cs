@@ -94,53 +94,44 @@ namespace manderijntje
 
                 foreach (VisueelNode v in access.nodes)
                 {
+                    if(!v.dummynode)
                     v.Color = Color.Gray;
                 }
 
                 foreach (Node st in s)
-                { 
-                   // Point T = l.searchpoint(st.stationnaam, access);
-
-                 for(int i = 0; i < s.Count; i++)
-                    {
-                        for (int n = 0; n < access.nodes.Count; n++)
-                        {
-                            if (s[i].stationnaam == access.nodes[n].name_id)
-                            {
-                                Console.WriteLine("found: " + i.ToString());
-                            }
-                        }
-                    }
-                  //  Console.WriteLine(s[11].stationnaam);
-
-
-                    /*  for (int i = 0; i < access.nodes.Count; i++)
-                      {
-                          Console.WriteLine(access.nodes[i].name_id);
-                      }*/
-
-                   
+                {
 
                     foreach(VisueelNode v in access.nodes)
                     {
-                        
-
-                        if(v.name_id == st.stationnaam)
+                        if (v.name_id == st.stationnaam)
                         {
                             v.Color = Color.Orange;
-                           // Console.WriteLine(v.name_id);
                         }
-                       
-                 
-                    }
 
-                           
+                    }                
 
                 }
 
-                /*foreach(VisualLink m in access.links)
+                foreach (VisualLink k in access.links)
                 {
-                    if(m.v.Color == Color.Orange && m.u.Color == Color.Orange && (m.v.dummynodeDrawLine || m.u.dummynodeDrawLine))
+                    if (k.v.dummynode)
+                        k.v.dummynodeDrawLine = false;
+
+                    if (k.u.dummynode)
+                        k.u.dummynodeDrawLine = false;
+                }
+
+
+                foreach (VisualLink m in access.links)
+                {
+                    // m.u.dummynodeDrawLine = true;
+                    //m.v.dummynodeDrawLine = true;
+                    // m.v.Color = Color.Orange;
+                    // m.u.Color = Color.Orange;
+                   
+
+
+                    if (m.v.Color == Color.Orange && m.u.Color == Color.Orange && (m.v.dummynodeDrawLine || m.u.dummynodeDrawLine))
                     {
                         m.kleur = Color.Orange;
 
@@ -154,12 +145,13 @@ namespace manderijntje
                     {
                         m.kleur = Color.Gray;
                     }
+         
 
-                }*/
+                }
 
 
-               // Point smallestpoint = b.getpoints(points).smallest;
-               // Point biggestpoint = b.getpoints(points).biggest;
+                // Point smallestpoint = b.getpoints(points).smallest;
+                // Point biggestpoint = b.getpoints(points).biggest;
 
                 l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, new Point(0, 0), new Point(0, 0), map);
 

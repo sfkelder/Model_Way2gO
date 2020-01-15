@@ -130,7 +130,7 @@ namespace manderijntje
             { 
                 SolidBrush brush = new SolidBrush(nodes[m].Color);
 
-                if (nodes[m].paint == true && nodes[m].dummynode == false)
+                if (nodes[m].paint == true && nodes[m].dummynode == false) 
                 {
                     pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
                     pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
@@ -139,7 +139,7 @@ namespace manderijntje
 
             for (int n = 0; n < links.Count; n++) 
             {
-                
+
                 
 
                 if (links[n].paint && links[n].kleur == Color.Orange)
@@ -153,8 +153,6 @@ namespace manderijntje
                     pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X - totverschuivingX + 3, links[n].u.point.Y - totverschuivingY + 3), new Point(links[n].v.point.X - totverschuivingX + 3, links[n].v.point.Y - totverschuivingY + 3));                 
                 }
             }
-
-
 
         }
     }
