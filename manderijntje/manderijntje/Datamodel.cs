@@ -18,7 +18,7 @@ namespace manderijntje
 
         //string sFile = "C:/Way2Go/groningen test2.xml";
         // string sFile = "C:/Way2Go/enkhuizen test 4.xml";
-       // string sFile = "C:/Way2Go/amsterdam test tram subway train.xml";
+        //string sFile = "C:/Way2Go/amsterdam test tram subway train.xml";
         //string sFile = "C:/Way2Go/train germany.xml";
         string sFile = "C:/Way2Go/train netherlands.xml";
         //string sFile = "C:/Way2Go/groenhart train.xml";
@@ -693,26 +693,28 @@ namespace manderijntje
                         if (!contains)
                         {
                             if (turn)
+                            {
                                 if (first == jag[i][0])
                                 {
                                     inorder[e, 2] = i + 1;
                                 }
-                            if (last == jag[i][jag[i].Length - 1])
-                            {
-                                inorder[e, 0] = i + 1;
+                                if (last == jag[i][jag[i].Length - 1])
+                                {
+                                    inorder[e, 0] = i + 1;
+                                }
                             }
                             if (!turn)
                             {
                                 if (inorder[e, 2] == 0)
                                 {
-                                    if (first == jag[i][0])
+                                    if (first == jag[i][jag[i].Length - 1])
                                     {
                                         inorder[e, 2] = i + 1;
                                     }
                                 }
                                 if (inorder[e, 0] == 0)
                                 {
-                                    if (last == jag[i][jag[i].Length - 1])
+                                    if (last == jag[i][0])
                                     {
                                         inorder[e, 0] = i + 1;
                                     }
@@ -1093,21 +1095,21 @@ namespace manderijntje
         // populate unique lists:
         public void get_unique_nodes()
         {
-            for (int i = 0; i < nodes.Count; i++)
+            for (int i = 0; i < nodesrouting.Count; i++)
             {
-                if (!node_in_unique_nodes(nodes[i]))
+                if (!node_in_unique_nodes(nodesrouting[i]))
                 {
-                    unique_nodes.Add(nodes[i]);
+                    unique_nodes.Add(nodesrouting[i]);
                 }
             }
         }
         public void get_unique_links()
         {
-            for (int i = 0; i < links.Count; i++)
+            for (int i = 0; i < linksrouting.Count; i++)
             {
-                if (!link_in_unique_links(links[i]))
+                if (!link_in_unique_links(linksrouting[i]))
                 {
-                    unique_links.Add(links[i]);
+                    unique_links.Add(linksrouting[i]);
                 }
             }
         }
