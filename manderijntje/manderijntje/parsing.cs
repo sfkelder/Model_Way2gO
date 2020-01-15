@@ -14,6 +14,9 @@ namespace manderijntje
         private List<sLinkPair> linkpairs = new List<sLinkPair>();
         private List<sBendLink> bendlinks = new List<sBendLink>();
 
+        private List<sLink> logicallinks = new List<sLink>();
+        private List<sLogical> logicalconnections = new List<sLogical>();
+
         private const int width = 5000, height = 5000;
 
         public parsing(DataModel model, bool colapse)
@@ -24,18 +27,24 @@ namespace manderijntje
                 setLinks(model.unique_links);
                 setNeighbours();
 
-                if (colapse)
-                {
-                    //colapseGraph();
-                }
-
                 enforcePlanarity();
+                filterLogicalLinks();
                 setNeighbours();
 
                 getLinkPairs();
                 getBendLinks();
 
-            
+                int dummy = 0;
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    if (!nodes[i].draw)
+                    {
+                        dummy++;
+                    }
+                }
+                Console.WriteLine("dummy nodes: " + dummy);
+                Console.WriteLine("logical links: " + logicallinks.Count);
+                Console.WriteLine("connections: " + logicalconnections.Count);
             }
         }
 
@@ -111,12 +120,37 @@ namespace manderijntje
             links.Remove(e1);
             links.Remove(e2);
 
+            e1.isLogical = true; e1.addedNode = node; logicallinks.Add(e1);
+            e2.isLogical = true; e2.addedNode = node; logicallinks.Add(e2);
+
             links.Add(new sLink(node, e1.u));
             links.Add(new sLink(node, e1.v));
             links.Add(new sLink(node, e2.u));
             links.Add(new sLink(node, e2.v));
 
             nodes.Add(node);
+        }
+
+        private void filterLogicalLinks()
+        {
+            for (int i = 0; i < logicallinks.Count; i++)
+            {
+                if (logicallinks[i].u.draw && logicallinks[i].v.draw)
+                {
+                    logicalconnections.Add(new sLogical(logicallinks[i].u, logicallinks[i].v, logicallinks[i].addedNode));
+
+                } else
+                {
+                    for (int n = 0; n < logicalconnections.Count; n++)
+                    {
+                        if (logicalconnections[n].isSubRoute(logicallinks[i].u, logicallinks[i].v))
+                        {
+                            logicalconnections[n].nodes.Add(logicallinks[i].addedNode);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         // checks if the given links intersects
@@ -344,41 +378,6 @@ namespace manderijntje
             return nodes[0];
         }
 
-        private void colapseGraph ()
-        {
-            for(int i = 0; i < nodes.Count; i++)
-            {
-                if (nodes[i].deg == 2)
-                {
-                    sLink newLink = new sLink(nodes[i].neighbours[0], nodes[i].neighbours[1]);
-                    links.Remove(getLink(nodes[i], nodes[i].neighbours[0]));
-                    links.Remove(getLink(nodes[i], nodes[i].neighbours[1]));
-                    nodes.Remove(nodes[i]);
-
-                    for (int j = 0; j < nodes.Count; j++)
-                    {
-                        nodes[j].index = j;
-                    }
-
-                    setNeighbours();
-
-                    links.Add(newLink);
-                    i = 0;
-                }
-            }
-        }
-
-        private sLink getLink (sNode u, sNode v)
-        {
-            for(int i = 0; i < links.Count; i++)
-            {
-                if ((links[i].u == u && links[i].v == v) || (links[i].u == v && links[i].v == u))
-                {
-                    return links[i];
-                }
-            }
-            return links[0];
-        }
 
         // CREATE VISUAL MODEL OBJECT:
 
@@ -389,6 +388,7 @@ namespace manderijntje
 
             List<VisueelNode> dNodes = new List<VisueelNode>();
             List<VisualLink> dLinks = new List<VisualLink>();
+            List<vLogicalLink> dConnections = new List<vLogicalLink>();
 
             for (int i = 0; i < nodes.Count; i++)
             {
@@ -418,8 +418,20 @@ namespace manderijntje
                 dLinks.Add(newLink);
             }
 
+            for (int i = 0; i < logicalconnections.Count; i++)
+            {
+                vLogicalLink newLogical = new vLogicalLink(getNode(logicalconnections[i].u.index, dNodes), getNode(logicalconnections[i].v.index, dNodes));
+                for (int n = 0; n < logicalconnections[i].nodes.Count; n++)
+                {
+                    newLogical.nodes.Add(getNode(logicalconnections[i].nodes[n].index, dNodes));
+                }
+                newLogical.getLinks(dLinks);
+                dConnections.Add(newLogical);
+            }
+
             model.nodes = dNodes;
             model.links = dLinks;
+            model.connections = dConnections;
 
             return model;
         }
@@ -956,10 +968,41 @@ namespace manderijntje
         public sNode u, v;
         public int sec_u_v, sec_v_u;
 
+        public sNode addedNode;
+        public bool isLogical = false;
+
         public sLink(sNode U, sNode V)
         {
             u = U;
             v = V;
+        }
+    }
+
+    public class sLogical
+    {
+        public sNode u, v;
+        public List<sNode> nodes = new List<sNode>();
+        public List<sLink> links = new List<sLink>();
+
+        public sLogical (sNode U, sNode V, sNode x)
+        {
+            u = U;
+            v = V;
+            nodes.Add(x);
+        }
+
+        public bool isSubRoute(sNode U, sNode V)
+        {
+            List<sNode> booltest = nodes;
+            booltest.Add(u);
+            booltest.Add(v);
+            if (booltest.Contains(U) && booltest.Contains(V))
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
     }
 
