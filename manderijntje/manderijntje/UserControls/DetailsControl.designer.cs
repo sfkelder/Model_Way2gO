@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.headerDetails = new System.Windows.Forms.Panel();
+            this.saveRoute = new System.Windows.Forms.PictureBox();
             this.transferIcon = new System.Windows.Forms.PictureBox();
             this.clockIcon = new System.Windows.Forms.PictureBox();
             this.platformLBL = new System.Windows.Forms.Label();
@@ -39,6 +40,7 @@
             this.departureLBL = new System.Windows.Forms.Label();
             this.transfersPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.headerDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.saveRoute)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.transferIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clockIcon)).BeginInit();
             this.SuspendLayout();
@@ -46,6 +48,7 @@
             // headerDetails
             // 
             this.headerDetails.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
+            this.headerDetails.Controls.Add(this.saveRoute);
             this.headerDetails.Controls.Add(this.transferIcon);
             this.headerDetails.Controls.Add(this.clockIcon);
             this.headerDetails.Controls.Add(this.platformLBL);
@@ -59,6 +62,17 @@
             this.headerDetails.Name = "headerDetails";
             this.headerDetails.Size = new System.Drawing.Size(845, 140);
             this.headerDetails.TabIndex = 0;
+            // 
+            // saveRoute
+            // 
+            this.saveRoute.Image = global::manderijntje.Properties.Resources.saveIconWhite;
+            this.saveRoute.Location = new System.Drawing.Point(770, 79);
+            this.saveRoute.Name = "saveRoute";
+            this.saveRoute.Size = new System.Drawing.Size(38, 37);
+            this.saveRoute.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.saveRoute.TabIndex = 13;
+            this.saveRoute.TabStop = false;
+            this.saveRoute.Click += new System.EventHandler(this.saveRoute_Click);
             // 
             // transferIcon
             // 
@@ -177,6 +191,7 @@
             this.Size = new System.Drawing.Size(845, 1285);
             this.headerDetails.ResumeLayout(false);
             this.headerDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.saveRoute)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.transferIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clockIcon)).EndInit();
             this.ResumeLayout(false);
@@ -195,5 +210,6 @@
         public System.Windows.Forms.FlowLayoutPanel transfersPanel;
         private System.Windows.Forms.PictureBox transferIcon;
         private System.Windows.Forms.PictureBox clockIcon;
+        private System.Windows.Forms.PictureBox saveRoute;
     }
 }
