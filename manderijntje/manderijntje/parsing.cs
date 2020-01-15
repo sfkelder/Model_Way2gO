@@ -19,7 +19,7 @@ namespace manderijntje
 
         private const int width = 5000, height = 5000;
 
-        public parsing(DataModel model, bool colapse)
+        public parsing(DataModel model)
         {
             if (model.unique_nodes.Count != 0 && model.unique_links.Count != 0)
             {
