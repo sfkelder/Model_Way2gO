@@ -37,11 +37,13 @@ namespace manderijntje
             {
                 MakeDataForDisk(data);
             }
+
+
         }
 
         private void MakeDataForDisk(DataModel data)
         {
-            access = (new parsing(data)).getModel(true);
+            access = (new parsing(data)).getModel(false);
 
             if (Directory.Exists(filepath))
             {
@@ -91,58 +93,73 @@ namespace manderijntje
 
             if (stationnames)
             {
+                foreach (VisueelNode v in access.nodes)
+                {
+                        v.Color = Color.Gray;
+                }
+
+
+                foreach (VisualLink v in access.links)
+                {
+                    v.kleur = Color.Gray;
+                }
 
                 foreach (VisueelNode v in access.nodes)
                 {
-                    if(!v.dummynode)
-                    v.Color = Color.Gray;
-                }
-
-                foreach (Node st in s)
-                {
-
-                    foreach(VisueelNode v in access.nodes)
+                    foreach (Node n in s)
                     {
-                        if (v.name_id == st.stationnaam)
-                        {
+                        if(v.name_id == n.stationnaam)
                             v.Color = Color.Orange;
+
+                    }
+
+                }
+
+
+                foreach (vLogicalLink v in access.connections)
+                {
+                    string firstName, lastName;
+
+                    for (int n = 0; n < s.Count; n++)
+                    {
+                        firstName = s[n].stationnaam;
+
+                        for (int m = 0; m < s.Count; m++)
+                        {
+                            lastName = s[m].stationnaam;
+
+                            if (firstName == v.v.name_id && lastName == v.u.name_id)
+                            {
+                                for (int i = 0; i < v.nodes.Count; i++)
+                                {
+                                    v.nodes[i].Color = Color.Orange;
+                                }
+
+                                for (int i = 0; i < v.links.Count; i++)
+                                {
+                                    v.links[i].kleur = Color.Orange;
+                                }
+                            }
                         }
+                            
+                        
 
-                    }                
-
-                }
-
-                foreach (VisualLink k in access.links)
-                {
-                    if (k.v.dummynode)
-                        k.v.dummynodeDrawLine = false;
-
-                    if (k.u.dummynode)
-                        k.u.dummynodeDrawLine = false;
-                }
-
-
-                foreach (VisualLink m in access.links)
-                {
-                    // m.u.dummynodeDrawLine = true;
-                    //m.v.dummynodeDrawLine = true;
-                    // m.v.Color = Color.Orange;
-                    // m.u.Color = Color.Orange;
-                   
-
-
-                    if (m.v.Color == Color.Orange && m.u.Color == Color.Orange && m.v.dummynodeDrawLine && m.u.dummynodeDrawLine)
-                    {
-                        m.kleur = Color.Orange;
-
+                        
                     }
-                    else
-                    {
-                        m.kleur = Color.Gray;
-                    }
-         
 
                 }
+
+
+                  foreach (VisualLink m in access.links)
+                  {
+
+                      if (m.v.Color == Color.Orange && m.u.Color == Color.Orange && !m.v.dummynode && !m.u.dummynode)
+                      {
+                          m.kleur = Color.Orange;
+
+                      }
+
+                  }
 
 
                 // Point smallestpoint = b.getpoints(points).smallest;
@@ -176,21 +193,20 @@ namespace manderijntje
     [Serializable]
     public class lists_change
     {
-        
-        int toshiftX, toshifty;
+
+        int toshiftX = 50, toshifty = 50;
 
         public void changez(int factor, int width, int height)
         {
-
             toshiftX += ((width / 2) * factor) - ((width / 2) * (factor + 1));
             toshifty += ((height / 2) * factor) - ((height / 2) * (factor + 1));
         }
         public void change(int factor, int width, int height)
         {
-
             toshiftX += ((width/2) * (factor - 1)) - ((width/2) * (factor - 2));
             toshifty += ((height/2) * (factor - 1)) - ((height/2) * (factor-2));
         }
+       
 
         //set bool value to true or false dending the given variables
         public void valuenode(VisueelModel access, int factor, int screenwidth, changes b, Point start, Point end, bool stations, Point startpoint, Point endpoint, MapView map)
@@ -198,7 +214,8 @@ namespace manderijntje
 
             Point shift = b.movemap(start, end);
             toshiftX += shift.X;
-            toshifty += shift.Y;
+            toshifty+= shift.Y;
+
 
 
             foreach (VisueelNode v in access.nodes)
@@ -316,15 +333,8 @@ namespace manderijntje
             return stations;
         }
 
-        public void LargeandSmalPoints(VisueelModel v)
-        {
-            Point minX, minY, maxX, MaxY;
-           
- 
-            
-           
-                
-        }
+     
+        
         
     }
 

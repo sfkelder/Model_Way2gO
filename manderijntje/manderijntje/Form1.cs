@@ -11,6 +11,7 @@ namespace manderijntje
         DataControl dataControl;
         Connecion_to_files visueelControl;
         MapView mapView;
+        Indexpanel indexpanel;
         List<Route> tripOptions = new List<Route>();
         List<Node> nodeList = new List<Node>();
         List<departureTimeModel> timeList = new List<departureTimeModel>();
@@ -26,8 +27,11 @@ namespace manderijntje
             dataControl = new DataControl();
             visueelControl = new Connecion_to_files(dataControl.GetDataModel());
             mapView = new MapView(visueelControl);
+            indexpanel = new Indexpanel();
             mapView.mapView = mapView;
+            this.Controls.Add(indexpanel);
             this.Controls.Add(mapView);
+            
             setupView();
         }
 
@@ -66,7 +70,7 @@ namespace manderijntje
         // Set the locations and size of elements corretly
         private void setElement()
         {
-            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width - (2*hideBar.Width), this.Height - (2*logoHeader.Height));
+            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width - (2*hideBar.Width), this.Height - (logoHeader.Height));
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
             tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height + 40);
@@ -443,6 +447,10 @@ namespace manderijntje
             mapView.Size = new Size(width, height);
             mapView.Location = new Point(x, y);
             mapView.setMap(width, height);
+            indexpanel.Size = new Size(200, 100);
+            indexpanel.Location = new Point(x, y + height - 164);
+            indexpanel.BorderStyle = BorderStyle.Fixed3D;
+
         }
 
         //
