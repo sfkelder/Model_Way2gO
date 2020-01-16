@@ -18,12 +18,12 @@ namespace manderijntje
         {
            
             this.Paint += this.painting;
-            this.BackColor = Color.Orange;
+            this.BackColor = Color.FromArgb(255, 122, 0);
             indexbox = new Label();
             indexbox.Location = new Point(100, 15);
             indexbox.Text = "Index";
             indexbox.Font = new Font("Lucida Console", 13.0f);
-            indexbox.ForeColor = Color.Orange;
+            indexbox.ForeColor = Color.FromArgb(255, 122, 0);
             indexbox.BackColor = Color.White;
             this.Controls.Add(indexbox);
             InitializeComponent();
@@ -40,12 +40,13 @@ namespace manderijntje
         {
             Font font = new Font("Lucida Console", 8.0f);
             Pen blackPen = new Pen(Color.Gray, 3);
-            Pen OrangePen = new Pen(Color.Orange, 3);
+            Pen OrangePen = new Pen(Color.FromArgb(255, 122, 0), 3);
+            SolidBrush brush = new SolidBrush(Color.FromArgb(255, 122, 0));
 
             pea.Graphics.FillRectangle(Brushes.White, 2, 2, 191, 91);
 
             pea.Graphics.FillRectangle(Brushes.Gray, 35, 30, 10, 10);
-            pea.Graphics.FillRectangle(Brushes.Orange, 35, 45, 10, 10);
+            pea.Graphics.FillRectangle(brush, 35, 45, 10, 10);
             pea.Graphics.DrawLine(blackPen, 20, 65, 45, 65);
             pea.Graphics.DrawLine(OrangePen, 20, 78, 45, 78);
 
