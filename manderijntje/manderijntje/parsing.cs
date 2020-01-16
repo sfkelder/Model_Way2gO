@@ -18,7 +18,7 @@ namespace manderijntje
         private List<sLogical> logicalconnections = new List<sLogical>();
 
         private const int width = 5000, height = 5000;
-        private bool daniDemo = true;
+        private bool daniDemo = false;
 
         public parsing(DataModel model)
         {
