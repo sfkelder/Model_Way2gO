@@ -16,7 +16,7 @@ namespace manderijntje
         public List<VisualLink> links = new List<VisualLink>();
         public List<vLogicalLink> logicallinks = new List<vLogicalLink>();
 
-        int totverschuivingX, totverschuivingY, zoom = 1, height, width;
+        int totverschuivingX = 50, totverschuivingY = 50, zoom = 1, height, width;
         Point start, end, newEnd;
         private bool startingUp = true, mouseMoved = false;
         Connecion_to_files _connecionToFiles;
@@ -26,9 +26,12 @@ namespace manderijntje
         public MapView(Connecion_to_files c)
         {
             _connecionToFiles = c;
+
             InitializeComponent();
-           
-         
+
+
+
+
             this.Paint += this.painting;
             
             this.MouseDown += (object o, MouseEventArgs mea) => { if (mea.Button == MouseButtons.Left) start = mea.Location; };
@@ -110,7 +113,13 @@ namespace manderijntje
                     _connecionToFiles.visualcontrol(width, zoom, start, end, null, false, mapView);
                     totverschuivingX += start.X - end.X;
                     totverschuivingY += start.Y - end.Y;
+
+
+
                     mouseMoved = false;
+
+
+
                     Invalidate();
                 }
                
@@ -120,18 +129,17 @@ namespace manderijntje
 
         }
 
-
-
+       
 
         public void painting(object o, PaintEventArgs pea)
         {
             Font font = new Font("Times New Roman", 12.0f);
-
+           
             for (int n = 0; n < links.Count; n++)
             {
                 if (links[n].paint && links[n].kleur == Color.Orange)
                 {
-                    Pen blackPen = new Pen(links[n].kleur, 3);
+                    Pen blackPen = new Pen(Color.FromArgb(255, 122, 0), 3);
                     pea.Graphics.DrawLine(blackPen, new Point(links[n].u.point.X - totverschuivingX + 2, links[n].u.point.Y - totverschuivingY + 2), new Point(links[n].v.point.X - totverschuivingX + 2, links[n].v.point.Y - totverschuivingY + 2));
                 }
                 else
@@ -142,14 +150,14 @@ namespace manderijntje
                 }
             }
 
-            for (int i = 0; i < logicallinks.Count; i++)
+           /* for (int i = 0; i < logicallinks.Count; i++)
             {
                 for (int n = 0; n < logicallinks[i].links.Count; n++)
                 {
                     Pen blackPen = new Pen(Color.Orange, 1);
                     pea.Graphics.DrawLine(blackPen, new Point(logicallinks[i].links[n].u.point.X - totverschuivingX + 3, logicallinks[i].links[n].u.point.Y - totverschuivingY + 3), new Point(logicallinks[i].links[n].v.point.X - totverschuivingX + 3, logicallinks[i].links[n].v.point.Y - totverschuivingY + 3));
                 }
-            }
+            }*/
             
             for (int m = 0; m < nodes.Count; m++)
             {
@@ -158,13 +166,14 @@ namespace manderijntje
                 if (nodes[m].paint == true && nodes[m].dummynode == false)
                 {
                     pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
-                    //pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                    pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
                 }
-                if (nodes[m].paint == true && nodes[m].dummynode == true)
+               
+                /*if (nodes[m].paint == true && nodes[m].dummynode == true)
                 {
                     pea.Graphics.FillRectangle(Brushes.Red, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
-                    //pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
-                }
+                    pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                }*/
             }
         }
     }
