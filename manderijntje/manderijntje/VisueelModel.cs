@@ -194,7 +194,7 @@ namespace manderijntje
     public class lists_change
     {
 
-        int toshiftX = 50, toshifty = 50;
+        int toshiftX = 50, toshifty = 50; 
 
         public void changez(int factor, int width, int height)
         {
