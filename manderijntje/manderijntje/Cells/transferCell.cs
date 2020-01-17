@@ -14,7 +14,6 @@ namespace manderijntje
     {
         private string _departureTime;
         private string _stationName;
-        private string _platform;
         private string _toStation;
         private string _typeTransport;
         private bool _last;
@@ -31,11 +30,7 @@ namespace manderijntje
             get { return _stationName; }
             set { _stationName = value; stationLBL.Text = value; }
         }
-        public string platform
-        {
-            get { return _platform; }
-            set { _platform = value; platformLBL.Text = "Platform " + value; }
-        }
+
         public string toStation
         {
             get { return _toStation; }
@@ -65,7 +60,7 @@ namespace manderijntje
                 // Checks wich image it need to have
                 if (_last)
                 {
-                    lineImage.Image = Properties.Resources.eindSpoor;
+                    lineImage.Image = Properties.Resources.endTrack;
                     typetransportIcon.Visible = false;
                 }    
             }
@@ -77,7 +72,7 @@ namespace manderijntje
                 // Checks wich image it need to have
                 if (_first)
                 {
-                    lineImage.Image = Properties.Resources.beginSpoor;
+                    lineImage.Image = Properties.Resources.startTrack;
                 }
             }
         }
@@ -89,7 +84,7 @@ namespace manderijntje
                 // Checks wich image it need to have
                 if (_mid)
                 {
-                    lineImage.Image = Properties.Resources.middenSpoor;
+                    lineImage.Image = Properties.Resources.midTrack;
                 }
             }
         }
