@@ -68,6 +68,7 @@ namespace manderijntje
                 Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
                 ListRoute.Add(fastestRoute);
                 starttime = fastestRoute.startTime.AddMinutes(1);
+                TravelInformation test = TimeModel.GetTravelCost(time, startName, endName);
                 foreach (Node node in dataModel.nodesrouting)
                 {
                     node.MinCostToStart = int.MaxValue;
@@ -78,6 +79,7 @@ namespace manderijntje
             return ListRoute;
         }
     }
+
     //Route is an object to show all the information
     class Route
     {

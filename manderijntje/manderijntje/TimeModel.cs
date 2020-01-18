@@ -193,12 +193,14 @@ namespace manderijntje
         #region GetTravelCost
 
         //Gets the travelcost + other needed variables (which are in the TravelInformation object) between two stations
-        static TravelInformation GetTravelCost(DateTime time, string departureStation, string arrivalStation) 
+        public static TravelInformation GetTravelCost(DateTime time, string departureStation, string arrivalStation) 
         {
+            Console.WriteLine("test gettravelcost");
             if ((GetUICCode(departureStation) != errorMessage) && (GetUICCode(departureStation) != errorMessage)) return GetTravelCostNS(time, departureStation, arrivalStation);
             if ((GetStationIDBelgium(departureStation) != errorMessage) && (GetStationIDBelgium(arrivalStation) != errorMessage)) return GetTravelCostBelgium(time, departureStation, arrivalStation);
             if ((GetStationIDFrance(departureStation) != errorMessage) && (GetStationIDFrance(arrivalStation) != errorMessage)) return GetTravelCostFrance(time, departureStation, arrivalStation);
-            if ((GetStationIDGermany(departureStation) != errorMessage) && (GetStationIDGermany(arrivalStation) != errorMessage)) return GetTravelCostGermany(time, departureStation, arrivalStation);           
+            if ((GetStationIDGermany(departureStation) != errorMessage) && (GetStationIDGermany(arrivalStation) != errorMessage)) return GetTravelCostGermany(time, departureStation, arrivalStation);
+            Console.WriteLine("test gettravelcost found");
             return null;
         }
 
@@ -285,6 +287,7 @@ namespace manderijntje
         }
         static TravelInformation GetTravelCostGermany(DateTime time, string departureStation, string arrivalStation) 
         {
+            Console.WriteLine("test gettravelcostgermany");
             //Sets up the link
             const string linkBase = @"https://api.deutschebahn.com/freeplan/v1/departureBoard/";
             string timeOfChoice = time.ToString("yyyy-MM-dd");
@@ -317,6 +320,7 @@ namespace manderijntje
                     }
                 }
             }
+            Console.WriteLine("test null");
             return null;
         } 
         static TravelInformation GetTravelCostFrance(DateTime time, string departureStation, string arrivalStation) 
