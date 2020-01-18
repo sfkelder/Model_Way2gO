@@ -34,6 +34,23 @@ namespace manderijntje
             this.Controls.Add(indexpanel);
             this.Controls.Add(mapView);
             setupView();
+
+            if (demoDani)
+            {
+                List<Node> demoNodes = new List<Node>();
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Ronald Reagon Washington", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Crystal City", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Pentagon City", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Pentagon", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "L Enfant Plaza", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Waterfront", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Navy Yard Ballpark", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Anacostia", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Congress Heights", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Southern Avenue", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Naylor Road", "", "", "", false, 0));
+                visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), demoNodes, true, mapView);
+            }
         }
 
         // Calls every method that needs to be called to setup the view Correctly
@@ -324,7 +341,10 @@ namespace manderijntje
             detailsUserControl.transfers = tripOptionscell.transferCount;
             detailsUserControl.shortestPath = tripOptionscell.shortestPath;
 
-            visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
+            if(!demoDani)
+            {
+                visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
+            }
         }
 
         // Fills the flowcontrol with the usercontrol called "transferCell" and gives the needed data to transferCell.
