@@ -269,9 +269,9 @@ namespace manderijntje
             }
             else
             {
-                //Demo case
                 for (int i = 0; i < listItems.Count(); i++)
                 {
+                    listItems[i] = new tripOptionsCell(this);
                     listItems[i].departureTime = tripOptions[i].startTime.ToShortTimeString();
                     listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
                     listItems[i].typeCarrier = tripOptions[i].shortestPath[0].vehicle;
