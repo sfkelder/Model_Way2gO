@@ -12,6 +12,7 @@ namespace manderijntje
         Connecion_to_files visueelControl;
         MapView mapView;
         Indexpanel indexpanel;
+        ZoomInandOut zoomInandOut;
         List<Route> tripOptions = new List<Route>();
         List<Node> nodeList = new List<Node>();
         List<departureTimeModel> timeList = new List<departureTimeModel>();
@@ -30,9 +31,14 @@ namespace manderijntje
             visueelControl = new Connecion_to_files(dataControl.GetDataModel());
             mapView = new MapView(visueelControl);
             indexpanel = new Indexpanel();
+            zoomInandOut = new ZoomInandOut(mapView);
             mapView.mapView = mapView;
+            mapView.zoomInOut = zoomInandOut;
             this.Controls.Add(indexpanel);
+            this.Controls.Add(zoomInandOut);
             this.Controls.Add(mapView);
+            
+            
             setupView();
 
             if (demoDani)
@@ -341,10 +347,8 @@ namespace manderijntje
             detailsUserControl.transfers = tripOptionscell.transferCount;
             detailsUserControl.shortestPath = tripOptionscell.shortestPath;
 
-            if(!demoDani)
-            {
-                visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
-            }
+            visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
+            mapView.painting();
         }
 
         // Fills the flowcontrol with the usercontrol called "transferCell" and gives the needed data to transferCell.
@@ -614,9 +618,12 @@ namespace manderijntje
             mapView.Size = new Size(width, height);
             mapView.Location = new Point(x, y);
             mapView.setMap(width, height);
-            indexpanel.Size = new Size(196, 125);
-            indexpanel.Location = new Point(x, y + height - 190);
-            indexpanel.BorderStyle = BorderStyle.None;
+            indexpanel.Size = new Size(200, 100);
+            indexpanel.Location = new Point(x, y + height - 164);
+            indexpanel.BorderStyle = BorderStyle.Fixed3D;
+            zoomInandOut.Size = new Size(35, 150);
+            zoomInandOut.Location = new Point(x, y + 5);
+
         }
 
         //

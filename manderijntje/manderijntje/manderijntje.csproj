@@ -113,6 +113,12 @@
       <DependentUpon>DetailsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="VisueelModel.cs" />
+    <Compile Include="ZoomInandOut.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ZoomInandOut.Designer.cs">
+      <DependentUpon>ZoomInandOut.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Cells\autoSuggestionCell.resx">
       <DependentUpon>autoSuggestionCell.cs</DependentUpon>
     </EmbeddedResource>
