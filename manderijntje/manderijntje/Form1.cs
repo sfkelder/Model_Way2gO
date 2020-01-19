@@ -12,6 +12,7 @@ namespace manderijntje
         Connecion_to_files visueelControl;
         MapView mapView;
         Indexpanel indexpanel;
+        ZoomInandOut zoomInandOut;
         List<Route> tripOptions = new List<Route>();
         List<Node> nodeList = new List<Node>();
         List<departureTimeModel> timeList = new List<departureTimeModel>();
@@ -28,9 +29,13 @@ namespace manderijntje
             visueelControl = new Connecion_to_files(dataControl.GetDataModel());
             mapView = new MapView(visueelControl);
             indexpanel = new Indexpanel();
+            zoomInandOut = new ZoomInandOut(mapView);
             mapView.mapView = mapView;
+            mapView.zoomInOut = zoomInandOut;
             this.Controls.Add(indexpanel);
+            this.Controls.Add(zoomInandOut);
             this.Controls.Add(mapView);
+            
             
             setupView();
         }
@@ -273,6 +278,7 @@ namespace manderijntje
             detailsUserControl.shortestPath = tripOptionscell.shortestPath;
 
             visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
+            mapView.painting();
         }
 
         // Fills the flowcontrol with the usercontrol called "tussenstopCell" and gives the needed data to tussenstopCell.
@@ -450,6 +456,8 @@ namespace manderijntje
             indexpanel.Size = new Size(200, 100);
             indexpanel.Location = new Point(x, y + height - 164);
             indexpanel.BorderStyle = BorderStyle.Fixed3D;
+            zoomInandOut.Size = new Size(35, 150);
+            zoomInandOut.Location = new Point(x, y + 5);
 
         }
 

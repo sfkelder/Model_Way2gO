@@ -1,6 +1,6 @@
 ﻿namespace manderijntje
 {
-    partial class Indexpanel
+    partial class ZoomInandOut
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,16 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // UserControl1
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "UserControl1";
-            this.Size = new System.Drawing.Size(663, 387);
-            this.ResumeLayout(false);
-
         }
 
         #endregion
