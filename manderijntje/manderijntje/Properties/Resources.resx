@@ -124,23 +124,20 @@
   <data name="BackwardArrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BackwardArrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="beginSpoor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\beginSpoor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="busIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\busIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="changeText" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\changeText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="eindSpoor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\eindSpoor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="endTrack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\endTrack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FowardArrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FowardArrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="middenSpoor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\middenSpoor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="midTrack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\midTrack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OrangeClock" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OrangeClock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -156,6 +153,9 @@
   </data>
   <data name="saveIconWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\saveIconWhite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="startTrack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\startTrack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Way2GoLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Way2GoLogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

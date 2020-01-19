@@ -480,6 +480,21 @@ namespace manderijntje
                 dConnections.Add(newLogical);
             }
 
+            if(daniDemo)
+            {
+                dNodes[79].name_id = "Ronald Reagon Washington";
+                dNodes[78].name_id = "Crystal City";
+                dNodes[77].name_id = "Pentagon City";
+                dNodes[76].name_id = "Pentagon";
+                dNodes[38].name_id = "L Enfant Plaza";
+                dNodes[39].name_id = "Waterfront";
+                dNodes[40].name_id = "Navy Yard Ballpark";
+                dNodes[41].name_id = "Anacostia";
+                dNodes[42].name_id = "Congress Heights";
+                dNodes[43].name_id = "Southern Avenue";
+                dNodes[44].name_id = "Naylor Road";
+            }
+
             model.nodes = dNodes;
             model.links = dLinks;
             model.connections = dConnections;

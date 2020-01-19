@@ -212,5 +212,14 @@
   <ItemGroup>
     <None Include="Resources\saveIconWhite.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\endTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\midTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\startTrack.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

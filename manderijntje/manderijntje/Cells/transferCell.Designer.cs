@@ -30,7 +30,6 @@
         {
             this.departuretimeLBL = new System.Windows.Forms.Label();
             this.stationLBL = new System.Windows.Forms.Label();
-            this.platformLBL = new System.Windows.Forms.Label();
             this.directionLBL = new System.Windows.Forms.Label();
             this.lineImage = new System.Windows.Forms.PictureBox();
             this.typetransportIcon = new System.Windows.Forms.PictureBox();
@@ -60,18 +59,6 @@
             this.stationLBL.TabIndex = 1;
             this.stationLBL.Text = "Rotterdam Centraal";
             // 
-            // platformLBL
-            // 
-            this.platformLBL.AutoSize = true;
-            this.platformLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.platformLBL.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
-            this.platformLBL.Location = new System.Drawing.Point(637, 39);
-            this.platformLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.platformLBL.Name = "platformLBL";
-            this.platformLBL.Size = new System.Drawing.Size(137, 36);
-            this.platformLBL.TabIndex = 2;
-            this.platformLBL.Text = "Spoor 1a";
-            // 
             // directionLBL
             // 
             this.directionLBL.AutoSize = true;
@@ -94,10 +81,11 @@
             // 
             // typetransportIcon
             // 
-            this.typetransportIcon.Location = new System.Drawing.Point(740, 99);
+            this.typetransportIcon.Image = global::manderijntje.Properties.Resources.OrangeTrain;
+            this.typetransportIcon.Location = new System.Drawing.Point(752, 44);
             this.typetransportIcon.Margin = new System.Windows.Forms.Padding(4);
             this.typetransportIcon.Name = "typetransportIcon";
-            this.typetransportIcon.Size = new System.Drawing.Size(32, 41);
+            this.typetransportIcon.Size = new System.Drawing.Size(22, 31);
             this.typetransportIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.typetransportIcon.TabIndex = 5;
             this.typetransportIcon.TabStop = false;
@@ -109,7 +97,6 @@
             this.Controls.Add(this.typetransportIcon);
             this.Controls.Add(this.lineImage);
             this.Controls.Add(this.directionLBL);
-            this.Controls.Add(this.platformLBL);
             this.Controls.Add(this.stationLBL);
             this.Controls.Add(this.departuretimeLBL);
             this.Margin = new System.Windows.Forms.Padding(0);
@@ -126,7 +113,6 @@
 
         private System.Windows.Forms.Label departuretimeLBL;
         private System.Windows.Forms.Label stationLBL;
-        private System.Windows.Forms.Label platformLBL;
         private System.Windows.Forms.Label directionLBL;
         private System.Windows.Forms.PictureBox lineImage;
         private System.Windows.Forms.PictureBox typetransportIcon;

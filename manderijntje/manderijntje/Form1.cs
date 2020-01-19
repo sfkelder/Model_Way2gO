@@ -22,6 +22,8 @@ namespace manderijntje
         string departureLocation, destinationLocation, departureTime, depLocation, desLocation;
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
 
+        private bool demoDani = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -38,6 +40,23 @@ namespace manderijntje
             
             
             setupView();
+
+            if (demoDani)
+            {
+                List<Node> demoNodes = new List<Node>();
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Ronald Reagon Washington", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Crystal City", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Pentagon City", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Pentagon", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "L Enfant Plaza", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Waterfront", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Navy Yard Ballpark", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Anacostia", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Congress Heights", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Southern Avenue", "", "", "", false, 0));
+                demoNodes.Add(new Node("", 0.0, 0.0, "", "Naylor Road", "", "", "", false, 0));
+                visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), demoNodes, true, mapView);
+            }
         }
 
         // Calls every method that needs to be called to setup the view Correctly
@@ -78,9 +97,11 @@ namespace manderijntje
             sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width - (2*hideBar.Width), this.Height - (logoHeader.Height));
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
-            tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height + 40);
-            detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height + 20);
-            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 75;
+            tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height - 20);
+            detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height - 35);
+            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 70;
+            detailsUserControl.transfersPanel.Width = detailsUserControl.Width;
+            detailsUserControl.transfersPanel.Location = new Point(detailsUserControl.transfersPanel.Location.X, detailsUserControl.transfersPanel.Location.Y - 1);
             if (Height > 450)
             {
                 hideArrowIcon.Location = new Point(hideArrowIcon.Location.X, (hideBar.Height / 2) - (logoHeader.Height));
@@ -196,13 +217,22 @@ namespace manderijntje
             departureLocation = departureInput.Text;
             destinationLocation = destinationInput.Text;
             departureTime = timeInput.Text;
-            if (checkLocation(departureLocation, destinationLocation, true, nodeList) &&
-                    checkLocation(departureLocation, destinationLocation, false, nodeList))
+
+            if (demoDani)
+            {
+                // Demo case
                 setupTripOptions();
+            }
             else
-                checkFout(departureLocation, destinationLocation,
-                    checkLocation(departureLocation, destinationLocation, true, nodeList),
-                    checkLocation(departureLocation, destinationLocation, false, nodeList));
+            {
+                if (checkLocation(departureLocation, destinationLocation, true, nodeList) &&
+                    checkLocation(departureLocation, destinationLocation, false, nodeList))
+                    setupTripOptions();
+                else
+                    checkFout(departureLocation, destinationLocation,
+                        checkLocation(departureLocation, destinationLocation, true, nodeList),
+                        checkLocation(departureLocation, destinationLocation, false, nodeList));
+            }
         }
 
         // Shows flowControl with all the possible tripOptions
@@ -214,50 +244,91 @@ namespace manderijntje
             tripOptions.Clear();
 
             chosenTime = Convert.ToDateTime(departureTime);
-            foreach (Route route in Routing.GetRoute(departureLocation, destinationLocation, chosenTime,
-                dataControl.GetDataModel()))
-            {
-                tripOptions.Add(route);
-            }
 
-            fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
+            // Demo case
+            if (demoDani)
+            {
+                fillTripOptions(new tripOptionsCell[20]);
+            }
+            else
+            {
+                foreach (Route route in Routing.GetRoute(departureLocation, destinationLocation, chosenTime,
+                dataControl.GetDataModel()))
+                {
+                    tripOptions.Add(route);
+                }
+                fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
+            }
         }
 
         // Fills the flowcontrol with the usercontrol called "tripOptionsCell" and gives the needed data to tripOptionsCell.
         private void fillTripOptions(tripOptionsCell[] listItems)
         {
-            for (int i = 0; i < tripOptions.Count; i++)
+            // Demo case
+            if (demoDani)
             {
+                // Demo case
+                DateTime departureTime = DateTime.ParseExact("09:33", "hh:mm", System.Globalization.CultureInfo.CurrentCulture);
+                DateTime destinationTime = DateTime.ParseExact("10:12", "hh:mm", System.Globalization.CultureInfo.CurrentCulture);
+                DateTime totalTime = DateTime.ParseExact("00:39", "hh:mm", System.Globalization.CultureInfo.CurrentCulture);
 
-                listItems[i] = new tripOptionsCell(this);
-                listItems[i].departureTime = tripOptions[i].startTime.ToShortTimeString();
-                listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
-                listItems[i].typeCarrier = tripOptions[i].shortestPath[0].vehicle;
-                listItems[i].totalTime = (tripOptions[i].endTime.Subtract(tripOptions[i].startTime)).ToString(@"hh\:mm");
-                listItems[i].transferCount = tripOptions[i].transfers.ToString();
-                listItems[i].shortestPath = tripOptions[i].shortestPath;
+                for (int i = 0; i < 20; i++)
+                {
+                    // Demo Case
+                    departureTime = departureTime.AddMinutes(12);
+                    destinationTime = destinationTime.AddMinutes(12);
+                    listItems[i] = new tripOptionsCell(this);
+                    listItems[i].departureTime = departureTime.ToShortTimeString();
+                    listItems[i].destinationTime = destinationTime.ToShortTimeString();
+                    listItems[i].typeCarrier = "WMATA";
+                    listItems[i].totalTime = totalTime.ToShortTimeString();
+                    listItems[i].transferCount = "1";
 
-                // Needs to have platform and nameTransport from node
-                //listItems[i].platform = tripOptions[i].shortestPath[0].vehicle;
-                //listItems[i].nameTransport = tripOptions[i].shortestPath[0].;
-
-                // Optional to have carrier and busLine from node
-
-                //listItems[i].carrier = tripOptions[i].shortestPath[0].vervoersmiddels;
-                //listItems[i].busLine = tripOptions[i].busLijn;
-
-                if (tripOptionsFlowControl.Controls.Count < 0)
-                    clearFlowControl(tripOptionsFlowControl);
-                else
-                    tripOptionsFlowControl.Controls.Add(listItems[i]);
+                    if (tripOptionsFlowControl.Controls.Count < 0)
+                        clearFlowControl(tripOptionsFlowControl);
+                    else
+                        tripOptionsFlowControl.Controls.Add(listItems[i]);
+                }
             }
+            else
+            {
+                for (int i = 0; i < listItems.Count(); i++)
+                {
+                    listItems[i] = new tripOptionsCell(this);
+                    listItems[i].departureTime = tripOptions[i].startTime.ToShortTimeString();
+                    listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
+                    listItems[i].typeCarrier = tripOptions[i].shortestPath[0].vehicle;
+                    listItems[i].totalTime = (tripOptions[i].endTime.Subtract(tripOptions[i].startTime)).ToString(@"hh\:mm");
+                    listItems[i].transferCount = tripOptions[i].transfers.ToString();
+                    listItems[i].shortestPath = tripOptions[i].shortestPath;
+
+                    // Needs to have platform and nameTransport from node
+                    //listItems[i].nameTransport = tripOptions[i].shortestPath[0].;
+
+                    // Optional to have carrier and busLine from node
+                    //listItems[i].carrier = tripOptions[i].shortestPath[0].vervoersmiddels;
+
+                    if (tripOptionsFlowControl.Controls.Count < 0)
+                        clearFlowControl(tripOptionsFlowControl);
+                    else
+                        tripOptionsFlowControl.Controls.Add(listItems[i]);
+                }
+            } 
         }
-         
+
         // Will call the method for further setup of the TripDetails
         public void setupTripDetails()
         {
             showTripDetails();
-            fillTransfersStops(new transferCell[detailsUserControl.shortestPath.Count()]);
+            //Demo case
+            if (demoDani)
+            {
+                fillTransfersStops(new transferCell[11]);
+            }
+            else
+            {
+                fillTransfersStops(new transferCell[detailsUserControl.shortestPath.Count()]);
+            }
         }
 
         // Gives the right information from the tripOptionscell to the detailsUserControl
@@ -274,39 +345,133 @@ namespace manderijntje
             detailsUserControl.destinationTime = tripOptionscell.destinationTime;
             detailsUserControl.totalTime = tripOptionscell.totalTime;
             detailsUserControl.transfers = tripOptionscell.transferCount;
-            detailsUserControl.platform = tripOptionscell.platform;
             detailsUserControl.shortestPath = tripOptionscell.shortestPath;
 
             visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
             mapView.painting();
         }
 
-        // Fills the flowcontrol with the usercontrol called "tussenstopCell" and gives the needed data to tussenstopCell.
+        // Fills the flowcontrol with the usercontrol called "transferCell" and gives the needed data to transferCell.
         private void fillTransfersStops(transferCell[] listItems)
         {
-            for (int i = 0; i < detailsUserControl.shortestPath.Count; i++)
+            if (demoDani)
             {
-                listItems[i] = new transferCell();
-                listItems[i].stationName = detailsUserControl.shortestPath[i].stationnaam;
-                listItems[i].toStation = detailsUserControl.shortestPath[i].routnaam;
-                listItems[i].typeTransport = detailsUserControl.shortestPath[i].vehicle;
+                clearFlowControl(detailsUserControl);
 
-                // Needs to have platform and departureTime from node
+                listItems[0] = new transferCell();
+                listItems[0].stationName = "Ronald Reagan Washington";
+                listItems[0].toStation = "Greenbelt";
+                listItems[0].typeTransport = "train";
+                listItems[0].departureTime = "09:33";
+                listItems[0].first = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[0]);
 
-                //listItems[i].platform = detailsUserControl.shortestPath[i].;
-                //listItems[i].departureTime = detailsUserControl.shortestPath[i].;
+                listItems[1] = new transferCell();
+                listItems[1].stationName = "Crystal City Station";
+                listItems[1].toStation = "Greenbelt";
+                listItems[1].typeTransport = "train";
+                listItems[1].departureTime = "09:36";
+                listItems[1].mid = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[1]);
 
-                if (i == 0)
-                    listItems[i].first = true;
-                else if (i == detailsUserControl.shortestPath.Count - 1)
-                    listItems[i].last = true;
-                else
-                    listItems[i].mid = true;
+                listItems[2] = new transferCell();
+                listItems[2].stationName = "Pentagon City Station";
+                listItems[2].toStation = "Greenbelt";
+                listItems[2].typeTransport = "train";
+                listItems[2].departureTime = "09:38";
+                listItems[2].mid = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[2]);
 
-                if (detailsUserControl.transfersPanel.Controls.Count < 0)
-                    clearFlowControl(detailsUserControl);
-                else
-                    detailsUserControl.transfersPanel.Controls.Add(listItems[i]);
+                listItems[3] = new transferCell();
+                listItems[3].stationName = "Pentagon";
+                listItems[3].toStation = "Greenbelt";
+                listItems[3].typeTransport = "train";
+                listItems[3].departureTime = "09:39";
+                listItems[3].mid = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[3]);
+
+                listItems[4] = new transferCell();
+                listItems[4].stationName = "L'Enfant Plaza Metro Station";
+                listItems[4].toStation = "Branch Avenue Station";
+                listItems[4].typeTransport = "train";
+                listItems[4].departureTime = "10:33";
+                listItems[4].mid = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[4]);
+
+                listItems[5] = new transferCell();
+                listItems[5].stationName = "Waterfront Station";
+                listItems[5].toStation = "Branch Avenue Station";
+                listItems[5].typeTransport = "train";
+                listItems[5].departureTime = "10:35";
+                listItems[5].mid = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[5]);
+
+                listItems[6] = new transferCell();
+                listItems[6].stationName = "Navy Yard-Ballpark Station";
+                listItems[6].toStation = "Branch Avenue Station";
+                listItems[6].typeTransport = "train";
+                listItems[6].departureTime = "10:37";
+                listItems[6].mid = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[6]);
+
+                listItems[7] = new transferCell();
+                listItems[7].stationName = "Anacostia Station";
+                listItems[7].toStation = "Branch Avenue Station";
+                listItems[7].typeTransport = "train";
+                listItems[7].departureTime = "10:40";
+                listItems[7].mid = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[7]);
+
+                listItems[8] = new transferCell();
+                listItems[8].stationName = "Congress Heights Station";
+                listItems[8].toStation = "Branch Avenue Station";
+                listItems[8].typeTransport = "train";
+                listItems[8].departureTime = "10:43";
+                listItems[8].mid = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[8]);
+
+                listItems[9] = new transferCell();
+                listItems[9].stationName = "Southern Avenue";
+                listItems[9].toStation = "Branch Avenue Station";
+                listItems[9].typeTransport = "train";
+                listItems[9].departureTime = "10:45";
+                listItems[9].mid = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[9]);
+
+                listItems[10] = new transferCell();
+                listItems[10].stationName = "Naylor Road Station";
+                listItems[10].toStation = "Branch Avenue Station";
+                listItems[10].typeTransport = "train";
+                listItems[10].departureTime = "10:48";
+                listItems[10].last = true;
+                detailsUserControl.transfersPanel.Controls.Add(listItems[10]);
+            }
+            else
+            {
+                for (int i = 0; i < detailsUserControl.shortestPath.Count; i++)
+                {
+                    listItems[i] = new transferCell();
+                    listItems[i].stationName = detailsUserControl.shortestPath[i].stationnaam;
+                    listItems[i].toStation = detailsUserControl.shortestPath[i].routnaam;
+                    listItems[i].typeTransport = detailsUserControl.shortestPath[i].vehicle;
+
+                    // Needs to have platform and departureTime from node
+
+                    //listItems[i].platform = detailsUserControl.shortestPath[i].;
+                    //
+
+                    if (i == 0)
+                        listItems[i].first = true;
+                    else if (i == detailsUserControl.shortestPath.Count - 1)
+                        listItems[i].last = true;
+                    else
+                        listItems[i].mid = true;
+
+                    if (detailsUserControl.transfersPanel.Controls.Count < 0)
+                        clearFlowControl(detailsUserControl);
+                    else
+                        detailsUserControl.transfersPanel.Controls.Add(listItems[i]);
+                }
             }
         }
 
