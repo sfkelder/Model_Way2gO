@@ -26,7 +26,7 @@ namespace manderijntje
             Controls.Add(picbox);
             painting();
 
-            InitializeComponent();  
+            InitializeComponent();   
         }
 
         //painting event index

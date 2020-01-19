@@ -332,7 +332,7 @@ namespace manderijntje
                     var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     c.access = (VisueelModel)formater.Deserialize(str);
                 }
-            }
+            } 
             catch
             {
                 MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);

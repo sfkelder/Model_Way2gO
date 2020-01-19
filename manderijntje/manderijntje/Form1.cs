@@ -252,7 +252,7 @@ namespace manderijntje
                     tripOptionsFlowControl.Controls.Add(listItems[i]);
             }
         }
-
+         
         // Will call the method for further setup of the TripDetails
         public void setupTripDetails()
         {

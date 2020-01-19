@@ -62,7 +62,7 @@ namespace manderijntje
                     map.zoomIn();
                 }
              
-
+                 
             }else if(clickedButton == zOut)
             {
                 if(map.zoom > 1)
