@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 
 namespace manderijntje
 {
-    //this class contains all the methods for the connection between the visual classes (in this file) and other classes
+    /*this class contains all the methods for the connection between the visual classes (in this file) and other classes*/
     public class Connecion_to_files
     {
         public lists_change l = new lists_change();
@@ -20,6 +20,7 @@ namespace manderijntje
         public VisueelModel access;
         private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";        
 
+        //constructor class, when project is opened it will check if there is a data file available to work with, otherwise it creates a new one
         public Connecion_to_files(DataModel data)
         {
             if (File.Exists(filepath) && !Program.reimport)
@@ -37,11 +38,14 @@ namespace manderijntje
             {
                 MakeDataForDisk(data);
             }
+
+
         }
 
+        //if there is no data file, this mothod will create a new file
         private void MakeDataForDisk(DataModel data)
         {
-            access = (new parsing(data)).getModel(false);
+            access = (new parsing(data)).getModel(true);
 
             if (Directory.Exists(filepath))
             {
@@ -52,6 +56,8 @@ namespace manderijntje
                 files.writing_disk(access, FileMode.Create, filepath);
             }
         }
+
+        //this method rescales all nodes acording to the zoom (in other methode width*zoom and height*zoom)
         public void SetSizeMap(int width, int height)
         {
             Point[] points = new Point[1000]; 
@@ -85,97 +91,89 @@ namespace manderijntje
 
         }
 
-        //controlls everything on this form
+        //is responsible for corectly colloring all nodes
         public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
         {
 
             if (stationnames)
             {
+                foreach (VisueelNode v in access.nodes)
+                {
+                        v.Color = Color.Gray;
+                }
+
+
+                foreach (VisualLink v in access.links)
+                {
+                    v.kleur = Color.Gray;
+                }
 
                 foreach (VisueelNode v in access.nodes)
                 {
-                    v.Color = Color.Gray;
+                    foreach (Node n in s)
+                    {
+                        if(v.name_id == n.stationnaam)
+                            v.Color = Color.Orange;
+
+                    }
+
                 }
 
-                foreach (Node st in s)
-                { 
-                   // Point T = l.searchpoint(st.stationnaam, access);
 
-                 for(int i = 0; i < s.Count; i++)
+                foreach (vLogicalLink v in access.connections)
+                {
+                    string firstName, lastName;
+
+                    for (int n = 0; n < s.Count; n++)
                     {
-                        for (int n = 0; n < access.nodes.Count; n++)
+                        firstName = s[n].stationnaam;
+
+                        for (int m = 0; m < s.Count; m++)
                         {
-                            if (s[i].stationnaam == access.nodes[n].name_id)
+                            lastName = s[m].stationnaam;
+
+                            if (firstName == v.v.name_id && lastName == v.u.name_id)
                             {
-                                Console.WriteLine("found: " + i.ToString());
+                                for (int i = 0; i < v.nodes.Count; i++)
+                                {
+                                    v.nodes[i].Color = Color.Orange;
+                                }
+
+                                for (int i = 0; i < v.links.Count; i++)
+                                {
+                                    v.links[i].kleur = Color.Orange;
+                                }
                             }
                         }
-                    }
-                  //  Console.WriteLine(s[11].stationnaam);
-
-
-                    /*  for (int i = 0; i < access.nodes.Count; i++)
-                      {
-                          Console.WriteLine(access.nodes[i].name_id);
-                      }*/
-
-                   
-
-                    foreach(VisueelNode v in access.nodes)
-                    {
+                            
                         
 
-                        if(v.name_id == st.stationnaam)
-                        {
-                            v.Color = Color.Orange;
-                           // Console.WriteLine(v.name_id);
-                        }
-                       
-                 
+                        
                     }
-
-                           
 
                 }
 
-                /*foreach(VisualLink m in access.links)
+
+                foreach (VisualLink m in access.links)
                 {
-                    if(m.v.Color == Color.Orange && m.u.Color == Color.Orange && (m.v.dummynodeDrawLine || m.u.dummynodeDrawLine))
+
+                    if (m.v.Color == Color.Orange && m.u.Color == Color.Orange && !m.v.dummynode && !m.u.dummynode)
                     {
                         m.kleur = Color.Orange;
 
-                        if (m.v.dummynode)
-                            m.v.dummynodeDrawLine = true;
-
-                        if (m.u.dummynode)
-                            m.u.dummynodeDrawLine = true;
-                    }
-                    else
-                    {
-                        m.kleur = Color.Gray;
                     }
 
-                }*/
-
-
-               // Point smallestpoint = b.getpoints(points).smallest;
-               // Point biggestpoint = b.getpoints(points).biggest;
-
-                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, new Point(0, 0), new Point(0, 0), map);
-
-            }
-            else
-            {
-                l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, new Point(0, 0), new Point(0, 0), map);
+                }
             }
 
+            l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, new Point(0, 0), new Point(0, 0), map);
 
         }
 
     }
 
 
-    /*deze class houd alle lists*/
+    /*this class contains all lists*/
     [Serializable]
     public class VisueelModel
     {
@@ -189,29 +187,32 @@ namespace manderijntje
     [Serializable]
     public class lists_change
     {
-        
-        int toshiftX, toshifty;
 
+        int toshiftX = 50, toshifty = 50; 
+
+        //sets default xmovement and y movement when zooming out
         public void changez(int factor, int width, int height)
         {
-
             toshiftX += ((width / 2) * factor) - ((width / 2) * (factor + 1));
             toshifty += ((height / 2) * factor) - ((height / 2) * (factor + 1));
         }
+
+        //sets default xmovement and y movement when zooming in
         public void change(int factor, int width, int height)
         {
-
             toshiftX += ((width/2) * (factor - 1)) - ((width/2) * (factor - 2));
             toshifty += ((height/2) * (factor - 1)) - ((height/2) * (factor-2));
         }
+       
 
-        //set bool value to true or false dending the given variables
+        //set bool value to true or false denping the given variables, true is for paint and falae is not paint
         public void valuenode(VisueelModel access, int factor, int screenwidth, changes b, Point start, Point end, bool stations, Point startpoint, Point endpoint, MapView map)
         {
 
             Point shift = b.movemap(start, end);
             toshiftX += shift.X;
-            toshifty += shift.Y;
+            toshifty+= shift.Y;
+
 
 
             foreach (VisueelNode v in access.nodes)
@@ -239,34 +240,24 @@ namespace manderijntje
                if (v.u.paint && v.v.paint)
                     map.links.Add(v);
             }
-           
-        }
 
-
-        //method to change the color
-        public void Colorchange(List<Point> l, VisueelModel list)
-        {
-            foreach (Point p in l)
+            foreach (vLogicalLink v in access.connections)
             {
-                list.nodes.Find(item => item.point == p).Color = Color.Orange;
+                if (v.u.paint && v.v.paint)
+                    map.logicallinks.Add(v);
             }
+            
         }
 
-        //method to look which name belongs to which node
-        public Point searchpoint(string namestation, VisueelModel access)
-        {
-            return new Point(0, 0);
-            //return access.nodes.Find(item => item.name_id == namestation).point;
-        }
 
         //helping method valuenode
         public void switching(VisueelNode v, int zoom, MapView map)
         {
-            //List<VisueelNode> nodes = new List<VisueelNode>();
+
             switch (zoom)
             {
                 case 0:
-                   // v.paint = (v.prioriteit < 5) ? false : true;
+                   //v.paint = (v.prioriteit < 5) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v); 
 
@@ -323,15 +314,8 @@ namespace manderijntje
             return stations;
         }
 
-        public void LargeandSmalPoints(VisueelModel v)
-        {
-            Point minX, minY, maxX, MaxY;
-           
- 
-            
-           
-                
-        }
+     
+        
         
     }
 
@@ -348,7 +332,7 @@ namespace manderijntje
                     var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     c.access = (VisueelModel)formater.Deserialize(str);
                 }
-            }
+            } 
             catch
             {
                 MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
@@ -375,10 +359,6 @@ namespace manderijntje
     }
 
 
-    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //Part 3: changes processing to the program
-
-
     /*this class is a constructor for the list*/
     [Serializable]
     public class VisueelNode
@@ -392,21 +372,16 @@ namespace manderijntje
         public bool dummynodeDrawLine = false; 
 
         public VisueelNode(Point point, string name_id, int prioriteit)
-        {
-            // pointer to the node in datamodel
-            //Node dataNode;
-
-
+        { 
             this.point = point;
             this.name_id = name_id;
             this.prioriteit = prioriteit;
-
         }
 
     }
 
 
-    //this method is a constructor for the list
+    /*this class is a constructor for the list*/
     [Serializable]
     public class VisualLink
     {
@@ -417,15 +392,13 @@ namespace manderijntje
 
         public VisualLink(string name_id)
         {
-            // pointer to the link in datamodel
-            //Link dataLink;
-
             this.name_id = name_id;
-
         }
 
     }
 
+
+    /*this class is a constructor for the list*/
     [Serializable]
     public class vLogicalLink
     {
@@ -439,6 +412,7 @@ namespace manderijntje
             v = V;
         }
 
+        //if ther exists a dummy node in a route, this method finds the dummy node and the connecting stations
         public void getLinks(List<VisualLink> l)
         {
             List<VisueelNode> booltest = nodes;
@@ -456,6 +430,7 @@ namespace manderijntje
             }
         }
 
+      
         private VisualLink getLink(VisueelNode u, VisueelNode v, List<VisualLink> l)
         {
             for (int i = 0; i < l.Count; i++)

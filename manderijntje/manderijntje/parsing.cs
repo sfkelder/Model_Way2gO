@@ -18,13 +18,20 @@ namespace manderijntje
         private List<sLogical> logicalconnections = new List<sLogical>();
 
         private const int width = 5000, height = 5000;
+        private bool daniDemo = false;
 
         public parsing(DataModel model)
         {
             if (model.unique_nodes.Count != 0 && model.unique_links.Count != 0)
             {
-                setNodes(model.unique_nodes);
-                setLinks(model.unique_links);
+                if (daniDemo)
+                {
+                    initModelFromFile();
+                } else
+                {
+                    setNodes(model.unique_nodes);
+                    setLinks(model.unique_links);
+                }
                 setNeighbours();
 
                 enforcePlanarity();
@@ -57,24 +64,67 @@ namespace manderijntje
             return createModel();
         }
 
-       /* public void test ()
+        private void initModelFromFile ()
         {
-            using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes2.txt"))
+            string[] nodesDani = ReadFromFile("C:/Way2Go/dc nodes.txt");
+            string[] linksDani = ReadFromFile("C:/Way2Go/dc links.txt");
+
+            List<Point> Coordinates = new List<Point>();
+            for (int i = 0; i < nodesDani.Length; i++)
             {
-                for (int i = 0; i < nodes.Count; i++)
-                {
-                    w.WriteLine(i + "," + nodes[i].x + "," + nodes[i].y + ",0,0");
-                }
+                string[] node_i = nodesDani[i].Split(',');
+                // first argument is Lat, and the second argument is Long:
+                Coordinates.Add(coordinates.GetLogicalCoordinate(double.Parse(node_i[3]), double.Parse(node_i[4]), 100000, 100000));
             }
-            using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_links2.txt"))
+            Point[] ScaledCoordinates = coordinates.ScalePointsToSize(Coordinates.ToArray(), width, height);
+            for (int i = 0; i < nodesDani.Length; i++)
             {
-                for (int i = 0; i < links.Count; i++)
-                {
-                    w.WriteLine(i + "," + links[i].u.index + "," + links[i].v.index);
-                }
+                sNode newNode = new sNode(i, ScaledCoordinates[i]);
+                nodes.Add(newNode);
             }
 
-        }*/
+            for (int i = 0; i < linksDani.Length; i++)
+            {
+                string[] link_i = linksDani[i].Split(',');
+                sLink newLink = new sLink(nodes[int.Parse(link_i[1])], nodes[int.Parse(link_i[2])]);
+                links.Add(newLink);
+            }
+        }
+
+        private string[] ReadFromFile(string file_path)
+        {
+            List<string> result = new List<string>();
+            StreamReader sr = new StreamReader(file_path);
+            string data_line;
+            while ((data_line = sr.ReadLine()) != null)
+            {
+                result.Add(data_line);
+            }
+            sr.Close();
+
+            return result.ToArray();
+        }
+
+
+
+        /* public void test ()
+         {
+             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes2.txt"))
+             {
+                 for (int i = 0; i < nodes.Count; i++)
+                 {
+                     w.WriteLine(i + "," + nodes[i].x + "," + nodes[i].y + ",0,0");
+                 }
+             }
+             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_links2.txt"))
+             {
+                 for (int i = 0; i < links.Count; i++)
+                 {
+                     w.WriteLine(i + "," + links[i].u.index + "," + links[i].v.index);
+                 }
+             }
+
+         }*/
 
 
         // PLANARITY:
@@ -130,6 +180,7 @@ namespace manderijntje
 
             nodes.Add(node);
         }
+
 
         private void filterLogicalLinks()
         {
@@ -429,6 +480,21 @@ namespace manderijntje
                 dConnections.Add(newLogical);
             }
 
+            if(daniDemo)
+            {
+                dNodes[79].name_id = "Ronald Reagon Washington";
+                dNodes[78].name_id = "Crystal City";
+                dNodes[77].name_id = "Pentagon City";
+                dNodes[76].name_id = "Pentagon";
+                dNodes[38].name_id = "L Enfant Plaza";
+                dNodes[39].name_id = "Waterfront";
+                dNodes[40].name_id = "Navy Yard Ballpark";
+                dNodes[41].name_id = "Anacostia";
+                dNodes[42].name_id = "Congress Heights";
+                dNodes[43].name_id = "Southern Avenue";
+                dNodes[44].name_id = "Naylor Road";
+            }
+
             model.nodes = dNodes;
             model.links = dLinks;
             model.connections = dConnections;
@@ -462,7 +528,7 @@ namespace manderijntje
         private GRBEnv env;
         private int M;
         // the minimum length of an edge, the minimum distance between two edges, and the weight used in the objective function
-        private double minL = 10.0, minD = 10.0, weightBend = 4.0, weightRpos = 3.0, weightLength = 1.0; 
+        private double minL = 10.0, minD = 10.0, weightBend = 3.0, weightRpos = 2.0, weightLength = 2.0; 
         // the width and height where the solution is calculated over
         private const int width = 100000, height = 100000;
         private bool usePlanarity = false;

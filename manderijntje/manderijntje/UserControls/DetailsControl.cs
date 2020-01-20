@@ -17,7 +17,6 @@ namespace manderijntje
         private string _destinationTime;
         private string _totalTime;
         private string _transfers;
-        private string _platform;
         private List<Node> _shortestPath;
         public string departureTime
         {
@@ -42,12 +41,6 @@ namespace manderijntje
         {
             get { return _transfers; }
             set { _transfers = value; transfersLBL.Text = value + "x"; }
-        }
-
-        public string platform
-        {
-            get { return _platform; }
-            set { _platform = value; platformLBL.Text = value; }
         }
 
         public List<Node> shortestPath
@@ -81,7 +74,6 @@ namespace manderijntje
                         sw.WriteLine("Arrival Time: " + _destinationTime);
                         sw.WriteLine("Total Time: " + _totalTime);
                         sw.WriteLine("Transfer Count: " + _transfers);
-                        sw.WriteLine("Platform: " + _platform);
                         sw.WriteLine("Transfers: " + _transfers + "\n");
                         sw.WriteLine("Transfers Stations: \n");
 
