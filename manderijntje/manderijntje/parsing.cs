@@ -22,15 +22,15 @@ namespace manderijntje
 
         public parsing(DataModel model)
         {
-            if (model.unique_nodes.Count != 0 && model.unique_links.Count != 0)
+            if (model.nodes.Count != 0 && model.links.Count != 0)
             {
                 if (daniDemo)
                 {
                     initModelFromFile();
                 } else
                 {
-                    setNodes(model.unique_nodes);
-                    setLinks(model.unique_links);
+                    setNodes(model.nodes);
+                    setLinks(model.links);
                 }
                 setNeighbours();
 

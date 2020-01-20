@@ -82,7 +82,7 @@ namespace manderijntje
                             sw.WriteLine("Station: " + node.stationnaam);
                             sw.WriteLine("Departure Time: ");
                             sw.WriteLine("Platform: ");
-                            sw.WriteLine("To Station: " + node.routnaam + "\n");
+                            sw.WriteLine("To Station: " + "" + "\n");
                         }
                     }
                     myStream.Close();
