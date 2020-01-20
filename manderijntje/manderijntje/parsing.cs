@@ -528,7 +528,7 @@ namespace manderijntje
         private GRBEnv env;
         private int M;
         // the minimum length of an edge, the minimum distance between two edges, and the weight used in the objective function
-        private double minL = 10.0, minD = 10.0, weightBend = 4.0, weightRpos = 3.0, weightLength = 1.0; 
+        private double minL = 10.0, minD = 10.0, weightBend = 3.0, weightRpos = 2.0, weightLength = 2.0; 
         // the width and height where the solution is calculated over
         private const int width = 100000, height = 100000;
         private bool usePlanarity = false;

@@ -12,7 +12,7 @@ namespace manderijntje
 {
     public partial class Indexpanel : UserControl
     {
-        Label indexbox;
+        //Label indexbox;
 
         public Indexpanel()
         {

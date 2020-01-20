@@ -92,8 +92,8 @@ namespace manderijntje
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
             tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height - 20);
-            detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height - 35);
-            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 70;
+            detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height - 30);
+            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 75;
             detailsUserControl.transfersPanel.Width = detailsUserControl.Width;
             detailsUserControl.transfersPanel.Location = new Point(detailsUserControl.transfersPanel.Location.X, detailsUserControl.transfersPanel.Location.Y - 1);
             if (Height > 450)
