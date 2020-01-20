@@ -18,12 +18,18 @@ namespace manderijntje
         private List<sLogical> logicalconnections = new List<sLogical>();
 
         private const int width = 5000, height = 5000;
-        private bool daniDemo = false;
+        //private bool daniDemo = false;
 
         public parsing(DataModel model)
         {
             if (model.nodes.Count != 0 && model.links.Count != 0)
-            {
+            {/*
+                for (int i = 0; i < model.nodes.Count; i++)
+                {
+                    Console.WriteLine(model.nodes[i].x + " " + model.nodes[i].y);
+                }
+
+
                 if (daniDemo)
                 {
                     initModelFromFile();
@@ -31,7 +37,9 @@ namespace manderijntje
                 {
                     setNodes(model.nodes);
                     setLinks(model.links);
-                }
+                }*/
+                setNodes(model.nodes);
+                setLinks(model.links);
                 setNeighbours();
 
                 enforcePlanarity();
@@ -49,9 +57,9 @@ namespace manderijntje
                         dummy++;
                     }
                 }
-                Console.WriteLine("dummy nodes: " + dummy);
-                Console.WriteLine("logical links: " + logicallinks.Count);
-                Console.WriteLine("connections: " + logicalconnections.Count);
+                //Console.WriteLine("dummy nodes: " + dummy);
+                //Console.WriteLine("logical links: " + logicallinks.Count);
+                //Console.WriteLine("connections: " + logicalconnections.Count);
             }
         }
 
@@ -61,9 +69,10 @@ namespace manderijntje
             {
                 nodes = (new solver(nodes, links, linkpairs, bendlinks)).getSolution(width, height);
             }
+
             return createModel();
         }
-
+        /*
         private void initModelFromFile ()
         {
             string[] nodesDani = ReadFromFile("C:/Way2Go/dc nodes.txt");
@@ -107,16 +116,16 @@ namespace manderijntje
 
 
 
-        /* public void test ()
+         public void test ()
          {
-             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes2.txt"))
+             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes3.txt"))
              {
                  for (int i = 0; i < nodes.Count; i++)
                  {
                      w.WriteLine(i + "," + nodes[i].x + "," + nodes[i].y + ",0,0");
                  }
              }
-             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_links2.txt"))
+             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_links3.txt"))
              {
                  for (int i = 0; i < links.Count; i++)
                  {
@@ -124,8 +133,8 @@ namespace manderijntje
                  }
              }
 
-         }*/
-
+         }
+         */
 
         // PLANARITY:
 
@@ -362,7 +371,7 @@ namespace manderijntje
             for (int i = 0; i < dNodes.Count; i++)
             {
                 // first argument is Lat, and the second argument is Long:
-                Coordinates.Add(coordinates.GetLogicalCoordinate(dNodes[i].y, dNodes[i].x, 100000, 100000));
+                Coordinates.Add(coordinates.GetLogicalCoordinate(dNodes[i].x, dNodes[i].y, 1000000, 1000000));
             }
             Point[] ScaledCoordinates = coordinates.ScalePointsToSize(Coordinates.ToArray(), width, height);
             for (int i = 0; i < dNodes.Count; i++)
@@ -479,7 +488,7 @@ namespace manderijntje
                 newLogical.getLinks(dLinks);
                 dConnections.Add(newLogical);
             }
-
+            /*
             if(daniDemo)
             {
                 dNodes[79].name_id = "Ronald Reagon Washington";
@@ -493,7 +502,7 @@ namespace manderijntje
                 dNodes[42].name_id = "Congress Heights";
                 dNodes[43].name_id = "Southern Avenue";
                 dNodes[44].name_id = "Naylor Road";
-            }
+            }*/
 
             model.nodes = dNodes;
             model.links = dLinks;
@@ -1104,16 +1113,16 @@ namespace manderijntje
 
         private static int calc_x(double Long, int width)
         {
-            double result = (Long + 180) * (width / 360.0);
+            double result = (Long + 180.0) * (width / 360.0);
 
             return (int)result;
         }
 
         private static int calc_y(double Lat, int width, int height)
         {
-            double latRad = (Lat * (Math.PI / 180));
-            double mercN = Math.Log(Math.Tan((Math.PI / 4) + (latRad / 2)));
-            int result = (int)((height / 2) - ((width * mercN) / (2 * Math.PI)));
+            double latRad = (Lat * (Math.PI / 180.0));
+            double mercN = Math.Log(Math.Tan((Math.PI / 4.0) + (latRad / 2.0)));
+            int result = (int)((height / 2.0) - ((width * mercN) / (2.0 * Math.PI)));
 
             return result;
         }
