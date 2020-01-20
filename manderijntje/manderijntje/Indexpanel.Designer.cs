@@ -151,6 +151,8 @@
             this.Size = new System.Drawing.Size(390, 238);
             this.whitePanel.ResumeLayout(false);
             this.whitePanel.PerformLayout();
+            this.Name = "UserControl1";
+            this.Size = new System.Drawing.Size(663, 387);
             this.ResumeLayout(false);
 
         }

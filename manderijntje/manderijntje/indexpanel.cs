@@ -12,36 +12,55 @@ namespace manderijntje
 {
     public partial class Indexpanel : UserControl
     {
-        //Label indexbox;
+        Bitmap bitmap;
+        PictureBox picbox;
 
+        //constructor method
         public Indexpanel()
-        {
-            /*
-            this.Paint += this.painting; 
+        {                  
             this.BackColor = Color.FromArgb(255, 122, 0);
-            indexbox = new Label();
-            indexbox.Location = new Point(100, 15);
-            indexbox.Text = "Index";
-            indexbox.Font = new Font("Lucida Console", 13.0f);
-            indexbox.ForeColor = Color.FromArgb(255, 122, 0);
-            indexbox.BackColor = Color.White;
-            this.Controls.Add(indexbox);
-            */
-            InitializeComponent();
+            picbox = new PictureBox();
+            picbox.Size = new Size(300, 200);
+            bitmap = new Bitmap(200, 100);
+            
+            Controls.Add(picbox);
+            painting();
+
+            InitializeComponent();   
         }
 
-        public void painting(object o, PaintEventArgs pea)
+        //painting event index
+        public void painting()
         {
-            /*Pen blackPen = new Pen(Color.Gray, 3);
+            Graphics g = Graphics.FromImage(bitmap);
+
+            Font font = new Font("Lucida Console", 8.0f);
+            Font font1 = new Font("Lucida Console", 13.0f);
+            Pen blackPen = new Pen(Color.Gray, 3);
             Pen OrangePen = new Pen(Color.FromArgb(255, 122, 0), 3);
             SolidBrush brush = new SolidBrush(Color.FromArgb(255, 122, 0));
 
-            pea.Graphics.FillRectangle(Brushes.Gray, indexLBL.Location.X, stationLBL.Location.Y, 10, 10);
-            pea.Graphics.FillRectangle(brush, indexLBL.Location.X, stationOnRouteLBL.Location.Y, 10, 10);
+            g.FillRectangle(Brushes.White, 2, 2, 191, 91);
 
-            pea.Graphics.DrawLine(blackPen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 65);
-            pea.Graphics.DrawLine(OrangePen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 78);
-            */
+            g.DrawString("Index", font1, brush, new Point(65, 8));
+
+            g.FillRectangle(Brushes.Gray, 35, 30, 10, 10);
+            g.FillRectangle(brush, 35, 45, 10, 10);
+            g.DrawLine(blackPen, 20, 65, 45, 65);
+            g.DrawLine(OrangePen, 20, 78, 45, 78);
+
+            g.DrawString("station", font, Brushes.Black, new Point(50 , 30));
+            g.DrawString("station on Route", font, Brushes.Black, new Point(50, 45));
+
+            g.DrawString("Connection", font, Brushes.Black, new Point(50,61));
+            g.DrawString("Route to Travel", font, Brushes.Black, new Point(50, 74));
+
+
+            picbox.Image = bitmap;
+
+           // pea.Graphics.DrawLine(blackPen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 65);
+           // pea.Graphics.DrawLine(OrangePen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 78);
+          //  */
         }
     }
 }
