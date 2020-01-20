@@ -1431,7 +1431,7 @@ namespace manderijntje
         // unieke indentifier, naam in de vorm van een string
         public string stationnaam;
         public Node NearestToStart;
-        public DateTime MinCostToStart = new DateTime(2999, 12, 31, 23, 59, 59);
+        public DateTime MinCostToStart = DateTime.MaxValue;
         public bool Visited = false;
 
         public Node(double coordx, double coordy, string stationsnaam, int i)

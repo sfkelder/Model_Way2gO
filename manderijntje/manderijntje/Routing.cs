@@ -163,7 +163,6 @@ class Routing
                 Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
                 ListRoute.Add(fastestRoute);
                 starttime = fastestRoute.startTime.AddMinutes(1);
-                TravelInformation test = TimeModel.GetTravelCost(time, startName, endName);
                 foreach (Node node in dataModel.nodes)
                 {
                     node.MinCostToStart = new DateTime(2999, 12, 31, 23, 59, 59);
