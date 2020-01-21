@@ -160,12 +160,12 @@ class Routing
             DateTime starttime = time;
             for (int i = 0; i < 10; i++)
             {
-                Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
+                Route fastestRoute = new Route(startName, endName, transfers, starttime, dataModel);
                 ListRoute.Add(fastestRoute);
-                starttime = fastestRoute.startTime.AddMinutes(1);
+                starttime = fastestRoute.startTime + new TimeSpan(1, 0, 0);
                 foreach (Node node in dataModel.nodes)
                 {
-                    node.MinCostToStart = new DateTime(2999, 12, 31, 23, 59, 59);
+                    node.MinCostToStart = DateTime.MaxValue;
                     node.NearestToStart = null;
                     node.Visited = false;
                 }

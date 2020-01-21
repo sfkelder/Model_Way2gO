@@ -43,17 +43,17 @@ namespace manderijntje
             if (demoDani)
             {
                 List<Node> demoNodes = new List<Node>();
-                demoNodes.Add(new Node(0.0, 0.0, "Ronald Reagon Washington", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Crystal City", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Pentagon City", 0));
-                demoNodes.Add(new Node(0.0, 0.0,  "Pentagon", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "L Enfant Plaza", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Waterfront", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Navy Yard Ballpark", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Anacostia", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Congress Heights", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Southern Avenue", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Naylor Road", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Ronald Reagon Washington", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Crystal City", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Pentagon City", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0,  "Pentagon", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "L Enfant Plaza", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Waterfront", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Navy Yard Ballpark", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Anacostia", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Congress Heights", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Southern Avenue", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Naylor Road", "", 0));
                 visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), demoNodes, true, mapView);
             }
         }
