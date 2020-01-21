@@ -184,7 +184,7 @@ namespace manderijntje
                 }
             }*/
              
-            for (int m = 0; m < nodes.Count; m++)
+            for (int m = 0; m < nodes.Count; m++) 
             {
                 SolidBrush brush = new SolidBrush(nodes[m].Color);
 
