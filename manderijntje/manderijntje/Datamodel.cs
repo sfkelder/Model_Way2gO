@@ -1346,8 +1346,8 @@ namespace manderijntje
             while ((line = documentroutes.ReadLine()) != null)
             {
                 string[] parametersroute = line.Split(';');
-                DateTime start = new DateTime(4001, 01, 01, int.Parse(parametersroute[0]), int.Parse(parametersroute[1]), 1);
-                DateTime end = new DateTime(4001, 01, 01, int.Parse(parametersroute[2]), int.Parse(parametersroute[3]), 1);
+                DateTime start = DateTime.Today + new TimeSpan(int.Parse(parametersroute[0]), int.Parse(parametersroute[1]), 1);
+                DateTime end = DateTime.Today + new TimeSpan(int.Parse(parametersroute[2]), int.Parse(parametersroute[3]), 1);
                 int delay = int.Parse(parametersroute[4]);
                 int i = 5;
                 while (i + 1 < parametersroute.Length && parametersroute[i + 1] != "")
@@ -1361,13 +1361,21 @@ namespace manderijntje
                         try
                         {
                             link.times.Add(temptime);
+                            link.times.Add(temptime + new TimeSpan(1,0,0,0));
+                            link.times.Add(temptime + new TimeSpan(2, 0, 0, 0));
                             temptime = temptime.Add(timedelay);
                         }
-                        catch
-                        {
+                        catch 
+                        { 
                             break;
                         }
                     }
+
+                    try
+                    {
+                        link.times = link.times.OrderBy(x => x.Day).ToList();
+                    }
+                    catch { }
                     i++;
                 }
             }
