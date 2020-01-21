@@ -1262,58 +1262,11 @@ namespace manderijntje
         //Creating the DataControl and DataModel dataset.
         public DataControl()
         {
-            if (File.Exists(filepath) && !Program.reimport)
-            {
-                try
-                {
-                    ReadDataFromDisk();
-                }
-                catch
-                {
-                    Read_Data_from_file(nodes, links, routes, dataModel);
-                }
-            }
-
-            else
-            {
-                Read_Data_from_file(nodes, links, routes, dataModel);
-            }
+            Read_Data_from_file(nodes, links, routes, dataModel);
         }
 
-        //Reading the serialized dataModel from the disk
-        private void ReadDataFromDisk()
-        {
-            try
-            {
-                using (Stream str = File.Open(filepath, FileMode.Open))
-                {
-                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    dataModel = (DataModel)bformatter.Deserialize(str);
-                }
-            }
-            catch
-            {
-                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
-            }
-        }
         
-        //Writing the serialized dataModel to the disk
-        private void WriteDataToDisk(FileMode fm)
-        {
-            try
-            {
-                using (Stream str = File.Open(filepath, fm))
-                {
-                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    bformatter.Serialize(str, dataModel);
-                }
-            }
-            catch
-            {
-                MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
-            }
-        }
-
+        //Writing the dataModel
         public static void Read_Data_from_file(string nodes, string links, string routes, DataModel datamodel)
         { 
             var documentnodes = new StreamReader(new FileStream(nodes, FileMode.Open, FileAccess.Read));
