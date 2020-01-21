@@ -563,7 +563,7 @@ namespace manderijntje
             if (listItems[biggestLBLIndex].Width == destinationInput.Width)
                 setSizeAutoSuggestion(destinationInput.Width + 10, autoSuggestion.Height);
             else
-                setSizeAutoSuggestion(biggestLBL + 40, autoSuggestion.Height);
+                setSizeAutoSuggestion(biggestLBL + 50, autoSuggestion.Height);
         }
 
         // Gives autosuggestion proper Size
