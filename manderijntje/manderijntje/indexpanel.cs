@@ -19,6 +19,10 @@ namespace manderijntje
             //picbox = new PictureBox();
             //picbox.Size = new Size(300, 200);
             //bitmap = new Bitmap(200, 100);
+            //this.BackColor = Color.FromArgb(255, 122, 0);
+            //picbox = new PictureBox();
+            //picbox.Size = new Size(400, 200);
+            //bitmap = new Bitmap(200, 100);
             
             //Controls.Add(picbox);
             //painting();

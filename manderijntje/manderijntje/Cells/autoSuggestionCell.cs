@@ -33,8 +33,7 @@ namespace manderijntje
                 else if (_stationType == "Bus")
                 {
                     stationTypeIcon.Image = Properties.Resources.busIcon;
-                }
-            
+                } 
             }
         }
         public bool departureInput
@@ -42,6 +41,7 @@ namespace manderijntje
             get { return _departureInput; }
             set { _departureInput = value; }
         }
+
         public autoSuggestionCell(Form1 form)
         {
             InitializeComponent();
@@ -50,6 +50,12 @@ namespace manderijntje
 
         // Calls methods in the form call when clicked on a label.
         private void stationLBL_Click(object sender, EventArgs e)
+        {
+            autoSuggestion a = new autoSuggestion(_form);
+            a.fillTextbox(_stationName, _departureInput);
+        }
+
+        private void stationTypeIcon_Click(object sender, EventArgs e)
         {
             autoSuggestion a = new autoSuggestion(_form);
             a.fillTextbox(_stationName, _departureInput);

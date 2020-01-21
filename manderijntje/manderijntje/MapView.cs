@@ -24,8 +24,8 @@ namespace manderijntje
         public ZoomInandOut zoomInOut;
         public MapView mapView;
         Bitmap bitmap1;
-        PictureBox picbox1;
-
+        PictureBox picbox1; 
+        public string station1, station2;
 
         //constructort method
         public MapView(Connecion_to_files c)
@@ -71,6 +71,8 @@ namespace manderijntje
             if (startingUp)
             {
                 _connecionToFiles.SetSizeMap(width, height);
+                _connecionToFiles.countConnections();
+                _connecionToFiles.colorchange();
                 startingUp = false; 
             }
 
@@ -96,11 +98,8 @@ namespace manderijntje
                 nodes.Clear();
                 links.Clear();
 
-                if ((totverschuivingX + start.X - end.X) < (250*(zoom-1)) && -(totverschuivingX + start.X - end.X) > (250 * (zoom - 1)))
-                {
-                    totverschuivingX += start.X - end.X;
-                }
-              //  totverschuivingX += start.X - end.X;
+              
+                totverschuivingX += start.X - end.X;
                 totverschuivingY += start.Y - end.Y;
 
                 _connecionToFiles.visualcontrol(width, zoom, start, end, null, false, mapView);
@@ -186,19 +185,24 @@ namespace manderijntje
                 }
             }*/
              
-            for (int m = 0; m < nodes.Count; m++)
+            for (int m = 0; m < nodes.Count; m++) 
             {
                 SolidBrush brush = new SolidBrush(nodes[m].Color);
 
-                if (nodes[m].paint == true && nodes[m].dummynode == false)
+                if (nodes[m].paint && nodes[m].dummynode == false)
                 {
                     g.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
-                  //  g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
 
-                    if (nodes[m].name_id == "Ronald Reagon Washington" || nodes[m].name_id == "Naylor Road")
+                    if ( nodes[m].priorityLinks)
+                    {
+                        g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                    }
+                    
+
+                  /*  if (nodes[m].name_id == "Ronald Reagon Washington" || nodes[m].name_id == "Naylor Road")
                     {
                         g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX + 3, (float)nodes[m].point.Y - (float)totverschuivingY + 3);
-                    }
+                    }*/ 
                 }
 
                 /*if (nodes[m].paint == true && nodes[m].dummynode == true)

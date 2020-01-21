@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 
 namespace manderijntje
 {
+
     /*this class contains all the methods for the connection between the visual classes (in this file) and other classes*/
     public class Connecion_to_files
     {
@@ -91,22 +92,93 @@ namespace manderijntje
 
         }
 
+        public void countConnections()
+        {
+            foreach(VisueelNode v in access.nodes)
+            {
+                foreach(VisualLink n in access.links)
+                {
+                    if (v.name_id == n.v.name_id || v.name_id == n.u.name_id)
+                        v.numberOfLinks++;
+                }
+            }
+        }
+
+        public void colorchange()
+        {
+            foreach (VisueelNode v in access.nodes)
+            {
+                switch (v.country)
+                {
+                    case "Italy":
+                        v.Color = Color.Yellow;
+                        break;
+                    case "Nederland":
+                        v.Color = Color.Blue;
+                        break;
+                    case "België":
+                        v.Color = Color.Pink;
+                        break;
+                    case "Spanje":
+                        v.Color = Color.Red;
+                        break;
+                    case "France":
+                        v.Color = Color.DarkBlue;
+                        break;
+                    case "Duitsland":
+                        v.Color = Color.Green;
+                        break;
+                    case "Zwitserland":
+                        v.Color = Color.Purple;
+                        break;
+                    default:
+                        v.Color = Color.Black;
+                        break;
+                }
+            }
+
+        }
+
         //is responsible for corectly colloring all nodes
         public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
         {
+           
 
             if (stationnames)
             {
+                /*foreach (VisueelNode v in access.nodes)
+                {
+                      v.Color = Color.Gray;
+                    
+                }*/
+
+                colorchange();
+
+
                 foreach (VisueelNode v in access.nodes)
                 {
-                        v.Color = Color.Gray;
+                    if (s[0].stationnaam == v.name_id)
+                    {
+                        v.priorityLinks = true;
+                        map.station1 = s[0].stationnaam;
+                    }
+                       
+
+                    if (s[s.Count - 1].stationnaam == v.name_id)
+                    {
+                        v.priorityLinks = true;
+                        map.station2 = s[s.Count - 1].stationnaam;
+                    }
+                       
                 }
 
 
                 foreach (VisualLink v in access.links)
-                {
-                    v.kleur = Color.Gray;
-                }
+                 {
+                     v.kleur = Color.Gray;
+                 }
+
+                
 
                 foreach (VisueelNode v in access.nodes)
                 {
@@ -145,9 +217,6 @@ namespace manderijntje
                                 }
                             }
                         }
-                            
-                        
-
                         
                     }
 
@@ -210,8 +279,10 @@ namespace manderijntje
         {
 
             Point shift = b.movemap(start, end);
-            toshiftX += shift.X;
+           toshiftX += shift.X;
             toshifty+= shift.Y;
+
+           
 
 
 
@@ -237,13 +308,13 @@ namespace manderijntje
             
            foreach(VisualLink v in access.links)
             {
-               if (v.u.paint && v.v.paint)
+                if(v.v.paint || v.u.paint)
                     map.links.Add(v);
             }
 
             foreach (vLogicalLink v in access.connections)
             {
-                if (v.u.paint && v.v.paint)
+                if(v.v.paint || v.u.paint)
                     map.logicallinks.Add(v);
             }
             
@@ -256,32 +327,61 @@ namespace manderijntje
 
             switch (zoom)
             {
-                case 0:
-                   //v.paint = (v.prioriteit < 5) ? false : true;
+                case 1:
+                  
+                    v.priorityLinks = (v.numberOfLinks < 8) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v); 
 
-                    break;
-                case 1:
-                    // v.paint = (v.prioriteit < 4) ? false : true;
-                    v.paint = true;
-                    if (v.paint) map.nodes.Add(v);
-                    break;
+                    break; 
                 case 2:
-                    //v.paint = (v.prioriteit < 3) ? false : true;
+                    v.priorityLinks = (v.numberOfLinks < 7) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v);
                     break;
                 case 3:
-                    // v.paint = (v.prioriteit < 2) ? false : true;
+                    v.priorityLinks = (v.numberOfLinks < 6) ? false : true;
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 4:
+                    v.priorityLinks = (v.numberOfLinks < 5) ? false : true; 
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 5:
+                    v.priorityLinks = (v.numberOfLinks < 4) ? false : true;
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 6:
+                    v.priorityLinks = (v.numberOfLinks < 3) ? false : true;
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 7:
+                    v.priorityLinks = (v.numberOfLinks < 2) ? false : true; 
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 8:
+                    v.priorityLinks = (v.numberOfLinks < 1) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v);
                     break;
                 default:
+                   // v.priorityLinks = true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v);
                     break;
             }
+
+            if (v.name_id == map.station1)
+                v.priorityLinks = true;
+
+            if (v.name_id == map.station2)
+                v.priorityLinks = true;
+
         }
 
     }
@@ -365,11 +465,12 @@ namespace manderijntje
     {
         public int prioriteit, index;
         public Point point;
-        public string name_id;
+        public string name_id, country;
         public Color Color = Color.Gray;
         public bool paint = true;
         public bool dummynode = false;
-        public bool dummynodeDrawLine = false; 
+        public bool priorityLinks = false;
+        public int numberOfLinks = 0;
 
         public VisueelNode(Point point, string name_id, int prioriteit)
         { 
@@ -377,7 +478,7 @@ namespace manderijntje
             this.name_id = name_id;
             this.prioriteit = prioriteit;
         }
-
+         
     }
 
 
