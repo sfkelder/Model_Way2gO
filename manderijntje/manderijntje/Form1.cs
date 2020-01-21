@@ -37,8 +37,7 @@ namespace manderijntje
             this.Controls.Add(indexpanel);
             this.Controls.Add(zoomInandOut);
             this.Controls.Add(mapView);
-            
-            
+     
             setupView();
 
             if (demoDani)
@@ -455,11 +454,6 @@ namespace manderijntje
                     listItems[i].toStation = detailsUserControl.shortestPath[i].routnaam;
                     listItems[i].typeTransport = detailsUserControl.shortestPath[i].vehicle;
 
-                    // Needs to have platform and departureTime from node
-
-                    //listItems[i].platform = detailsUserControl.shortestPath[i].;
-                    //
-
                     if (i == 0)
                         listItems[i].first = true;
                     else if (i == detailsUserControl.shortestPath.Count - 1)
@@ -618,9 +612,9 @@ namespace manderijntje
             mapView.Size = new Size(width, height);
             mapView.Location = new Point(x, y);
             mapView.setMap(width, height);
-            indexpanel.Size = new Size(200, 100);
-            indexpanel.Location = new Point(x, y + height - 164);
-            indexpanel.BorderStyle = BorderStyle.Fixed3D;
+            indexpanel.Size = new Size(196, 125);
+            indexpanel.Location = new Point(x, y + height - 195);
+            //indexpanel.BorderStyle = BorderStyle.Fixed3D;
             zoomInandOut.Size = new Size(35, 150);
             zoomInandOut.Location = new Point(x, y + 5);
 
