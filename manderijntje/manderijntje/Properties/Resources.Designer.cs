@@ -83,16 +83,6 @@ namespace manderijntje.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap beginSpoor {
-            get {
-                object obj = ResourceManager.GetObject("beginSpoor", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap busIcon {
             get {
                 object obj = ResourceManager.GetObject("busIcon", resourceCulture);
@@ -113,9 +103,9 @@ namespace manderijntje.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap eindSpoor {
+        internal static System.Drawing.Bitmap endTrack {
             get {
-                object obj = ResourceManager.GetObject("eindSpoor", resourceCulture);
+                object obj = ResourceManager.GetObject("endTrack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +123,9 @@ namespace manderijntje.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap middenSpoor {
+        internal static System.Drawing.Bitmap midTrack {
             get {
-                object obj = ResourceManager.GetObject("middenSpoor", resourceCulture);
+                object obj = ResourceManager.GetObject("midTrack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -186,6 +176,16 @@ namespace manderijntje.Properties {
         internal static System.Drawing.Bitmap saveIconWhite {
             get {
                 object obj = ResourceManager.GetObject("saveIconWhite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap startTrack {
+            get {
+                object obj = ResourceManager.GetObject("startTrack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

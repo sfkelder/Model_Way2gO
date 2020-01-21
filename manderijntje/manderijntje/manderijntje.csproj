@@ -94,6 +94,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing.cs" />
     <Compile Include="TimeModel.cs" />
+    <Compile Include="Indexpanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Indexpanel.Designer.cs">
+      <DependentUpon>Indexpanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\autoSuggestion.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -107,6 +113,12 @@
       <DependentUpon>DetailsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="VisueelModel.cs" />
+    <Compile Include="ZoomInandOut.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ZoomInandOut.Designer.cs">
+      <DependentUpon>ZoomInandOut.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Cells\autoSuggestionCell.resx">
       <DependentUpon>autoSuggestionCell.cs</DependentUpon>
     </EmbeddedResource>
@@ -129,6 +141,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Indexpanel.resx">
+      <DependentUpon>Indexpanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\autoSuggestion.resx">
       <DependentUpon>autoSuggestion.cs</DependentUpon>
     </EmbeddedResource>
@@ -196,6 +211,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\saveIconWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\endTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\midTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\startTrack.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -28,7 +28,7 @@ namespace manderijntje
         {
             nodeList = nodes;
             foreach (Node node in nodeList)
-                stationList.Add(new autoSuggestionModel(node.stationnaam, node.vehicle));
+                stationList.Add(new autoSuggestionModel(node.stationnaam, "Train"));
         }
         public autoSuggestion()
         {

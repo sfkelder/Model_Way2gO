@@ -271,7 +271,6 @@
             this.detailsUserControl.Location = new System.Drawing.Point(771, 62);
             this.detailsUserControl.Margin = new System.Windows.Forms.Padding(4);
             this.detailsUserControl.Name = "detailsUserControl";
-            this.detailsUserControl.platform = null;
             this.detailsUserControl.shortestPath = null;
             this.detailsUserControl.Size = new System.Drawing.Size(422, 685);
             this.detailsUserControl.TabIndex = 14;
