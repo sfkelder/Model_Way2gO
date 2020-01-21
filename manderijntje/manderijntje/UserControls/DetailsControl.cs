@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing.Printing;
 
 namespace manderijntje
 {
@@ -81,7 +82,7 @@ namespace manderijntje
                         sw.WriteLine("Depature Time: " + _departureTime);
                         sw.WriteLine("Arrival Time: " + _destinationTime);
                         sw.WriteLine("Total Time: " + _totalTime + "\n\n");
-
+                        sw.WriteLine("Transfers:");
                         foreach (Node node in shortestPath)
                         {
                             sw.WriteLine("Station: " + node.stationnaam);
@@ -93,9 +94,32 @@ namespace manderijntje
             }
         }
 
+
         private void saveRoute_Click(object sender, EventArgs e)
         {
-            saveAsTextFile();
+            printDialog1.Document = printDocument1;
+            if (printDialog1.ShowDialog() == DialogResult.OK)
+                printDocument1.Print();
+
+            //saveAsTextFile();
+        }
+
+        // Make print document
+        private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawString("Way2Go Trip Details", new Font("Arial", 30, FontStyle.Bold), Brushes.Orange, 50, 50);
+            e.Graphics.DrawString("Depature Time: " + _departureTime, new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 50, 120);
+            e.Graphics.DrawString("Arrival Time: " + _destinationTime, new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 50, 170);
+            e.Graphics.DrawString("Total Time: " + _totalTime, new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 50, 220);
+            e.Graphics.DrawString("Transfers:", new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 50, 300);
+            int j = 300;
+            for(int i = 0; i<shortestPath.Count; i++)
+            {
+                j += 50;
+                e.Graphics.DrawString("Station: " + shortestPath[i].stationnaam, new Font("Arial", 15, FontStyle.Regular), Brushes.Black, 50, j);
+                j += 50;
+                e.Graphics.DrawString("Departure Time: " + shortestPath[i].MinCostToStart.ToShortTimeString(), new Font("Arial", 15, FontStyle.Regular), Brushes.Black, 50, j);
+            }
         }
     }
 }

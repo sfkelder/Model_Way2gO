@@ -25,6 +25,7 @@ namespace manderijntje
 
         private bool demoDani = false;
 
+        
         public Form1()
         {
             InitializeComponent();
@@ -38,7 +39,6 @@ namespace manderijntje
             this.Controls.Add(indexpanel);
             this.Controls.Add(zoomInandOut);
             this.Controls.Add(mapView);
-     
             setupView();
 
             if (demoDani)

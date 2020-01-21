@@ -36,6 +36,8 @@
             this.timesLBL = new System.Windows.Forms.Label();
             this.departureLBL = new System.Windows.Forms.Label();
             this.transfersPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.headerDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.saveRoute)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clockIcon)).BeginInit();
@@ -137,6 +139,14 @@
             this.transfersPanel.Size = new System.Drawing.Size(845, 1139);
             this.transfersPanel.TabIndex = 1;
             // 
+            // printDocument1
+            // 
+            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
+            // 
+            // printDialog1
+            // 
+            this.printDialog1.UseEXDialog = true;
+            // 
             // DetailsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -164,5 +174,7 @@
         public System.Windows.Forms.FlowLayoutPanel transfersPanel;
         private System.Windows.Forms.PictureBox clockIcon;
         private System.Windows.Forms.PictureBox saveRoute;
+        private System.Drawing.Printing.PrintDocument printDocument1;
+        private System.Windows.Forms.PrintDialog printDialog1;
     }
 }
