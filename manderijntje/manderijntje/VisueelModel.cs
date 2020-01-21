@@ -95,7 +95,11 @@ namespace manderijntje
         {
             foreach(VisueelNode v in access.nodes)
             {
-
+                foreach(VisualLink n in access.links)
+                {
+                    if (v.name_id == n.v.name_id || v.name_id == n.u.name_id)
+                        v.numberOfLinks++;
+                }
             }
         }
 
@@ -266,28 +270,50 @@ namespace manderijntje
 
             switch (zoom)
             {
-                case 0:
-                   //v.paint = (v.prioriteit < 5) ? false : true;
+                case 1:
+                    Console.WriteLine(v.numberOfLinks);
+                    v.priorityLinks = (v.numberOfLinks < 9) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v); 
 
                     break;
-                case 1:
-                    // v.paint = (v.prioriteit < 4) ? false : true;
-                    v.paint = true;
-                    if (v.paint) map.nodes.Add(v);
-                    break;
                 case 2:
-                    //v.paint = (v.prioriteit < 3) ? false : true;
+                    v.priorityLinks = (v.numberOfLinks < 8) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v);
                     break;
                 case 3:
-                    // v.paint = (v.prioriteit < 2) ? false : true;
+                    v.priorityLinks = (v.numberOfLinks < 7) ? false : true;
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 4:
+                    v.priorityLinks = (v.numberOfLinks < 6) ? false : true; 
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 5:
+                    v.priorityLinks = (v.numberOfLinks < 5) ? false : true;
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 6:
+                    v.priorityLinks = (v.numberOfLinks < 4) ? false : true;
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 7:
+                    v.priorityLinks = (v.numberOfLinks < 3) ? false : true; 
+                    v.paint = true;
+                    if (v.paint) map.nodes.Add(v);
+                    break;
+                case 8:
+                    v.priorityLinks = (v.numberOfLinks < 2) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v);
                     break;
                 default:
+                    v.priorityLinks = (v.numberOfLinks < 1) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v);
                     break;
@@ -379,8 +405,8 @@ namespace manderijntje
         public Color Color = Color.Gray;
         public bool paint = true;
         public bool dummynode = false;
-        public bool dummynodeDrawLine = false;
-        //public int numberOfLinks =;
+        public bool priorityLinks = false;
+        public int numberOfLinks = 0;
 
         public VisueelNode(Point point, string name_id, int prioriteit)
         { 
