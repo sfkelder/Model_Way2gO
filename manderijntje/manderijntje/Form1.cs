@@ -301,17 +301,27 @@ namespace manderijntje
                     if (timeAdded.Day > tripOptions[i].startTime.Day)
                     {
                         // If it takes 1 or more days change LBL size, height and span format.
-                        if (span.Days >= 1)
+                        if (span.Days == 1)
                         {
                             listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
                             listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
                             listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
                             listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                            listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
+                        }
+                        else if (span.Days > 1)
+                        {
+                            listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
+                            listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
+                            listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
+                            listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                            listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " " + span.Days + " days later";
                         }
                         else
+                        {
+                            listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
                             listItems[i].totalTime = span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
-
-                        listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
+                        } 
                     }
                     else
                         listItems[i].totalTime = span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";

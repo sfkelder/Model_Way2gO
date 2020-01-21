@@ -170,7 +170,7 @@ class Routing
             int transfers = 0;
             List<Route> ListRoute = new List<Route>();
             DateTime starttime = time;
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Route fastestRoute = new Route(startName, endName, transfers, starttime, dataModel);
                 ListRoute.Add(fastestRoute);
