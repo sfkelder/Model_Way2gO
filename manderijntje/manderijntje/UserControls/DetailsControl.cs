@@ -80,12 +80,12 @@ namespace manderijntje
                     {
                         sw.WriteLine("Depature Time: " + _departureTime);
                         sw.WriteLine("Arrival Time: " + _destinationTime);
-                        sw.WriteLine("Total Time: " + _totalTime + "\n");
+                        sw.WriteLine("Total Time: " + _totalTime + "\n\n");
 
                         foreach (Node node in shortestPath)
                         {
                             sw.WriteLine("Station: " + node.stationnaam);
-                            //sw.WriteLine("Departure Time: " +_shortestPath.+ "\n");
+                            sw.WriteLine("Departure Time: " + _departureTime + "\n");
                         }
                     }
                     myStream.Close();

@@ -20,6 +20,7 @@ namespace manderijntje
         public tripOptionsCell tripOptionscell { get; set; }
         DateTime chosenTime { get; set; }
         string departureLocation, destinationLocation, departureTime, depLocation, desLocation;
+        int biggestLBL, biggestLBLIndex;
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
 
         private bool demoDani = false;
@@ -525,17 +526,44 @@ namespace manderijntje
         // Fills the flowcontrol with the usercontrol called "autoSuggesCell" and gives the needed data to autoSuggesCell.
         public void fillAutosuggestie(autoSuggestionCell[] listItems, bool departureInput, List<autoSuggestionModel> suggestionsList)
         {
+            biggestLBL = 0;
+            biggestLBLIndex = 0;
             for (int i = 0; i < suggestionsList.Count; i++)
             {
                 listItems[i] = new autoSuggestionCell(this);
                 listItems[i].stationName = suggestionsList[i].stationName;
                 listItems[i].stationType = suggestionsList[i].stationType;
                 listItems[i].departureInput = departureInput;
+
+                if (biggestLBL < listItems[i].stationLBL.Width)
+                {
+                    biggestLBL = listItems[i].stationLBL.Width;
+                    biggestLBLIndex = i;
+                }
+
+                // Will prevent to display 2 usercontrols on the same height in the autoSuggestion
+                if (listItems[i].stationLBL.Width + 25 <= destinationInput.Width)
+                    listItems[i].Width = destinationInput.Width;
+                else
+                    listItems[i].Width = listItems[i].stationLBL.Width + 25;
+
                 if (autoSuggestion.autoSuggestFlowControl.Controls.Count < 0)
                     clearFlowControl(autoSuggestion.autoSuggestFlowControl);
                 else
                     autoSuggestion.autoSuggestFlowControl.Controls.Add(listItems[i]);
             }
+
+            if (listItems[biggestLBLIndex].Width == destinationInput.Width)
+                setSizeAutoSuggestion(destinationInput.Width + 10, autoSuggestion.Height);
+            else
+                setSizeAutoSuggestion(biggestLBL + 40 + 10, autoSuggestion.Height);
+        }
+
+        // Gives autosuggestion proper Size
+        private void setSizeAutoSuggestion(int width, int heigth)
+        {
+            autoSuggestion.Size = new Size(width, heigth);
+            autoSuggestion.autoSuggestFlowControl.Size = new Size(autoSuggestion.Width, autoSuggestion.Height);
         }
 
         // Set the autosuggestion userControl on the right Y coordinate en setup the right height of the userControl

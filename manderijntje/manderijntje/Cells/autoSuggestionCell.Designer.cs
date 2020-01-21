@@ -37,7 +37,7 @@
             // 
             this.stationLBL.AutoSize = true;
             this.stationLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stationLBL.Location = new System.Drawing.Point(52, 21);
+            this.stationLBL.Location = new System.Drawing.Point(52, 15);
             this.stationLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.stationLBL.Name = "stationLBL";
             this.stationLBL.Size = new System.Drawing.Size(249, 29);
@@ -48,8 +48,8 @@
             // stationTypeIcon
             // 
             this.stationTypeIcon.Image = global::manderijntje.Properties.Resources.OrangeTrain;
-            this.stationTypeIcon.Location = new System.Drawing.Point(16, 18);
-            this.stationTypeIcon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.stationTypeIcon.Location = new System.Drawing.Point(16, 12);
+            this.stationTypeIcon.Margin = new System.Windows.Forms.Padding(4);
             this.stationTypeIcon.Name = "stationTypeIcon";
             this.stationTypeIcon.Size = new System.Drawing.Size(27, 32);
             this.stationTypeIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -65,7 +65,7 @@
             this.Controls.Add(this.stationLBL);
             this.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.Name = "autoSuggestionCell";
-            this.Size = new System.Drawing.Size(313, 69);
+            this.Size = new System.Drawing.Size(528, 59);
             ((System.ComponentModel.ISupportInitialize)(this.stationTypeIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -75,6 +75,6 @@
         #endregion
 
         public System.Windows.Forms.Label stationLBL;
-        private System.Windows.Forms.PictureBox stationTypeIcon;
+        public System.Windows.Forms.PictureBox stationTypeIcon;
     }
 }
