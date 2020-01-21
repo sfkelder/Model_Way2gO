@@ -71,6 +71,7 @@ namespace manderijntje
             if (startingUp)
             {
                 _connecionToFiles.SetSizeMap(width, height);
+                _connecionToFiles.countConnections();
                 startingUp = false; 
             }
 
@@ -190,7 +191,12 @@ namespace manderijntje
                 if (nodes[m].paint == true && nodes[m].dummynode == false)
                 {
                     g.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
-                  //  g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+
+                    if (nodes[m].priorityLinks)
+                    {
+                        g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                    }
+                    
 
                   /*  if (nodes[m].name_id == "Ronald Reagon Washington" || nodes[m].name_id == "Naylor Road")
                     {
