@@ -14,8 +14,6 @@ namespace manderijntje
     {
         private string _departureTime;
         private string _destinationTime;
-        private string _carrier;
-        private string _typeCarrier;
         private string _nameTransport;
         private string _totalTime;
         private string _transfersCount;
@@ -34,16 +32,10 @@ namespace manderijntje
             set { _destinationTime = value; TimeLBL.Text = _departureTime + " - " + value; }
         }
 
-        public string carrier
+        public string nameTransport
         {
-            get { return _carrier; }
-            set { _carrier = value; }
-        }
-
-        public string typeCarrier
-        {
-            get { return _typeCarrier; }
-            set { _typeCarrier = value; carrierLBL.Text = value; }
+            get { return _nameTransport; }
+            set { _nameTransport = value; nameTransportLBL.Text = value; }
         }
 
         public string totalTime
@@ -52,15 +44,6 @@ namespace manderijntje
             set { _totalTime = value; 
                 clockIcon.Image = Properties.Resources.OrangeClock;
                 totaltimeLBL.Text = value; }
-        }
-
-        public string transferCount
-        {
-            get { return _transfersCount; }
-            set { _transfersCount = value;
-                transferIcon.Image = Properties.Resources.OverstappenOrange;
-                transferLBL.Text = value + "x";
-            }
         }
 
         public List<Node> shortestPath
@@ -75,13 +58,11 @@ namespace manderijntje
             this._parent = parent;
         }
 
-        public tripOptionsCell(string departureTime, string destinationTime, string carrier, string typeCarrier, string nameTransport,
+        public tripOptionsCell(string departureTime, string destinationTime, string nameTransport,
            string totalTime, string transferCount, List<Node> shortestPath)
         {
             this._departureTime = departureTime;
             this._destinationTime = destinationTime;
-            this._carrier = carrier;
-            this._typeCarrier = typeCarrier;
             this._nameTransport = nameTransport;
             this._totalTime = totalTime;
             this._transfersCount = transferCount;
@@ -89,10 +70,10 @@ namespace manderijntje
         }
 
         // Gives a tripOptionsCell back
-        public static tripOptionsCell getCellDetails(string departureTime, string destinationTime, string carrier, string typeCarrier, string nameTransport
+        public static tripOptionsCell getCellDetails(string departureTime, string destinationTime, string nameTransport
             , string totalTime, string transferCount, List<Node> shortestPath)
         {
-            tripOptionsCell c = new tripOptionsCell(departureTime, destinationTime, carrier, typeCarrier, nameTransport, totalTime, transferCount, shortestPath);
+            tripOptionsCell c = new tripOptionsCell(departureTime, destinationTime, nameTransport, totalTime, transferCount, shortestPath);
             return c;
         }
 
@@ -100,7 +81,7 @@ namespace manderijntje
 
         private void click()
         {
-            this._parent.tripOptionscell = getCellDetails(_departureTime, _destinationTime, _carrier, _typeCarrier, _nameTransport, _totalTime, _transfersCount, _shortestPath);
+            this._parent.tripOptionscell = getCellDetails(_departureTime, _destinationTime, _nameTransport, _totalTime, _transfersCount, _shortestPath);
             this._parent.setupTripDetails();
         }
 
