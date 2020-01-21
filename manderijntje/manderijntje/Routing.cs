@@ -68,6 +68,7 @@ namespace manderijntje
                 Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
                 ListRoute.Add(fastestRoute);
                 starttime = fastestRoute.startTime.AddMinutes(1);
+                //TravelInformation test = TimeModel.GetTravelCost(time, "Utrecht Centraal", "Frankfurt (Main) Hbf");
                 foreach (Node node in dataModel.nodesrouting)
                 {
                     node.MinCostToStart = int.MaxValue;
