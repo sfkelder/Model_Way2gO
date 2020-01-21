@@ -91,6 +91,14 @@ namespace manderijntje
 
         }
 
+        public void countConnections()
+        {
+            foreach(VisueelNode v in access.nodes)
+            {
+
+            }
+        }
+
         //is responsible for corectly colloring all nodes
         public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
         {
@@ -210,8 +218,10 @@ namespace manderijntje
         {
 
             Point shift = b.movemap(start, end);
-            toshiftX += shift.X;
+           toshiftX += shift.X;
             toshifty+= shift.Y;
+
+           
 
 
 
@@ -369,7 +379,8 @@ namespace manderijntje
         public Color Color = Color.Gray;
         public bool paint = true;
         public bool dummynode = false;
-        public bool dummynodeDrawLine = false; 
+        public bool dummynodeDrawLine = false;
+        //public int numberOfLinks =;
 
         public VisueelNode(Point point, string name_id, int prioriteit)
         { 
@@ -377,7 +388,7 @@ namespace manderijntje
             this.name_id = name_id;
             this.prioriteit = prioriteit;
         }
-
+         
     }
 
 
