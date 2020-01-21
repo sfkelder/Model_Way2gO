@@ -1361,6 +1361,8 @@ namespace manderijntje
                         try
                         {
                             link.times.Add(temptime);
+                            link.times.Add(temptime + new TimeSpan(1, 0, 0, 0));
+                            link.times.Add(temptime + new TimeSpan(2, 0, 0, 0));
                             temptime = temptime.Add(timedelay);
                         }
                         catch
