@@ -113,7 +113,7 @@ namespace manderijntje
             e.Graphics.DrawString("Total Time: " + _totalTime, new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 50, 220);
             e.Graphics.DrawString("Transfers:", new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 50, 300);
             int j = 300;
-            for(int i = 0; i<shortestPath.Count; i++)
+            for(int i = 0; i < shortestPath.Count; i++)
             {
                 j += 50;
                 e.Graphics.DrawString("Station: " + shortestPath[i].stationnaam, new Font("Arial", 15, FontStyle.Regular), Brushes.Black, 50, j);
