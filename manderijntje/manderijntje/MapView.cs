@@ -74,31 +74,43 @@ namespace manderijntje
                 startingUp = false; 
             }
 
-            bitmap1 = new Bitmap(x, y);
-            picbox1.Size = new Size(x, y);
-            _connecionToFiles.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);  
-            painting();
+            try
+            {
+                bitmap1 = new Bitmap(x, y);
+                picbox1.Size = new Size(x, y);
+                _connecionToFiles.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);
+                painting();
+            }
+            catch(Exception)
+            {
+
+            }
+             
         }
-         
+
         //this mathod takes care for moving around over the map
         public void onclick()
-        {           
-                if (mouseMoved)
+        {
+            if (mouseMoved)
+            {
+                nodes.Clear();
+                links.Clear();
+
+                if ((totverschuivingX + start.X - end.X) < (250*(zoom-1)) && -(totverschuivingX + start.X - end.X) > (250 * (zoom - 1)))
                 {
-                    nodes.Clear();
-                    links.Clear();
-                    _connecionToFiles.visualcontrol(width, zoom, start, end, null, false, mapView);
                     totverschuivingX += start.X - end.X;
-                    totverschuivingY += start.Y - end.Y;
+                }
+              //  totverschuivingX += start.X - end.X;
+                totverschuivingY += start.Y - end.Y;
+
+                _connecionToFiles.visualcontrol(width, zoom, start, end, null, false, mapView);
+
+                mouseMoved = false;
 
 
 
-                    mouseMoved = false;
-
-
-
-                    painting();
-                }   
+                painting();
+            }
         }
 
 
@@ -170,7 +182,7 @@ namespace manderijntje
                 for (int n = 0; n < logicallinks[i].links.Count; n++)
                 {
                     Pen blackPen = new Pen(Color.Orange, 1);
-                    pea.Graphics.DrawLine(blackPen, new Point(logicallinks[i].links[n].u.point.X - totverschuivingX + 3, logicallinks[i].links[n].u.point.Y - totverschuivingY + 3), new Point(logicallinks[i].links[n].v.point.X - totverschuivingX + 3, logicallinks[i].links[n].v.point.Y - totverschuivingY + 3));
+                    g.DrawLine(blackPen, new Point(logicallinks[i].links[n].u.point.X - totverschuivingX + 3, logicallinks[i].links[n].u.point.Y - totverschuivingY + 3), new Point(logicallinks[i].links[n].v.point.X - totverschuivingX + 3, logicallinks[i].links[n].v.point.Y - totverschuivingY + 3));
                 }
             }*/
              
@@ -182,19 +194,17 @@ namespace manderijntje
                 {
                     g.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
                   //  g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
-                   
-                    /*pea.Graphics.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
 
                     if (nodes[m].name_id == "Ronald Reagon Washington" || nodes[m].name_id == "Naylor Road")
                     {
-                        pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX + 3, (float)nodes[m].point.Y - (float)totverschuivingY + 3);
-                    }*/
+                        g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX + 3, (float)nodes[m].point.Y - (float)totverschuivingY + 3);
+                    }
                 }
 
                 /*if (nodes[m].paint == true && nodes[m].dummynode == true)
                 {
-                    pea.Graphics.FillRectangle(Brushes.Red, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
-                    pea.Graphics.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                    g.FillRectangle(Brushes.Red, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
+                    g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
                 }*/
 
                 picbox1.Image = bitmap1;
