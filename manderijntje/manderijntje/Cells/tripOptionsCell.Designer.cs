@@ -66,18 +66,18 @@
             this.totaltimeLBL.BackColor = System.Drawing.Color.Transparent;
             this.totaltimeLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totaltimeLBL.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
-            this.totaltimeLBL.Location = new System.Drawing.Point(610, 29);
+            this.totaltimeLBL.Location = new System.Drawing.Point(568, 29);
             this.totaltimeLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.totaltimeLBL.Name = "totaltimeLBL";
-            this.totaltimeLBL.Size = new System.Drawing.Size(78, 36);
+            this.totaltimeLBL.Size = new System.Drawing.Size(138, 36);
             this.totaltimeLBL.TabIndex = 3;
-            this.totaltimeLBL.Text = "0:19";
+            this.totaltimeLBL.Text = "22h 30m";
             this.totaltimeLBL.Click += new System.EventHandler(this.totaltimeLBL_Click);
             // 
             // clockIcon
             // 
             this.clockIcon.Image = global::manderijntje.Properties.Resources.OrangeClock;
-            this.clockIcon.Location = new System.Drawing.Point(563, 26);
+            this.clockIcon.Location = new System.Drawing.Point(521, 26);
             this.clockIcon.Margin = new System.Windows.Forms.Padding(4);
             this.clockIcon.Name = "clockIcon";
             this.clockIcon.Size = new System.Drawing.Size(38, 38);
@@ -106,7 +106,7 @@
         #endregion
         private System.Windows.Forms.Label TimeLBL;
         private System.Windows.Forms.Label nameTransportLBL;
-        private System.Windows.Forms.Label totaltimeLBL;
-        private System.Windows.Forms.PictureBox clockIcon;
+        public System.Windows.Forms.Label totaltimeLBL;
+        public System.Windows.Forms.PictureBox clockIcon;
     }
 }

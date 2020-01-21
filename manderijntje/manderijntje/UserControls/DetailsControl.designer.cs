@@ -70,7 +70,7 @@
             // clockIcon
             // 
             this.clockIcon.Image = global::manderijntje.Properties.Resources.WhiteClock;
-            this.clockIcon.Location = new System.Drawing.Point(670, 29);
+            this.clockIcon.Location = new System.Drawing.Point(581, 29);
             this.clockIcon.Margin = new System.Windows.Forms.Padding(4);
             this.clockIcon.Name = "clockIcon";
             this.clockIcon.Size = new System.Drawing.Size(38, 38);
@@ -84,12 +84,13 @@
             this.totaltimeLBL.BackColor = System.Drawing.Color.Transparent;
             this.totaltimeLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totaltimeLBL.ForeColor = System.Drawing.Color.White;
-            this.totaltimeLBL.Location = new System.Drawing.Point(717, 31);
+            this.totaltimeLBL.Location = new System.Drawing.Point(628, 31);
             this.totaltimeLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.totaltimeLBL.Name = "totaltimeLBL";
-            this.totaltimeLBL.Size = new System.Drawing.Size(78, 36);
+            this.totaltimeLBL.Size = new System.Drawing.Size(183, 36);
             this.totaltimeLBL.TabIndex = 6;
-            this.totaltimeLBL.Text = "0:19";
+            this.totaltimeLBL.Text = "1d 22h 30m";
+            this.totaltimeLBL.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // arrivalLBL
             // 

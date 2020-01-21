@@ -33,6 +33,21 @@ namespace manderijntje
         {
             get { return _totalTime; }
             set { _totalTime = value; totaltimeLBL.Text = value;
+                try
+                {
+                    if (value.Length == 7)
+                    {
+                        totaltimeLBL.Location = new Point(335, totaltimeLBL.Location.Y);
+                        clockIcon.Location = new Point(totaltimeLBL.Location.X - 27, clockIcon.Location.Y);
+                    }
+                    else
+                    {
+                        totaltimeLBL.Location = new Point(310, totaltimeLBL.Location.Y);
+                        clockIcon.Location = new Point(totaltimeLBL.Location.X - 27, clockIcon.Location.Y);
+                    }
+                }
+                catch {}
+                
             }
         }
 
@@ -65,15 +80,12 @@ namespace manderijntje
                     {
                         sw.WriteLine("Depature Time: " + _departureTime);
                         sw.WriteLine("Arrival Time: " + _destinationTime);
-                        sw.WriteLine("Total Time: " + _totalTime);
-                        sw.WriteLine("Transfers Stations: \n");
+                        sw.WriteLine("Total Time: " + _totalTime + "\n");
 
                         foreach (Node node in shortestPath)
                         {
                             sw.WriteLine("Station: " + node.stationnaam);
-                            sw.WriteLine("Departure Time: ");
-                            sw.WriteLine("Platform: ");
-                            sw.WriteLine("To Station: " + "" + "\n");
+                            //sw.WriteLine("Departure Time: " +_shortestPath.+ "\n");
                         }
                     }
                     myStream.Close();

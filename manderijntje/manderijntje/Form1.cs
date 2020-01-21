@@ -294,10 +294,21 @@ namespace manderijntje
                     listItems[i].departureTime = tripOptions[i].startTime.ToShortTimeString();
                     listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
                     listItems[i].nameTransport = "Train";
-                    listItems[i].totalTime = (tripOptions[i].endTime.Subtract(tripOptions[i].startTime)).ToString(@"hh\:mm");
-                    //TimeSpan span = (tripOptions[i].endTime - tripOptions[i].startTime);
-                    //listItems[i].totalTime = String.Format("{0} days, {1}:{2}",
-                    //span.Days, span.Hours, span.Minutes);
+                    TimeSpan span = tripOptions[i].endTime.Subtract(tripOptions[i].startTime);
+
+                    if (span.Days >= 1)
+                    {
+                        listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
+                        listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
+                        listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
+                        listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                        listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
+                    }
+                    else
+                    {
+                        listItems[i].totalTime = span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                    }
+
                     listItems[i].shortestPath = tripOptions[i].shortestPath;
 
                     if (tripOptionsFlowControl.Controls.Count < 0)
