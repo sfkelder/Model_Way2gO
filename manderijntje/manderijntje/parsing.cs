@@ -49,6 +49,15 @@ namespace manderijntje
                 getLinkPairs();
                 getBendLinks();
 
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    if (nodes[i].neighbours.Count == 0)
+                    {
+                        Console.WriteLine(i);
+                    }
+                }
+
+                /*
                 int dummy = 0;
                 for (int i = 0; i < nodes.Count; i++)
                 {
@@ -56,7 +65,7 @@ namespace manderijntje
                     {
                         dummy++;
                     }
-                }
+                }*/
                 //Console.WriteLine("dummy nodes: " + dummy);
                 //Console.WriteLine("logical links: " + logicallinks.Count);
                 //Console.WriteLine("connections: " + logicalconnections.Count);
@@ -568,6 +577,7 @@ namespace manderijntje
         {
             model.Optimize();
             relax_infeasible_model();
+            //relax_infeasible_constraints();
 
             updateData(width, height);
 
@@ -620,6 +630,30 @@ namespace manderijntje
                 foreach (string s in removed)
                 {
                     Console.WriteLine(s + " was removed from the model");
+                }
+            }
+        }
+
+        private void relax_infeasible_constraints ()
+        {
+            Console.WriteLine("The model is infeasible; relaxing the constraints");
+            int originNumVars = model.NumVars;
+            model.FeasRelax(0, false, false, true);
+            model.Optimize();
+    
+            if (model.Status == GRB.Status.INF_OR_UNBD || model.Status == GRB.Status.INFEASIBLE || model.Status == GRB.Status.UNBOUNDED)
+            {
+                Console.WriteLine("The relaxed model cannot be solved because it is infeasible or unbounded");
+            }
+
+            Console.WriteLine("Slack values: ");
+            GRBVar[] vars = model.GetVars();
+            for (int i = originNumVars; i < model.NumVars; i++)
+            {
+                GRBVar sv = vars[i];
+                if (sv.X > 1e-6)
+                {
+                    Console.WriteLine(sv.VarName + " = " + sv.X);
                 }
             }
         }

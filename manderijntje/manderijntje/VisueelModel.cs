@@ -45,7 +45,7 @@ namespace manderijntje
         //if there is no data file, this mothod will create a new file
         private void MakeDataForDisk(DataModel data)
         {
-            access = (new parsing(data)).getModel(false);
+            access = (new parsing(data)).getModel(true);
 
             if (Directory.Exists(filepath))
             {
