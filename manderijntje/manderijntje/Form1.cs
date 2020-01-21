@@ -106,7 +106,6 @@ namespace manderijntje
                 hideArrowIcon.Location = new Point(hideArrowIcon.Location.X, (hideBar.Height / 2) - (logoHeader.Height));
                 inputPanel.Location = new Point(inputPanel.Location.X, hideArrowIcon.Location.Y - (inputPanel.Height / 2));
             }
-
         }
 
         // Removes the placeholder text in the right inputBoxes
