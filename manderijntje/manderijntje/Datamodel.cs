@@ -1325,7 +1325,7 @@ namespace manderijntje
             {
                 string[] parametersnode = line.Split(';');
                 datamodel.nodes.Add(new Node(double.Parse(parametersnode[1], CultureInfo.InvariantCulture), double.Parse(parametersnode[2], CultureInfo.InvariantCulture),
-                    parametersnode[3], int.Parse(parametersnode[0], CultureInfo.InvariantCulture)));
+                    parametersnode[3], parametersnode[4], int.Parse(parametersnode[0], CultureInfo.InvariantCulture)));
             }
 
             line = documentlinks.ReadLine();
@@ -1346,8 +1346,8 @@ namespace manderijntje
             while ((line = documentroutes.ReadLine()) != null)
             {
                 string[] parametersroute = line.Split(';');
-                DateTime start = new DateTime(4001, 01, 01, int.Parse(parametersroute[0]), int.Parse(parametersroute[1]), 1);
-                DateTime end = new DateTime(4001, 01, 01, int.Parse(parametersroute[2]), int.Parse(parametersroute[3]), 1);
+                DateTime start = DateTime.Today + new TimeSpan(int.Parse(parametersroute[0]), int.Parse(parametersroute[1]), 1);
+                DateTime end = DateTime.Today + new TimeSpan(int.Parse(parametersroute[2]), int.Parse(parametersroute[3]), 1);
                 int delay = int.Parse(parametersroute[4]);
                 int i = 5;
                 while (i + 1 < parametersroute.Length && parametersroute[i + 1] != "")
@@ -1361,13 +1361,21 @@ namespace manderijntje
                         try
                         {
                             link.times.Add(temptime);
+                            link.times.Add(temptime + new TimeSpan(1,0,0,0));
+                            link.times.Add(temptime + new TimeSpan(2, 0, 0, 0));
                             temptime = temptime.Add(timedelay);
                         }
-                        catch
-                        {
+                        catch 
+                        { 
                             break;
                         }
                     }
+
+                    try
+                    {
+                        link.times = link.times.OrderBy(x => x.Day).ToList();
+                    }
+                    catch { }
                     i++;
                 }
             }
@@ -1428,17 +1436,20 @@ namespace manderijntje
 
         public int number;
 
+        public string country;
+
         // unieke indentifier, naam in de vorm van een string
         public string stationnaam;
         public Node NearestToStart;
         public DateTime MinCostToStart = DateTime.MaxValue;
         public bool Visited = false;
 
-        public Node(double coordx, double coordy, string stationsnaam, int i)
+        public Node(double coordx, double coordy, string stationsnaam, string countryStation, int i)
         {
             number = i;
             x = coordx;
             y = coordy;
+            country = countryStation;
             stationnaam = stationsnaam;
             neighbours = new List<Node>();
             Connections = new List<Link>();

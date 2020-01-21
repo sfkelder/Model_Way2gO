@@ -16,7 +16,6 @@ namespace manderijntje
         private string _departureTime;
         private string _destinationTime;
         private string _totalTime;
-        private string _transfers;
         private List<Node> _shortestPath;
         public string departureTime
         {
@@ -34,13 +33,22 @@ namespace manderijntje
         {
             get { return _totalTime; }
             set { _totalTime = value; totaltimeLBL.Text = value;
+                try
+                {
+                    if (value.Length == 7)
+                    {
+                        totaltimeLBL.Location = new Point(335, totaltimeLBL.Location.Y);
+                        clockIcon.Location = new Point(totaltimeLBL.Location.X - 27, clockIcon.Location.Y);
+                    }
+                    else
+                    {
+                        totaltimeLBL.Location = new Point(310, totaltimeLBL.Location.Y);
+                        clockIcon.Location = new Point(totaltimeLBL.Location.X - 27, clockIcon.Location.Y);
+                    }
+                }
+                catch {}
+                
             }
-        }
-
-        public string transfers
-        {
-            get { return _transfers; }
-            set { _transfers = value; transfersLBL.Text = value + "x"; }
         }
 
         public List<Node> shortestPath
@@ -72,17 +80,12 @@ namespace manderijntje
                     {
                         sw.WriteLine("Depature Time: " + _departureTime);
                         sw.WriteLine("Arrival Time: " + _destinationTime);
-                        sw.WriteLine("Total Time: " + _totalTime);
-                        sw.WriteLine("Transfer Count: " + _transfers);
-                        sw.WriteLine("Transfers: " + _transfers + "\n");
-                        sw.WriteLine("Transfers Stations: \n");
+                        sw.WriteLine("Total Time: " + _totalTime + "\n\n");
 
                         foreach (Node node in shortestPath)
                         {
                             sw.WriteLine("Station: " + node.stationnaam);
-                            sw.WriteLine("Departure Time: ");
-                            sw.WriteLine("Platform: ");
-                            sw.WriteLine("To Station: " + "" + "\n");
+                            sw.WriteLine("Departure Time: " + _departureTime + "\n");
                         }
                     }
                     myStream.Close();

@@ -14,7 +14,6 @@ namespace manderijntje
     {
         private string _departureTime;
         private string _stationName;
-        private string _toStation;
         private string _typeTransport;
         private bool _last;
         private bool _first;
@@ -25,16 +24,11 @@ namespace manderijntje
             get { return _departureTime; }
             set { _departureTime = value; departuretimeLBL.Text = value; }
         }
+
         public string stationName
         {
             get { return _stationName; }
             set { _stationName = value; stationLBL.Text = value; }
-        }
-
-        public string toStation
-        {
-            get { return _toStation; }
-            set { _toStation = value; directionLBL.Text = "To " + value; }
         }
 
         public string typeTransport
@@ -42,11 +36,11 @@ namespace manderijntje
             get { return _typeTransport; }
             set { _typeTransport = value;
                 
-                if(_typeTransport == "train")
+                if(_typeTransport == "Train")
                 {
                     typetransportIcon.Image = Properties.Resources.OrangeTrain;
                 }
-                else if (_typeTransport == "bus")
+                else if (_typeTransport == "Bus")
                 {
                     typetransportIcon.Image = Properties.Resources.busIcon;
                 }
