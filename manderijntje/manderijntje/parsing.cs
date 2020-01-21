@@ -23,13 +23,13 @@ namespace manderijntje
         public parsing(DataModel model)
         {
             if (model.nodes.Count != 0 && model.links.Count != 0)
-            {/*
+            {
                 for (int i = 0; i < model.nodes.Count; i++)
                 {
-                    Console.WriteLine(model.nodes[i].x + " " + model.nodes[i].y);
+                    Console.WriteLine(model.nodes[i].neighbours.Count + "    " + model.nodes[i].stationnaam);
                 }
 
-
+                /*
                 if (daniDemo)
                 {
                     initModelFromFile();
@@ -49,6 +49,15 @@ namespace manderijntje
                 getLinkPairs();
                 getBendLinks();
 
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    if (nodes[i].neighbours.Count == 0)
+                    {
+                        Console.WriteLine(i);
+                    }
+                }
+
+                /*
                 int dummy = 0;
                 for (int i = 0; i < nodes.Count; i++)
                 {
@@ -56,10 +65,10 @@ namespace manderijntje
                     {
                         dummy++;
                     }
-                }
-                Console.WriteLine("dummy nodes: " + dummy);
-                Console.WriteLine("logical links: " + logicallinks.Count);
-                Console.WriteLine("connections: " + logicalconnections.Count);
+                }*/
+                //Console.WriteLine("dummy nodes: " + dummy);
+                //Console.WriteLine("logical links: " + logicallinks.Count);
+                //Console.WriteLine("connections: " + logicalconnections.Count);
             }
         }
 
@@ -378,7 +387,6 @@ namespace manderijntje
             {
                 sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
                 newNode.name = dNodes[i].stationnaam;
-                newNode.country = dNodes[i].country;
                 //newNode.weight = dNodes[i].
                 nodes.Add(newNode);
             }
@@ -458,11 +466,13 @@ namespace manderijntje
                 newNode.point = new Point(nodes[i].x, nodes[i].y);
                 newNode.dummynode = !nodes[i].draw;
                 newNode.prioriteit = (int)nodes[i].weight;
-                newNode.country = nodes[i].country;
 
                 if (newNode.dummynode)
                 {
                     newNode.Color = Color.Orange;
+                } else
+                {
+                    newNode.dummynodeDrawLine = true;
                 }
 
                 dNodes.Add(newNode);
@@ -536,7 +546,7 @@ namespace manderijntje
         private GRBEnv env;
         private int M;
         // the minimum length of an edge, the minimum distance between two edges, and the weight used in the objective function
-        private double minL = 10.0, minD = 10.0, weightBend = 3.0, weightRpos = 2.0, weightLength = 2.0; 
+        private double minL = 10.0, minD = 10.0, weightBend = 3.0, weightRpos = 2.0, weightLength = 1.0; 
         // the width and height where the solution is calculated over
         private const int width = 100000, height = 100000;
         private bool usePlanarity = false;
@@ -567,6 +577,7 @@ namespace manderijntje
         {
             model.Optimize();
             relax_infeasible_model();
+            //relax_infeasible_constraints();
 
             updateData(width, height);
 
@@ -619,6 +630,30 @@ namespace manderijntje
                 foreach (string s in removed)
                 {
                     Console.WriteLine(s + " was removed from the model");
+                }
+            }
+        }
+
+        private void relax_infeasible_constraints ()
+        {
+            Console.WriteLine("The model is infeasible; relaxing the constraints");
+            int originNumVars = model.NumVars;
+            model.FeasRelax(0, false, false, true);
+            model.Optimize();
+    
+            if (model.Status == GRB.Status.INF_OR_UNBD || model.Status == GRB.Status.INFEASIBLE || model.Status == GRB.Status.UNBOUNDED)
+            {
+                Console.WriteLine("The relaxed model cannot be solved because it is infeasible or unbounded");
+            }
+
+            Console.WriteLine("Slack values: ");
+            GRBVar[] vars = model.GetVars();
+            for (int i = originNumVars; i < model.NumVars; i++)
+            {
+                GRBVar sv = vars[i];
+                if (sv.X > 1e-6)
+                {
+                    Console.WriteLine(sv.VarName + " = " + sv.X);
                 }
             }
         }
@@ -1020,7 +1055,7 @@ namespace manderijntje
         public int x, y, z1, z2, deg, index;
         public List<sNode> neighbours = new List<sNode>();
         public sNode[] neighbours_sorted;
-        public string node_id, name, country;
+        public string node_id, name;
         public bool draw = true;
         public double weight = 0.0;
 
