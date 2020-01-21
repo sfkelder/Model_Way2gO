@@ -83,14 +83,26 @@ namespace manderijntje
 //Route is an object to show all the information
 class Route
 {
-    public List<Node> shortestPath; //list of the shortest path
+    public List<Node> shortestPath = new List<Node>(); //list of the shortest path
     public DateTime startTime; //time the train will depart from the first station
     public DateTime endTime; //time the train should arrive at the destination
     public int transfers; //amount of transfers to another train
 
     public Route(string startName, string endName, int totaltransfers, DateTime time, DataModel dataModel)
     {
-        shortestPath = Routing.GetShortestPathDijkstra(startName, endName, time, dataModel);
+
+        List<Node> tempshortestpath = new List<Node>();
+        tempshortestpath = Routing.GetShortestPathDijkstra(startName, endName, time, dataModel);
+        foreach (Node node in tempshortestpath)
+        {
+            //Node tempnode = node;
+            Node tempnode = new Node(node.x, node.y, node.stationnaam, node.country, node.number);
+            tempnode.MinCostToStart = node.MinCostToStart;
+            tempnode.Connections = node.Connections;
+            tempnode.neighbours = node.neighbours;
+            tempnode.NearestToStart = node.NearestToStart;
+            shortestPath.Add(tempnode);
+        }
         startTime = time;
         endTime = shortestPath.Last().MinCostToStart;
         transfers = totaltransfers;
