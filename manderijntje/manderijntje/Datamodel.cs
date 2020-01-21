@@ -1323,7 +1323,7 @@ namespace manderijntje
             line = documentnodes.ReadLine();
             while ((line = documentnodes.ReadLine()) != null)
             {
-                string[] parametersnode = line.Split(';');
+                string[] parametersnode = line.Split(',');
                 datamodel.nodes.Add(new Node(double.Parse(parametersnode[1], CultureInfo.InvariantCulture), double.Parse(parametersnode[2], CultureInfo.InvariantCulture),
                     parametersnode[3], parametersnode[4], int.Parse(parametersnode[0], CultureInfo.InvariantCulture)));
             }
@@ -1331,7 +1331,7 @@ namespace manderijntje
             line = documentlinks.ReadLine();
             while ((line = documentlinks.ReadLine()) != null)
             {
-                string[] parameterslink = line.Split(';');
+                string[] parameterslink = line.Split(',');
                 Node node1 = datamodel.nodes[int.Parse(parameterslink[1], CultureInfo.InvariantCulture)];
                 Node node2 = datamodel.nodes[int.Parse(parameterslink[2], CultureInfo.InvariantCulture)];
                 datamodel.links.Add(new Link(node1, node2, parameterslink[0]));
