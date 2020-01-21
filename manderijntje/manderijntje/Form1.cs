@@ -296,19 +296,26 @@ namespace manderijntje
                     listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
                     listItems[i].nameTransport = "Train";
                     TimeSpan span = tripOptions[i].endTime.Subtract(tripOptions[i].startTime);
+                    DateTime timeAdded = tripOptions[i].startTime.AddHours(span.Hours).AddMinutes(span.Minutes).AddDays(span.Days);
 
-                    if (span.Days >= 1)
+                    if (timeAdded.Day > tripOptions[i].startTime.Day)
                     {
-                        listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
-                        listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
-                        listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
-                        listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                        // If it takes 1 or more days change LBL size, height and span format.
+                        if (span.Days >= 1)
+                        {
+                            listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
+                            listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
+                            listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
+                            listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                        }
+                        else
+                            listItems[i].totalTime = span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+
                         listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
                     }
                     else
-                    {
                         listItems[i].totalTime = span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
-                    }
+
 
                     listItems[i].shortestPath = tripOptions[i].shortestPath;
 
@@ -556,7 +563,7 @@ namespace manderijntje
             if (listItems[biggestLBLIndex].Width == destinationInput.Width)
                 setSizeAutoSuggestion(destinationInput.Width + 10, autoSuggestion.Height);
             else
-                setSizeAutoSuggestion(biggestLBL + 40 + 10, autoSuggestion.Height);
+                setSizeAutoSuggestion(biggestLBL + 50, autoSuggestion.Height);
         }
 
         // Gives autosuggestion proper Size
