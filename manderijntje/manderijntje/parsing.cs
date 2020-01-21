@@ -387,7 +387,7 @@ namespace manderijntje
             {
                 sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
                 newNode.name = dNodes[i].stationnaam;
-                //newNode.weight = dNodes[i].
+                newNode.country = dNodes[i].country;
                 nodes.Add(newNode);
             }
         }
@@ -466,6 +466,7 @@ namespace manderijntje
                 newNode.point = new Point(nodes[i].x, nodes[i].y);
                 newNode.dummynode = !nodes[i].draw;
                 newNode.prioriteit = (int)nodes[i].weight;
+                newNode.country = nodes[i].country;
 
                 if (newNode.dummynode)
                 {
@@ -1055,7 +1056,7 @@ namespace manderijntje
         public int x, y, z1, z2, deg, index;
         public List<sNode> neighbours = new List<sNode>();
         public sNode[] neighbours_sorted;
-        public string node_id, name;
+        public string node_id, name, country;
         public bool draw = true;
         public double weight = 0.0;
 
