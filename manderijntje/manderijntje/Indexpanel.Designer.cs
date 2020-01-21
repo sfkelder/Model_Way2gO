@@ -29,15 +29,9 @@
         private void InitializeComponent()
         {
             this.indexLBL = new System.Windows.Forms.Label();
-            this.stationLBL = new System.Windows.Forms.Label();
-            this.stationOnRouteLBL = new System.Windows.Forms.Label();
-            this.connectionLBL = new System.Windows.Forms.Label();
             this.routeTravelLBL = new System.Windows.Forms.Label();
             this.whitePanel = new System.Windows.Forms.Panel();
             this.routeToTravelPanel = new System.Windows.Forms.Panel();
-            this.connectionPanel = new System.Windows.Forms.Panel();
-            this.stationOnRoutePanel = new System.Windows.Forms.Panel();
-            this.stationPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -65,41 +59,11 @@
             this.indexLBL.TabIndex = 0;
             this.indexLBL.Text = "Index";
             // 
-            // stationLBL
-            // 
-            this.stationLBL.AutoSize = true;
-            this.stationLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stationLBL.Location = new System.Drawing.Point(54, 75);
-            this.stationLBL.Name = "stationLBL";
-            this.stationLBL.Size = new System.Drawing.Size(79, 25);
-            this.stationLBL.TabIndex = 1;
-            this.stationLBL.Text = "Station";
-            // 
-            // stationOnRouteLBL
-            // 
-            this.stationOnRouteLBL.AutoSize = true;
-            this.stationOnRouteLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stationOnRouteLBL.Location = new System.Drawing.Point(54, 115);
-            this.stationOnRouteLBL.Name = "stationOnRouteLBL";
-            this.stationOnRouteLBL.Size = new System.Drawing.Size(172, 25);
-            this.stationOnRouteLBL.TabIndex = 2;
-            this.stationOnRouteLBL.Text = "Station on Route";
-            // 
-            // connectionLBL
-            // 
-            this.connectionLBL.AutoSize = true;
-            this.connectionLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.connectionLBL.Location = new System.Drawing.Point(68, 150);
-            this.connectionLBL.Name = "connectionLBL";
-            this.connectionLBL.Size = new System.Drawing.Size(121, 25);
-            this.connectionLBL.TabIndex = 3;
-            this.connectionLBL.Text = "Connection";
-            // 
             // routeTravelLBL
             // 
             this.routeTravelLBL.AutoSize = true;
             this.routeTravelLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.routeTravelLBL.Location = new System.Drawing.Point(68, 184);
+            this.routeTravelLBL.Location = new System.Drawing.Point(67, 76);
             this.routeTravelLBL.Name = "routeTravelLBL";
             this.routeTravelLBL.Size = new System.Drawing.Size(159, 25);
             this.routeTravelLBL.TabIndex = 4;
@@ -123,50 +87,20 @@
             this.whitePanel.Controls.Add(this.panel1);
             this.whitePanel.Controls.Add(this.label1);
             this.whitePanel.Controls.Add(this.routeToTravelPanel);
-            this.whitePanel.Controls.Add(this.connectionPanel);
-            this.whitePanel.Controls.Add(this.stationOnRoutePanel);
-            this.whitePanel.Controls.Add(this.stationPanel);
             this.whitePanel.Controls.Add(this.indexLBL);
             this.whitePanel.Controls.Add(this.routeTravelLBL);
-            this.whitePanel.Controls.Add(this.stationLBL);
-            this.whitePanel.Controls.Add(this.connectionLBL);
-            this.whitePanel.Controls.Add(this.stationOnRouteLBL);
             this.whitePanel.Location = new System.Drawing.Point(3, 3);
             this.whitePanel.Name = "whitePanel";
-            this.whitePanel.Size = new System.Drawing.Size(657, 232);
+            this.whitePanel.Size = new System.Drawing.Size(540, 232);
             this.whitePanel.TabIndex = 5;
             // 
             // routeToTravelPanel
             // 
             this.routeToTravelPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
-            this.routeToTravelPanel.Location = new System.Drawing.Point(29, 192);
+            this.routeToTravelPanel.Location = new System.Drawing.Point(28, 84);
             this.routeToTravelPanel.Name = "routeToTravelPanel";
             this.routeToTravelPanel.Size = new System.Drawing.Size(34, 10);
             this.routeToTravelPanel.TabIndex = 7;
-            // 
-            // connectionPanel
-            // 
-            this.connectionPanel.BackColor = System.Drawing.Color.Gray;
-            this.connectionPanel.Location = new System.Drawing.Point(29, 158);
-            this.connectionPanel.Name = "connectionPanel";
-            this.connectionPanel.Size = new System.Drawing.Size(34, 10);
-            this.connectionPanel.TabIndex = 6;
-            // 
-            // stationOnRoutePanel
-            // 
-            this.stationOnRoutePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
-            this.stationOnRoutePanel.Location = new System.Drawing.Point(29, 117);
-            this.stationOnRoutePanel.Name = "stationOnRoutePanel";
-            this.stationOnRoutePanel.Size = new System.Drawing.Size(20, 20);
-            this.stationOnRoutePanel.TabIndex = 6;
-            // 
-            // stationPanel
-            // 
-            this.stationPanel.BackColor = System.Drawing.Color.Gray;
-            this.stationPanel.Location = new System.Drawing.Point(29, 76);
-            this.stationPanel.Name = "stationPanel";
-            this.stationPanel.Size = new System.Drawing.Size(20, 20);
-            this.stationPanel.TabIndex = 5;
             // 
             // panel1
             // 
@@ -189,7 +123,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Pink;
-            this.panel2.Location = new System.Drawing.Point(278, 124);
+            this.panel2.Location = new System.Drawing.Point(278, 119);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(34, 10);
             this.panel2.TabIndex = 11;
@@ -198,7 +132,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(317, 116);
+            this.label2.Location = new System.Drawing.Point(317, 111);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 25);
             this.label2.TabIndex = 10;
@@ -207,7 +141,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.Green;
-            this.panel3.Location = new System.Drawing.Point(278, 159);
+            this.panel3.Location = new System.Drawing.Point(278, 158);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(34, 10);
             this.panel3.TabIndex = 13;
@@ -216,7 +150,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(317, 151);
+            this.label3.Location = new System.Drawing.Point(317, 150);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(99, 25);
             this.label3.TabIndex = 12;
@@ -243,7 +177,7 @@
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.Yellow;
-            this.panel5.Location = new System.Drawing.Point(498, 84);
+            this.panel5.Location = new System.Drawing.Point(28, 119);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(34, 10);
             this.panel5.TabIndex = 17;
@@ -252,7 +186,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(537, 76);
+            this.label5.Location = new System.Drawing.Point(67, 111);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(51, 25);
             this.label5.TabIndex = 16;
@@ -261,7 +195,7 @@
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.DarkBlue;
-            this.panel6.Location = new System.Drawing.Point(498, 125);
+            this.panel6.Location = new System.Drawing.Point(28, 158);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(34, 10);
             this.panel6.TabIndex = 19;
@@ -270,7 +204,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(537, 117);
+            this.label6.Location = new System.Drawing.Point(67, 150);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(79, 25);
             this.label6.TabIndex = 18;
@@ -279,7 +213,7 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.Red;
-            this.panel7.Location = new System.Drawing.Point(498, 159);
+            this.panel7.Location = new System.Drawing.Point(28, 194);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(34, 10);
             this.panel7.TabIndex = 21;
@@ -288,7 +222,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(537, 151);
+            this.label7.Location = new System.Drawing.Point(67, 186);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(67, 25);
             this.label7.TabIndex = 20;
@@ -302,7 +236,7 @@
             this.Controls.Add(this.whitePanel);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Indexpanel";
-            this.Size = new System.Drawing.Size(663, 387);
+            this.Size = new System.Drawing.Size(668, 387);
             this.whitePanel.ResumeLayout(false);
             this.whitePanel.PerformLayout();
             this.ResumeLayout(false);
@@ -312,15 +246,9 @@
         #endregion
 
         private System.Windows.Forms.Label indexLBL;
-        private System.Windows.Forms.Label stationLBL;
-        private System.Windows.Forms.Label stationOnRouteLBL;
-        private System.Windows.Forms.Label connectionLBL;
         private System.Windows.Forms.Label routeTravelLBL;
         private System.Windows.Forms.Panel whitePanel;
-        private System.Windows.Forms.Panel stationOnRoutePanel;
-        private System.Windows.Forms.Panel stationPanel;
         private System.Windows.Forms.Panel routeToTravelPanel;
-        private System.Windows.Forms.Panel connectionPanel;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel6;

@@ -649,9 +649,8 @@ namespace manderijntje
             mapView.Size = new Size(width, height);
             mapView.Location = new Point(x, y);
             mapView.setMap(width, height);
-            indexpanel.Size = new Size(332, 125);
+            indexpanel.Size = new Size(274, 125);
             indexpanel.Location = new Point(x, y + height - 195);
-            //indexpanel.BorderStyle = BorderStyle.Fixed3D;
             zoomInandOut.Size = new Size(35, 150);
             zoomInandOut.Location = new Point(x, y + 5);
 
