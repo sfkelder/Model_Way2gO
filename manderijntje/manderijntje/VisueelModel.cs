@@ -210,8 +210,10 @@ namespace manderijntje
         {
 
             Point shift = b.movemap(start, end);
-            toshiftX += shift.X;
+           toshiftX += shift.X;
             toshifty+= shift.Y;
+
+           
 
 
 

@@ -96,11 +96,8 @@ namespace manderijntje
                 nodes.Clear();
                 links.Clear();
 
-                if ((totverschuivingX + start.X - end.X) < (250*(zoom-1)) && -(totverschuivingX + start.X - end.X) > (250 * (zoom - 1)))
-                {
-                    totverschuivingX += start.X - end.X;
-                }
-              //  totverschuivingX += start.X - end.X;
+              
+                totverschuivingX += start.X - end.X;
                 totverschuivingY += start.Y - end.Y;
 
                 _connecionToFiles.visualcontrol(width, zoom, start, end, null, false, mapView);
@@ -195,10 +192,10 @@ namespace manderijntje
                     g.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
                   //  g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
 
-                    if (nodes[m].name_id == "Ronald Reagon Washington" || nodes[m].name_id == "Naylor Road")
+                  /*  if (nodes[m].name_id == "Ronald Reagon Washington" || nodes[m].name_id == "Naylor Road")
                     {
                         g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX + 3, (float)nodes[m].point.Y - (float)totverschuivingY + 3);
-                    }
+                    }*/ 
                 }
 
                 /*if (nodes[m].paint == true && nodes[m].dummynode == true)
