@@ -43,17 +43,17 @@ namespace manderijntje
             if (demoDani)
             {
                 List<Node> demoNodes = new List<Node>();
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Ronald Reagon Washington", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Crystal City", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Pentagon City", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Pentagon", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "L Enfant Plaza", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Waterfront", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Navy Yard Ballpark", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Anacostia", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Congress Heights", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Southern Avenue", "", "", "", false, 0));
-                demoNodes.Add(new Node("", 0.0, 0.0, "", "Naylor Road", "", "", "", false, 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Ronald Reagon Washington", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Crystal City", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Pentagon City", 0));
+                demoNodes.Add(new Node(0.0, 0.0,  "Pentagon", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "L Enfant Plaza", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Waterfront", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Navy Yard Ballpark", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Anacostia", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Congress Heights", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Southern Avenue", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Naylor Road", 0));
                 visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), demoNodes, true, mapView);
             }
         }
@@ -68,7 +68,7 @@ namespace manderijntje
             fillTimeInput();
             setElement();
             DataModel datamodel = dataControl.GetDataModel();
-            nodeList = datamodel.nodesrouting;
+            nodeList = datamodel.nodes;
             SizeChanged += new EventHandler(screenSizeChanged);
             departureInput.GotFocus += new EventHandler(this.removeText);
             departureInput.LostFocus += new EventHandler(this.addText);
@@ -296,7 +296,7 @@ namespace manderijntje
                     listItems[i] = new tripOptionsCell(this);
                     listItems[i].departureTime = tripOptions[i].startTime.ToShortTimeString();
                     listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
-                    listItems[i].typeCarrier = tripOptions[i].shortestPath[0].vehicle;
+                    listItems[i].typeCarrier = "Train";
                     listItems[i].totalTime = (tripOptions[i].endTime.Subtract(tripOptions[i].startTime)).ToString(@"hh\:mm");
                     listItems[i].transferCount = tripOptions[i].transfers.ToString();
                     listItems[i].shortestPath = tripOptions[i].shortestPath;
@@ -451,8 +451,8 @@ namespace manderijntje
                 {
                     listItems[i] = new transferCell();
                     listItems[i].stationName = detailsUserControl.shortestPath[i].stationnaam;
-                    listItems[i].toStation = detailsUserControl.shortestPath[i].routnaam;
-                    listItems[i].typeTransport = detailsUserControl.shortestPath[i].vehicle;
+                    listItems[i].toStation = "";
+                    listItems[i].typeTransport = "Train";
 
                     if (i == 0)
                         listItems[i].first = true;

@@ -55,8 +55,8 @@ namespace manderijntje
 
             //picbox.Image = bitmap;*/
 
-           // pea.Graphics.DrawLine(blackPen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 65);
-           // pea.Graphics.DrawLine(OrangePen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 78);
+           // g.DrawLine(blackPen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 65);
+           // g.DrawLine(OrangePen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 78);
           //  */
         }
     }
