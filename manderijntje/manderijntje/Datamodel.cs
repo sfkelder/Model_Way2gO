@@ -1325,7 +1325,7 @@ namespace manderijntje
             {
                 string[] parametersnode = line.Split(';');
                 datamodel.nodes.Add(new Node(double.Parse(parametersnode[1], CultureInfo.InvariantCulture), double.Parse(parametersnode[2], CultureInfo.InvariantCulture),
-                    parametersnode[3], int.Parse(parametersnode[0], CultureInfo.InvariantCulture)));
+                    parametersnode[3], parametersnode[4], int.Parse(parametersnode[0], CultureInfo.InvariantCulture)));
             }
 
             line = documentlinks.ReadLine();
@@ -1428,17 +1428,20 @@ namespace manderijntje
 
         public int number;
 
+        public string country;
+
         // unieke indentifier, naam in de vorm van een string
         public string stationnaam;
         public Node NearestToStart;
         public DateTime MinCostToStart = DateTime.MaxValue;
         public bool Visited = false;
 
-        public Node(double coordx, double coordy, string stationsnaam, int i)
+        public Node(double coordx, double coordy, string stationsnaam, string countryStation, int i)
         {
             number = i;
             x = coordx;
             y = coordy;
+            country = countryStation;
             stationnaam = stationsnaam;
             neighbours = new List<Node>();
             Connections = new List<Link>();
