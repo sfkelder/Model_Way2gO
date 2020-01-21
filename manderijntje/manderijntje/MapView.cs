@@ -25,7 +25,7 @@ namespace manderijntje
         public MapView mapView;
         Bitmap bitmap1;
         PictureBox picbox1;
-
+        public string station1, station2;
 
         //constructort method
         public MapView(Connecion_to_files c)
@@ -72,6 +72,7 @@ namespace manderijntje
             {
                 _connecionToFiles.SetSizeMap(width, height);
                 _connecionToFiles.countConnections();
+                _connecionToFiles.colorchange();
                 startingUp = false; 
             }
 
@@ -188,11 +189,11 @@ namespace manderijntje
             {
                 SolidBrush brush = new SolidBrush(nodes[m].Color);
 
-                if (nodes[m].paint == true && nodes[m].dummynode == false)
+                if (nodes[m].paint && nodes[m].dummynode == false)
                 {
                     g.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
 
-                    if (nodes[m].priorityLinks)
+                    if ( nodes[m].priorityLinks)
                     {
                         g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
                     }
