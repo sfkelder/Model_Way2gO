@@ -275,7 +275,6 @@
             this.detailsUserControl.Size = new System.Drawing.Size(422, 685);
             this.detailsUserControl.TabIndex = 14;
             this.detailsUserControl.totalTime = null;
-            this.detailsUserControl.transfers = null;
             // 
             // Form1
             // 

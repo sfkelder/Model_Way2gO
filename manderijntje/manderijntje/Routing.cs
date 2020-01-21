@@ -83,14 +83,26 @@ namespace manderijntje
 //Route is an object to show all the information
 class Route
 {
-    public List<Node> shortestPath; //list of the shortest path
+    public List<Node> shortestPath = new List<Node>(); //list of the shortest path
     public DateTime startTime; //time the train will depart from the first station
     public DateTime endTime; //time the train should arrive at the destination
     public int transfers; //amount of transfers to another train
 
     public Route(string startName, string endName, int totaltransfers, DateTime time, DataModel dataModel)
     {
-        shortestPath = Routing.GetShortestPathDijkstra(startName, endName, time, dataModel);
+
+        List<Node> tempshortestpath = new List<Node>();
+        tempshortestpath = Routing.GetShortestPathDijkstra(startName, endName, time, dataModel);
+        foreach (Node node in tempshortestpath)
+        {
+            //Node tempnode = node;
+            Node tempnode = new Node(node.x, node.y, node.stationnaam, node.country, node.number);
+            tempnode.MinCostToStart = node.MinCostToStart;
+            tempnode.Connections = node.Connections;
+            tempnode.neighbours = node.neighbours;
+            tempnode.NearestToStart = node.NearestToStart;
+            shortestPath.Add(tempnode);
+        }
         startTime = time;
         endTime = shortestPath.Last().MinCostToStart;
         transfers = totaltransfers;
@@ -158,14 +170,14 @@ class Routing
             int transfers = 0;
             List<Route> ListRoute = new List<Route>();
             DateTime starttime = time;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 12; i++)
             {
-                Route fastestRoute = new Route(startName, endName, transfers, time, dataModel);
+                Route fastestRoute = new Route(startName, endName, transfers, starttime, dataModel);
                 ListRoute.Add(fastestRoute);
-                starttime = fastestRoute.startTime.AddMinutes(1);
+                starttime = fastestRoute.startTime + new TimeSpan(1, 0, 0);
                 foreach (Node node in dataModel.nodes)
                 {
-                    node.MinCostToStart = new DateTime(2999, 12, 31, 23, 59, 59);
+                    node.MinCostToStart = DateTime.MaxValue;
                     node.NearestToStart = null;
                     node.Visited = false;
                 }

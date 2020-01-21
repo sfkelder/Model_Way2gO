@@ -12,19 +12,20 @@ namespace manderijntje
 {
     public partial class Indexpanel : UserControl
     {
-        Bitmap bitmap;
-        PictureBox picbox;
-
         //constructor method
         public Indexpanel()
         {                  
-            this.BackColor = Color.FromArgb(255, 122, 0);
-            picbox = new PictureBox();
-            picbox.Size = new Size(300, 200);
-            bitmap = new Bitmap(200, 100);
+            //this.BackColor = Color.FromArgb(255, 122, 0);
+            //picbox = new PictureBox();
+            //picbox.Size = new Size(300, 200);
+            //bitmap = new Bitmap(200, 100);
+            //this.BackColor = Color.FromArgb(255, 122, 0);
+            //picbox = new PictureBox();
+            //picbox.Size = new Size(400, 200);
+            //bitmap = new Bitmap(200, 100);
             
-            Controls.Add(picbox);
-            painting();
+            //Controls.Add(picbox);
+            //painting();
 
             InitializeComponent();   
         }
@@ -32,7 +33,7 @@ namespace manderijntje
         //painting event index
         public void painting()
         {
-            Graphics g = Graphics.FromImage(bitmap);
+            /*Graphics g = Graphics.FromImage(bitmap);
 
             Font font = new Font("Lucida Console", 8.0f);
             Font font1 = new Font("Lucida Console", 13.0f);
@@ -56,10 +57,10 @@ namespace manderijntje
             g.DrawString("Route to Travel", font, Brushes.Black, new Point(50, 74));
 
 
-            picbox.Image = bitmap;
+            //picbox.Image = bitmap;*/
 
-           // pea.Graphics.DrawLine(blackPen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 65);
-           // pea.Graphics.DrawLine(OrangePen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 78);
+           // g.DrawLine(blackPen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 65);
+           // g.DrawLine(OrangePen, indexLBL.Location.X, connectionLBL.Location.Y, 45, 78);
           //  */
         }
     }

@@ -80,6 +80,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="indexpanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Indexpanel.Designer.cs">
+      <DependentUpon>indexpanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="MapView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -94,12 +100,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing.cs" />
     <Compile Include="TimeModel.cs" />
-    <Compile Include="Indexpanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Indexpanel.Designer.cs">
-      <DependentUpon>Indexpanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\autoSuggestion.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -131,6 +131,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Indexpanel.resx">
+      <DependentUpon>indexpanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -141,9 +144,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Indexpanel.resx">
-      <DependentUpon>Indexpanel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\autoSuggestion.resx">
       <DependentUpon>autoSuggestion.cs</DependentUpon>
     </EmbeddedResource>

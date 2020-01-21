@@ -20,6 +20,7 @@ namespace manderijntje
         public tripOptionsCell tripOptionscell { get; set; }
         DateTime chosenTime { get; set; }
         string departureLocation, destinationLocation, departureTime, depLocation, desLocation;
+        int biggestLBL, biggestLBLIndex;
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
 
         private bool demoDani = false;
@@ -37,24 +38,23 @@ namespace manderijntje
             this.Controls.Add(indexpanel);
             this.Controls.Add(zoomInandOut);
             this.Controls.Add(mapView);
-            
-            
+     
             setupView();
 
             if (demoDani)
             {
                 List<Node> demoNodes = new List<Node>();
-                demoNodes.Add(new Node(0.0, 0.0, "Ronald Reagon Washington", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Crystal City", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Pentagon City", 0));
-                demoNodes.Add(new Node(0.0, 0.0,  "Pentagon", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "L Enfant Plaza", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Waterfront", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Navy Yard Ballpark", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Anacostia", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Congress Heights", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Southern Avenue", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Naylor Road", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Ronald Reagon Washington", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Crystal City", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Pentagon City", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0,  "Pentagon", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "L Enfant Plaza", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Waterfront", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Navy Yard Ballpark", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Anacostia", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Congress Heights", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Southern Avenue", "", 0));
+                demoNodes.Add(new Node(0.0, 0.0, "Naylor Road", "", 0));
                 visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), demoNodes, true, mapView);
             }
         }
@@ -99,15 +99,14 @@ namespace manderijntje
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
             tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height - 20);
             detailsUserControl.Size = new Size(detailsUserControl.Width, mapView.Height - 30);
-            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 75;
+            detailsUserControl.transfersPanel.Height = detailsUserControl.Height - 83;
             detailsUserControl.transfersPanel.Width = detailsUserControl.Width;
-            detailsUserControl.transfersPanel.Location = new Point(detailsUserControl.transfersPanel.Location.X, detailsUserControl.transfersPanel.Location.Y - 1);
+            detailsUserControl.transfersPanel.Location = new Point(detailsUserControl.transfersPanel.Location.X, detailsUserControl.transfersPanel.Location.Y);
             if (Height > 450)
             {
                 hideArrowIcon.Location = new Point(hideArrowIcon.Location.X, (hideBar.Height / 2) - (logoHeader.Height));
                 inputPanel.Location = new Point(inputPanel.Location.X, hideArrowIcon.Location.Y - (inputPanel.Height / 2));
             }
-
         }
 
         // Removes the placeholder text in the right inputBoxes
@@ -280,9 +279,7 @@ namespace manderijntje
                     listItems[i] = new tripOptionsCell(this);
                     listItems[i].departureTime = departureTime.ToShortTimeString();
                     listItems[i].destinationTime = destinationTime.ToShortTimeString();
-                    listItems[i].typeCarrier = "WMATA";
                     listItems[i].totalTime = totalTime.ToShortTimeString();
-                    listItems[i].transferCount = "1";
 
                     if (tripOptionsFlowControl.Controls.Count < 0)
                         clearFlowControl(tripOptionsFlowControl);
@@ -297,16 +294,23 @@ namespace manderijntje
                     listItems[i] = new tripOptionsCell(this);
                     listItems[i].departureTime = tripOptions[i].startTime.ToShortTimeString();
                     listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
-                    listItems[i].typeCarrier = "Train";
-                    listItems[i].totalTime = (tripOptions[i].endTime.Subtract(tripOptions[i].startTime)).ToString(@"hh\:mm");
-                    listItems[i].transferCount = tripOptions[i].transfers.ToString();
+                    listItems[i].nameTransport = "Train";
+                    TimeSpan span = tripOptions[i].endTime.Subtract(tripOptions[i].startTime);
+
+                    if (span.Days >= 1)
+                    {
+                        listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
+                        listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
+                        listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
+                        listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                        listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
+                    }
+                    else
+                    {
+                        listItems[i].totalTime = span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                    }
+
                     listItems[i].shortestPath = tripOptions[i].shortestPath;
-
-                    // Needs to have platform and nameTransport from node
-                    //listItems[i].nameTransport = tripOptions[i].shortestPath[0].;
-
-                    // Optional to have carrier and busLine from node
-                    //listItems[i].carrier = tripOptions[i].shortestPath[0].vervoersmiddels;
 
                     if (tripOptionsFlowControl.Controls.Count < 0)
                         clearFlowControl(tripOptionsFlowControl);
@@ -344,7 +348,6 @@ namespace manderijntje
             detailsUserControl.departureTime = tripOptionscell.departureTime;
             detailsUserControl.destinationTime = tripOptionscell.destinationTime;
             detailsUserControl.totalTime = tripOptionscell.totalTime;
-            detailsUserControl.transfers = tripOptionscell.transferCount;
             detailsUserControl.shortestPath = tripOptionscell.shortestPath;
 
             visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
@@ -360,7 +363,6 @@ namespace manderijntje
 
                 listItems[0] = new transferCell();
                 listItems[0].stationName = "Ronald Reagan Washington";
-                listItems[0].toStation = "Greenbelt";
                 listItems[0].typeTransport = "train";
                 listItems[0].departureTime = "09:33";
                 listItems[0].first = true;
@@ -368,7 +370,6 @@ namespace manderijntje
 
                 listItems[1] = new transferCell();
                 listItems[1].stationName = "Crystal City Station";
-                listItems[1].toStation = "Greenbelt";
                 listItems[1].typeTransport = "train";
                 listItems[1].departureTime = "09:36";
                 listItems[1].mid = true;
@@ -376,7 +377,6 @@ namespace manderijntje
 
                 listItems[2] = new transferCell();
                 listItems[2].stationName = "Pentagon City Station";
-                listItems[2].toStation = "Greenbelt";
                 listItems[2].typeTransport = "train";
                 listItems[2].departureTime = "09:38";
                 listItems[2].mid = true;
@@ -384,7 +384,6 @@ namespace manderijntje
 
                 listItems[3] = new transferCell();
                 listItems[3].stationName = "Pentagon";
-                listItems[3].toStation = "Greenbelt";
                 listItems[3].typeTransport = "train";
                 listItems[3].departureTime = "09:39";
                 listItems[3].mid = true;
@@ -392,7 +391,6 @@ namespace manderijntje
 
                 listItems[4] = new transferCell();
                 listItems[4].stationName = "L'Enfant Plaza Metro Station";
-                listItems[4].toStation = "Branch Avenue Station";
                 listItems[4].typeTransport = "train";
                 listItems[4].departureTime = "10:33";
                 listItems[4].mid = true;
@@ -400,7 +398,6 @@ namespace manderijntje
 
                 listItems[5] = new transferCell();
                 listItems[5].stationName = "Waterfront Station";
-                listItems[5].toStation = "Branch Avenue Station";
                 listItems[5].typeTransport = "train";
                 listItems[5].departureTime = "10:35";
                 listItems[5].mid = true;
@@ -408,7 +405,6 @@ namespace manderijntje
 
                 listItems[6] = new transferCell();
                 listItems[6].stationName = "Navy Yard-Ballpark Station";
-                listItems[6].toStation = "Branch Avenue Station";
                 listItems[6].typeTransport = "train";
                 listItems[6].departureTime = "10:37";
                 listItems[6].mid = true;
@@ -416,7 +412,6 @@ namespace manderijntje
 
                 listItems[7] = new transferCell();
                 listItems[7].stationName = "Anacostia Station";
-                listItems[7].toStation = "Branch Avenue Station";
                 listItems[7].typeTransport = "train";
                 listItems[7].departureTime = "10:40";
                 listItems[7].mid = true;
@@ -424,7 +419,6 @@ namespace manderijntje
 
                 listItems[8] = new transferCell();
                 listItems[8].stationName = "Congress Heights Station";
-                listItems[8].toStation = "Branch Avenue Station";
                 listItems[8].typeTransport = "train";
                 listItems[8].departureTime = "10:43";
                 listItems[8].mid = true;
@@ -432,7 +426,6 @@ namespace manderijntje
 
                 listItems[9] = new transferCell();
                 listItems[9].stationName = "Southern Avenue";
-                listItems[9].toStation = "Branch Avenue Station";
                 listItems[9].typeTransport = "train";
                 listItems[9].departureTime = "10:45";
                 listItems[9].mid = true;
@@ -440,7 +433,6 @@ namespace manderijntje
 
                 listItems[10] = new transferCell();
                 listItems[10].stationName = "Naylor Road Station";
-                listItems[10].toStation = "Branch Avenue Station";
                 listItems[10].typeTransport = "train";
                 listItems[10].departureTime = "10:48";
                 listItems[10].last = true;
@@ -452,13 +444,8 @@ namespace manderijntje
                 {
                     listItems[i] = new transferCell();
                     listItems[i].stationName = detailsUserControl.shortestPath[i].stationnaam;
-                    listItems[i].toStation = "";
                     listItems[i].typeTransport = "Train";
-
-                    // Needs to have platform and departureTime from node
-
-                    //listItems[i].platform = detailsUserControl.shortestPath[i].;
-                    //
+                    listItems[i].departureTime = detailsUserControl.shortestPath[i].MinCostToStart.ToShortTimeString();
 
                     if (i == 0)
                         listItems[i].first = true;
@@ -539,17 +526,44 @@ namespace manderijntje
         // Fills the flowcontrol with the usercontrol called "autoSuggesCell" and gives the needed data to autoSuggesCell.
         public void fillAutosuggestie(autoSuggestionCell[] listItems, bool departureInput, List<autoSuggestionModel> suggestionsList)
         {
+            biggestLBL = 0;
+            biggestLBLIndex = 0;
             for (int i = 0; i < suggestionsList.Count; i++)
             {
                 listItems[i] = new autoSuggestionCell(this);
                 listItems[i].stationName = suggestionsList[i].stationName;
                 listItems[i].stationType = suggestionsList[i].stationType;
                 listItems[i].departureInput = departureInput;
+
+                if (biggestLBL < listItems[i].stationLBL.Width)
+                {
+                    biggestLBL = listItems[i].stationLBL.Width;
+                    biggestLBLIndex = i;
+                }
+
+                // Will prevent to display 2 usercontrols on the same height in the autoSuggestion
+                if (listItems[i].stationLBL.Width + 25 <= destinationInput.Width)
+                    listItems[i].Width = destinationInput.Width;
+                else
+                    listItems[i].Width = listItems[i].stationLBL.Width + 25;
+
                 if (autoSuggestion.autoSuggestFlowControl.Controls.Count < 0)
                     clearFlowControl(autoSuggestion.autoSuggestFlowControl);
                 else
                     autoSuggestion.autoSuggestFlowControl.Controls.Add(listItems[i]);
             }
+
+            if (listItems[biggestLBLIndex].Width == destinationInput.Width)
+                setSizeAutoSuggestion(destinationInput.Width + 10, autoSuggestion.Height);
+            else
+                setSizeAutoSuggestion(biggestLBL + 40 + 10, autoSuggestion.Height);
+        }
+
+        // Gives autosuggestion proper Size
+        private void setSizeAutoSuggestion(int width, int heigth)
+        {
+            autoSuggestion.Size = new Size(width, heigth);
+            autoSuggestion.autoSuggestFlowControl.Size = new Size(autoSuggestion.Width, autoSuggestion.Height);
         }
 
         // Set the autosuggestion userControl on the right Y coordinate en setup the right height of the userControl
@@ -618,9 +632,9 @@ namespace manderijntje
             mapView.Size = new Size(width, height);
             mapView.Location = new Point(x, y);
             mapView.setMap(width, height);
-            indexpanel.Size = new Size(200, 100);
-            indexpanel.Location = new Point(x, y + height - 164);
-            indexpanel.BorderStyle = BorderStyle.Fixed3D;
+            indexpanel.Size = new Size(196, 125);
+            indexpanel.Location = new Point(x, y + height - 195);
+            //indexpanel.BorderStyle = BorderStyle.Fixed3D;
             zoomInandOut.Size = new Size(35, 150);
             zoomInandOut.Location = new Point(x, y + 5);
 
