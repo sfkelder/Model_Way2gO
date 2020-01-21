@@ -472,7 +472,7 @@ namespace manderijntje
                     newNode.Color = Color.Orange;
                 } else
                 {
-                    newNode.dummynodeDrawLine = true;
+                    //newNode.dummynodeDrawLine = true;
                 }
 
                 dNodes.Add(newNode);
