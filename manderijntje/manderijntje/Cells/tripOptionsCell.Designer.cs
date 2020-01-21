@@ -66,7 +66,7 @@
             this.totaltimeLBL.BackColor = System.Drawing.Color.Transparent;
             this.totaltimeLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totaltimeLBL.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(122)))), ((int)(((byte)(0)))));
-            this.totaltimeLBL.Location = new System.Drawing.Point(568, 29);
+            this.totaltimeLBL.Location = new System.Drawing.Point(568, 31);
             this.totaltimeLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.totaltimeLBL.Name = "totaltimeLBL";
             this.totaltimeLBL.Size = new System.Drawing.Size(138, 36);
@@ -77,7 +77,7 @@
             // clockIcon
             // 
             this.clockIcon.Image = global::manderijntje.Properties.Resources.OrangeClock;
-            this.clockIcon.Location = new System.Drawing.Point(521, 26);
+            this.clockIcon.Location = new System.Drawing.Point(521, 28);
             this.clockIcon.Margin = new System.Windows.Forms.Padding(4);
             this.clockIcon.Name = "clockIcon";
             this.clockIcon.Size = new System.Drawing.Size(38, 38);
