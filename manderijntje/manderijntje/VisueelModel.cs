@@ -375,7 +375,7 @@ namespace manderijntje
     {
         public int prioriteit, index;
         public Point point;
-        public string name_id;
+        public string name_id, country;
         public Color Color = Color.Gray;
         public bool paint = true;
         public bool dummynode = false;
