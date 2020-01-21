@@ -57,9 +57,9 @@ namespace manderijntje
                         dummy++;
                     }
                 }
-                //Console.WriteLine("dummy nodes: " + dummy);
-                //Console.WriteLine("logical links: " + logicallinks.Count);
-                //Console.WriteLine("connections: " + logicalconnections.Count);
+                Console.WriteLine("dummy nodes: " + dummy);
+                Console.WriteLine("logical links: " + logicallinks.Count);
+                Console.WriteLine("connections: " + logicalconnections.Count);
             }
         }
 
@@ -463,9 +463,6 @@ namespace manderijntje
                 if (newNode.dummynode)
                 {
                     newNode.Color = Color.Orange;
-                } else
-                {
-                    newNode.dummynodeDrawLine = true;
                 }
 
                 dNodes.Add(newNode);
