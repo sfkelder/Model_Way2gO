@@ -451,7 +451,7 @@ namespace manderijntje
             List<VisualLink> dLinks = new List<VisualLink>();
             List<vLogicalLink> dConnections = new List<vLogicalLink>();
 
-            for (int i = 0; i < nodes.Count; i++)
+            for (int i = 0; i < nodes.Count; i++) 
             {
                 VisueelNode newNode = new VisueelNode(new Point(), nodes[i].name, 0);
                 newNode.index = nodes[i].index;

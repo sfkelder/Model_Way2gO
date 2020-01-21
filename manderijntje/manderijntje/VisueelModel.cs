@@ -333,7 +333,7 @@ namespace manderijntje
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v); 
 
-                    break;
+                    break; 
                 case 2:
                     v.priorityLinks = (v.numberOfLinks < 7) ? false : true;
                     v.paint = true;

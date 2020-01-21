@@ -24,7 +24,7 @@ namespace manderijntje
         public ZoomInandOut zoomInOut;
         public MapView mapView;
         Bitmap bitmap1;
-        PictureBox picbox1;
+        PictureBox picbox1; 
         public string station1, station2;
 
         //constructort method
