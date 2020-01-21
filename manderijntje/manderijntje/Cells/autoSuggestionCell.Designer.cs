@@ -37,33 +37,35 @@
             // 
             this.stationLBL.AutoSize = true;
             this.stationLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stationLBL.Location = new System.Drawing.Point(39, 17);
-            this.stationLBL.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.stationLBL.Location = new System.Drawing.Point(52, 21);
+            this.stationLBL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.stationLBL.Name = "stationLBL";
-            this.stationLBL.Size = new System.Drawing.Size(191, 22);
+            this.stationLBL.Size = new System.Drawing.Size(249, 29);
             this.stationLBL.TabIndex = 0;
             this.stationLBL.Text = "Amsterdam Centraal";
             this.stationLBL.Click += new System.EventHandler(this.stationLBL_Click);
             // 
             // stationTypeIcon
             // 
-            this.stationTypeIcon.Image = manderijntje.Properties.Resources.OrangeTrain;
-            this.stationTypeIcon.Location = new System.Drawing.Point(12, 14);
+            this.stationTypeIcon.Image = global::manderijntje.Properties.Resources.OrangeTrain;
+            this.stationTypeIcon.Location = new System.Drawing.Point(16, 18);
+            this.stationTypeIcon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.stationTypeIcon.Name = "stationTypeIcon";
-            this.stationTypeIcon.Size = new System.Drawing.Size(20, 26);
+            this.stationTypeIcon.Size = new System.Drawing.Size(27, 32);
             this.stationTypeIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.stationTypeIcon.TabIndex = 1;
             this.stationTypeIcon.TabStop = false;
+            this.stationTypeIcon.Click += new System.EventHandler(this.stationTypeIcon_Click);
             // 
-            // autoSuggesCell
+            // autoSuggestionCell
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.stationTypeIcon);
             this.Controls.Add(this.stationLBL);
-            this.Margin = new System.Windows.Forms.Padding(5);
-            this.Name = "autoSuggesCell";
-            this.Size = new System.Drawing.Size(235, 55);
+            this.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.Name = "autoSuggestionCell";
+            this.Size = new System.Drawing.Size(313, 69);
             ((System.ComponentModel.ISupportInitialize)(this.stationTypeIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
