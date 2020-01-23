@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Runtime.Serialization;
 
 namespace manderijntje
 {
@@ -157,17 +152,17 @@ namespace manderijntje
 
                 foreach (VisueelNode v in access.nodes)
                 {
-                    if (s[0].stationnaam == v.name_id)
+                    if (s[0].stationname == v.name_id)
                     {
                         v.priorityLinks = true;
-                        map.station1 = s[0].stationnaam;
+                        map.station1 = s[0].stationname;
                     }
                        
 
-                    if (s[s.Count - 1].stationnaam == v.name_id)
+                    if (s[s.Count - 1].stationname == v.name_id)
                     {
                         v.priorityLinks = true;
-                        map.station2 = s[s.Count - 1].stationnaam;
+                        map.station2 = s[s.Count - 1].stationname;
                     }
                        
                 }
@@ -184,7 +179,7 @@ namespace manderijntje
                 {
                     foreach (Node n in s)
                     {
-                        if(v.name_id == n.stationnaam)
+                        if(v.name_id == n.stationname)
                             v.Color = Color.Orange;
 
                     }
@@ -198,11 +193,11 @@ namespace manderijntje
 
                     for (int n = 0; n < s.Count; n++)
                     {
-                        firstName = s[n].stationnaam;
+                        firstName = s[n].stationname;
 
                         for (int m = 0; m < s.Count; m++)
                         {
-                            lastName = s[m].stationnaam;
+                            lastName = s[m].stationname;
 
                             if (firstName == v.v.name_id && lastName == v.u.name_id)
                             {

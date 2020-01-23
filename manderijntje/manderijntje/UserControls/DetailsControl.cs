@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Printing;
@@ -85,7 +80,7 @@ namespace manderijntje
                         sw.WriteLine("Transfers:");
                         foreach (Node node in shortestPath)
                         {
-                            sw.WriteLine("Station: " + node.stationnaam);
+                            sw.WriteLine("Station: " + node.stationname);
                             sw.WriteLine("Departure Time: " + _departureTime + "\n");
                         }
                     }
@@ -116,7 +111,7 @@ namespace manderijntje
             for(int i = 0; i < shortestPath.Count; i++)
             {
                 j += 50;
-                e.Graphics.DrawString("Station: " + shortestPath[i].stationnaam, new Font("Arial", 15, FontStyle.Regular), Brushes.Black, 50, j);
+                e.Graphics.DrawString("Station: " + shortestPath[i].stationname, new Font("Arial", 15, FontStyle.Regular), Brushes.Black, 50, j);
                 j += 50;
                 e.Graphics.DrawString("Departure Time: " + shortestPath[i].MinCostToStart.ToShortTimeString(), new Font("Arial", 15, FontStyle.Regular), Brushes.Black, 50, j);
             }

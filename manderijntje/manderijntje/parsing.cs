@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
-using System.IO;
 using Gurobi;
  
 namespace manderijntje
@@ -26,7 +25,7 @@ namespace manderijntje
             {
                 for (int i = 0; i < model.nodes.Count; i++)
                 {
-                    Console.WriteLine(model.nodes[i].neighbours.Count + "    " + model.nodes[i].stationnaam);
+                    Console.WriteLine(model.nodes[i].neighbours.Count + "    " + model.nodes[i].stationname);
                 }
 
                 /*
@@ -386,7 +385,7 @@ namespace manderijntje
             for (int i = 0; i < dNodes.Count; i++)
             {
                 sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
-                newNode.name = dNodes[i].stationnaam;
+                newNode.name = dNodes[i].stationname;
                 newNode.country = dNodes[i].country;
                 nodes.Add(newNode);
             }

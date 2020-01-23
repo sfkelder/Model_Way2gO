@@ -149,12 +149,12 @@ namespace manderijntje
             {
                 if (checkDeparture)
                 {
-                    if (node.stationnaam == departureLocation)
+                    if (node.stationname == departureLocation)
                         return true;
                 }
                 else
                 {
-                    if (node.stationnaam == destinationLocation)
+                    if (node.stationname == destinationLocation)
                         return true;
                 }
             }
@@ -460,7 +460,7 @@ namespace manderijntje
                 for (int i = 0; i < detailsUserControl.shortestPath.Count; i++)
                 {
                     listItems[i] = new transferCell();
-                    listItems[i].stationName = detailsUserControl.shortestPath[i].stationnaam;
+                    listItems[i].stationName = detailsUserControl.shortestPath[i].stationname;
                     listItems[i].typeTransport = "Train";
                     listItems[i].departureTime = detailsUserControl.shortestPath[i].MinCostToStart.ToShortTimeString();
 
