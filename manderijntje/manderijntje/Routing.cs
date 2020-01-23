@@ -10,25 +10,21 @@ class Route
     public List<Node> shortestPath = new List<Node>(); //list of the shortest path
     public DateTime startTime; //time the train will depart from the first station
     public DateTime endTime; //time the train should arrive at the destination
-    public int transfers; //amount of transfers to another train
 
-    public Route(string startName, string endName, int totaltransfers, DateTime time, DataModel dataModel)
+    public Route(string startName, string endName, DateTime time, DataModel dataModel)
     {
-
-        List<Node> tempshortestpath = new List<Node>();
-        tempshortestpath = Routing.GetShortestPathDijkstra(startName, endName, time, dataModel);
+        List<Node>  tempshortestpath = Routing.GetShortestPathDijkstra(startName, endName, time, dataModel);
         foreach (Node node in tempshortestpath)
         {
             Node tempnode = new Node(node.x, node.y, node.stationname, node.country, node.number);
-            tempnode.MinCostToStart = node.MinCostToStart;
-            tempnode.Connections = node.Connections;
+            tempnode.minCostToStart = node.minCostToStart;
+            tempnode.connections = node.connections;
             tempnode.neighbours = node.neighbours;
-            tempnode.NearestToStart = node.NearestToStart;
+            tempnode.nearestToStart = node.nearestToStart;
             shortestPath.Add(tempnode);
         }
         startTime = time;
-        endTime = shortestPath.Last().MinCostToStart;
-        transfers = totaltransfers;
+        endTime = shortestPath.Last().minCostToStart;
     }
 }
 
@@ -50,40 +46,38 @@ class Routing
         //After DijkstraSearch BuildShortestPath does make the shortest path to the end so GetShortestPathDijkstra can return a list of the shortest path.
         private static void BuildShortestPath(List<Node> list, Node node)
         {
-            if (node.NearestToStart == null)
+            if (node.nearestToStart == null)
                 return;
-            list.Add(node.NearestToStart);
-            BuildShortestPath(list, node.NearestToStart);
+            list.Add(node.nearestToStart);
+            BuildShortestPath(list, node.nearestToStart);
         }
         
         /*DijkstraSearch searches for the fastest route through the network by arranging the nodes and links from fastest to slowest.
          If DijkstaSearch finds the end, it will stop searching and the fastest route is found*/
         private static void DijkstraSearch(Node start, Node end, DateTime time, DataModel dataModel)
         {
-            start.MinCostToStart = time;
+            start.minCostToStart = time;
             var prioQueue = new List<Node> { start };
             while (prioQueue.Any())
             {
-                prioQueue = prioQueue.OrderBy(x => x.MinCostToStart).ToList();
+                prioQueue = prioQueue.OrderBy(x => x.minCostToStart).ToList();
                 var node = prioQueue.First();
                 prioQueue.Remove(node);
-                foreach (var link in node.Connections.OrderBy(x => Link.GetDepartTime(DataModel.GetLink(x.Start.number, x.End.number, dataModel.links), node.MinCostToStart) + x.Weight))
+                foreach (var link in node.connections.OrderBy(x => Link.GetDepartTime(DataModel.GetLink(x.start.number, x.end.number, dataModel.links), node.minCostToStart) + x.weight))
                 {
-                    DateTime test = Link.GetDepartTime(DataModel.GetLink(link.Start.number, link.End.number, dataModel.links), node.MinCostToStart);
-                    DateTime tempCost = Link.GetDepartTime(DataModel.GetLink(link.Start.number, link.End.number, dataModel.links), node.MinCostToStart) + link.Weight;
-                    var childNode = link.End;
-                    if (childNode.Visited)
+                    DateTime tempCost = Link.GetDepartTime(DataModel.GetLink(link.start.number, link.end.number, dataModel.links), node.minCostToStart) + link.weight;
+                    var childNode = link.end;
+                    if (childNode.visited)
                         continue;
-                    if (tempCost < childNode.MinCostToStart)
+                    if (tempCost < childNode.minCostToStart)
                     {
-                        childNode.MinCostToStart = tempCost;
-                        childNode.NearestToStart = node;
+                        childNode.minCostToStart = tempCost;
+                        childNode.nearestToStart = node;
                         if (!prioQueue.Contains(childNode))
                             prioQueue.Add(childNode);
                     }
                 }
-
-                node.Visited = true;
+                node.visited = true;
                 if (node == end)
                     return;
             }
@@ -92,22 +86,21 @@ class Routing
         //Method to ask for the 20 fastest routes
         public static List<Route> GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
         {
-            int transfers = 0;
-            List<Route> ListRoute = new List<Route>();
+            List<Route> listRoute = new List<Route>();
             DateTime starttime = time;
             for (int i = 0; i < 20; i++)
             {
-                Route fastestRoute = new Route(startName, endName, transfers, starttime, dataModel);
-                ListRoute.Add(fastestRoute);
+                Route fastestRoute = new Route(startName, endName, starttime, dataModel);
+                listRoute.Add(fastestRoute);
                 starttime = fastestRoute.startTime + new TimeSpan(1, 0, 0);
                 foreach (Node node in dataModel.nodes)
                 {
-                    node.MinCostToStart = DateTime.MaxValue;
-                    node.NearestToStart = null;
-                    node.Visited = false;
+                    node.minCostToStart = DateTime.MaxValue;
+                    node.nearestToStart = null;
+                    node.visited = false;
                 }
             }
-            return ListRoute;
+            return listRoute;
         }
     }
 }

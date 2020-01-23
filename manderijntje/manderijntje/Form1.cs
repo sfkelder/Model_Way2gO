@@ -462,7 +462,7 @@ namespace manderijntje
                     listItems[i] = new transferCell();
                     listItems[i].stationName = detailsUserControl.shortestPath[i].stationname;
                     listItems[i].typeTransport = "Train";
-                    listItems[i].departureTime = detailsUserControl.shortestPath[i].MinCostToStart.ToShortTimeString();
+                    listItems[i].departureTime = detailsUserControl.shortestPath[i].minCostToStart.ToShortTimeString();
 
                     if (i == 0)
                         listItems[i].first = true;
