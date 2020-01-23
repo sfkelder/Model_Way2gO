@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace manderijntje
+namespace Manderijntje
 {
     public partial class autoSuggestion : UserControl
     {

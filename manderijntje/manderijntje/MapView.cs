@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace manderijntje
+namespace Manderijntje
 {
     public partial class MapView : UserControl
     {

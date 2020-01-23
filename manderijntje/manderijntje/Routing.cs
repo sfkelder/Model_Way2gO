@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace manderijntje
+namespace Manderijntje
 {
 //Route is an object to show all the information
 class Route

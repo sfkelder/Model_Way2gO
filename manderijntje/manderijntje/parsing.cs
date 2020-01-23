@@ -4,7 +4,7 @@ using System.Linq;
 using System.Drawing;
 using Gurobi;
  
-namespace manderijntje
+namespace Manderijntje
 {
     class parsing
     {

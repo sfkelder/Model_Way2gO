@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Printing;
 
-namespace manderijntje
+namespace Manderijntje
 {
     public partial class DetailsControl : UserControl
     {

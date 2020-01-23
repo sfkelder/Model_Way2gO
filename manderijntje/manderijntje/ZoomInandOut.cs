@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace manderijntje
+namespace Manderijntje
 {
 
     public partial class ZoomInandOut : UserControl

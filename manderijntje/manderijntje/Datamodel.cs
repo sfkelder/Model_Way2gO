@@ -4,7 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Globalization;
 
-namespace manderijntje
+namespace Manderijntje
 {
     class DataControl
     {

@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.IO;
 
-namespace manderijntje
+namespace Manderijntje
 {
     static class Program
     {

@@ -1,4 +1,4 @@
-﻿namespace manderijntje
+﻿namespace Manderijntje
 {
     partial class DetailsControl
     {
@@ -60,7 +60,7 @@
             // 
             // saveRoute
             // 
-            this.saveRoute.Image = global::manderijntje.Properties.Resources.saveIconWhite;
+            this.saveRoute.Image = global::Manderijntje.Properties.Resources.saveIconWhite;
             this.saveRoute.Location = new System.Drawing.Point(771, 80);
             this.saveRoute.Name = "saveRoute";
             this.saveRoute.Size = new System.Drawing.Size(33, 36);
@@ -71,7 +71,7 @@
             // 
             // clockIcon
             // 
-            this.clockIcon.Image = global::manderijntje.Properties.Resources.WhiteClock;
+            this.clockIcon.Image = global::Manderijntje.Properties.Resources.WhiteClock;
             this.clockIcon.Location = new System.Drawing.Point(581, 29);
             this.clockIcon.Margin = new System.Windows.Forms.Padding(4);
             this.clockIcon.Name = "clockIcon";

@@ -1,4 +1,4 @@
-﻿namespace manderijntje
+﻿namespace Manderijntje
 {
     public class transferModel
     {

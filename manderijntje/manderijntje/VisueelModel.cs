@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 
-namespace manderijntje
+namespace Manderijntje
 {
 
     /*this class contains all the methods for the connection between the visual classes (in this file) and other classes*/
