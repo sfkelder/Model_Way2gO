@@ -111,7 +111,7 @@
     <Compile Include="UserControls\DetailsControl.designer.cs">
       <DependentUpon>DetailsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="VisueelModel.cs" />
+    <Compile Include="VisualModel.cs" />
     <Compile Include="ZoomInandOut.cs">
       <SubType>UserControl</SubType>
     </Compile>

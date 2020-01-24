@@ -71,7 +71,7 @@ namespace Manderijntje
             }
         }
 
-        public VisueelModel getModel (bool solve)
+        public VisualModel getModel (bool solve)
         {
             if (solve && getDegree() <= 8)
             {
@@ -450,13 +450,13 @@ namespace Manderijntje
         // CREATE VISUAL MODEL OBJECT:
 
         // initializes a new instance of visual model
-        private VisueelModel createModel()
+        private VisualModel createModel()
         {
-            VisueelModel model = new VisueelModel();
+            VisualModel model = new VisualModel();
 
             List<VisueelNode> dNodes = new List<VisueelNode>();
             List<VisualLink> dLinks = new List<VisualLink>();
-            List<vLogicalLink> dConnections = new List<vLogicalLink>();
+            List<VLogicalLink> dConnections = new List<VLogicalLink>();
 
             for (int i = 0; i < nodes.Count; i++)
             {
@@ -489,12 +489,12 @@ namespace Manderijntje
 
             for (int i = 0; i < logicalconnections.Count; i++)
             {
-                vLogicalLink newLogical = new vLogicalLink(getNode(logicalconnections[i].u.index, dNodes), getNode(logicalconnections[i].v.index, dNodes));
+                VLogicalLink newLogical = new VLogicalLink(getNode(logicalconnections[i].u.index, dNodes), getNode(logicalconnections[i].v.index, dNodes));
                 for (int n = 0; n < logicalconnections[i].nodes.Count; n++)
                 {
                     newLogical.nodes.Add(getNode(logicalconnections[i].nodes[n].index, dNodes));
                 }
-                newLogical.getLinks(dLinks);
+                newLogical.GetLinks(dLinks);
                 dConnections.Add(newLogical);
             }
             /*

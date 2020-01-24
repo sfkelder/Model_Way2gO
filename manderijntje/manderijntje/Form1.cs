@@ -55,7 +55,7 @@ namespace Manderijntje
                 demoNodes.Add(new Node(0.0, 0.0, "Congress Heights", "", 0));
                 demoNodes.Add(new Node(0.0, 0.0, "Southern Avenue", "", 0));
                 demoNodes.Add(new Node(0.0, 0.0, "Naylor Road", "", 0));
-                visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), demoNodes, true, mapView);
+                visueelControl.Visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), demoNodes, true, mapView);
             }
         }
 
@@ -367,8 +367,8 @@ namespace Manderijntje
             detailsUserControl.totalTime = tripOptionscell.totalTime;
             detailsUserControl.shortestPath = tripOptionscell.shortestPath;
 
-            visueelControl.visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
-            mapView.painting();
+            visueelControl.Visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), tripOptionscell.shortestPath, true, mapView);
+            mapView.CreatingBitmap();
         }
 
         // Fills the flowcontrol with the usercontrol called "transferCell" and gives the needed data to transferCell.
@@ -648,7 +648,7 @@ namespace Manderijntje
         {
             mapView.Size = new Size(width, height);
             mapView.Location = new Point(x, y);
-            mapView.setMap(width, height);
+            mapView.SetMap(width, height);
             indexpanel.Size = new Size(274, 125);
             indexpanel.Location = new Point(x, y + height - 195);
             zoomInandOut.Size = new Size(35, 150);

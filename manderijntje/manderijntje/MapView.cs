@@ -9,9 +9,9 @@ namespace Manderijntje
     {
        public List<VisueelNode> nodes = new List<VisueelNode>();
         public List<VisualLink> links = new List<VisualLink>();
-        public List<vLogicalLink> logicallinks = new List<vLogicalLink>();
+        public List<VLogicalLink> logicallinks = new List<VLogicalLink>();
 
-        public  int totverschuivingX = 50, totverschuivingY = 50, zoom = 1, height, width;
+        public  int totMoveX = -150, totMoveY = 50, zoom = 1, height, width;
         Point start, end, newEnd;
         private bool startingUp = true, mouseMoved = false;
         Connecion_to_files _connecionToFiles;
@@ -21,41 +21,48 @@ namespace Manderijntje
         PictureBox picbox1; 
         public string station1, station2;
 
-        //constructort method
+        /// <summary>
+        /// constructor method
+        /// </summary>
+        /// <param name="c"> sets connection to Visueel Model</param>
         public MapView(Connecion_to_files c)
         {
             _connecionToFiles = c;
             InitializeComponent();
             picbox1 = new PictureBox();
             Controls.Add(picbox1);
-            // this.Paint += this.painting;
             
-            this.MouseWheel += new MouseEventHandler(mouseWheel); ;
+            this.MouseWheel += new MouseEventHandler(MoveMouseWheel); ;
             picbox1.MouseDown += (object o, MouseEventArgs mea) => { if (mea.Button == MouseButtons.Left) start = mea.Location; };
-            picbox1.MouseMove += (object o, MouseEventArgs mea) => { if (mea.Button == MouseButtons.Left) end = mea.Location; if (end != newEnd) { mouseMoved = true;  } onclick(); start = end; };
+            picbox1.MouseMove += (object o, MouseEventArgs mea) => { if (mea.Button == MouseButtons.Left) end = mea.Location; if (end != newEnd) { mouseMoved = true;  } Onclick(); start = end; };
             picbox1.MouseUp += (object o, MouseEventArgs mea) => { end = mea.Location; mouseMoved = false; newEnd = end; };
         }
-        
-        //when mousewheel is moved this will result in a zoom
-        public void mouseWheel(object o, MouseEventArgs mea)
-        {
-            
+
+        /// <summary>
+        /// when mousewheel is moved this will result in a zoom
+        /// </summary>
+        /// <param name="o">object</param>
+        /// <param name="mea">MouseEventArgs</param>
+        public void MoveMouseWheel(object o, MouseEventArgs mea)
+        {          
             if(mea.Delta < 0)
             {
                 if(zoom > 1)
-                    zoomOut();
+                    ZoomOut();
             }
             else
             {   
                 if(zoom < 9)
-                    zoomIn();
+                    ZoomIn();
             }
-
-
         }
 
-        //this method is used to set de neccesary values when the size of the map is changed within the program
-        public void setMap(int x, int y)
+        /// <summary>
+        /// this method is used to set de neccesary values when the size of the map is changed within the program
+        /// </summary>
+        /// <param name="x">sets new width of the map</param>
+        /// <param name="y">sets new height of the map</param>
+        public void SetMap(int x, int y)
         {
             height = y;
             width = x;
@@ -65,8 +72,8 @@ namespace Manderijntje
             if (startingUp)
             {
                 _connecionToFiles.SetSizeMap(width, height);
-                _connecionToFiles.countConnections();
-                _connecionToFiles.colorchange();
+                _connecionToFiles.CountConnections();
+                _connecionToFiles.Colorchange();
                 startingUp = false; 
             }
 
@@ -74,64 +81,68 @@ namespace Manderijntje
             {
                 bitmap1 = new Bitmap(x, y);
                 picbox1.Size = new Size(x, y);
-                _connecionToFiles.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);
-                painting();
+                _connecionToFiles.Visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);
+                CreatingBitmap();
             }
             catch(Exception)
             {
 
-            }
-             
+            }          
         }
 
-        //this mathod takes care for moving around over the map
-        public void onclick()
+        /// <summary>
+        /// this mathod takes care for moving around over the map, there fore it first clears the lists and than fills it with the new nodes and links
+        /// </summary>
+        public void Onclick()
         {
             if (mouseMoved)
             {
                 nodes.Clear();
                 links.Clear();
+           
+                totMoveX += start.X - end.X;
+                totMoveY += start.Y - end.Y;
 
-              
-                totverschuivingX += start.X - end.X;
-                totverschuivingY += start.Y - end.Y;
-
-                _connecionToFiles.visualcontrol(width, zoom, start, end, null, false, mapView);
+                _connecionToFiles.Visualcontrol(width, zoom, start, end, null, false, mapView);
 
                 mouseMoved = false;
 
-
-
-                painting();
+                CreatingBitmap();
             }
         }
 
 
-        //method for zooming in
-        public void zoomIn()
+        /// <summary>
+        /// method for zooming in
+        /// </summary>
+        public void ZoomIn()
         {
             zoom++;
 
-            _connecionToFiles.l.change(zoom, width, height);
-            totverschuivingX += ((width / 2) * (zoom - 1)) - ((width / 2) * (zoom - 2));
-            totverschuivingY += ((height / 2) * (zoom - 1)) - ((height / 2) * (zoom - 2));
+            _connecionToFiles.l.Change(zoom, width, height);
+            totMoveX += ((width / 2) * (zoom - 1)) - ((width / 2) * (zoom - 2));
+            totMoveY += ((height / 2) * (zoom - 1)) - ((height / 2) * (zoom - 2));
 
             ZoomingBoth();
         }
 
-        //method for zooming out
-        public void zoomOut()
+        /// <summary>
+        /// method for zooming out
+        /// </summary>
+        public void ZoomOut()
         {
             zoom--;
 
-            _connecionToFiles.l.changez(zoom, width, height);
-            totverschuivingX += ((width / 2) * zoom) - ((width / 2) * (zoom + 1));
-            totverschuivingY += ((height / 2) * zoom) - ((height / 2) * (zoom + 1));
+            _connecionToFiles.l.Changez(zoom, width, height);
+            totMoveX += ((width / 2) * zoom) - ((width / 2) * (zoom + 1));
+            totMoveY += ((height / 2) * zoom) - ((height / 2) * (zoom + 1));
 
             ZoomingBoth();
         }
 
-        //hulp method for zooming in and out
+        /// <summary>
+        /// hulp method for zooming in and out
+        /// </summary>
         public void ZoomingBoth()
         {
             nodes.Clear();
@@ -139,16 +150,17 @@ namespace Manderijntje
 
             _connecionToFiles.SetSizeMap(width * zoom, height * zoom);
 
-            _connecionToFiles.visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);
+            _connecionToFiles.Visualcontrol(width, zoom, new Point(0, 0), new Point(0, 0), null, false, mapView);
             zoomInOut.track.Value = zoom;
-            painting();
+            CreatingBitmap();
         }
 
 
-        //Painting method
-        public void painting()
-        {
-            
+        /// <summary>
+        /// Creates the bitmap and sets all points and links
+        /// </summary>
+        public void CreatingBitmap()
+        {           
             Graphics g = Graphics.FromImage(bitmap1);
 
             g.FillRectangle(Brushes.White, 0, 0, picbox1.Width, picbox1.Height);
@@ -160,24 +172,14 @@ namespace Manderijntje
                 if (links[n].paint && links[n].kleur == Color.Orange)
                 {
                     Pen blackPen = new Pen(Color.FromArgb(255, 122, 0), 3);
-                    g.DrawLine(blackPen, new Point(links[n].u.point.X - totverschuivingX + 2, links[n].u.point.Y - totverschuivingY + 2), new Point(links[n].v.point.X - totverschuivingX + 2, links[n].v.point.Y - totverschuivingY + 2));
+                    g.DrawLine(blackPen, new Point(links[n].u.point.X - totMoveX + 2, links[n].u.point.Y - totMoveY + 2), new Point(links[n].v.point.X - totMoveX + 2, links[n].v.point.Y - totMoveY + 2));
                 }
                 else
                 {
                     Pen blackPen = new Pen(links[n].kleur, 1);
-                    g.DrawLine(blackPen, new Point(links[n].u.point.X - totverschuivingX + 3, links[n].u.point.Y - totverschuivingY + 3), new Point(links[n].v.point.X - totverschuivingX + 3, links[n].v.point.Y - totverschuivingY + 3));
-
+                    g.DrawLine(blackPen, new Point(links[n].u.point.X - totMoveX + 3, links[n].u.point.Y - totMoveY + 3), new Point(links[n].v.point.X - totMoveX + 3, links[n].v.point.Y - totMoveY + 3));
                 }
             }
-
-           /* for (int i = 0; i < logicallinks.Count; i++)
-            {
-                for (int n = 0; n < logicallinks[i].links.Count; n++)
-                {
-                    Pen blackPen = new Pen(Color.Orange, 1);
-                    g.DrawLine(blackPen, new Point(logicallinks[i].links[n].u.point.X - totverschuivingX + 3, logicallinks[i].links[n].u.point.Y - totverschuivingY + 3), new Point(logicallinks[i].links[n].v.point.X - totverschuivingX + 3, logicallinks[i].links[n].v.point.Y - totverschuivingY + 3));
-                }
-            }*/
              
             for (int m = 0; m < nodes.Count; m++) 
             {
@@ -185,28 +187,15 @@ namespace Manderijntje
 
                 if (nodes[m].paint && nodes[m].dummynode == false)
                 {
-                    g.FillRectangle(brush, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
+                    g.FillRectangle(brush, nodes[m].point.X - totMoveX, nodes[m].point.Y - totMoveY, 7, 7);
 
                     if ( nodes[m].priorityLinks)
                     {
-                        g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
+                        g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totMoveX, (float)nodes[m].point.Y - (float)totMoveY);
                     }
-                    
-
-                  /*  if (nodes[m].name_id == "Ronald Reagon Washington" || nodes[m].name_id == "Naylor Road")
-                    {
-                        g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX + 3, (float)nodes[m].point.Y - (float)totverschuivingY + 3);
-                    }*/ 
                 }
 
-                /*if (nodes[m].paint == true && nodes[m].dummynode == true)
-                {
-                    g.FillRectangle(Brushes.Red, nodes[m].point.X - totverschuivingX, nodes[m].point.Y - totverschuivingY, 7, 7);
-                    g.DrawString(nodes[m].name_id, font, brush, (float)nodes[m].point.X - (float)totverschuivingX, (float)nodes[m].point.Y - (float)totverschuivingY);
-                }*/
-
                 picbox1.Image = bitmap1;
-                //bitmap1.Save("button.bmp");
             }
         }
     }
