@@ -57,7 +57,6 @@ namespace Manderijntje
         /// <param name="ea">EvantArgs</param>
         public void zIn_Click(object o, EventArgs ea)
         {
-
             Button clickedButton = o as Button;
             TrackBar trackbar = o as TrackBar;
 
@@ -68,16 +67,14 @@ namespace Manderijntje
                     track.Value = map.zoom;
                     map.ZoomIn();
                 }
-             
-                 
+                            
             }else if(clickedButton == zOut)
             {
                 if(map.zoom > 1)
                 {
                     track.Value = map.zoom;
                     map.ZoomOut();
-                }
-               
+                }             
             }
             else if(trackbar == track)
             {
@@ -90,11 +87,8 @@ namespace Manderijntje
                 {
                     map.zoom = track.Value + 1;
                     map.ZoomOut();
-                }
-               
+                }  
             }
-
-
         }
     }
 }
