@@ -643,7 +643,7 @@ namespace manderijntje
                 backIcon.Visible = true;
         }
 
-        // Gives the mapVIew the right location and size
+        // Gives the mapView the right location and size
         private void sizeMap(int x, int y, int width, int height)
         {
             mapView.Size = new Size(width, height);
@@ -653,7 +653,6 @@ namespace manderijntje
             indexpanel.Location = new Point(x, y + height - 195);
             zoomInandOut.Size = new Size(35, 150);
             zoomInandOut.Location = new Point(x, y + 5);
-
         }
 
         //
