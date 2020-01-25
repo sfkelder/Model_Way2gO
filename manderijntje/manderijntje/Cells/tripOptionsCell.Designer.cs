@@ -1,4 +1,4 @@
-﻿namespace manderijntje
+﻿namespace Manderijntje
 {
     partial class tripOptionsCell
     {
@@ -76,7 +76,7 @@
             // 
             // clockIcon
             // 
-            this.clockIcon.Image = global::manderijntje.Properties.Resources.OrangeClock;
+            this.clockIcon.Image = global::Manderijntje.Properties.Resources.OrangeClock;
             this.clockIcon.Location = new System.Drawing.Point(521, 28);
             this.clockIcon.Margin = new System.Windows.Forms.Padding(4);
             this.clockIcon.Name = "clockIcon";

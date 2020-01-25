@@ -99,7 +99,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing.cs" />
-    <Compile Include="TimeModel.cs" />
     <Compile Include="UserControls\autoSuggestion.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -112,7 +111,7 @@
     <Compile Include="UserControls\DetailsControl.designer.cs">
       <DependentUpon>DetailsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="VisueelModel.cs" />
+    <Compile Include="VisualModel.cs" />
     <Compile Include="ZoomInandOut.cs">
       <SubType>UserControl</SubType>
     </Compile>

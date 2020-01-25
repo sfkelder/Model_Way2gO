@@ -1,34 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Runtime.Serialization;
 
-namespace manderijntje
+namespace Manderijntje
 {
 
-    /*this class contains all the methods for the connection between the visual classes (in this file) and other classes*/
+    /// <summary>
+    /// this class contains all the methods for the connection between the visual classes (in this file) and other classes
+    /// </summary>
     public class Connecion_to_files
     {
-        public lists_change l = new lists_change();
-        private changes b = new changes();
-        public VisueelModel access;
-        private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";        
+        public Lists_Change l = new Lists_Change();
+        private Changes b = new Changes();
+        public VisualModel access;
+        private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
 
-        //constructor class, when project is opened it will check if there is a data file available to work with, otherwise it creates a new one
+        /// <summary>
+        /// constructor class, when project is opened it will check if there is a data file available to work with, otherwise it creates a new one
+        /// </summary>
+        /// <param name="data">Links the DataModel file</param>
         public Connecion_to_files(DataModel data)
         {
             if (File.Exists(filepath) && !Program.reimport)
             {
                 try
                 {
-                    files.disk_read(this, filepath);
+                    Files.Disk_read(this, filepath);
                 }
                 catch
                 {
@@ -39,26 +39,31 @@ namespace manderijntje
             {
                 MakeDataForDisk(data);
             }
-
-
         }
 
-        //if there is no data file, this mothod will create a new file
+        /// <summary>
+        /// if there is no data file, this mothod will create a new file
+        /// </summary>
+        /// <param name="data">Links the DataModel file</param>
         private void MakeDataForDisk(DataModel data)
         {
             access = (new parsing(data)).getModel(false);
 
             if (Directory.Exists(filepath))
             {
-                files.writing_disk(access, FileMode.Open, filepath);
+                Files.Writing_disk(access, FileMode.Open, filepath);
             }
             else
             {
-                files.writing_disk(access, FileMode.Create, filepath);
+                Files.Writing_disk(access, FileMode.Create, filepath);
             }
         }
 
-        //this method rescales all nodes acording to the zoom (in other methode width*zoom and height*zoom)
+        /// <summary>
+        /// this method rescales all nodes acording to the zoom (in other methode width*zoom and height*zoom)
+        /// </summary>
+        /// <param name="width">The width of the map from the file MapView</param>
+        /// <param name="height">The height of the map from the file Mapview</param>
         public void SetSizeMap(int width, int height)
         {
             Point[] points = new Point[1000]; 
@@ -73,7 +78,6 @@ namespace manderijntje
                 {
                     break;
                 }
-
             }
 
             points = coordinates.ScalePointsToSize(points, width, height);
@@ -89,10 +93,12 @@ namespace manderijntje
                     break;
                 }
             }
-
         }
 
-        public void countConnections()
+        /// <summary>
+        /// This method sets the amount of connections a node has to other nodes (1 to 8).
+        /// </summary>
+        public void CountConnections()
         {
             foreach(VisueelNode v in access.nodes)
             {
@@ -104,7 +110,10 @@ namespace manderijntje
             }
         }
 
-        public void colorchange()
+        /// <summary>
+        /// This method sets the collor of the nodes depending on what country they are in.
+        /// </summary>
+        public void Colorchange()
         {
             foreach (VisueelNode v in access.nodes)
             {
@@ -136,73 +145,67 @@ namespace manderijntje
                         break;
                 }
             }
-
         }
 
-        //is responsible for corectly colloring all nodes
-        public void visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
+        /// <summary>
+        /// is responsible for corectly colloring all nodes
+        /// </summary>
+        /// <param name="screenheight">Screenheight of the map from the Mapvieuw file</param>
+        /// <param name="factor">The value of the zoom from the Mapview</param>
+        /// <param name="startmouse">strat coordinate of the mouse from MapView</param>
+        /// <param name="endmouse">end coordinate of the mouse from MapView</param>
+        /// <param name="s">List of Nodes on the route the user entered, comming from Form1</param>
+        /// <param name="stationnames">Only if a new set of names is filled in by the user, this bool turns to true</param>
+        /// <param name="map">Gives the connection to the MapView</param>
+        public void Visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
         {
-           
-
             if (stationnames)
             {
-                /*foreach (VisueelNode v in access.nodes)
-                {
-                      v.Color = Color.Gray;
-                    
-                }*/
-
-                colorchange();
-
+                Colorchange();
 
                 foreach (VisueelNode v in access.nodes)
                 {
-                    if (s[0].stationnaam == v.name_id)
+                    if (s[0].stationname == v.name_id)
                     {
                         v.priorityLinks = true;
-                        map.station1 = s[0].stationnaam;
+                        map.station1 = s[0].stationname;
                     }
                        
 
-                    if (s[s.Count - 1].stationnaam == v.name_id)
+                    if (s[s.Count - 1].stationname == v.name_id)
                     {
                         v.priorityLinks = true;
-                        map.station2 = s[s.Count - 1].stationnaam;
-                    }
-                       
+                        map.station2 = s[s.Count - 1].stationname;
+                    }                      
                 }
-
 
                 foreach (VisualLink v in access.links)
                  {
                      v.kleur = Color.Gray;
                  }
 
-                
-
                 foreach (VisueelNode v in access.nodes)
                 {
                     foreach (Node n in s)
                     {
-                        if(v.name_id == n.stationnaam)
+                        if(v.name_id == n.stationname)
                             v.Color = Color.Orange;
 
                     }
 
                 }
 
-
-                foreach (vLogicalLink v in access.connections)
+                foreach (VLogicalLink v in access.connections)
                 {
                     string firstName, lastName;
 
                     for (int n = 0; n < s.Count; n++)
                     {
-                        firstName = s[n].stationnaam;
+                        firstName = s[n].stationname;
 
                         for (int m = 0; m < s.Count; m++)
                         {
-                            lastName = s[m].stationnaam;
+                            lastName = s[m].stationname;
 
                             if (firstName == v.v.name_id && lastName == v.u.name_id)
                             {
@@ -216,89 +219,93 @@ namespace manderijntje
                                     v.links[i].kleur = Color.Orange;
                                 }
                             }
-                        }
-                        
+                        }                       
                     }
-
                 }
-
 
                 foreach (VisualLink m in access.links)
                 {
-
                     if (m.v.Color == Color.Orange && m.u.Color == Color.Orange && !m.v.dummynode && !m.u.dummynode)
                     {
                         m.kleur = Color.Orange;
-
                     }
 
                 }
             }
 
-            l.valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, new Point(0, 0), new Point(0, 0), map);
+            l.Valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, map);
 
         }
-
     }
 
 
-    /*this class contains all lists*/
+    /// <summary>
+    /// this is the constructor class and contains all lists
+    /// </summary>
     [Serializable]
-    public class VisueelModel
+    public class VisualModel
     {
         public List<VisueelNode> nodes = new List<VisueelNode>();
         public List<VisualLink> links = new List<VisualLink>();
-        public List<vLogicalLink> connections = new List<vLogicalLink>();
+        public List<VLogicalLink> connections = new List<VLogicalLink>();
     }
 
 
-    /*this class controls the lists*/
+    /// <summary>
+    /// this class controls the lists
+    /// </summary>
     [Serializable]
-    public class lists_change
+    public class Lists_Change
     {
+        int toshiftX = -150, toshifty = 50;
 
-        int toshiftX = 50, toshifty = 50; 
-
-        //sets default xmovement and y movement when zooming out
-        public void changez(int factor, int width, int height)
+        /// <summary>
+        /// sets default x movement and y movement when zooming out
+        /// </summary>
+        /// <param name="factor">the value of zoom from the MapView</param>
+        /// <param name="width">The width of the map from Mapview</param>
+        /// <param name="height">The height of teh map from Mapview</param>
+        public void Changez(int factor, int width, int height)
         {
             toshiftX += ((width / 2) * factor) - ((width / 2) * (factor + 1));
             toshifty += ((height / 2) * factor) - ((height / 2) * (factor + 1));
         }
 
-        //sets default xmovement and y movement when zooming in
-        public void change(int factor, int width, int height)
+        /// <summary>
+        /// Sets default x movement and y movement when zooming in.
+        /// </summary>
+        /// <param name="factor">The value of zoom from the MapView</param>
+        /// <param name="width">The width of the map from Mapview</param>
+        /// <param name="height">The height of teh map from Mapview</param>
+        public void Change(int factor, int width, int height)
         {
             toshiftX += ((width/2) * (factor - 1)) - ((width/2) * (factor - 2));
             toshifty += ((height/2) * (factor - 1)) - ((height/2) * (factor-2));
         }
-       
 
-        //set bool value to true or false denping the given variables, true is for paint and falae is not paint
-        public void valuenode(VisueelModel access, int factor, int screenwidth, changes b, Point start, Point end, bool stations, Point startpoint, Point endpoint, MapView map)
+
+        /// <summary>
+        /// set bool value to true or false denping the given variables, true is for paint and falae is not paint
+        /// </summary>
+        /// <param name="access">Gives acces to the class VisueelModel in VisueelModel</param>
+        /// <param name="factor">The value of zoom from the MapView</param>
+        /// <param name="screenHeight">Screenheight of the map from the Mapvieuw file</param>
+        /// <param name="b">Gives acces to the the Class Changes in VisueelModel</param>
+        /// <param name="start">strat coordinate of the mouse from MapView</param>
+        /// <param name="end">end coordinate of the mouse from MapView</param>
+        /// <param name="stations">Only if a new set of names is filled in by the user, this bool turns to true</param>
+        /// <param name="map">Gives the connection to the MapView</param>
+        public void Valuenode(VisualModel access, int factor, int screenHeight, Changes b, Point start, Point end, bool stations, MapView map)
         {
-
-            Point shift = b.movemap(start, end);
-           toshiftX += shift.X;
-            toshifty+= shift.Y;
-
-           
-
-
+            Point shift = b.Movemap(start, end);
+            toshiftX += shift.X;
+            toshifty += shift.Y;
 
             foreach (VisueelNode v in access.nodes)
             {
-                if ((v.point.X - toshiftX) > 0 && (v.point.X - toshiftX) < (screenwidth) && (v.point.Y - toshifty) > 0 && (v.point.Y - toshifty) < (screenwidth))
+                if ((v.point.X - toshiftX) > 0 && (v.point.X - toshiftX) < (screenHeight) && (v.point.Y - toshifty) > 0 && (v.point.Y - toshifty) < (screenHeight))
                 {
-                    if (stations && v.point.X > startpoint.X && v.point.X > startpoint.Y && v.point.X < endpoint.X && v.point.Y < endpoint.Y)
-                    {
-                        switching(v, factor, map);
-                    }
-                    else
-                    {
-                        switching(v, factor, map);
-                    }
-
+                    Switching(v, factor, map);             
                 }
                 else
                 {
@@ -312,27 +319,28 @@ namespace manderijntje
                     map.links.Add(v);
             }
 
-            foreach (vLogicalLink v in access.connections)
+            foreach (VLogicalLink v in access.connections)
             {
                 if(v.v.paint || v.u.paint)
                     map.logicallinks.Add(v);
-            }
-            
+            }           
         }
 
 
-        //helping method valuenode
-        public void switching(VisueelNode v, int zoom, MapView map)
+        /// <summary>
+        /// helping method valuenode
+        /// </summary>
+        /// <param name="v">Gives acces to the class VisueelNode</param>
+        /// <param name="zoom">is the value of the zoom from MapView</param>
+        /// <param name="map">Givves acces to MapView file</param>
+        public void Switching(VisueelNode v, int zoom, MapView map)
         {
-
             switch (zoom)
             {
-                case 1:
-                  
+                case 1:                 
                     v.priorityLinks = (v.numberOfLinks < 8) ? false : true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v); 
-
                     break; 
                 case 2:
                     v.priorityLinks = (v.numberOfLinks < 7) ? false : true;
@@ -370,7 +378,6 @@ namespace manderijntje
                     if (v.paint) map.nodes.Add(v);
                     break;
                 default:
-                   // v.priorityLinks = true;
                     v.paint = true;
                     if (v.paint) map.nodes.Add(v);
                     break;
@@ -381,56 +388,45 @@ namespace manderijntje
 
             if (v.name_id == map.station2)
                 v.priorityLinks = true;
-
         }
-
     }
 
 
-    /*this classes contain all methods with direct or indirect user input and change the map according to the input */
-    public class changes
+    /// <summary>
+    /// this class contain all methods with direct or indirect user input and change the map according to the input
+    /// </summary>
+    public class Changes
     {
-        //returns shift over x and y direction as a point
-        public Point movemap(Point startmouse, Point endmouse)
+        /// <summary>
+        /// returns shift over x and y direction as a point
+        /// </summary>
+        /// <param name="startmouse">strat coordinate of the mouse from MapView</param>
+        /// <param name="endmouse">end coordinate of the mouse from MapView</param>
+        /// <returns></returns>
+        public Point Movemap(Point startmouse, Point endmouse)
         {
             return new Point(startmouse.X - endmouse.X, startmouse.Y - endmouse.Y);
-        }
-
-        // uses 2 points to return in getzoom
-        public struct zoomtostations
-        {
-            public Point biggest, smallest;
-        }
-
-        //returns coordinate with smallest x,y and one with biggest x,y
-        public zoomtostations getpoints(List<Point> p)
-        {
-            zoomtostations stations = new zoomtostations();
-            int tolerance = 15;
-
-            stations.smallest = new Point(p.Min(Point => Point.X) - tolerance, p.Min(Point => Point.Y) - tolerance);
-            stations.biggest = new Point(p.Max(Point => Point.X) + tolerance, p.Max(Point => Point.Y) + tolerance);
-
-            return stations;
-        }
-
-     
-        
-        
+        }         
     }
 
-    //these classes contain methods for reading and writing to the disk
-    public class files
+    /// <summary>
+    /// these classes contain methods for reading and writing to the disk
+    /// </summary>
+    public class Files
     {
-        //method for reading from the disk
-        public static void disk_read(Connecion_to_files c, string path)
+        /// <summary>
+        /// method for reading from the disk
+        /// </summary>
+        /// <param name="c">Gives acces to the class Connectiom_to_files</param>
+        /// <param name="path">Is the path where the files is saved</param>
+        public static void Disk_read(Connecion_to_files c, string path)
         {
             try
             {
                 using (Stream str = File.Open(path, FileMode.Open))
                 {
                     var formater = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    c.access = (VisueelModel)formater.Deserialize(str);
+                    c.access = (VisualModel)formater.Deserialize(str);
                 }
             } 
             catch
@@ -439,8 +435,13 @@ namespace manderijntje
             }
         }
 
-        //writing to the disk
-        public static void writing_disk(VisueelModel l, FileMode fm, string path)
+        /// <summary>
+        /// writing to the disk
+        /// </summary>
+        /// <param name="l">Gives acces to the class VisueelModel</param>
+        /// <param name="fm">writing to existing files or creating a new file when not available</param>
+        /// <param name="path">Is the path where the files is saved</param>
+        public static void Writing_disk(VisualModel l, FileMode fm, string path)
         {
             try
             {
@@ -454,12 +455,13 @@ namespace manderijntje
             {
                 MessageBox.Show("File coudn't be opened", "Error", MessageBoxButtons.OK);
             }
-
         }
     }
 
 
-    /*this class is a constructor for the list*/
+    /// <summary>
+    /// this class is a constructor for the list
+    /// </summary>
     [Serializable]
     public class VisueelNode
     {
@@ -471,18 +473,18 @@ namespace manderijntje
         public bool dummynode = false;
         public bool priorityLinks = false;
         public int numberOfLinks = 0;
-
         public VisueelNode(Point point, string name_id, int prioriteit)
         { 
             this.point = point;
             this.name_id = name_id;
             this.prioriteit = prioriteit;
-        }
-         
+        }       
     }
 
 
-    /*this class is a constructor for the list*/
+    /// <summary>
+    /// this class is a constructor for the list
+    /// </summary>
     [Serializable]
     public class VisualLink
     {
@@ -490,31 +492,33 @@ namespace manderijntje
         public Color kleur = Color.Gray;
         public bool paint = true;
         public VisueelNode u, v;
-
         public VisualLink(string name_id)
         {
             this.name_id = name_id;
         }
-
     }
 
 
-    /*this class is a constructor for the list*/
+    /// <summary>
+    /// this class is a constructor for the list
+    /// </summary>
     [Serializable]
-    public class vLogicalLink
+    public class VLogicalLink
     {
         public VisueelNode u, v;
         public List<VisueelNode> nodes = new List<VisueelNode>();
         public List<VisualLink> links = new List<VisualLink>();
-
-        public vLogicalLink(VisueelNode U, VisueelNode V)
+        public VLogicalLink(VisueelNode U, VisueelNode V)
         {
             u = U;
             v = V;
         }
 
-        //if ther exists a dummy node in a route, this method finds the dummy node and the connecting stations
-        public void getLinks(List<VisualLink> l)
+        /// <summary>
+        /// if ther exists a dummy node in a route, this method finds the dummy node and the connecting stations
+        /// </summary>
+        /// <param name="l">List with links from the class VisualLink</param>
+        public void GetLinks(List<VisualLink> l)
         {
             List<VisueelNode> booltest = nodes;
             booltest.Add(u);
@@ -523,16 +527,22 @@ namespace manderijntje
             {
                 for (int n = i; n < booltest.Count; n++)
                 {
-                    if (getLink(booltest[i], booltest[n], l) != null)
+                    if (GetLink(booltest[i], booltest[n], l) != null)
                     {
-                        links.Add(getLink(booltest[i], booltest[n], l));
+                        links.Add(GetLink(booltest[i], booltest[n], l));
                     }
                 }
             }
         }
 
-      
-        private VisualLink getLink(VisueelNode u, VisueelNode v, List<VisualLink> l)
+        /// <summary>
+        /// Helping method for GetLinks
+        /// </summary>
+        /// <param name="u">Acces to the first VisueelNode from VisualLink</param>
+        /// <param name="v">Acces to the second VisueelNode from VisualLink</param>
+        /// <param name="l">List with VisualLink</param>
+        /// <returns></returns>
+        private VisualLink GetLink(VisueelNode u, VisueelNode v, List<VisualLink> l)
         {
             for (int i = 0; i < l.Count; i++)
             {
@@ -544,5 +554,4 @@ namespace manderijntje
             return null;
         }
     }
-
 }

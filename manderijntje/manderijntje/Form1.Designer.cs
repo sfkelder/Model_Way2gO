@@ -1,4 +1,4 @@
-﻿namespace manderijntje
+﻿namespace Manderijntje
 {
     partial class Form1
     {
@@ -48,8 +48,8 @@
             this.hideArrowIcon = new System.Windows.Forms.PictureBox();
             this.hideBarOrangePanel = new System.Windows.Forms.Panel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.autoSuggestion = new manderijntje.autoSuggestion();
-            this.detailsUserControl = new manderijntje.DetailsControl();
+            this.autoSuggestion = new autoSuggestion();
+            this.detailsUserControl = new DetailsControl();
             this.logoHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.logoIcon)).BeginInit();
@@ -81,7 +81,7 @@
             // 
             // backIcon
             // 
-            this.backIcon.Image = global::manderijntje.Properties.Resources.backArrowWhite;
+            this.backIcon.Image = global::Manderijntje.Properties.Resources.backArrowWhite;
             this.backIcon.Location = new System.Drawing.Point(24, 22);
             this.backIcon.Name = "backIcon";
             this.backIcon.Size = new System.Drawing.Size(20, 20);
@@ -92,7 +92,7 @@
             // 
             // logoIcon
             // 
-            this.logoIcon.Image = global::manderijntje.Properties.Resources.Way2GoLogo;
+            this.logoIcon.Image = global::Manderijntje.Properties.Resources.Way2GoLogo;
             this.logoIcon.Location = new System.Drawing.Point(153, 0);
             this.logoIcon.Name = "logoIcon";
             this.logoIcon.Size = new System.Drawing.Size(71, 58);
@@ -182,7 +182,7 @@
             // 
             // changeTextImage
             // 
-            this.changeTextImage.Image = global::manderijntje.Properties.Resources.changeText;
+            this.changeTextImage.Image = global::Manderijntje.Properties.Resources.changeText;
             this.changeTextImage.Location = new System.Drawing.Point(194, 10);
             this.changeTextImage.Name = "changeTextImage";
             this.changeTextImage.Size = new System.Drawing.Size(35, 35);
@@ -233,7 +233,7 @@
             // hideArrowIcon
             // 
             this.hideArrowIcon.BackColor = System.Drawing.Color.Transparent;
-            this.hideArrowIcon.Image = global::manderijntje.Properties.Resources.BackwardArrow;
+            this.hideArrowIcon.Image = global::Manderijntje.Properties.Resources.BackwardArrow;
             this.hideArrowIcon.Location = new System.Drawing.Point(-7, 287);
             this.hideArrowIcon.Name = "hideArrowIcon";
             this.hideArrowIcon.Size = new System.Drawing.Size(35, 35);

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace manderijntje.Properties
+namespace Manderijntje.Properties
 {
 
 

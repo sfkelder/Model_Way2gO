@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace manderijntje
+namespace Manderijntje
 {
     public partial class autoSuggestion : UserControl
     {
@@ -28,7 +22,7 @@ namespace manderijntje
         {
             nodeList = nodes;
             foreach (Node node in nodeList)
-                stationList.Add(new autoSuggestionModel(node.stationnaam, "Train"));
+                stationList.Add(new autoSuggestionModel(node.stationname, "Train"));
         }
         public autoSuggestion()
         {

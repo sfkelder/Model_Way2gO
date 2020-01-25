@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
-using System.IO;
 using Gurobi;
  
-namespace manderijntje
+namespace Manderijntje
 {
     class parsing
     {
@@ -26,7 +25,7 @@ namespace manderijntje
             {
                 for (int i = 0; i < model.nodes.Count; i++)
                 {
-                    Console.WriteLine(model.nodes[i].neighbours.Count + "    " + model.nodes[i].stationnaam);
+                    Console.WriteLine(model.nodes[i].neighbours.Count + "    " + model.nodes[i].stationname);
                 }
 
                 /*
@@ -72,7 +71,7 @@ namespace manderijntje
             }
         }
 
-        public VisueelModel getModel (bool solve)
+        public VisualModel getModel (bool solve)
         {
             if (solve && getDegree() <= 8)
             {
@@ -386,7 +385,7 @@ namespace manderijntje
             for (int i = 0; i < dNodes.Count; i++)
             {
                 sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
-                newNode.name = dNodes[i].stationnaam;
+                newNode.name = dNodes[i].stationname;
                 newNode.country = dNodes[i].country;
                 nodes.Add(newNode);
             }
@@ -429,7 +428,7 @@ namespace manderijntje
         {
             for (int i = 0; i < dLinks.Count; i++)
             {
-                sLink newLink = new sLink(getNode(dLinks[i].Start.number), getNode(dLinks[i].End.number));
+                sLink newLink = new sLink(getNode(dLinks[i].start.number), getNode(dLinks[i].end.number));
                 links.Add(newLink);
             }
         }
@@ -451,13 +450,13 @@ namespace manderijntje
         // CREATE VISUAL MODEL OBJECT:
 
         // initializes a new instance of visual model
-        private VisueelModel createModel()
+        private VisualModel createModel()
         {
-            VisueelModel model = new VisueelModel();
+            VisualModel model = new VisualModel();
 
             List<VisueelNode> dNodes = new List<VisueelNode>();
             List<VisualLink> dLinks = new List<VisualLink>();
-            List<vLogicalLink> dConnections = new List<vLogicalLink>();
+            List<VLogicalLink> dConnections = new List<VLogicalLink>();
 
             for (int i = 0; i < nodes.Count; i++)
             {
@@ -490,12 +489,12 @@ namespace manderijntje
 
             for (int i = 0; i < logicalconnections.Count; i++)
             {
-                vLogicalLink newLogical = new vLogicalLink(getNode(logicalconnections[i].u.index, dNodes), getNode(logicalconnections[i].v.index, dNodes));
+                VLogicalLink newLogical = new VLogicalLink(getNode(logicalconnections[i].u.index, dNodes), getNode(logicalconnections[i].v.index, dNodes));
                 for (int n = 0; n < logicalconnections[i].nodes.Count; n++)
                 {
                     newLogical.nodes.Add(getNode(logicalconnections[i].nodes[n].index, dNodes));
                 }
-                newLogical.getLinks(dLinks);
+                newLogical.GetLinks(dLinks);
                 dConnections.Add(newLogical);
             }
             /*
