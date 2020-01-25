@@ -2,10 +2,10 @@
 
 namespace Manderijntje
 {
-    public partial class Indexpanel : UserControl
+    public partial class IndexPanel : UserControl
     {
         //constructor method
-        public Indexpanel()
+        public IndexPanel()
         {                 
             InitializeComponent();   
         }

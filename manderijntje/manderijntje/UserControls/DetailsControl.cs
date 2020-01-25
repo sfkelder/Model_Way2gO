@@ -58,49 +58,16 @@ namespace Manderijntje
             InitializeComponent();
         }
 
-        // Save route as text file
-        private void saveAsTextFile()
-        {
-            Stream myStream;
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-            saveFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            saveFileDialog.FilterIndex = 2;
-            saveFileDialog.RestoreDirectory = true;
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                if ((myStream = saveFileDialog.OpenFile()) != null)
-                {
-                    using (StreamWriter sw = File.CreateText(saveFileDialog.FileName + ".txt"))
-                    {
-                        sw.WriteLine("Depature Time: " + _departureTime);
-                        sw.WriteLine("Arrival Time: " + _destinationTime);
-                        sw.WriteLine("Total Time: " + _totalTime + "\n\n");
-                        sw.WriteLine("Transfers:");
-                        foreach (Node node in shortestPath)
-                        {
-                            sw.WriteLine("Station: " + node.stationname);
-                            sw.WriteLine("Departure Time: " + _departureTime + "\n");
-                        }
-                    }
-                    myStream.Close();
-                }
-            }
-        }
-
-
-        private void saveRoute_Click(object sender, EventArgs e)
+        // Will give the user a print dialog to print the trip details.
+        private void SaveRouteClick(object sender, EventArgs e)
         {
             printDialog1.Document = printDocument1;
             if (printDialog1.ShowDialog() == DialogResult.OK)
                 printDocument1.Print();
-
-            //saveAsTextFile();
         }
 
-        // Make print document
-        private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
+        // Make print document with the correct trip details.
+        private void PrintDocumentPrintPage(object sender, PrintPageEventArgs e)
         {
             e.Graphics.DrawString("Way2Go Trip Details", new Font("Arial", 30, FontStyle.Bold), Brushes.Orange, 50, 50);
             e.Graphics.DrawString("Depature Time: " + _departureTime, new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 50, 120);

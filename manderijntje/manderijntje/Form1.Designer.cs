@@ -48,7 +48,7 @@
             this.hideArrowIcon = new System.Windows.Forms.PictureBox();
             this.hideBarOrangePanel = new System.Windows.Forms.Panel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.autoSuggestion = new autoSuggestion();
+            this.autoSuggestion = new AutoSuggestion();
             this.detailsUserControl = new DetailsControl();
             this.logoHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backIcon)).BeginInit();
@@ -88,7 +88,7 @@
             this.backIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.backIcon.TabIndex = 2;
             this.backIcon.TabStop = false;
-            this.backIcon.Click += new System.EventHandler(this.backIcon_Click);
+            this.backIcon.Click += new System.EventHandler(this.BackIconClick);
             // 
             // logoIcon
             // 
@@ -137,7 +137,7 @@
             this.searchBTN.TabIndex = 2;
             this.searchBTN.Text = "Get your Trip";
             this.searchBTN.UseVisualStyleBackColor = false;
-            this.searchBTN.Click += new System.EventHandler(this.searchButton_Click);
+            this.searchBTN.Click += new System.EventHandler(this.searchButtonClick);
             // 
             // tijdPanel
             // 
@@ -189,7 +189,7 @@
             this.changeTextImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.changeTextImage.TabIndex = 14;
             this.changeTextImage.TabStop = false;
-            this.changeTextImage.Click += new System.EventHandler(this.changeTextImage_Click);
+            this.changeTextImage.Click += new System.EventHandler(this.ChangeTextImageClick);
             // 
             // departureInput
             // 
@@ -199,7 +199,7 @@
             this.departureInput.Name = "departureInput";
             this.departureInput.Size = new System.Drawing.Size(182, 32);
             this.departureInput.TabIndex = 0;
-            this.departureInput.TextChanged += new System.EventHandler(this.departureInput_TextChanged);
+            this.departureInput.TextChanged += new System.EventHandler(this.DepartureInputTextChanged);
             // 
             // destinationInput
             // 
@@ -210,7 +210,7 @@
             this.destinationInput.Name = "destinationInput";
             this.destinationInput.Size = new System.Drawing.Size(181, 32);
             this.destinationInput.TabIndex = 1;
-            this.destinationInput.TextChanged += new System.EventHandler(this.destinationInput_TextChanged);
+            this.destinationInput.TextChanged += new System.EventHandler(this.DestinationInputTextChanged);
             // 
             // tripOptionsFlowControl
             // 
@@ -240,7 +240,7 @@
             this.hideArrowIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.hideArrowIcon.TabIndex = 0;
             this.hideArrowIcon.TabStop = false;
-            this.hideArrowIcon.Click += new System.EventHandler(this.hideArrowIcon_Click);
+            this.hideArrowIcon.Click += new System.EventHandler(this.HideArrowIconClick);
             // 
             // hideBarOrangePanel
             // 
@@ -325,7 +325,7 @@
         private System.Windows.Forms.PictureBox changeTextImage;
         private System.Windows.Forms.ImageList imageList1;
         private DetailsControl detailsUserControl;
-        private autoSuggestion autoSuggestion;
+        private AutoSuggestion autoSuggestion;
     }
 }
 

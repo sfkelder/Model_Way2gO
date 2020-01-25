@@ -1,6 +1,6 @@
 ﻿namespace Manderijntje
 {
-    partial class autoSuggestion
+    partial class AutoSuggestion
     {
         /// <summary> 
         /// Required designer variable.

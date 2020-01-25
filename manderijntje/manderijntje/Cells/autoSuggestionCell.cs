@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Manderijntje
 {
-    public partial class autoSuggestionCell : UserControl
+    public partial class AutoSuggestionCell : UserControl
     {
         private string _stationName;
         private string _stationType;
@@ -18,15 +18,9 @@ namespace Manderijntje
         public string stationType
         {
             get { return _stationType; }
-            set { _stationType = value; 
-                if (_stationType == "Trein")
-                {
-                    stationTypeIcon.Image = Properties.Resources.OrangeTrain;
-                }
-                else if (_stationType == "Bus")
-                {
-                    stationTypeIcon.Image = Properties.Resources.busIcon;
-                } 
+            set {
+                _stationType = value;
+                stationTypeIcon.Image = Properties.Resources.OrangeTrain;
             }
         }
         public bool departureInput
@@ -35,23 +29,23 @@ namespace Manderijntje
             set { _departureInput = value; }
         }
 
-        public autoSuggestionCell(Form1 form)
+        public AutoSuggestionCell(Form1 form)
         {
             InitializeComponent();
             this._form = form;
         }
 
         // Calls methods in the form call when clicked on a label.
-        private void stationLBL_Click(object sender, EventArgs e)
+        private void StationLBLClick(object sender, EventArgs e)
         {
-            autoSuggestion a = new autoSuggestion(_form);
-            a.fillTextbox(_stationName, _departureInput);
+            AutoSuggestion a = new AutoSuggestion(_form);
+            a.FillTextbox(_stationName, _departureInput);
         }
 
-        private void stationTypeIcon_Click(object sender, EventArgs e)
+        private void StationTypeIconClick(object sender, EventArgs e)
         {
-            autoSuggestion a = new autoSuggestion(_form);
-            a.fillTextbox(_stationName, _departureInput);
+            AutoSuggestion a = new AutoSuggestion(_form);
+            a.FillTextbox(_stationName, _departureInput);
         }
     }
 }

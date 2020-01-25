@@ -1,6 +1,6 @@
 ﻿namespace Manderijntje
 {
-    partial class autoSuggestionCell
+    partial class AutoSuggestionCell
     {
         /// <summary> 
         /// Required designer variable.
@@ -43,7 +43,7 @@
             this.stationLBL.Size = new System.Drawing.Size(249, 29);
             this.stationLBL.TabIndex = 0;
             this.stationLBL.Text = "Amsterdam Centraal";
-            this.stationLBL.Click += new System.EventHandler(this.stationLBL_Click);
+            this.stationLBL.Click += new System.EventHandler(this.StationLBLClick);
             // 
             // stationTypeIcon
             // 
@@ -55,7 +55,7 @@
             this.stationTypeIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.stationTypeIcon.TabIndex = 1;
             this.stationTypeIcon.TabStop = false;
-            this.stationTypeIcon.Click += new System.EventHandler(this.stationTypeIcon_Click);
+            this.stationTypeIcon.Click += new System.EventHandler(this.StationTypeIconClick);
             // 
             // autoSuggestionCell
             // 

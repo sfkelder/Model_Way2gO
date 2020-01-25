@@ -1,6 +1,6 @@
 ﻿namespace Manderijntje
 {
-    partial class Indexpanel
+    partial class IndexPanel
     {
         /// <summary> 
         /// Required designer variable.

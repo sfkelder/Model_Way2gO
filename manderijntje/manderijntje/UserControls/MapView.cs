@@ -7,7 +7,7 @@ namespace Manderijntje
 {
     public partial class MapView : UserControl
     {
-       public List<VisueelNode> nodes = new List<VisueelNode>();
+        public List<VisueelNode> nodes = new List<VisueelNode>();
         public List<VisualLink> links = new List<VisualLink>();
         public List<VLogicalLink> logicallinks = new List<VLogicalLink>();
 

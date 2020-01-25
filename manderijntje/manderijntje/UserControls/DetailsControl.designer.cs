@@ -67,7 +67,7 @@
             this.saveRoute.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.saveRoute.TabIndex = 13;
             this.saveRoute.TabStop = false;
-            this.saveRoute.Click += new System.EventHandler(this.saveRoute_Click);
+            this.saveRoute.Click += new System.EventHandler(this.SaveRouteClick);
             // 
             // clockIcon
             // 
@@ -141,7 +141,7 @@
             // 
             // printDocument1
             // 
-            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
+            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintDocumentPrintPage);
             // 
             // printDialog1
             // 

@@ -2,7 +2,7 @@
 
 namespace Manderijntje
 {
-    public partial class transferCell : UserControl
+    public partial class TransferCell : UserControl
     {
         private string _departureTime;
         private string _stationName;
@@ -27,15 +27,7 @@ namespace Manderijntje
         {
             get { return _typeTransport; }
             set { _typeTransport = value;
-                
-                if(_typeTransport == "Train")
-                {
-                    typetransportIcon.Image = Properties.Resources.OrangeTrain;
-                }
-                else if (_typeTransport == "Bus")
-                {
-                    typetransportIcon.Image = Properties.Resources.busIcon;
-                }
+                typetransportIcon.Image = Properties.Resources.OrangeTrain;
             }
         }
 
@@ -43,7 +35,7 @@ namespace Manderijntje
         {
             get { return _last; }
             set { _last = value;
-                // Checks wich image it need to have
+                // Checks wich image it need to have.
                 if (_last)
                 {
                     lineImage.Image = Properties.Resources.endTrack;
@@ -55,7 +47,7 @@ namespace Manderijntje
         {
             get { return _first; }
             set { _first = value;
-                // Checks wich image it need to have
+                // Checks wich image it need to have.
                 if (_first)
                 {
                     lineImage.Image = Properties.Resources.startTrack;
@@ -67,7 +59,7 @@ namespace Manderijntje
         {
             get { return _mid; }
             set { _mid = value;
-                // Checks wich image it need to have
+                // Checks wich image it need to have.
                 if (_mid)
                 {
                     lineImage.Image = Properties.Resources.midTrack;
@@ -75,7 +67,7 @@ namespace Manderijntje
             }
         }
 
-        public transferCell()
+        public TransferCell()
         {
             InitializeComponent();
         }

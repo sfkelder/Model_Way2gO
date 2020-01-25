@@ -1,6 +1,6 @@
 ﻿namespace Manderijntje
 {
-    partial class transferCell
+    partial class TransferCell
     {
         /// <summary> 
         /// Required designer variable.

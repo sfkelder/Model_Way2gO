@@ -11,70 +11,50 @@ namespace Manderijntje
         DataControl dataControl;
         Connecion_to_files visueelControl;
         MapView mapView;
-        Indexpanel indexpanel;
+        IndexPanel indexPanel;
         ZoomInandOut zoomInandOut;
         List<Route> tripOptions = new List<Route>();
         List<Node> nodeList = new List<Node>();
-        List<departureTimeModel> timeList = new List<departureTimeModel>();
-        List<autoSuggestionModel> backupList = new List<autoSuggestionModel>();
-        public tripOptionsCell tripOptionscell { get; set; }
+        List<DepartureTimeModel> timeList = new List<DepartureTimeModel>();
+        List<AutoSuggestionModel> backupList = new List<AutoSuggestionModel>();
+        public TripOptionsCell tripOptionscell { get; set; }
         DateTime chosenTime { get; set; }
         string departureLocation, destinationLocation, departureTime, depLocation, desLocation;
         int biggestLBL, biggestLBLIndex;
         bool inputControl = false, optiesControl = false, detailsControl = false, optionSelected = false, changeInput = false;
 
-        private bool demoDani = false;
-
-        
         public Form1()
         {
             InitializeComponent();
+            SetupView();
+        }
+
+        // Calls every method that needs to be called to setup the view correctly.
+        private void SetupView()
+        {
             dataControl = new DataControl();
             visueelControl = new Connecion_to_files(dataControl.GetDataModel());
             mapView = new MapView(visueelControl);
-            indexpanel = new Indexpanel();
+            indexPanel = new IndexPanel();
             zoomInandOut = new ZoomInandOut(mapView);
             mapView.mapView = mapView;
             mapView.zoomInOut = zoomInandOut;
-            this.Controls.Add(indexpanel);
+            this.Controls.Add(indexPanel);
             this.Controls.Add(zoomInandOut);
             this.Controls.Add(mapView);
-            setupView();
-
-            if (demoDani)
-            {
-                List<Node> demoNodes = new List<Node>();
-                demoNodes.Add(new Node(0.0, 0.0, "Ronald Reagon Washington", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Crystal City", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Pentagon City", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0,  "Pentagon", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "L Enfant Plaza", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Waterfront", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Navy Yard Ballpark", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Anacostia", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Congress Heights", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Southern Avenue", "", 0));
-                demoNodes.Add(new Node(0.0, 0.0, "Naylor Road", "", 0));
-                visueelControl.Visualcontrol(this.Height, 0, new Point(0, 0), new Point(0, 0), demoNodes, true, mapView);
-            }
-        }
-
-        // Calls every method that needs to be called to setup the view Correctly
-        private void setupView()
-        {
             WindowState = FormWindowState.Maximized;
-            changeBackIcon(false);
-            show(inputPanel);
-            hideshowBack();
-            fillTimeInput();
-            setElement();
+            ChangeBackIcon(false);
+            ShowUserControl(inputPanel);
+            HideshowBack();
+            FillTimeInput();
+            SetElement();
             DataModel datamodel = dataControl.GetDataModel();
             nodeList = datamodel.nodes;
-            SizeChanged += new EventHandler(screenSizeChanged);
-            departureInput.GotFocus += new EventHandler(this.removeText);
-            departureInput.LostFocus += new EventHandler(this.addText);
-            destinationInput.GotFocus += new EventHandler(this.removeText);
-            destinationInput.LostFocus += new EventHandler(this.addText);
+            SizeChanged += new EventHandler(ScreenSizeChanged);
+            departureInput.GotFocus += new EventHandler(this.RemoveText);
+            departureInput.LostFocus += new EventHandler(this.AddText);
+            destinationInput.GotFocus += new EventHandler(this.RemoveText);
+            destinationInput.LostFocus += new EventHandler(this.AddText);
             detailsUserControl.Visible = false;
             departureInput.Text = "Departure";
             departureInput.ForeColor = Color.LightGray;
@@ -84,17 +64,17 @@ namespace Manderijntje
             timeInput.DataSource = timeList;
             timeInput.DisplayMember = "departureTime";
         }
-        
-        // When screenSize is changed, call the method "setElement"
-        private void screenSizeChanged(object sender, EventArgs e)
+
+        // When screenSize is changed, call the method "setElement".
+        private void ScreenSizeChanged(object sender, EventArgs e)
         {
-            setElement();
+            SetElement();
         }
 
-        // Set the locations and size of elements corretly
-        private void setElement()
+        // Set the locations and size of elements correctly.
+        private void SetElement()
         {
-            sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width - (2*hideBar.Width), this.Height - (logoHeader.Height));
+            SizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width - (2 * hideBar.Width), this.Height - (logoHeader.Height));
             hideBar.Size = new Size(hideBar.Width, this.Height);
             hideBarOrangePanel.Size = new Size(hideBarOrangePanel.Width, hideBar.Height);
             tripOptionsFlowControl.Size = new Size(tripOptionsFlowControl.Width, mapView.Height - 20);
@@ -109,8 +89,8 @@ namespace Manderijntje
             }
         }
 
-        // Removes the placeholder text in the right inputBoxes
-        private void removeText(object sender, EventArgs e)
+        // Removes the placeholder text in the right inputBoxes.
+        private void RemoveText(object sender, EventArgs e)
         {
             TextBox textbox = (TextBox)sender;
             if (textbox.Text == "Departure" || textbox.Text == "Destination")
@@ -120,8 +100,8 @@ namespace Manderijntje
             }
         }
 
-        // Adds the placeholder tet in the right inputBoxes
-        private void addText(object sender, EventArgs e)
+        // Adds the placeholder text in the correct textBoxes.
+        private void AddText(object sender, EventArgs e)
         {
             bool departureInputBool = true;
             TextBox textbox = (TextBox)sender;
@@ -136,11 +116,11 @@ namespace Manderijntje
                 else
                     textbox.Text = "Destination";
                 textbox.ForeColor = Color.LightGray;
-            } 
+            }
         }
 
-        // Checks if the location is filled in correctly and exist
-        private static bool checkLocation(string departureLocation, string destinationLocation, bool checkDeparture, List<Node> nodesList)
+        // Checks if the location is filled in correctly and exist.
+        private static bool CheckLocation(string departureLocation, string destinationLocation, bool checkDeparture, List<Node> nodesList)
         {
             if (departureLocation == destinationLocation)
                 return false;
@@ -161,205 +141,151 @@ namespace Manderijntje
             return false;
         }
 
-        // Checks in which textBox an error is
-        private void checkFout(string departureLocation, string destinationLocation, bool departureBool, bool destinationBool)
+        // Checks in which textBox there an error occurred and calls the method highlightTextBox.
+        private void CheckFout(string departureLocation, string destinationLocation, bool departureBool, bool destinationBool)
         {
             if (departureLocation == destinationLocation)
-                highlightTextBox(destinationInput, "Destination location can't be the same as the departure location");
+                HighlightTextBox(destinationInput, "Destination location can't be the same as the departure location");
             else if (departureLocation == "Departure")
-                highlightTextBox(departureInput, "Departure textBox is empty");
+                HighlightTextBox(departureInput, "Departure textBox is empty");
             else if (destinationLocation == "Destination")
-                highlightTextBox(destinationInput, "Destination textBox is empty");
+                HighlightTextBox(destinationInput, "Destination textBox is empty");
             else if (!departureBool)
-                highlightTextBox(departureInput, "Departure location is wrong");
+                HighlightTextBox(departureInput, "Departure location is wrong");
             else if (!destinationBool)
-                highlightTextBox(destinationInput, "Destination location is wrong");
+                HighlightTextBox(destinationInput, "Destination location is wrong");
         }
 
-        // Highlight textBox with the error
-        private void highlightTextBox(TextBox textbox, string text)
+        // Highlight textBox with the error and show a messageBox with the correct text.
+        private void HighlightTextBox(TextBox textbox, string text)
         {
             MessageBox.Show(text + ", please try again", "Something went wrong");
             textbox.ForeColor = Color.Red;
         }
 
-        // Fill the timeInput with generated times
-        private void fillTimeInput()
+        // Generates 20 times and add them in the timeList.
+        private void FillTimeInput()
         {
             DateTime previouseMin = Round(DateTime.Now.Subtract(TimeSpan.FromMinutes(15)), TimeSpan.FromMinutes(5));
             DateTime extraMinutes;
             for (int i = 0; i < 20; i++)
             {
                 extraMinutes = previouseMin.AddMinutes(5);
-                timeList.Add(new departureTimeModel() { departureTime = extraMinutes.ToString("HH:mm") });
+                timeList.Add(new DepartureTimeModel() { departureTime = extraMinutes.ToString("HH:mm") });
                 previouseMin = extraMinutes;
             }
         }
 
-        // Round time to minutes that cant be diveded by 5
+        // Round a DateTime to a DateTime with minutes that you can divide with 5.
         private DateTime Round(DateTime dt, TimeSpan d)
         {
             return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
         }
-        
-        // Check if the departure or destination textBox is empty
-        private static bool checkIfEmpty(string departureLocation, string destinationLocation)
+
+        // Check if the departure or destination textBox is empty.
+        private static bool CheckIfEmpty(string departureLocation, string destinationLocation)
         {
             if (departureLocation != "Departure" && destinationLocation != "Destination")
                 return false;
             return true;
         }
 
-        // If there is no error it will call the "setupTripOptions" method for further setup for displaying some tripOptions
-        private void searchButton_Click(object sender, EventArgs e)
+        // If there is no error it will call the "setupTripOptions" method for further setup for displaying tripOptions.
+        private void searchButtonClick(object sender, EventArgs e)
         {
             departureLocation = departureInput.Text;
             destinationLocation = destinationInput.Text;
             departureTime = timeInput.Text;
-
-            if (demoDani)
-            {
-                // Demo case
-                setupTripOptions();
-            }
+            if (CheckLocation(departureLocation, destinationLocation, true, nodeList) &&
+                 CheckLocation(departureLocation, destinationLocation, false, nodeList))
+                SetupTripOptions();
             else
-            {
-                if (checkLocation(departureLocation, destinationLocation, true, nodeList) &&
-                    checkLocation(departureLocation, destinationLocation, false, nodeList))
-                    setupTripOptions();
-                else
-                    checkFout(departureLocation, destinationLocation,
-                        checkLocation(departureLocation, destinationLocation, true, nodeList),
-                        checkLocation(departureLocation, destinationLocation, false, nodeList));
-            }
+                CheckFout(departureLocation, destinationLocation,
+                    CheckLocation(departureLocation, destinationLocation, true, nodeList),
+                    CheckLocation(departureLocation, destinationLocation, false, nodeList));
         }
 
-        // Shows flowControl with all the possible tripOptions
-        public void setupTripOptions()
+        // Shows the tripOptionsFlowControl with all the possible tripOptions.
+        public void SetupTripOptions()
         {
-            show(tripOptionsFlowControl);
+            ShowUserControl(tripOptionsFlowControl);
             tripOptionsFlowControl.Location = new Point(0, logoHeader.Height);
-            clearFlowControl(tripOptionsFlowControl);
+            ClearFlowControl(tripOptionsFlowControl);
             tripOptions.Clear();
-
             chosenTime = Convert.ToDateTime(departureTime);
-
-            // Demo case
-            if (demoDani)
+            foreach (Route route in Routing.GetRoute(departureLocation, destinationLocation, chosenTime,
+            dataControl.GetDataModel()))
             {
-                fillTripOptions(new tripOptionsCell[20]);
+                tripOptions.Add(route);
             }
-            else
-            {
-                foreach (Route route in Routing.GetRoute(departureLocation, destinationLocation, chosenTime,
-                dataControl.GetDataModel()))
-                {
-                    tripOptions.Add(route);
-                }
-                fillTripOptions(new tripOptionsCell[tripOptions.Count()]);
-            }
+            FillTripOptions(new TripOptionsCell[tripOptions.Count()]);
         }
 
         // Fills the flowcontrol with the usercontrol called "tripOptionsCell" and gives the needed data to tripOptionsCell.
-        private void fillTripOptions(tripOptionsCell[] listItems)
+        private void FillTripOptions(TripOptionsCell[] listItems)
         {
-            // Demo case
-            if (demoDani)
+            for (int i = 0; i < listItems.Count(); i++)
             {
-                // Demo case
-                DateTime departureTime = DateTime.ParseExact("09:33", "hh:mm", System.Globalization.CultureInfo.CurrentCulture);
-                DateTime destinationTime = DateTime.ParseExact("10:12", "hh:mm", System.Globalization.CultureInfo.CurrentCulture);
-                DateTime totalTime = DateTime.ParseExact("00:39", "hh:mm", System.Globalization.CultureInfo.CurrentCulture);
+                listItems[i] = new TripOptionsCell(this);
+                listItems[i].departureTime = tripOptions[i].startTime.ToShortTimeString();
+                listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
+                listItems[i].nameTransport = "Train";
+                TimeSpan span = tripOptions[i].endTime.Subtract(tripOptions[i].startTime);
+                DateTime timeAdded = tripOptions[i].startTime.AddHours(span.Hours).AddMinutes(span.Minutes).AddDays(span.Days);
 
-                for (int i = 0; i < 20; i++)
+                if (timeAdded.Day > tripOptions[i].startTime.Day)
                 {
-                    // Demo Case
-                    departureTime = departureTime.AddMinutes(12);
-                    destinationTime = destinationTime.AddMinutes(12);
-                    listItems[i] = new tripOptionsCell(this);
-                    listItems[i].departureTime = departureTime.ToShortTimeString();
-                    listItems[i].destinationTime = destinationTime.ToShortTimeString();
-                    listItems[i].totalTime = totalTime.ToShortTimeString();
-
-                    if (tripOptionsFlowControl.Controls.Count < 0)
-                        clearFlowControl(tripOptionsFlowControl);
-                    else
-                        tripOptionsFlowControl.Controls.Add(listItems[i]);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < listItems.Count(); i++)
-                {
-                    listItems[i] = new tripOptionsCell(this);
-                    listItems[i].departureTime = tripOptions[i].startTime.ToShortTimeString();
-                    listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString();
-                    listItems[i].nameTransport = "Train";
-                    TimeSpan span = tripOptions[i].endTime.Subtract(tripOptions[i].startTime);
-                    DateTime timeAdded = tripOptions[i].startTime.AddHours(span.Hours).AddMinutes(span.Minutes).AddDays(span.Days);
-
-                    if (timeAdded.Day > tripOptions[i].startTime.Day)
+                    // If it takes 1 or more days change LBL size, height and span format.
+                    if (span.Days == 1)
                     {
-                        // If it takes 1 or more days change LBL size, height and span format.
-                        if (span.Days == 1)
-                        {
-                            listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
-                            listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
-                            listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
-                            listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
-                            listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
-                        }
-                        else if (span.Days > 1)
-                        {
-                            listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
-                            listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
-                            listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
-                            listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
-                            listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " " + span.Days + " days later";
-                        }
-                        else
-                        {
-                            listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
-                            listItems[i].totalTime = span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
-                        } 
+                        listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
+                        listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
+                        listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
+                        listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                        listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
+                    }
+                    else if (span.Days > 1)
+                    {
+                        listItems[i].totaltimeLBL.Location = new Point(260, listItems[i].totaltimeLBL.Location.Y);
+                        listItems[i].totaltimeLBL.Size = new Size(70, listItems[i].totaltimeLBL.Height);
+                        listItems[i].clockIcon.Location = new Point(listItems[i].totaltimeLBL.Location.X - 23, listItems[i].clockIcon.Location.Y);
+                        listItems[i].totalTime = span.ToString(@"dd").TrimStart(' ', 'd', 'h', 'm', 's', '0') + "d " + span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+                        listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " " + span.Days + " days later";
                     }
                     else
+                    {
+                        listItems[i].destinationTime = tripOptions[i].endTime.ToShortTimeString() + " next day";
                         listItems[i].totalTime = span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
-
-
-                    listItems[i].shortestPath = tripOptions[i].shortestPath;
-
-                    if (tripOptionsFlowControl.Controls.Count < 0)
-                        clearFlowControl(tripOptionsFlowControl);
-                    else
-                        tripOptionsFlowControl.Controls.Add(listItems[i]);
+                    }
                 }
-            } 
+                else
+                    listItems[i].totalTime = span.ToString(@"hh").TrimStart(' ', 'd', 'h', 'm', 's') + "h " + span.ToString(@"mm").TrimStart(' ', 'd', 'h', 'm', 's') + "m";
+
+
+                listItems[i].shortestPath = tripOptions[i].shortestPath;
+
+                if (tripOptionsFlowControl.Controls.Count < 0)
+                    ClearFlowControl(tripOptionsFlowControl);
+                else
+                    tripOptionsFlowControl.Controls.Add(listItems[i]);
+            }
         }
 
-        // Will call the method for further setup of the TripDetails
-        public void setupTripDetails()
+        // Will call the method for further setup of the TripDetails.
+        public void SetupTripDetails()
         {
-            showTripDetails();
-            //Demo case
-            if (demoDani)
-            {
-                fillTransfersStops(new transferCell[11]);
-            }
-            else
-            {
-                fillTransfersStops(new transferCell[detailsUserControl.shortestPath.Count()]);
-            }
+            ShowTripDetails();
+            FillTransfersStops(new TransferCell[detailsUserControl.shortestPath.Count()]);
         }
 
-        // Gives the right information from the tripOptionscell to the detailsUserControl
-        private void showTripDetails()
+        // Gives the right information from the tripOptionscell to the detailsUserControl.
+        private void ShowTripDetails()
         {
             detailsUserControl.Visible = true;
             if (!detailsControl)
             {
                 detailsUserControl.Location = new Point(tripOptionsFlowControl.Location.X + tripOptionsFlowControl.Width, tripOptionsFlowControl.Location.Y);
-                show(detailsControl);
+                ShowUserControl(detailsControl);
             }
             detailsUserControl.transfersPanel.Controls.Clear();
             detailsUserControl.departureTime = tripOptionscell.departureTime;
@@ -371,183 +297,104 @@ namespace Manderijntje
             mapView.CreatingBitmap();
         }
 
-        // Fills the flowcontrol with the usercontrol called "transferCell" and gives the needed data to transferCell.
-        private void fillTransfersStops(transferCell[] listItems)
+        // Fills the tripOptionsFlowControl with the usercontrol called "transferCell" and gives the needed data to transferCell.
+        private void FillTransfersStops(TransferCell[] listItems)
         {
-            if (demoDani)
+
+            for (int i = 0; i < detailsUserControl.shortestPath.Count; i++)
             {
-                clearFlowControl(detailsUserControl);
+                listItems[i] = new TransferCell();
+                listItems[i].stationName = detailsUserControl.shortestPath[i].stationname;
+                listItems[i].typeTransport = "Train";
+                listItems[i].departureTime = detailsUserControl.shortestPath[i].minCostToStart.ToShortTimeString();
 
-                listItems[0] = new transferCell();
-                listItems[0].stationName = "Ronald Reagan Washington";
-                listItems[0].typeTransport = "train";
-                listItems[0].departureTime = "09:33";
-                listItems[0].first = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[0]);
+                if (i == 0)
+                    listItems[i].first = true;
+                else if (i == detailsUserControl.shortestPath.Count - 1)
+                    listItems[i].last = true;
+                else
+                    listItems[i].mid = true;
 
-                listItems[1] = new transferCell();
-                listItems[1].stationName = "Crystal City Station";
-                listItems[1].typeTransport = "train";
-                listItems[1].departureTime = "09:36";
-                listItems[1].mid = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[1]);
-
-                listItems[2] = new transferCell();
-                listItems[2].stationName = "Pentagon City Station";
-                listItems[2].typeTransport = "train";
-                listItems[2].departureTime = "09:38";
-                listItems[2].mid = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[2]);
-
-                listItems[3] = new transferCell();
-                listItems[3].stationName = "Pentagon";
-                listItems[3].typeTransport = "train";
-                listItems[3].departureTime = "09:39";
-                listItems[3].mid = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[3]);
-
-                listItems[4] = new transferCell();
-                listItems[4].stationName = "L'Enfant Plaza Metro Station";
-                listItems[4].typeTransport = "train";
-                listItems[4].departureTime = "10:33";
-                listItems[4].mid = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[4]);
-
-                listItems[5] = new transferCell();
-                listItems[5].stationName = "Waterfront Station";
-                listItems[5].typeTransport = "train";
-                listItems[5].departureTime = "10:35";
-                listItems[5].mid = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[5]);
-
-                listItems[6] = new transferCell();
-                listItems[6].stationName = "Navy Yard-Ballpark Station";
-                listItems[6].typeTransport = "train";
-                listItems[6].departureTime = "10:37";
-                listItems[6].mid = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[6]);
-
-                listItems[7] = new transferCell();
-                listItems[7].stationName = "Anacostia Station";
-                listItems[7].typeTransport = "train";
-                listItems[7].departureTime = "10:40";
-                listItems[7].mid = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[7]);
-
-                listItems[8] = new transferCell();
-                listItems[8].stationName = "Congress Heights Station";
-                listItems[8].typeTransport = "train";
-                listItems[8].departureTime = "10:43";
-                listItems[8].mid = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[8]);
-
-                listItems[9] = new transferCell();
-                listItems[9].stationName = "Southern Avenue";
-                listItems[9].typeTransport = "train";
-                listItems[9].departureTime = "10:45";
-                listItems[9].mid = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[9]);
-
-                listItems[10] = new transferCell();
-                listItems[10].stationName = "Naylor Road Station";
-                listItems[10].typeTransport = "train";
-                listItems[10].departureTime = "10:48";
-                listItems[10].last = true;
-                detailsUserControl.transfersPanel.Controls.Add(listItems[10]);
+                if (detailsUserControl.transfersPanel.Controls.Count < 0)
+                    ClearFlowControl(detailsUserControl);
+                else
+                    detailsUserControl.transfersPanel.Controls.Add(listItems[i]);
             }
-            else
-            {
-                for (int i = 0; i < detailsUserControl.shortestPath.Count; i++)
-                {
-                    listItems[i] = new transferCell();
-                    listItems[i].stationName = detailsUserControl.shortestPath[i].stationname;
-                    listItems[i].typeTransport = "Train";
-                    listItems[i].departureTime = detailsUserControl.shortestPath[i].minCostToStart.ToShortTimeString();
 
-                    if (i == 0)
-                        listItems[i].first = true;
-                    else if (i == detailsUserControl.shortestPath.Count - 1)
-                        listItems[i].last = true;
-                    else
-                        listItems[i].mid = true;
-
-                    if (detailsUserControl.transfersPanel.Controls.Count < 0)
-                        clearFlowControl(detailsUserControl);
-                    else
-                        detailsUserControl.transfersPanel.Controls.Add(listItems[i]);
-                }
-            }
         }
 
-        // After departureInput of the user it will show an autosuggestion or removes the autosuggestions
-        private void departureInput_TextChanged(object sender, EventArgs e)
+        // After departureInput of the user it will show an autosuggestion or removes the autosuggestions.
+        private void DepartureInputTextChanged(object sender, EventArgs e)
         {
-            autoSuggestion autosuggest = new autoSuggestion(this);
-            autosuggest.setList(nodeList);
+            AutoSuggestion autosuggest = new AutoSuggestion(this);
+            autosuggest.SetList(nodeList);
             departureInput.ForeColor = Color.Black;
             if (departureInput.Text != "" && changeInput == false)
             {
-                autosuggest.checkInput(departureInput.Text);
+                autosuggest.CheckInput(departureInput.Text);
                 if (autosuggest.suggestionsList.Count > 0)
                 {
                     backupList = autosuggest.suggestionsList;
-                    autosuggestVisible();
-                    autosuggest.setupSuggesties(sender);
+                    AutosuggestVisible();
+                    autosuggest.SetupSuggestions(sender);
                 }
                 else
                 {
+                    // If there are no suggestions show the last suggested autoSuggestion.
                     if (backupList.Count() != 0)
-                        autosuggest.showBackupList(backupList);
+                        autosuggest.ShowBackupList(backupList);
                     else
                     {
-                        autosuggesInVisible();
-                        autosuggest.clearAutosuggest();
+                        AutosuggesInVisible();
+                        autosuggest.ClearAutosuggest();
                     }
                 }
             }
             else
-                autosuggesInVisible();
+                AutosuggesInVisible();
         }
 
-        // After destinationInput of the user it will show an autosuggestion or removes the autosuggestions
-        private void destinationInput_TextChanged(object sender, EventArgs e)
+        // After destinationInput of the user it will show an autosuggestion or removes the autosuggestions.
+        private void DestinationInputTextChanged(object sender, EventArgs e)
         {
-            autoSuggestion autosuggest = new autoSuggestion(this);
-            autosuggest.setList(nodeList);
+            AutoSuggestion autosuggest = new AutoSuggestion(this);
+            autosuggest.SetList(nodeList);
             destinationInput.ForeColor = Color.Black;
             if (destinationInput.Text != "" && changeInput == false)
             {
-                autosuggest.checkInput(destinationInput.Text);
-                
+                autosuggest.CheckInput(destinationInput.Text);
+
                 if (autosuggest.suggestionsList.Count > 0)
                 {
                     backupList = autosuggest.suggestionsList;
-                    autosuggestVisible();
-                    autosuggest.setupSuggesties(sender);
+                    AutosuggestVisible();
+                    autosuggest.SetupSuggestions(sender);
                 }
                 else
                 {
+                    // If there are no suggestions show the last suggested autoSuggestion.
                     if (backupList.Count() != 0)
-                        autosuggest.showBackupList(backupList);
+                        autosuggest.ShowBackupList(backupList);
                     else
                     {
-                        autosuggesInVisible();
-                        autosuggest.clearAutosuggest();
+                        AutosuggesInVisible();
+                        autosuggest.ClearAutosuggest();
                     }
                 }
             }
             else
-                autosuggesInVisible();
+                AutosuggesInVisible();
         }
 
         // Fills the flowcontrol with the usercontrol called "autoSuggesCell" and gives the needed data to autoSuggesCell.
-        public void fillAutosuggestie(autoSuggestionCell[] listItems, bool departureInput, List<autoSuggestionModel> suggestionsList)
+        public void FillAutosuggestion(AutoSuggestionCell[] listItems, bool departureInput, List<AutoSuggestionModel> suggestionsList)
         {
+            // biggestLBL and biggestLBLIndex is needed to autoSize the autoSuggestion with the right width.
             biggestLBL = 0;
             biggestLBLIndex = 0;
             for (int i = 0; i < suggestionsList.Count; i++)
             {
-                listItems[i] = new autoSuggestionCell(this);
+                listItems[i] = new AutoSuggestionCell(this);
                 listItems[i].stationName = suggestionsList[i].stationName;
                 listItems[i].stationType = suggestionsList[i].stationType;
                 listItems[i].departureInput = departureInput;
@@ -565,26 +412,27 @@ namespace Manderijntje
                     listItems[i].Width = listItems[i].stationLBL.Width + 25;
 
                 if (autoSuggestion.autoSuggestFlowControl.Controls.Count < 0)
-                    clearFlowControl(autoSuggestion.autoSuggestFlowControl);
+                    ClearFlowControl(autoSuggestion.autoSuggestFlowControl);
                 else
                     autoSuggestion.autoSuggestFlowControl.Controls.Add(listItems[i]);
             }
 
+            // Will give the autoSuggestion the correct width.
             if (listItems[biggestLBLIndex].Width == destinationInput.Width)
-                setSizeAutoSuggestion(destinationInput.Width + 10, autoSuggestion.Height);
+                SetSizeAutoSuggestion(destinationInput.Width + 10, autoSuggestion.Height);
             else
-                setSizeAutoSuggestion(biggestLBL + 50, autoSuggestion.Height);
+                SetSizeAutoSuggestion(biggestLBL + 50, autoSuggestion.Height);
         }
 
-        // Gives autosuggestion proper Size
-        private void setSizeAutoSuggestion(int width, int heigth)
+        // Gives autosuggestion proper size.
+        private void SetSizeAutoSuggestion(int width, int heigth)
         {
             autoSuggestion.Size = new Size(width, heigth);
             autoSuggestion.autoSuggestFlowControl.Size = new Size(autoSuggestion.Width, autoSuggestion.Height);
         }
 
-        // Set the autosuggestion userControl on the right Y coordinate en setup the right height of the userControl
-        public void setLocationAutosuggestion(int yLocation, int aantalElementen)
+        // Set the autosuggestion userControl on the right Y coordinate and will give the autoSuggestion the right height.
+        public void SetLocationAutosuggestion(int yLocation, int aantalElementen)
         {
             if (aantalElementen >= 5)
                 autoSuggestion.Height = 40 * 5;
@@ -593,8 +441,8 @@ namespace Manderijntje
             autoSuggestion.Location = new Point(autoSuggestion.Location.X, yLocation);
         }
 
-        // Clears flowControl
-        public void clearFlowControl(object sender)
+        // Clears flowControl.
+        public void ClearFlowControl(object sender)
         {
             if (sender.Equals(detailsUserControl))
                 detailsUserControl.transfersPanel.Controls.Clear();
@@ -604,35 +452,34 @@ namespace Manderijntje
                 autoSuggestion.autoSuggestFlowControl.Controls.Clear();
         }
 
-        // Shows autosuggestion UserControl
-        public void autosuggestVisible()
+        // Shows autosuggestion UserControl.
+        public void AutosuggestVisible()
         {
             autoSuggestion.Visible = true;
         }
-        //
-        // Removes autosuggestion UserControl
-        //
-        public void autosuggesInVisible()
+
+        // Removes autosuggestion UserControl.
+        public void AutosuggesInVisible()
         {
             autoSuggestion.Visible = false;
         }
 
-        // Will set the right bools for removal of the userControls
-        private void backIcon_Click(object sender, EventArgs e)
+        // Will set the right bools for removal of the userControls.
+        private void BackIconClick(object sender, EventArgs e)
         {
             detailsControl = false;
             inputControl = true;
             inputPanel.Visible = true;
-            hideshowBack();
+            HideshowBack();
         }
 
-        // Will remove the right userControls
-        private void hideshowBack()
+        // Will remove the right userControls.
+        private void HideshowBack()
         {
             if (inputControl)
             {
                 logoHeader.Width = 390;
-                hideBarLocation(logoHeader.Width, logoHeader.Height);
+                HideBarLocation(logoHeader.Width, logoHeader.Height);
                 backIcon.Visible = false;
                 detailsUserControl.Visible = false;
                 tripOptionsFlowControl.Visible = false;
@@ -643,59 +490,94 @@ namespace Manderijntje
                 backIcon.Visible = true;
         }
 
-        // Gives the mapView the right location and size
-        private void sizeMap(int x, int y, int width, int height)
+        // Gives the mapView, indexPanel and zoomInandOut the right location and size.
+        private void SizeMap(int x, int y, int width, int height)
         {
             mapView.Size = new Size(width, height);
             mapView.Location = new Point(x, y);
             mapView.SetMap(width, height);
-            indexpanel.Size = new Size(274, 125);
-            indexpanel.Location = new Point(x, y + height - 195);
+            indexPanel.Size = new Size(274, 125);
+            indexPanel.Location = new Point(x, y + height - 195);
             zoomInandOut.Size = new Size(35, 150);
             zoomInandOut.Location = new Point(x, y + 5);
         }
 
-        //
-        // Hides active views
-        //
-        private void hideArrowIcon_Click(object sender, EventArgs e)
+        // Hides active views and set mapView size correct for the new layout.
+        private void HideArrowIconClick(object sender, EventArgs e)
         {
             if (inputControl)
             {
                 inputPanel.Visible = false;
-                hide(inputPanel);
-                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height - logoHeader.Height);
+                HideUserControl(inputPanel);
+                SizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height - logoHeader.Height);
 
             }
             else if (optiesControl)
             {
                 tripOptionsFlowControl.Visible = false;
-                hide(tripOptionsFlowControl);
-                sizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height - logoHeader.Height);
+                HideUserControl(tripOptionsFlowControl);
+                SizeMap(hideBar.Width, logoHeader.Height, this.Width, this.Height - logoHeader.Height);
 
             }
             else if (detailsControl)
             {
                 detailsUserControl.Visible = false;
-                hide(detailsControl);
-                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height - logoHeader.Height);
+                HideUserControl(detailsControl);
+                SizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height - logoHeader.Height);
             }
             else if (!inputControl && !optiesControl && !detailsControl && !optionSelected)
             {
                 inputPanel.Visible = true;
-                show(inputPanel);
-                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height - logoHeader.Height);
+                ShowUserControl(inputPanel);
+                SizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height - logoHeader.Height);
             }
             else if (!inputControl && !optiesControl && !detailsControl && optionSelected)
             {
                 tripOptionsFlowControl.Visible = true;
-                show(tripOptionsFlowControl);
-                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height - logoHeader.Height);
+                ShowUserControl(tripOptionsFlowControl);
+                SizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - logoHeader.Width, this.Height - logoHeader.Height);
             }
         }
 
-        // Changed departureInput to Destionation and the otherway around
-        private void changeTextImage_Click(object sender, EventArgs e)
+        // Shows the right UserControl and set the bools.
+        private void ShowUserControl(object sender)
+        {
+            if (sender.Equals(inputPanel))
+            {
+                inputPanel.Visible = true;
+                inputControl = true;
+                optiesControl = false;
+                detailsControl = false;
+                HideshowBack();
+                HideBarLocation(logoHeader.Width, logoHeader.Height);
+                ChangeBackIcon(false);
+            }
+            else if (sender.Equals(tripOptionsFlowControl))
+            {
+                tripOptionsFlowControl.Visible = true;
+                inputControl = false;
+                optiesControl = true;
+                detailsControl = false;
+                HideshowBack();
+                HideBarLocation(logoHeader.Width, logoHeader.Height);
+                ChangeBackIcon(false);
+            }
+            else if (sender.Equals(detailsControl))
+            {
+                detailsUserControl.Visible = true;
+                inputControl = false;
+                optiesControl = false;
+                detailsControl = true;
+                HideshowBack();
+                logoHeader.Width = logoHeader.Width + detailsUserControl.Width;
+                SizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - hideBar.Width - logoHeader.Width, this.Height - logoHeader.Height);
+                HideBarLocation(logoHeader.Width, logoHeader.Height);
+                ChangeBackIcon(false);
+            }
+        }
+
+        // Changes departureInput to Destionation and the otherway around.
+        private void ChangeTextImageClick(object sender, EventArgs e)
         {
             changeInput = true;
             depLocation = departureInput.Text;
@@ -705,13 +587,13 @@ namespace Manderijntje
             destinationInput.ForeColor = bKleur;
             departureInput.ForeColor = eKleur;
 
-            if (!checkIfEmpty(departureInput.Text, destinationInput.Text))
-            { 
+            if (!CheckIfEmpty(departureInput.Text, destinationInput.Text))
+            {
                 departureInput.Text = desLocation;
                 destinationInput.Text = depLocation;
             }
             else
-            { 
+            {
                 if (depLocation != "Departure")
                 {
                     destinationInput.Text = depLocation;
@@ -726,45 +608,8 @@ namespace Manderijntje
             changeInput = false;
         }
 
-        // Shows the right UserControl
-        private void show(object sender)
-        {
-            if (sender.Equals(inputPanel))
-            {
-                inputPanel.Visible = true;
-                inputControl = true;
-                optiesControl = false;
-                detailsControl = false;
-                hideshowBack();
-                hideBarLocation(logoHeader.Width, logoHeader.Height);
-                changeBackIcon(false);
-            }
-            else if (sender.Equals(tripOptionsFlowControl))
-            {
-                tripOptionsFlowControl.Visible = true;
-                inputControl = false;
-                optiesControl = true;
-                detailsControl = false;
-                hideshowBack();
-                hideBarLocation(logoHeader.Width, logoHeader.Height);
-                changeBackIcon(false);
-            }
-            else if (sender.Equals(detailsControl))
-            {
-                detailsUserControl.Visible = true;
-                inputControl = false;
-                optiesControl = false;
-                detailsControl = true;
-                hideshowBack();
-                logoHeader.Width = logoHeader.Width + detailsUserControl.Width;
-                sizeMap(logoHeader.Width + hideBar.Width, logoHeader.Height, this.Width - hideBar.Width - logoHeader.Width, this.Height - logoHeader.Height);
-                hideBarLocation(logoHeader.Width, logoHeader.Height);
-                changeBackIcon(false);
-            }
-        }
-        
-        // Changes the arrow image in the hideBa
-        private void changeBackIcon(bool Forward)
+        // Changes the arrow image in the hideBar.
+        private void ChangeBackIcon(bool Forward)
         {
             if (Forward)
                 hideArrowIcon.Image = Properties.Resources.FowardArrow;
@@ -772,16 +617,16 @@ namespace Manderijntje
                 hideArrowIcon.Image = Properties.Resources.BackwardArrow;
         }
 
-        // Hides userControl or the flowcontrolPanel that needs to not be visbible
-        public void hide(object sender)
+        // Hides userControl or the flowcontrolPanel that need to be Invisbible and set the correct bools.
+        public void HideUserControl(object sender)
         {
             if (sender.Equals(inputPanel))
             {
                 inputControl = false;
                 optiesControl = false;
                 detailsControl = false;
-                hideBarLocation(0, logoHeader.Height);
-                changeBackIcon(true);
+                HideBarLocation(0, logoHeader.Height);
+                ChangeBackIcon(true);
             }
             else if (sender.Equals(tripOptionsFlowControl))
             {
@@ -790,26 +635,26 @@ namespace Manderijntje
                 detailsControl = false;
                 optionSelected = true;
                 inputPanel.Visible = false;
-                changeBackIcon(true);
-                hideBarLocation(0, logoHeader.Height);
+                ChangeBackIcon(true);
+                HideBarLocation(0, logoHeader.Height);
             }
             else if (sender.Equals(detailsControl))
             {
                 inputControl = false;
                 optiesControl = true;
                 detailsControl = false;
-                hideBarLocation(logoHeader.Width, logoHeader.Height);
+                HideBarLocation(logoHeader.Width, logoHeader.Height);
                 logoHeader.Width = 390;
-                show(tripOptionsFlowControl);
-                changeBackIcon(false);
+                ShowUserControl(tripOptionsFlowControl);
+                ChangeBackIcon(false);
             }
         }
 
-        // Set Location of the hideBar
-        private void hideBarLocation(int x, int y)
+        // Set Location of the hideBar.
+        private void HideBarLocation(int x, int y)
         {
             hideBar.Location = new Point(x - hideBarOrangePanel.Width, y);
-            setElement();
+            SetElement();
         }
     }
 }

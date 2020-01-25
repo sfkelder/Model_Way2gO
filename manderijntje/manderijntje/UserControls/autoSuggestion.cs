@@ -4,51 +4,51 @@ using System.Windows.Forms;
 
 namespace Manderijntje
 {
-    public partial class autoSuggestion : UserControl
+    public partial class AutoSuggestion : UserControl
     {
-        public List<autoSuggestionModel> stationList = new List<autoSuggestionModel>();
+        public List<AutoSuggestionModel> stationList = new List<AutoSuggestionModel>();
         public List<Node> nodeList = new List<Node>();
-        public List<autoSuggestionModel> suggestionsList = new List<autoSuggestionModel>();
+        public List<AutoSuggestionModel> suggestionsList = new List<AutoSuggestionModel>();
         Form1 _parent;
 
-        public autoSuggestion(Form1 parent)
+        public AutoSuggestion(Form1 parent)
         {
             InitializeComponent();
             this._parent = parent;  
         }
 
         // fill the stationList with correct stations
-        public void setList(List<Node> nodes)
+        public void SetList(List<Node> nodes)
         {
             nodeList = nodes;
             foreach (Node node in nodeList)
-                stationList.Add(new autoSuggestionModel(node.stationname, "Train"));
+                stationList.Add(new AutoSuggestionModel(node.stationname, "Train"));
         }
-        public autoSuggestion()
+        public AutoSuggestion()
         {
             InitializeComponent();
         }
         // Clears autosuggtions of the view and makes autosuggestionList empty
-        public void clearAutosuggest()
+        public void ClearAutosuggest()
         {
-            _parent.autosuggesInVisible();
+            _parent.AutosuggesInVisible();
             suggestionsList.Clear();
             autoSuggestFlowControl.Controls.Clear();
         }
 
         // Fill the stationName of the autosuggestions to the right TextBox
-        public void fillTextbox(string stationNaam, bool bInput)
+        public void FillTextbox(string stationNaam, bool bInput)
         {
             if (bInput)
                 _parent.departureInput.Text = stationNaam;
             else
                 _parent.destinationInput.Text = stationNaam;
 
-            clearAutosuggest();
+            ClearAutosuggest();
         }
 
         // Looks if there is a station that begin with the string parameter, if so it will put it in a suggestion list.
-        public void checkInput(string toCheck)
+        public void CheckInput(string toCheck)
         {
             suggestionsList.Clear();
 
@@ -56,7 +56,7 @@ namespace Manderijntje
             if (toCheck.Length < 3)
                 return;
 
-            foreach (autoSuggestionModel station in stationList)
+            foreach (AutoSuggestionModel station in stationList)
             {
                 if (station.stationName.ToLower().StartsWith(toCheck.ToLower()))
                     suggestionsList.Add(station);
@@ -64,25 +64,25 @@ namespace Manderijntje
         }
 
         // If there is no autosuggestion result, show the last know autosuggestion
-        public void showBackupList(List<autoSuggestionModel> list)
+        public void ShowBackupList(List<AutoSuggestionModel> list)
         {
             suggestionsList = list;
         }
 
         // Calls the needed methods to display the suggestion Usercontrol
-        public void setupSuggesties(object sender)
+        public void SetupSuggestions(object sender)
         {
             bool bInput = false;
             if (sender.Equals(_parent.departureInput))
             {
                 bInput = true;
-                _parent.setLocationAutosuggestion(_parent.departureInput.Location.Y + _parent.departureInput.Height + _parent.textboxPanel.Location.Y + _parent.inputPanel.Location.Y, suggestionsList.Count);
+                _parent.SetLocationAutosuggestion(_parent.departureInput.Location.Y + _parent.departureInput.Height + _parent.textboxPanel.Location.Y + _parent.inputPanel.Location.Y, suggestionsList.Count);
             }
             else
-                _parent.setLocationAutosuggestion(_parent.destinationInput.Location.Y + _parent.destinationInput.Height + _parent.textboxPanel.Location.Y + _parent.inputPanel.Location.Y, suggestionsList.Count);
+                _parent.SetLocationAutosuggestion(_parent.destinationInput.Location.Y + _parent.destinationInput.Height + _parent.textboxPanel.Location.Y + _parent.inputPanel.Location.Y, suggestionsList.Count);
 
-            _parent.clearFlowControl(autoSuggestFlowControl);
-            _parent.fillAutosuggestie(new autoSuggestionCell[suggestionsList.Count()], bInput, suggestionsList);
+            _parent.ClearFlowControl(autoSuggestFlowControl);
+            _parent.FillAutosuggestion(new AutoSuggestionCell[suggestionsList.Count()], bInput, suggestionsList);
         }
     }
 }

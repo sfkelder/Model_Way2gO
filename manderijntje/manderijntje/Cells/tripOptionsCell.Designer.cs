@@ -1,6 +1,6 @@
 ﻿namespace Manderijntje
 {
-    partial class tripOptionsCell
+    partial class TripOptionsCell
     {
         /// <summary> 
         /// Required designer variable.
@@ -45,7 +45,7 @@
             this.TimeLBL.Size = new System.Drawing.Size(215, 36);
             this.TimeLBL.TabIndex = 1;
             this.TimeLBL.Text = " 12:01 - 12:01";
-            this.TimeLBL.Click += new System.EventHandler(this.eindTijdLBL_Click);
+            this.TimeLBL.Click += new System.EventHandler(this.EindTijdLBLClick);
             // 
             // nameTransportLBL
             // 
@@ -58,7 +58,7 @@
             this.nameTransportLBL.Size = new System.Drawing.Size(187, 36);
             this.nameTransportLBL.TabIndex = 2;
             this.nameTransportLBL.Text = "NS - Intercity";
-            this.nameTransportLBL.Click += new System.EventHandler(this.carrierLBL_Click);
+            this.nameTransportLBL.Click += new System.EventHandler(this.CarrierLBLClick);
             // 
             // totaltimeLBL
             // 
@@ -72,7 +72,7 @@
             this.totaltimeLBL.Size = new System.Drawing.Size(138, 36);
             this.totaltimeLBL.TabIndex = 3;
             this.totaltimeLBL.Text = "22h 30m";
-            this.totaltimeLBL.Click += new System.EventHandler(this.totaltimeLBL_Click);
+            this.totaltimeLBL.Click += new System.EventHandler(this.TotaltimeLBLClick);
             // 
             // clockIcon
             // 

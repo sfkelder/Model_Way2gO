@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Manderijntje
 {
-    public partial class tripOptionsCell : UserControl
+    public partial class TripOptionsCell : UserControl
     {
         private string _departureTime;
         private string _destinationTime;
@@ -46,13 +46,13 @@ namespace Manderijntje
             set { _shortestPath = value; }
         }
 
-        public tripOptionsCell(Form1 parent)
+        public TripOptionsCell(Form1 parent)
         {
             InitializeComponent();
             this._parent = parent;
         }
 
-        public tripOptionsCell(string departureTime, string destinationTime, string nameTransport,
+        public TripOptionsCell(string departureTime, string destinationTime, string nameTransport,
            string totalTime, string transferCount, List<Node> shortestPath)
         {
             this._departureTime = departureTime;
@@ -63,46 +63,46 @@ namespace Manderijntje
             this._shortestPath = shortestPath;
         }
 
-        // Gives a tripOptionsCell back
-        public static tripOptionsCell getCellDetails(string departureTime, string destinationTime, string nameTransport
+        // Gives a tripOptionsCell back.
+        public static TripOptionsCell GetCellDetails(string departureTime, string destinationTime, string nameTransport
             , string totalTime, string transferCount, List<Node> shortestPath)
         {
-            tripOptionsCell c = new tripOptionsCell(departureTime, destinationTime, nameTransport, totalTime, transferCount, shortestPath);
+            TripOptionsCell c = new TripOptionsCell(departureTime, destinationTime, nameTransport, totalTime, transferCount, shortestPath);
             return c;
         }
 
         // Calls methods in the form call when clicked on a label.
 
-        private void click()
+        private new void Click()
         {
-            this._parent.tripOptionscell = getCellDetails(_departureTime, _destinationTime, _nameTransport, _totalTime, _transfersCount, _shortestPath);
-            this._parent.setupTripDetails();
+            this._parent.tripOptionscell = GetCellDetails(_departureTime, _destinationTime, _nameTransport, _totalTime, _transfersCount, _shortestPath);
+            this._parent.SetupTripDetails();
         }
 
-        // Label Clicked call "click" method
-        private void eindTijdLBL_Click(object sender, EventArgs e)
+        // Label Clicked call "click" method.
+        private void EindTijdLBLClick(object sender, EventArgs e)
         {
-            click();
+            Click();
         }
 
-        private void carrierLBL_Click(object sender, EventArgs e)
+        private void CarrierLBLClick(object sender, EventArgs e)
         {
-            click();
+            Click();
         }
 
-        private void totaltimeLBL_Click(object sender, EventArgs e)
+        private void TotaltimeLBLClick(object sender, EventArgs e)
         {
-            click();
+            Click();
         }
 
-        private void transferLBL_Click(object sender, EventArgs e)
+        private void TransferLBLClick(object sender, EventArgs e)
         {
-            click();
+            Click();
         }
 
-        private void platformLBL_Click(object sender, EventArgs e)
+        private void PlatformLBLClick(object sender, EventArgs e)
         {
-            click();
+            Click();
         }
     }
 }

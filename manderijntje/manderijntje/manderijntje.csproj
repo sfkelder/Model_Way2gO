@@ -55,23 +55,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cells\autoSuggestionCell.cs">
+    <Compile Include="Cells\AutoSuggestionCell.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Cells\autoSuggestionCell.Designer.cs">
-      <DependentUpon>autoSuggestionCell.cs</DependentUpon>
+    <Compile Include="Cells\AutoSuggestionCell.Designer.cs">
+      <DependentUpon>AutoSuggestionCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cells\tripOptionsCell.cs">
+    <Compile Include="Cells\TripOptionsCell.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Cells\tripOptionsCell.Designer.cs">
-      <DependentUpon>tripOptionsCell.cs</DependentUpon>
+    <Compile Include="Cells\TripOptionsCell.Designer.cs">
+      <DependentUpon>TripOptionsCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cells\transferCell.cs">
+    <Compile Include="Cells\TransferCell.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Cells\transferCell.Designer.cs">
-      <DependentUpon>transferCell.cs</DependentUpon>
+    <Compile Include="Cells\TransferCell.Designer.cs">
+      <DependentUpon>TransferCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Datamodel.cs" />
     <Compile Include="Form1.cs">
@@ -80,30 +80,30 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="indexpanel.cs">
+    <Compile Include="UserControls\IndexPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Indexpanel.Designer.cs">
-      <DependentUpon>indexpanel.cs</DependentUpon>
+    <Compile Include="UserControls\IndexPanel.Designer.cs">
+      <DependentUpon>IndexPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="MapView.cs">
+    <Compile Include="UserControls\MapView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MapView.Designer.cs">
+    <Compile Include="UserControls\MapView.Designer.cs">
       <DependentUpon>MapView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\autoSuggestionModel.cs" />
-    <Compile Include="Models\departureTimeModel.cs" />
-    <Compile Include="Models\transferModel.cs" />
+    <Compile Include="Models\AutoSuggestionModel.cs" />
+    <Compile Include="Models\DepartureTimeModel.cs" />
+    <Compile Include="Models\TransferModel.cs" />
     <Compile Include="parsing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing.cs" />
-    <Compile Include="UserControls\autoSuggestion.cs">
+    <Compile Include="UserControls\AutoSuggestion.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\autoSuggestion.Designer.cs">
-      <DependentUpon>autoSuggestion.cs</DependentUpon>
+    <Compile Include="UserControls\AutoSuggestion.Designer.cs">
+      <DependentUpon>AutoSuggestion.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DetailsControl.cs">
       <SubType>UserControl</SubType>
@@ -112,26 +112,26 @@
       <DependentUpon>DetailsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="VisualModel.cs" />
-    <Compile Include="ZoomInandOut.cs">
+    <Compile Include="UserControls\ZoomInandOut.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ZoomInandOut.Designer.cs">
+    <Compile Include="UserControls\ZoomInandOut.Designer.cs">
       <DependentUpon>ZoomInandOut.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Cells\autoSuggestionCell.resx">
-      <DependentUpon>autoSuggestionCell.cs</DependentUpon>
+    <EmbeddedResource Include="Cells\AutoSuggestionCell.resx">
+      <DependentUpon>AutoSuggestionCell.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cells\tripOptionsCell.resx">
-      <DependentUpon>tripOptionsCell.cs</DependentUpon>
+    <EmbeddedResource Include="Cells\TripOptionsCell.resx">
+      <DependentUpon>TripOptionsCell.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cells\transferCell.resx">
-      <DependentUpon>transferCell.cs</DependentUpon>
+    <EmbeddedResource Include="Cells\TransferCell.resx">
+      <DependentUpon>TransferCell.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Indexpanel.resx">
-      <DependentUpon>indexpanel.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\IndexPanel.resx">
+      <DependentUpon>IndexPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -143,8 +143,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControls\autoSuggestion.resx">
-      <DependentUpon>autoSuggestion.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\AutoSuggestion.resx">
+      <DependentUpon>AutoSuggestion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\DetailsControl.resx">
       <DependentUpon>DetailsControl.cs</DependentUpon>
