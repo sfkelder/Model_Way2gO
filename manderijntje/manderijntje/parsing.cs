@@ -23,23 +23,30 @@ namespace Manderijntje
         {
             if (model.nodes.Count != 0 && model.links.Count != 0)
             {
-                for (int i = 0; i < model.nodes.Count; i++)
-                {
-                    Console.WriteLine(model.nodes[i].neighbours.Count + "    " + model.nodes[i].stationname);
-                }
 
-                /*
-                if (daniDemo)
-                {
-                    initModelFromFile();
-                } else
-                {
-                    setNodes(model.nodes);
-                    setLinks(model.links);
-                }*/
+                //lower = 204;
+                //upper = 329;
+
+                lower = 0;
+                upper = model.nodes.Count;
+
+                //lower2 = 0;
+                //upper2 = 0;
+
+
                 setNodes(model.nodes);
                 setLinks(model.links);
                 setNeighbours();
+
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    if (nodes[i].neighbours.Count == 0)
+                    {
+                        nodes.RemoveAt(i);
+                        i--;
+                    }
+                }
+
 
                 enforcePlanarity();
                 filterLogicalLinks();
@@ -375,6 +382,8 @@ namespace Manderijntje
                 dNodes[i].number = i;
             }
 
+
+
             List<Point> Coordinates = new List<Point>();
             for (int i = 0; i < dNodes.Count; i++)
             {
@@ -384,10 +393,15 @@ namespace Manderijntje
             Point[] ScaledCoordinates = coordinates.ScalePointsToSize(Coordinates.ToArray(), width, height);
             for (int i = 0; i < dNodes.Count; i++)
             {
-                sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
-                newNode.name = dNodes[i].stationname;
-                newNode.country = dNodes[i].country;
-                nodes.Add(newNode);
+                if (nodeIsInrange(dNodes[i]))
+                {
+                    sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
+                    newNode.name = dNodes[i].stationname;
+                    newNode.country = dNodes[i].country;
+                    nodes.Add(newNode);
+                    Console.WriteLine(dNodes[i].number);
+
+                }
             }
         }
 
@@ -428,8 +442,11 @@ namespace Manderijntje
         {
             for (int i = 0; i < dLinks.Count; i++)
             {
-                sLink newLink = new sLink(getNode(dLinks[i].start.number), getNode(dLinks[i].end.number));
-                links.Add(newLink);
+                if (linkIsInRange(dLinks[i]))
+                {
+                    sLink newLink = new sLink(getNode(dLinks[i].start.number), getNode(dLinks[i].end.number));
+                    links.Add(newLink);
+                }
             }
         }
 
@@ -532,6 +549,33 @@ namespace Manderijntje
             }
             return dNodes[0];
         }
+
+        private int lower = 0;
+        private int upper = 0;
+
+        private int lower2 = 0;
+        private int upper2 = 0;
+
+        private bool linkIsInRange(Link e)
+        {
+            if (nodeIsInrange(e.start) && nodeIsInrange(e.end))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool nodeIsInrange(Node n)
+        {
+            if (n.number >= lower && n.number <= upper)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
     }
 
     
@@ -546,7 +590,7 @@ namespace Manderijntje
         private GRBEnv env;
         private int M;
         // the minimum length of an edge, the minimum distance between two edges, and the weight used in the objective function
-        private double minL = 10.0, minD = 10.0, weightBend = 3.0, weightRpos = 2.0, weightLength = 1.0; 
+        private double minL = 10.0, minD = 10.0, weightBend = 1.0, weightRpos = 5.0, weightLength = 1.0; 
         // the width and height where the solution is calculated over
         private const int width = 100000, height = 100000;
         private bool usePlanarity = false;
