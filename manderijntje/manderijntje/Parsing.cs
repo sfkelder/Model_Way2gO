@@ -122,7 +122,7 @@ namespace Manderijntje
                 {
                     for (int n = 0; n < logicalconnections.Count; n++)
                     {
-                        if (logicalconnections[n].isSubRoute(logicallinks[i].u, logicallinks[i].v))
+                        if (logicalconnections[n].IsSubRoute(logicallinks[i].u, logicallinks[i].v))
                         {
                             logicalconnections[n].nodes.Add(logicallinks[i].addedNode);
                             break;
@@ -579,7 +579,7 @@ namespace Manderijntje
                 // SORT THE NEIGHBOURS ARRAY OF EVERY NODE HERE
 
                 nodes[i].neighbours_sorted = nodes[i].neighbours.ToArray();
-                Array.Sort(nodes[i].neighbours_sorted, (x, y) => x.getAngle(nodes[i], x).CompareTo(y.getAngle(nodes[i], y)));
+                Array.Sort(nodes[i].neighbours_sorted, (x, y) => x.GetAngle(nodes[i], x).CompareTo(y.GetAngle(nodes[i], y)));
             }
             for (int i = 0; i < links.Count; i++)
             {
@@ -974,7 +974,7 @@ namespace Manderijntje
         }
         
         // return the angle between the two given nodes
-        public double getAngle(Snode u, Snode v)
+        public double GetAngle(Snode u, Snode v)
         {
             return Solver.CalcAngle(u, v);
         }
@@ -1014,7 +1014,7 @@ namespace Manderijntje
         }
 
         // adds a link made of nodes u and v to the logical connection
-        public bool isSubRoute(Snode U, Snode V)
+        public bool IsSubRoute(Snode U, Snode V)
         {
             List<Snode> booltest = nodes;
             booltest.Add(u);
