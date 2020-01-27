@@ -87,12 +87,12 @@ class Routing
         public static List<Route> GetRoute(string startName, string endName, DateTime time, DataModel dataModel)
         {
             List<Route> listRoute = new List<Route>();
-            DateTime starttime = time;
+            DateTime startTime = time;
             for (int i = 0; i < 20; i++)
             {
-                Route fastestRoute = new Route(startName, endName, starttime, dataModel);
+                Route fastestRoute = new Route(startName, endName, startTime, dataModel);
                 listRoute.Add(fastestRoute);
-                starttime = fastestRoute.startTime + new TimeSpan(1, 0, 0);
+                startTime = fastestRoute.startTime + new TimeSpan(1, 0, 0);
                 foreach (Node node in dataModel.nodes)
                 {
                     node.minCostToStart = DateTime.MaxValue;
