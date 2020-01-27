@@ -6,18 +6,24 @@ using Gurobi;
  
 namespace Manderijntje
 {
+    // creates all the necessary variables and object for the Solver class
+    // and creates an instance of Visual Model with all the relevant values
     class Parsing
     {
-        private List<Snode> nodes = new List<Snode>();
-        private List<Slink> links = new List<Slink>();
-        private List<Slinkpair> linkpairs = new List<Slinkpair>();
-        private List<Sbendlink> bendlinks = new List<Sbendlink>();
+        private List<Snode> nodes = new List<Snode>();                      // list of all the nodes that make up the graph, including so called dummy nodes that will not be shown but are required by the solve algo
+        private List<Slink> links = new List<Slink>();                      // list of all the links that make up the graph
+        private List<Slinkpair> linkpairs = new List<Slinkpair>();          // list of all link pairs where the two links making up the pair do not share a common node
+        private List<Sbendlink> bendlinks = new List<Sbendlink>();          // list of all bend links. a bend link consists of three node that discribe two links that share one common node
 
-        private List<Slink> logicallinks = new List<Slink>();
-        private List<Slogical> logicalconnections = new List<Slogical>();
+        private List<Slink> logicallinks = new List<Slink>();               // list of all logical links. a logical links discribes the link from one node to another but that links has been devided by a dummy node
+        private List<Slogical> logicalconnections = new List<Slogical>();   // list of all logical connections. a logical connection discribes a full path from one real node to another real node separated by one or more dummy nodes
 
-        private const int width = 5000, height = 5000;
+        private const int width = 5000, height = 5000;                      // the width and height of the plain of which the graph is projected
 
+        // given an instance of Data Model and if there are nodes and links in said Data Model
+        // first the lists of nodes and links are populated and all nodes and links are given the relevant properties
+        // then dummy stations are added to the graph where necessary and the neighbours properties reevaluated
+        // last the list of bendlinks and linkpairs are populated
         public Parsing(DataModel model)
         {
             if (model.nodes.Count != 0 && model.links.Count != 0)
@@ -35,6 +41,9 @@ namespace Manderijntje
             }
         }
 
+        // if solve is true, indicating that a octalinear garph is desired, and the degree of input graph (given via the contructor) is no greater than 8
+        // a new instance of the Solver class is created, and the list of node (actuale only the coordinates of the nodes are different) is updated
+        // an instance of Visual Model is created and returned
         public VisualModel GetModel (bool solve)
         {
             if (solve && GetDegree() <= 8)
@@ -100,7 +109,7 @@ namespace Manderijntje
             nodes.Add(node);
         }
 
-
+        // creates all logical connection object from all logical links in the list
         private void CreateLogicalConnections()
         {
             for (int i = 0; i < logicallinks.Count; i++)
@@ -437,24 +446,24 @@ namespace Manderijntje
         }
     }
 
-    
+
+    // takes (essentially) a graph as input and create a new graph
+    // where all the nodes are in an octolinear layout
     class Solver
     {
-        private List<Snode> nodes;
-        private List<Slink> links;
-        private List<Slinkpair> linkpairs;
-        private List<Sbendlink> bendlinks;
+        private List<Snode> nodes;          // the exact same list of nodes as in the Parsing class
+        private List<Slink> links;          // the exact same list of links as in the Parsing class
+        private List<Slinkpair> linkpairs;  // the exact same list of link pairs as in the Parsing class
+        private List<Sbendlink> bendlinks;  // the exact same list of bend links as in the Parsing class
 
-        private GRBModel model;
-        private GRBEnv env;
-        private int M;
-        // the minimum length of an edge, the minimum distance between two edges, and the weight used in the objective function
-        private double minL = 10.0, minD = 10.0, weightBend = 1.0, weightRpos = 5.0, weightLength = 1.0; 
-        // the width and height where the solution is calculated over
-        private const int width = 100000, height = 100000;
-        private bool usePlanarity = false;
+        private GRBModel model;             // the model that discribes the mathematical model (of the graph) we wish to solve 
+        private GRBEnv env;                 // the environment in which the solver solves the model
+        private int M;                      // a large constant used in many model calculations
+        private double minL = 10.0, minD = 10.0, weightBend = 1.0, weightRpos = 5.0, weightLength = 1.0;            // the minimum length of an edge, the minimum distance between two edges, and the weight used in the objective function 
+        private const int width = 100000, height = 100000;                                                          // the size of the plain on which the solver tries to find a solution. it is so large to unsure it find an optimal solution regardless of the size of the input graph
+        private bool usePlanarity = false;                                                                          // indicates whether or not planarity ensuring constraints should be added to the model 
 
-        private GRBLinExpr bendCost = new GRBLinExpr(), rposCost = new GRBLinExpr(), lengthCost = new GRBLinExpr();
+        private GRBLinExpr bendCost = new GRBLinExpr(), rposCost = new GRBLinExpr(), lengthCost = new GRBLinExpr(); // these expressions hold the sum of all the relavent variables for the objective function
 
         // create all the necessary variables and constraints and add these the model
         // set the objective function that we want to minimize 
@@ -490,8 +499,11 @@ namespace Manderijntje
             return nodes;
         }
 
+
+        // INFEABILE MODEL MANAGEMENT
+
         // if the model for the given variables is infeasible, we compute an IIS object, remove one constraint from the model and check if the model is feasible. 
-        // we do this untill the model is feasible
+        // we do this until the model is feasible
         private void RelaxInfeasibleModel()
         {
             if (model.Status == GRB.Status.INFEASIBLE)
@@ -537,6 +549,8 @@ namespace Manderijntje
             }
         }
 
+        // if the model is infeasible, all constraints in the model are given a on/off switch. we then solve the model again but add a extra objective
+        // minimize the amount of constraints that have to be turned off
         private void RelaxInfeasibleConstraints ()
         {
             Console.WriteLine("The model is infeasible; relaxing the constraints");
@@ -560,6 +574,9 @@ namespace Manderijntje
                 }
             }
         }
+
+
+        // GET AND SET MODEL VARIABLES
 
         // first all the variables of the sNode objects in the list nodes are given the relevant value
         // then the variables for the coordinates for each station (and the corresponding constriants) are added to the model
@@ -627,6 +644,9 @@ namespace Manderijntje
                 }
             }
         }
+
+
+        // CREATION OF ALL CONSTRAINTS AND RELEVANT VARIABLES
 
         // for each of the four lists, the corresponding create variable method is called for every entry in the list
         private void CreateContraints()
@@ -898,6 +918,9 @@ namespace Manderijntje
             bendCost += bend_u_v_w;
         }
 
+
+        // SECTOR CALCULATIONS
+
         // given two nodes, one of eight directions is calculated
         private int CalcSec(Snode u, Snode v)
         {
@@ -953,14 +976,15 @@ namespace Manderijntje
     }
     
 
+    // discribes any node in a graph
     public class Snode
     {
-        public int x, y, z1, z2, deg, index;
+        public int x, y, z1, z2, deg, index;                // z1 and z2 coordinates are extra coordinates used only by the solver.
         public List<Snode> neighbours = new List<Snode>();
-        public Snode[] neighbours_sorted;
+        public Snode[] neighbours_sorted;                   // array where all a nodes neighbours are sorted in such a way that is required by the algo
         public string node_id, name, country;
-        public bool draw = true;
-        public double weight = 0.0;
+        public bool draw = true;                            // indicated whether or not this this should be drawn by the MapView (e.g. if a node is a dummy node, draw = false)
+        public double weight = 0.0;                         // indicates how important a node is, required by Visual Model
 
         public Snode(int i, Point p)
         {
@@ -969,19 +993,22 @@ namespace Manderijntje
             y = p.Y;
         }
         
+        // return the angle between the two given nodes
         public double getAngle(Snode u, Snode v)
         {
             return Solver.CalcAngle(u, v);
         }
     }
 
+
+    // discribes a link between two nodes u and v in a graph
     public class Slink
     {
         public Snode u, v;
-        public int sec_u_v, sec_v_u;
+        public int sec_u_v, sec_v_u;                        // sector between this node u and v and the sector between v and u
 
-        public Snode addedNode;
-        public bool isLogical = false;
+        public Snode addedNode;                             // reference to a dummy node that was added on this link. making this link a logical link
+        public bool isLogical = false;                      // indicates whether or not a link is a logical link
 
         public Slink(Snode U, Snode V)
         {
@@ -990,6 +1017,9 @@ namespace Manderijntje
         }
     }
 
+
+    // discribes a logical connection between 'real' nodes u and v
+    // the 'real' nodes are connected via the nodes and links in the two arrays
     public class Slogical
     {
         public Snode u, v;
@@ -1003,6 +1033,7 @@ namespace Manderijntje
             nodes.Add(x);
         }
 
+        // adds a link made of nodes u and v to the logical connection
         public bool isSubRoute(Snode U, Snode V)
         {
             List<Snode> booltest = nodes;
@@ -1018,6 +1049,8 @@ namespace Manderijntje
         }
     }
 
+
+    // discribes a link pair consisting of two Slinks. where the two links making up the pair do not share a common node
     public class Slinkpair
     {
         public Slink e1, e2;
@@ -1029,6 +1062,8 @@ namespace Manderijntje
         }
     }
 
+
+    // discribes a bend link consisting of three Snodes, that discribe two links that share one common node
     public class Sbendlink
     {
         public Snode u, v, w;
@@ -1041,21 +1076,28 @@ namespace Manderijntje
         }
     }
 
+
+    // transforms (lat,long) coordinates to (x,y) coordinates
+    // scales point to a specific size
     static class Coordinates
     {
+        // given a (lat,long) coordinate and a width and height
+        // the relevant (x,y) coordiante is returned
         public static Point GetLogicalCoordinate(double Lat, double Long, int width, int height)
         {
-            return new Point(calc_x(Long, width), calc_y(Lat, width, height));
+            return new Point(CalcX(Long, width), CalcY(Lat, width, height));
         }
 
-        private static int calc_x(double Long, int width)
+        // calculates the relevant x coordinate based on the width and a long coordinate
+        private static int CalcX(double Long, int width)
         {
             double result = (Long + 180.0) * (width / 360.0);
 
             return (int)result;
         }
 
-        private static int calc_y(double Lat, int width, int height)
+        // calculates the relevant y coordinate based on the width, height and a lat coordinate
+        private static int CalcY(double Lat, int width, int height)
         {
             double latRad = (Lat * (Math.PI / 180.0));
             double mercN = Math.Log(Math.Tan((Math.PI / 4.0) + (latRad / 2.0)));
@@ -1064,6 +1106,7 @@ namespace Manderijntje
             return result;
         }
 
+        // scales the given array of Points to the desired output plain of size (width, height)
         public static Point[] ScalePointsToSize(Point[] points, int width, int height)
         {
             if (points.Length > 0)
