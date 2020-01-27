@@ -19,7 +19,6 @@ namespace Manderijntje
             Read_Data_From_File(nodes, links, routes, dataModel);
         }
 
-
         //Writing the dataModel
         public static void Read_Data_From_File(string nodes, string links, string routes, DataModel dataModel)
         {
@@ -110,7 +109,6 @@ namespace Manderijntje
             return dataModel;
         }
     }
-
 
     public class DataModel
     {
