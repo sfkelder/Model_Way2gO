@@ -287,7 +287,7 @@ namespace Manderijntje
             for (int i = 0; i < dNodes.Count; i++)
             {
                 Snode newNode = new Snode(dNodes[i].number, ScaledCoordinates[i]);
-                newNode.name = dNodes[i].stationname;
+                newNode.name = dNodes[i].stationName;
                 newNode.country = dNodes[i].country;
                 nodes.Add(newNode);
                 Console.WriteLine(dNodes[i].number);
