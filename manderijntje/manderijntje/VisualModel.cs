@@ -120,7 +120,7 @@ namespace Manderijntje
                 switch (v.country)
                 {
                     case "Italy":
-                        v.Color = Color.Orange;
+                        v.Color = Color.Sienna;
                         break;
                     case "Nederland":
                         v.Color = Color.Blue;
