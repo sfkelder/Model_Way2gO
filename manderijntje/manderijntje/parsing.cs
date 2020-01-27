@@ -17,36 +17,14 @@ namespace Manderijntje
         private List<sLogical> logicalconnections = new List<sLogical>();
 
         private const int width = 5000, height = 5000;
-        //private bool daniDemo = false;
 
         public parsing(DataModel model)
         {
             if (model.nodes.Count != 0 && model.links.Count != 0)
             {
-
-                //lower = 204; 
-                //upper = 329;
-
-                lower = 0;
-                upper = model.nodes.Count;
-
-                //lower2 = 0;
-                //upper2 = 0;
-
-
                 setNodes(model.nodes);
                 setLinks(model.links);
                 setNeighbours();
-
-                for (int i = 0; i < nodes.Count; i++)
-                {
-                    if (nodes[i].neighbours.Count == 0)
-                    {
-                        nodes.RemoveAt(i);
-                        i--;
-                    }
-                }
-
 
                 enforcePlanarity();
                 filterLogicalLinks();
@@ -54,27 +32,6 @@ namespace Manderijntje
 
                 getLinkPairs();
                 getBendLinks();
-
-                for (int i = 0; i < nodes.Count; i++)
-                {
-                    if (nodes[i].neighbours.Count == 0)
-                    {
-                        Console.WriteLine(i);
-                    }
-                }
-
-                /*
-                int dummy = 0;
-                for (int i = 0; i < nodes.Count; i++)
-                {
-                    if (!nodes[i].draw)
-                    {
-                        dummy++;
-                    }
-                }*/
-                //Console.WriteLine("dummy nodes: " + dummy);
-                //Console.WriteLine("logical links: " + logicallinks.Count);
-                //Console.WriteLine("connections: " + logicalconnections.Count);
             }
         }
 
@@ -87,69 +44,7 @@ namespace Manderijntje
 
             return createModel();
         }
-        /*
-        private void initModelFromFile ()
-        {
-            string[] nodesDani = ReadFromFile("C:/Way2Go/dc nodes.txt");
-            string[] linksDani = ReadFromFile("C:/Way2Go/dc links.txt");
 
-            List<Point> Coordinates = new List<Point>();
-            for (int i = 0; i < nodesDani.Length; i++)
-            {
-                string[] node_i = nodesDani[i].Split(',');
-                // first argument is Lat, and the second argument is Long:
-                Coordinates.Add(coordinates.GetLogicalCoordinate(double.Parse(node_i[3]), double.Parse(node_i[4]), 100000, 100000));
-            }
-            Point[] ScaledCoordinates = coordinates.ScalePointsToSize(Coordinates.ToArray(), width, height);
-            for (int i = 0; i < nodesDani.Length; i++)
-            {
-                sNode newNode = new sNode(i, ScaledCoordinates[i]);
-                nodes.Add(newNode);
-            }
-
-            for (int i = 0; i < linksDani.Length; i++)
-            {
-                string[] link_i = linksDani[i].Split(',');
-                sLink newLink = new sLink(nodes[int.Parse(link_i[1])], nodes[int.Parse(link_i[2])]);
-                links.Add(newLink);
-            }
-        }
-
-        private string[] ReadFromFile(string file_path)
-        {
-            List<string> result = new List<string>();
-            StreamReader sr = new StreamReader(file_path);
-            string data_line;
-            while ((data_line = sr.ReadLine()) != null)
-            {
-                result.Add(data_line);
-            }
-            sr.Close();
-
-            return result.ToArray();
-        }
-
-
-
-         public void test ()
-         {
-             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_nodes3.txt"))
-             {
-                 for (int i = 0; i < nodes.Count; i++)
-                 {
-                     w.WriteLine(i + "," + nodes[i].x + "," + nodes[i].y + ",0,0");
-                 }
-             }
-             using (StreamWriter w = new StreamWriter("/Users/Michael Bijker/Desktop/test_links3.txt"))
-             {
-                 for (int i = 0; i < links.Count; i++)
-                 {
-                     w.WriteLine(i + "," + links[i].u.index + "," + links[i].v.index);
-                 }
-             }
-
-         }
-         */
 
         // PLANARITY:
 
@@ -382,8 +277,6 @@ namespace Manderijntje
                 dNodes[i].number = i;
             }
 
-
-
             List<Point> Coordinates = new List<Point>();
             for (int i = 0; i < dNodes.Count; i++)
             {
@@ -393,15 +286,11 @@ namespace Manderijntje
             Point[] ScaledCoordinates = coordinates.ScalePointsToSize(Coordinates.ToArray(), width, height);
             for (int i = 0; i < dNodes.Count; i++)
             {
-                if (nodeIsInrange(dNodes[i]))
-                {
-                    sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
-                    newNode.name = dNodes[i].stationname;
-                    newNode.country = dNodes[i].country;
-                    nodes.Add(newNode);
-                    Console.WriteLine(dNodes[i].number);
-
-                }
+                sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
+                newNode.name = dNodes[i].stationname;
+                newNode.country = dNodes[i].country;
+                nodes.Add(newNode);
+                Console.WriteLine(dNodes[i].number);
             }
         }
 
@@ -442,11 +331,8 @@ namespace Manderijntje
         {
             for (int i = 0; i < dLinks.Count; i++)
             {
-                if (linkIsInRange(dLinks[i]))
-                {
-                    sLink newLink = new sLink(getNode(dLinks[i].start.number), getNode(dLinks[i].end.number));
-                    links.Add(newLink);
-                }
+                sLink newLink = new sLink(getNode(dLinks[i].start.number), getNode(dLinks[i].end.number));
+                links.Add(newLink);
             }
         }
 
@@ -549,33 +435,6 @@ namespace Manderijntje
             }
             return dNodes[0];
         }
-
-        private int lower = 0;
-        private int upper = 0;
-
-        private int lower2 = 0;
-        private int upper2 = 0;
-
-        private bool linkIsInRange(Link e)
-        {
-            if (nodeIsInrange(e.start) && nodeIsInrange(e.end))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool nodeIsInrange(Node n)
-        {
-            if (n.number >= lower && n.number <= upper)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
     }
 
     
