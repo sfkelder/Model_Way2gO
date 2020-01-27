@@ -24,7 +24,7 @@ namespace Manderijntje
             if (model.nodes.Count != 0 && model.links.Count != 0)
             {
 
-                //lower = 204;
+                //lower = 204; 
                 //upper = 329;
 
                 lower = 0;
