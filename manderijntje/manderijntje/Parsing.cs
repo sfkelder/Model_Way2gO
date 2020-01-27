@@ -299,7 +299,6 @@ namespace Manderijntje
                 newNode.name = dNodes[i].stationName;
                 newNode.country = dNodes[i].country;
                 nodes.Add(newNode);
-                Console.WriteLine(dNodes[i].number);
             }
         }
 

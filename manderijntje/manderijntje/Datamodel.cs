@@ -97,7 +97,7 @@ namespace Manderijntje
                     {
                         link.times = link.times.OrderBy(x => x.Day).ToList();
                     }
-                    catch { Console.WriteLine("Link is empty"); }
+                    catch {}
                     i++;
                 }
             }
