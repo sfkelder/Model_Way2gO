@@ -299,7 +299,6 @@ namespace Manderijntje
                 newNode.name = dNodes[i].stationName;
                 newNode.country = dNodes[i].country;
                 nodes.Add(newNode);
-                Console.WriteLine(dNodes[i].number);
             }
         }
 
@@ -382,9 +381,6 @@ namespace Manderijntje
                 if (newNode.dummynode)
                 {
                     newNode.Color = Color.Orange;
-                } else
-                {
-                    //newNode.dummynodeDrawLine = true;
                 }
 
                 dNodes.Add(newNode);
@@ -409,21 +405,6 @@ namespace Manderijntje
                 newLogical.GetLinks(dLinks);
                 dConnections.Add(newLogical);
             }
-            /*
-            if(daniDemo)
-            {
-                dNodes[79].name_id = "Ronald Reagon Washington";
-                dNodes[78].name_id = "Crystal City";
-                dNodes[77].name_id = "Pentagon City";
-                dNodes[76].name_id = "Pentagon";
-                dNodes[38].name_id = "L Enfant Plaza";
-                dNodes[39].name_id = "Waterfront";
-                dNodes[40].name_id = "Navy Yard Ballpark";
-                dNodes[41].name_id = "Anacostia";
-                dNodes[42].name_id = "Congress Heights";
-                dNodes[43].name_id = "Southern Avenue";
-                dNodes[44].name_id = "Naylor Road";
-            }*/
 
             model.nodes = dNodes;
             model.links = dLinks;
@@ -489,7 +470,7 @@ namespace Manderijntje
         {
             model.Optimize();
             RelaxInfeasibleModel();
-            //relax_infeasible_constraints();
+            //RelaxInfeasibleConstraints();
 
             UpdateData(width, height);
 
@@ -631,7 +612,6 @@ namespace Manderijntje
 
                 for (int i = 0; i < nodes.Count; i++)
                 {
-                    //Console.WriteLine("i: " + i + " x: " + model.GetVarByName("vertex_" + i + "_x").X + " y: " + model.GetVarByName("vertex_" + i + "_y").X + " z1: " + model.GetVarByName("vertex_" + i + "_z1").X + " z2: " + model.GetVarByName("vertex_" + i + "_z2").X);
                     results.Add(new Point((int)model.GetVarByName("vertex_" + i + "_x").X, (int)model.GetVarByName("vertex_" + i + "_y").X));
                 }
 
@@ -706,7 +686,7 @@ namespace Manderijntje
             GRBVar alpha_orig = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, "alpha_orig");
             GRBVar alpha_succ = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, "alpha_succ");
 
-            model.AddConstr(alpha_prec + alpha_orig + alpha_succ == 1.0, "");               // constraints need names
+            model.AddConstr(alpha_prec + alpha_orig + alpha_succ == 1.0, "");              
 
             GRBVar dir_u_v = model.AddVar(0.0, 7.0, 0.0, GRB.INTEGER, "dir_" + links[i].u.node_id + "_" + links[i].v.node_id);
             GRBVar dir_v_u = model.AddVar(0.0, 7.0, 0.0, GRB.INTEGER, "dir_" + links[i].v.node_id + "_" + links[i].u.node_id);
@@ -714,8 +694,8 @@ namespace Manderijntje
             int sec_u_v_prec = (links[i].sec_u_v + 7) % 8, sec_u_v_orig = links[i].sec_u_v, sec_u_v_succ = (links[i].sec_u_v + 1) % 8;
             int sec_v_u_prec = (links[i].sec_v_u + 7) % 8, sec_v_u_orig = links[i].sec_v_u, sec_v_u_succ = (links[i].sec_v_u + 1) % 8;
 
-            model.AddConstr(dir_u_v == alpha_prec * sec_u_v_prec + alpha_orig * sec_u_v_orig + alpha_succ * sec_u_v_succ, "");    // constraints need names
-            model.AddConstr(dir_v_u == alpha_prec * sec_v_u_prec + alpha_orig * sec_v_u_orig + alpha_succ * sec_v_u_succ, "");    // constraints need names
+            model.AddConstr(dir_u_v == alpha_prec * sec_u_v_prec + alpha_orig * sec_u_v_orig + alpha_succ * sec_u_v_succ, "");   
+            model.AddConstr(dir_v_u == alpha_prec * sec_v_u_prec + alpha_orig * sec_v_u_orig + alpha_succ * sec_v_u_succ, "");  
 
             // add coordinate constraints for sec_prec and alpha_prec and Nodes u and v
             CreateConstraintsCoordinates(links[i].u, links[i].v, sec_u_v_prec, alpha_prec);
@@ -759,9 +739,9 @@ namespace Manderijntje
                     // -y(u) + y(v) <= 0
                     // -x(u) + x(v) >= minL
 
-                    model.AddConstr(model.GetVarByName(u.node_id + "_y") - model.GetVarByName(v.node_id + "_y") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_y") + model.GetVarByName(v.node_id + "_y") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_x") + model.GetVarByName(v.node_id + "_x") >= -M * (1 - alpha) + minL, "");     // constraints need names
+                    model.AddConstr(model.GetVarByName(u.node_id + "_y") - model.GetVarByName(v.node_id + "_y") <= M * (1 - alpha), "");            
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_y") + model.GetVarByName(v.node_id + "_y") <= M * (1 - alpha), "");            
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_x") + model.GetVarByName(v.node_id + "_x") >= -M * (1 - alpha) + minL, "");    
 
                     break;
                 case 1:
@@ -769,63 +749,63 @@ namespace Manderijntje
                     // -z2(u) + z2(v) <= 0
                     // -z1(u) + z1(v) >= 2*minL
 
-                    model.AddConstr(model.GetVarByName(u.node_id + "_z2") - model.GetVarByName(v.node_id + "_z2") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_z2") + model.GetVarByName(v.node_id + "_z2") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_z1") + model.GetVarByName(v.node_id + "_z1") >= -M * (1 - alpha) + 2 * minL, "");   // constraints need names
+                    model.AddConstr(model.GetVarByName(u.node_id + "_z2") - model.GetVarByName(v.node_id + "_z2") <= M * (1 - alpha), "");           
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_z2") + model.GetVarByName(v.node_id + "_z2") <= M * (1 - alpha), "");            
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_z1") + model.GetVarByName(v.node_id + "_z1") >= -M * (1 - alpha) + 2 * minL, "");   
                     break;
                 case 2:
                     //  x(u) - x(v) <= 0
                     // -x(u) + x(v) <= 0
                     // -y(u) + y(v) >= minL
 
-                    model.AddConstr(model.GetVarByName(u.node_id + "_x") - model.GetVarByName(v.node_id + "_x") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_x") + model.GetVarByName(v.node_id + "_x") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_y") + model.GetVarByName(v.node_id + "_y") >= -M * (1 - alpha) + minL, "");     // constraints need names
+                    model.AddConstr(model.GetVarByName(u.node_id + "_x") - model.GetVarByName(v.node_id + "_x") <= M * (1 - alpha), "");          
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_x") + model.GetVarByName(v.node_id + "_x") <= M * (1 - alpha), "");         
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_y") + model.GetVarByName(v.node_id + "_y") >= -M * (1 - alpha) + minL, "");    
                     break;
                 case 3:
                     //  z1(u) - z1(v) <= 0
                     // -z1(u) + z1(v) <= 0
                     //  z2(u) - z2(v) >= 2*minL
 
-                    model.AddConstr(model.GetVarByName(u.node_id + "_z1") - model.GetVarByName(v.node_id + "_z1") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_z1") + model.GetVarByName(v.node_id + "_z1") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(model.GetVarByName(u.node_id + "_z2") - model.GetVarByName(v.node_id + "_z2") >= -M * (1 - alpha) + 2 * minL, "");   // constraints need names
+                    model.AddConstr(model.GetVarByName(u.node_id + "_z1") - model.GetVarByName(v.node_id + "_z1") <= M * (1 - alpha), "");         
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_z1") + model.GetVarByName(v.node_id + "_z1") <= M * (1 - alpha), "");         
+                    model.AddConstr(model.GetVarByName(u.node_id + "_z2") - model.GetVarByName(v.node_id + "_z2") >= -M * (1 - alpha) + 2 * minL, "");  
                     break;
                 case 4:
                     //  y(u) - y(v) <= 0
                     // -y(u) + y(v) <= 0
                     //  x(u) - x(v) >= minL
 
-                    model.AddConstr(model.GetVarByName(u.node_id + "_y") - model.GetVarByName(v.node_id + "_y") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_y") + model.GetVarByName(v.node_id + "_y") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(model.GetVarByName(u.node_id + "_x") - model.GetVarByName(v.node_id + "_x") >= -M * (1 - alpha) + minL, "");     // constraints need names
+                    model.AddConstr(model.GetVarByName(u.node_id + "_y") - model.GetVarByName(v.node_id + "_y") <= M * (1 - alpha), "");        
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_y") + model.GetVarByName(v.node_id + "_y") <= M * (1 - alpha), "");         
+                    model.AddConstr(model.GetVarByName(u.node_id + "_x") - model.GetVarByName(v.node_id + "_x") >= -M * (1 - alpha) + minL, "");     
                     break;
                 case 5:
                     //  z2(u) - z2(v) <= 0
                     // -z2(u) + z2(v) <= 0
                     //  z1(u) - z1(v) >= 2*minL
 
-                    model.AddConstr(model.GetVarByName(u.node_id + "_z2") - model.GetVarByName(v.node_id + "_z2") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_z2") + model.GetVarByName(v.node_id + "_z2") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(model.GetVarByName(u.node_id + "_z1") - model.GetVarByName(v.node_id + "_z1") >= -M * (1 - alpha) + 2 * minL, "");   // constraints need names
+                    model.AddConstr(model.GetVarByName(u.node_id + "_z2") - model.GetVarByName(v.node_id + "_z2") <= M * (1 - alpha), "");        
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_z2") + model.GetVarByName(v.node_id + "_z2") <= M * (1 - alpha), "");          
+                    model.AddConstr(model.GetVarByName(u.node_id + "_z1") - model.GetVarByName(v.node_id + "_z1") >= -M * (1 - alpha) + 2 * minL, "");  
                     break;
                 case 6:
                     //  x(u) - x(v) <= 0
                     // -x(u) + x(v) <= 0
                     //  y(u) - y(v) >= minL
 
-                    model.AddConstr(model.GetVarByName(u.node_id + "_x") - model.GetVarByName(v.node_id + "_x") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_x") + model.GetVarByName(v.node_id + "_x") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(model.GetVarByName(u.node_id + "_y") - model.GetVarByName(v.node_id + "_y") >= -M * (1 - alpha) + minL, "");    // constraints need names
+                    model.AddConstr(model.GetVarByName(u.node_id + "_x") - model.GetVarByName(v.node_id + "_x") <= M * (1 - alpha), "");           
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_x") + model.GetVarByName(v.node_id + "_x") <= M * (1 - alpha), "");         
+                    model.AddConstr(model.GetVarByName(u.node_id + "_y") - model.GetVarByName(v.node_id + "_y") >= -M * (1 - alpha) + minL, "");    
                     break;
                 case 7:
                     //  z1(u) - z1(v) <= 0
                     // -z1(u) + z1(v) <= 0
                     // -z2(u) + z2(v) >= 2*minL
 
-                    model.AddConstr(model.GetVarByName(u.node_id + "_z1") - model.GetVarByName(v.node_id + "_z1") <= M * (1 - alpha), "");            // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_z1") + model.GetVarByName(v.node_id + "_z1") <= M * (1 - alpha), "");           // constraints need names
-                    model.AddConstr(-model.GetVarByName(u.node_id + "_z2") + model.GetVarByName(v.node_id + "_z2") >= -M * (1 - alpha) + 2 * minL, "");    // constraints need names
+                    model.AddConstr(model.GetVarByName(u.node_id + "_z1") - model.GetVarByName(v.node_id + "_z1") <= M * (1 - alpha), "");           
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_z1") + model.GetVarByName(v.node_id + "_z1") <= M * (1 - alpha), "");         
+                    model.AddConstr(-model.GetVarByName(u.node_id + "_z2") + model.GetVarByName(v.node_id + "_z2") >= -M * (1 - alpha) + 2 * minL, "");  
                     break;
 
                 default:
