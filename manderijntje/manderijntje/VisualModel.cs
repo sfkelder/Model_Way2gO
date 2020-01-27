@@ -47,7 +47,7 @@ namespace Manderijntje
         /// <param name="data">Links the DataModel file</param>
         private void MakeDataForDisk(DataModel data)
         {
-            access = (new parsing(data)).getModel(false);
+            access = (new Parsing(data)).GetModel(false);
 
             if (Directory.Exists(filepath))
             {
@@ -80,7 +80,7 @@ namespace Manderijntje
                 }
             }
 
-            points = coordinates.ScalePointsToSize(points, width, height);
+            points = Coordinates.ScalePointsToSize(points, width, height);
 
             for (int i = 0; i < points.Length; i++)
             {

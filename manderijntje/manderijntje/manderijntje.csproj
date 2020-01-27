@@ -95,7 +95,7 @@
     <Compile Include="Models\AutoSuggestionModel.cs" />
     <Compile Include="Models\DepartureTimeModel.cs" />
     <Compile Include="Models\TransferModel.cs" />
-    <Compile Include="parsing.cs" />
+    <Compile Include="Parsing1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing.cs" />

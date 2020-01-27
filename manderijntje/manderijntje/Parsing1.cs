@@ -6,50 +6,50 @@ using Gurobi;
  
 namespace Manderijntje
 {
-    class parsing
+    class Parsing
     {
-        private List<sNode> nodes = new List<sNode>();
-        private List<sLink> links = new List<sLink>();
-        private List<sLinkPair> linkpairs = new List<sLinkPair>();
-        private List<sBendLink> bendlinks = new List<sBendLink>();
+        private List<Snode> nodes = new List<Snode>();
+        private List<Slink> links = new List<Slink>();
+        private List<Slinkpair> linkpairs = new List<Slinkpair>();
+        private List<Sbendlink> bendlinks = new List<Sbendlink>();
 
-        private List<sLink> logicallinks = new List<sLink>();
-        private List<sLogical> logicalconnections = new List<sLogical>();
+        private List<Slink> logicallinks = new List<Slink>();
+        private List<Slogical> logicalconnections = new List<Slogical>();
 
         private const int width = 5000, height = 5000;
 
-        public parsing(DataModel model)
+        public Parsing(DataModel model)
         {
             if (model.nodes.Count != 0 && model.links.Count != 0)
             {
-                setNodes(model.nodes);
-                setLinks(model.links);
-                setNeighbours();
+                SetNodes(model.nodes);
+                SetLinks(model.links);
+                SetNeighbours();
 
-                enforcePlanarity();
-                filterLogicalLinks();
-                setNeighbours();
+                EnforcePlanarity();
+                CreateLogicalConnections();
+                SetNeighbours();
 
-                getLinkPairs();
-                getBendLinks();
+                GetLinkPairs();
+                GetBendLinks();
             }
         }
 
-        public VisualModel getModel (bool solve)
+        public VisualModel GetModel (bool solve)
         {
-            if (solve && getDegree() <= 8)
+            if (solve && GetDegree() <= 8)
             {
-                nodes = (new solver(nodes, links, linkpairs, bendlinks)).getSolution(width, height);
+                nodes = (new Solver(nodes, links, linkpairs, bendlinks)).GetSolution(width, height);
             }
 
-            return createModel();
+            return CreateModel();
         }
 
 
         // PLANARITY:
 
         // returns the degree of the graph that is modeled by the list of nodes and the list of links
-        private int getDegree()
+        private int GetDegree()
         {
             int result = 0;
             for (int i = 0; i < nodes.Count; i++)
@@ -64,26 +64,26 @@ namespace Manderijntje
 
         // makes sure that there are no intersecting edges
         // if there are a node is inserted at the intersection
-        private void enforcePlanarity()
+        private void EnforcePlanarity()
         {
             for (int i = 0; i < links.Count; i++)
             {
                 for (int n = i; n < links.Count; n++)
                 {
-                    if (areLinksNonIncident(links[i], links[n]) && doLinksIntersect(links[i], links[n]))
+                    if (AreLinksNonIncident(links[i], links[n]) && DoLinksIntersect(links[i], links[n]))
                     {
-                        insertNode(links[i], links[n]);
+                        InsertNode(links[i], links[n]);
                     }
                 }
             }
         }
 
         // adds a node at the intersection of links e1 and e2
-        private void insertNode(sLink e1, sLink e2)
+        private void InsertNode(Slink e1, Slink e2)
         {
-            Point location = getIntersection(e1.u.x, e1.u.y, e1.v.x, e1.v.y, e2.u.x, e2.u.y, e2.v.x, e2.v.y);
-            sNode node = new sNode(nodes.Count, location);
-            node.neighbours = new List<sNode> { e1.u, e1.v, e2.u, e2.v };
+            Point location = GetIntersection(e1.u.x, e1.u.y, e1.v.x, e1.v.y, e2.u.x, e2.u.y, e2.v.x, e2.v.y);
+            Snode node = new Snode(nodes.Count, location);
+            node.neighbours = new List<Snode> { e1.u, e1.v, e2.u, e2.v };
             node.draw = false;
 
             links.Remove(e1);
@@ -92,22 +92,22 @@ namespace Manderijntje
             e1.isLogical = true; e1.addedNode = node; logicallinks.Add(e1);
             e2.isLogical = true; e2.addedNode = node; logicallinks.Add(e2);
 
-            links.Add(new sLink(node, e1.u));
-            links.Add(new sLink(node, e1.v));
-            links.Add(new sLink(node, e2.u));
-            links.Add(new sLink(node, e2.v));
+            links.Add(new Slink(node, e1.u));
+            links.Add(new Slink(node, e1.v));
+            links.Add(new Slink(node, e2.u));
+            links.Add(new Slink(node, e2.v));
 
             nodes.Add(node);
         }
 
 
-        private void filterLogicalLinks()
+        private void CreateLogicalConnections()
         {
             for (int i = 0; i < logicallinks.Count; i++)
             {
                 if (logicallinks[i].u.draw && logicallinks[i].v.draw)
                 {
-                    logicalconnections.Add(new sLogical(logicallinks[i].u, logicallinks[i].v, logicallinks[i].addedNode));
+                    logicalconnections.Add(new Slogical(logicallinks[i].u, logicallinks[i].v, logicallinks[i].addedNode));
 
                 } else
                 {
@@ -124,10 +124,10 @@ namespace Manderijntje
         }
 
         // checks if the given links intersects
-        private bool doLinksIntersect(sLink e1, sLink e2)
+        private bool DoLinksIntersect(Slink e1, Slink e2)
         {
-            Point intersect = getIntersection(e1.u.x, e1.u.y, e1.v.x, e1.v.y, e2.u.x, e2.u.y, e2.v.x, e2.v.y);
-            if (isPointInBounds(e1, e2, intersect))
+            Point intersect = GetIntersection(e1.u.x, e1.u.y, e1.v.x, e1.v.y, e2.u.x, e2.u.y, e2.v.x, e2.v.y);
+            if (IsPointInBounds(e1, e2, intersect))
             {
                 return true;
             }
@@ -135,7 +135,7 @@ namespace Manderijntje
         }
 
         // calculates the points of intersection of two lines, defined by line ((x1, y1) (x2, y2)) and line ((x3, y3) (x4, y4))
-        private Point getIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
+        private Point GetIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
         {   // where (x1, y1), (x2, y2) definse a line and (x3, y3), (x4, y4) defines a line:
 
             double px_t = (((x1 * y2) - (y1 * x2)) * (x3 - x4)) - ((x1 - x2) * ((x3 * y4) - (y3 * x4)));
@@ -152,7 +152,7 @@ namespace Manderijntje
         }
 
         // checks if the given points lies on both link e1 and e2
-        private bool isPointInBounds(sLink e1, sLink e2, Point p)
+        private bool IsPointInBounds(Slink e1, Slink e2, Point p)
         {
             int min_x1 = Math.Min(e1.u.x, e1.v.x), max_x1 = Math.Max(e1.u.x, e1.v.x), min_y1 = Math.Min(e1.u.y, e1.v.y), max_y1 = Math.Max(e1.u.y, e1.v.y);
             int min_x2 = Math.Min(e2.u.x, e2.v.x), max_x2 = Math.Max(e2.u.x, e2.v.x), min_y2 = Math.Min(e2.u.y, e2.v.y), max_y2 = Math.Max(e2.u.y, e2.v.y);
@@ -169,15 +169,15 @@ namespace Manderijntje
 
         // create and addes an instance of the link pair object to the list link pairs
         // for each pair of non incident links in the list links
-        private void getLinkPairs()
+        private void GetLinkPairs()
         {
             for (int i = 0; i < links.Count; i++)
             {
                 for (int n = i; n < links.Count; n++)
                 {
-                    if (areLinksNonIncident(links[i], links[n]))
+                    if (AreLinksNonIncident(links[i], links[n]))
                     {
-                        sLinkPair newPair = new sLinkPair(links[i], links[n]);
+                        Slinkpair newPair = new Slinkpair(links[i], links[n]);
                         linkpairs.Add(newPair);
                     }
                 }
@@ -186,15 +186,15 @@ namespace Manderijntje
 
         // create and addes an instance of the bend link object to the list bend links
         // for each pair of adjacent links in the list links
-        private void getBendLinks()
+        private void GetBendLinks()
         {
             for (int i = 0; i < links.Count; i++)
             {
                 for (int n = 0; n < links.Count; n++)
                 {
-                    if (areLinksAdjacent(links[i], links[n]))
+                    if (AreLinksAdjacent(links[i], links[n]))
                     {
-                        bendlinks.Add(getBendLink(links[i], links[n]));
+                        bendlinks.Add(GetBendLink(links[i], links[n]));
                     }
                 }
             }
@@ -202,27 +202,27 @@ namespace Manderijntje
 
         // creates a bend link object such that (u, v) is a link in the list links
         // and that (v, w) is a link in the list links
-        private sBendLink getBendLink(sLink e1, sLink e2)
+        private Sbendlink GetBendLink(Slink e1, Slink e2)
         {
-            sBendLink result;
+            Sbendlink result;
             if (e1.v == e2.v)
             {
-                result = new sBendLink(e1.u, e1.v, e2.u);
+                result = new Sbendlink(e1.u, e1.v, e2.u);
 
             }
             else if (e1.v == e2.u)
             {
-                result = new sBendLink(e1.u, e1.v, e2.v);
+                result = new Sbendlink(e1.u, e1.v, e2.v);
 
             }
             else if (e1.u == e2.v)
             {
-                result = new sBendLink(e1.v, e1.u, e2.u);
+                result = new Sbendlink(e1.v, e1.u, e2.u);
 
             }
             else   // e1.u == e2.u
             {
-                result = new sBendLink(e1.v, e1.u, e2.v);
+                result = new Sbendlink(e1.v, e1.u, e2.v);
 
             }
             return result;
@@ -230,7 +230,7 @@ namespace Manderijntje
 
         // checks if links e1 and e2 are non incident
         // that is they don't share a common node
-        private bool areLinksNonIncident(sLink e1, sLink e2)
+        private bool AreLinksNonIncident(Slink e1, Slink e2)
         {   // edges e1 and e2 don't share a common vertex
             if (e1 == e2)
             {
@@ -249,7 +249,7 @@ namespace Manderijntje
 
         // checls if links e1 and e2 are adjacent
         // that is they share one common node
-        private bool areLinksAdjacent(sLink e1, sLink e2)
+        private bool AreLinksAdjacent(Slink e1, Slink e2)
         {
             if (e1 != e2)
             {
@@ -270,7 +270,7 @@ namespace Manderijntje
 
         // creates for every node in dNodes a new sNode object and adds it to the list nodes
         // and calculates the logical coordinates from the given Lat and Long
-        private void setNodes(List<Node> dNodes)
+        private void SetNodes(List<Node> dNodes)
         {
             for (int i = 0; i < dNodes.Count; i++)
             {
@@ -281,12 +281,12 @@ namespace Manderijntje
             for (int i = 0; i < dNodes.Count; i++)
             {
                 // first argument is Lat, and the second argument is Long:
-                Coordinates.Add(coordinates.GetLogicalCoordinate(dNodes[i].x, dNodes[i].y, 1000000, 1000000));
+                Coordinates.Add(Manderijntje.Coordinates.GetLogicalCoordinate(dNodes[i].x, dNodes[i].y, 1000000, 1000000));
             }
-            Point[] ScaledCoordinates = coordinates.ScalePointsToSize(Coordinates.ToArray(), width, height);
+            Point[] ScaledCoordinates = Manderijntje.Coordinates.ScalePointsToSize(Coordinates.ToArray(), width, height);
             for (int i = 0; i < dNodes.Count; i++)
             {
-                sNode newNode = new sNode(dNodes[i].number, ScaledCoordinates[i]);
+                Snode newNode = new Snode(dNodes[i].number, ScaledCoordinates[i]);
                 newNode.name = dNodes[i].stationname;
                 newNode.country = dNodes[i].country;
                 nodes.Add(newNode);
@@ -296,20 +296,20 @@ namespace Manderijntje
 
         // populates the neighbours list for every node in the list nodes
         // using the list links
-        private void setNeighbours()
+        private void SetNeighbours()
         {
             for (int i = 0; i < nodes.Count; i++)
             {
-                nodes[i].neighbours = getNeighbours(nodes[i]);
+                nodes[i].neighbours = GetNeighbours(nodes[i]);
                 nodes[i].deg = nodes[i].neighbours.Count;
                 nodes[i].weight = nodes[i].neighbours.Count;
             }
         }
 
         // returns a list of all neighbours for a given node
-        private List<sNode> getNeighbours(sNode node)
+        private List<Snode> GetNeighbours(Snode node)
         {
-            List<sNode> result = new List<sNode>();
+            List<Snode> result = new List<Snode>();
 
             for (int i = 0; i < links.Count; i++)
             {
@@ -327,17 +327,17 @@ namespace Manderijntje
         }
 
         // creates for every link in dLinks a new sLink object and adds it to the list links
-        private void setLinks(List<Link> dLinks)
+        private void SetLinks(List<Link> dLinks)
         {
             for (int i = 0; i < dLinks.Count; i++)
             {
-                sLink newLink = new sLink(getNode(dLinks[i].start.number), getNode(dLinks[i].end.number));
+                Slink newLink = new Slink(GetNode(dLinks[i].start.number), GetNode(dLinks[i].end.number));
                 links.Add(newLink);
             }
         }
 
         // returns the sNode object with its index variable equal to i
-        private sNode getNode(int index)
+        private Snode GetNode(int index)
         {
             for (int i = 0; i < nodes.Count; i++)
             {
@@ -353,7 +353,7 @@ namespace Manderijntje
         // CREATE VISUAL MODEL OBJECT:
 
         // initializes a new instance of visual model
-        private VisualModel createModel()
+        private VisualModel CreateModel()
         {
             VisualModel model = new VisualModel();
 
@@ -384,18 +384,18 @@ namespace Manderijntje
             for (int i = 0; i < links.Count; i++)
             {
                 VisualLink newLink = new VisualLink(links[i].u.node_id + "__" + links[i].v.node_id);
-                newLink.u = getNode(links[i].u.index, dNodes);
-                newLink.v = getNode(links[i].v.index, dNodes);
+                newLink.u = GetNode(links[i].u.index, dNodes);
+                newLink.v = GetNode(links[i].v.index, dNodes);
 
                 dLinks.Add(newLink);
             }
 
             for (int i = 0; i < logicalconnections.Count; i++)
             {
-                VLogicalLink newLogical = new VLogicalLink(getNode(logicalconnections[i].u.index, dNodes), getNode(logicalconnections[i].v.index, dNodes));
+                VLogicalLink newLogical = new VLogicalLink(GetNode(logicalconnections[i].u.index, dNodes), GetNode(logicalconnections[i].v.index, dNodes));
                 for (int n = 0; n < logicalconnections[i].nodes.Count; n++)
                 {
-                    newLogical.nodes.Add(getNode(logicalconnections[i].nodes[n].index, dNodes));
+                    newLogical.nodes.Add(GetNode(logicalconnections[i].nodes[n].index, dNodes));
                 }
                 newLogical.GetLinks(dLinks);
                 dConnections.Add(newLogical);
@@ -424,7 +424,7 @@ namespace Manderijntje
         }
 
         //returns the visual node object with its index variable equal to i
-        private VisueelNode getNode(int i, List<VisueelNode> dNodes)
+        private VisueelNode GetNode(int i, List<VisueelNode> dNodes)
         {
             for (int n = 0; n < dNodes.Count; n++)
             {
@@ -438,12 +438,12 @@ namespace Manderijntje
     }
 
     
-    class solver
+    class Solver
     {
-        private List<sNode> nodes;
-        private List<sLink> links;
-        private List<sLinkPair> linkpairs;
-        private List<sBendLink> bendlinks;
+        private List<Snode> nodes;
+        private List<Slink> links;
+        private List<Slinkpair> linkpairs;
+        private List<Sbendlink> bendlinks;
 
         private GRBModel model;
         private GRBEnv env;
@@ -458,7 +458,7 @@ namespace Manderijntje
 
         // create all the necessary variables and constraints and add these the model
         // set the objective function that we want to minimize 
-        public solver (List<sNode> n, List<sLink> l, List<sLinkPair> p, List<sBendLink> b)
+        public Solver (List<Snode> n, List<Slink> l, List<Slinkpair> p, List<Sbendlink> b)
         {
             nodes = n; links = l; linkpairs = p; bendlinks = b;
 
@@ -467,8 +467,8 @@ namespace Manderijntje
             env = new GRBEnv();
             model = new GRBModel(env);
 
-            create_data();
-            create_contraints();
+            CreateData();
+            CreateContraints();
 
             model.SetObjective(weightBend * bendCost + weightRpos * rposCost + weightLength * lengthCost, GRB.MINIMIZE);
             model.Parameters.MIPGap = 0.075;
@@ -476,13 +476,13 @@ namespace Manderijntje
 
         // optimize the model and if necessary remove constraints from the model to make the model feasible
         // update the coordinate values in de nodes list and dispose of the model and environment objects
-        public List<sNode> getSolution (int width, int height)
+        public List<Snode> GetSolution (int width, int height)
         {
             model.Optimize();
-            relax_infeasible_model();
+            RelaxInfeasibleModel();
             //relax_infeasible_constraints();
 
-            updateData(width, height);
+            UpdateData(width, height);
 
             model.Dispose();
             env.Dispose();
@@ -492,7 +492,7 @@ namespace Manderijntje
 
         // if the model for the given variables is infeasible, we compute an IIS object, remove one constraint from the model and check if the model is feasible. 
         // we do this untill the model is feasible
-        private void relax_infeasible_model()
+        private void RelaxInfeasibleModel()
         {
             if (model.Status == GRB.Status.INFEASIBLE)
             {
@@ -537,7 +537,7 @@ namespace Manderijntje
             }
         }
 
-        private void relax_infeasible_constraints ()
+        private void RelaxInfeasibleConstraints ()
         {
             Console.WriteLine("The model is infeasible; relaxing the constraints");
             int originNumVars = model.NumVars;
@@ -563,7 +563,7 @@ namespace Manderijntje
 
         // first all the variables of the sNode objects in the list nodes are given the relevant value
         // then the variables for the coordinates for each station (and the corresponding constriants) are added to the model
-        private void create_data()
+        private void CreateData()
         {
             // adding the data to the data source required by the algo:
             for (int i = 0; i < nodes.Count; i++)
@@ -586,8 +586,8 @@ namespace Manderijntje
             for (int i = 0; i < links.Count; i++)
             {
                 // clac sector int values for each edge
-                links[i].sec_u_v = calc_sec(links[i].u, links[i].v);
-                links[i].sec_v_u = calc_sec(links[i].v, links[i].u);
+                links[i].sec_u_v = CalcSec(links[i].u, links[i].v);
+                links[i].sec_v_u = CalcSec(links[i].v, links[i].u);
             }
 
             // adding the variables for all the coordiantes to the model:
@@ -606,7 +606,7 @@ namespace Manderijntje
 
         // if the model is feasible, and there is thus a solution, all of the coordinate variables are pulled from the model
         // are scaled to the desired size and the variables in the nodes list are updated with these values
-        private void updateData(int w, int h)
+        private void UpdateData(int w, int h)
         {
             if (model.Status != GRB.Status.INFEASIBLE)
             {
@@ -618,7 +618,7 @@ namespace Manderijntje
                     results.Add(new Point((int)model.GetVarByName("vertex_" + i + "_x").X, (int)model.GetVarByName("vertex_" + i + "_y").X));
                 }
 
-                Point[] scaled_results = coordinates.ScalePointsToSize(results.ToArray(), w, h);
+                Point[] scaled_results = Coordinates.ScalePointsToSize(results.ToArray(), w, h);
 
                 for (int i = 0; i < nodes.Count; i++)
                 {
@@ -629,35 +629,35 @@ namespace Manderijntje
         }
 
         // for each of the four lists, the corresponding create variable method is called for every entry in the list
-        private void create_contraints()
+        private void CreateContraints()
         {
             for (int i = 0; i < links.Count; i++)
             {
-                create_constraints_links(i);
+                CreateConstraintsLinks(i);
             }
             model.Update();
 
             for (int i = 0; i < nodes.Count; i++)
             {
-                create_constraints_nodes(i);
+                CreateConstraintsNodes(i);
             }
             if (usePlanarity)
             {
                 for (int i = 0; i < linkpairs.Count; i++)
                 {
-                    create_constraints_linkpairs(i);
+                    CreateConstraintsLinkpairs(i);
                 }
             }
             for (int i = 0; i < bendlinks.Count; i++)
             {
-                create_constraints_bendlinks(i);
+                CreateConstraintsBendlinks(i);
             }
             model.Update();
         }
 
         // for the node at place i in the list nodes, constraints are created so that the circular order of the neighbours 
         // of a given node is preserved
-        private void create_constraints_nodes(int i)
+        private void CreateConstraintsNodes(int i)
         {
             // --- // 4.3:
             if (nodes[i].deg >= 2)
@@ -679,7 +679,7 @@ namespace Manderijntje
 
         // for the link at place i in the list links, constraints are created so that direction of every link assumes one of eight possible value
         // also variables and constraints are added to the variables that define the objective function for the length and rpos part
-        private void create_constraints_links(int i)
+        private void CreateConstraintsLinks(int i)
         {
             // --- // 4.2:
             GRBVar alpha_prec = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, "alpha_prec");
@@ -698,13 +698,13 @@ namespace Manderijntje
             model.AddConstr(dir_v_u == alpha_prec * sec_v_u_prec + alpha_orig * sec_v_u_orig + alpha_succ * sec_v_u_succ, "");    // constraints need names
 
             // add coordinate constraints for sec_prec and alpha_prec and Nodes u and v
-            create_constraints_coordinates(links[i].u, links[i].v, sec_u_v_prec, alpha_prec);
+            CreateConstraintsCoordinates(links[i].u, links[i].v, sec_u_v_prec, alpha_prec);
 
             // add coordinate constraints for sec_orig and alpha_orig and Nodes u and v
-            create_constraints_coordinates(links[i].u, links[i].v, sec_u_v_orig, alpha_orig);
+            CreateConstraintsCoordinates(links[i].u, links[i].v, sec_u_v_orig, alpha_orig);
 
             // add coordinate constraints for sec_succ and alpha_succ and Nodes u and v
-            create_constraints_coordinates(links[i].u, links[i].v, sec_u_v_succ, alpha_succ);
+            CreateConstraintsCoordinates(links[i].u, links[i].v, sec_u_v_succ, alpha_succ);
 
 
             // --- // 4.6:
@@ -730,7 +730,7 @@ namespace Manderijntje
 
         // for a given node u and v, sector u v, and an alpha variable constraints are added that ensure that the relative position of the nodes
         // (the coordinates) conform to the octilinear layout
-        private void create_constraints_coordinates(sNode u, sNode v, int sec_u_v, GRBVar alpha)
+        private void CreateConstraintsCoordinates(Snode u, Snode v, int sec_u_v, GRBVar alpha)
         {
             switch (sec_u_v)
             {
@@ -816,7 +816,7 @@ namespace Manderijntje
 
         // for the link pair at place i in the list linkpairs, constraints are added so that the two link pairs cant overlap
         // these constraint enforce planarity, and are optional because computing all these extra constriants demand a lot of resources
-        private void create_constraints_linkpairs(int i)
+        private void CreateConstraintsLinkpairs(int i)
         {
             // --- // 4.4:
             GRBVar N = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, "N");
@@ -880,7 +880,7 @@ namespace Manderijntje
         }
 
         // variables and constraints are added to the variables that define the objective function for the bend cost part
-        private void create_constraints_bendlinks(int i)
+        private void CreateConstraintsBendlinks(int i)
         {
             // --- // 4.5:
             string dir_u_v_id = "dir_" + bendlinks[i].u.node_id + "_" + bendlinks[i].v.node_id;
@@ -899,9 +899,9 @@ namespace Manderijntje
         }
 
         // given two nodes, one of eight directions is calculated
-        private int calc_sec(sNode u, sNode v)
+        private int CalcSec(Snode u, Snode v)
         {
-            double angle = calc_angle(u, v);
+            double angle = CalcAngle(u, v);
 
             if (22.5 <= angle && angle < 67.5)
             {
@@ -939,7 +939,7 @@ namespace Manderijntje
 
         // given two nodes, the angle between line segemnt defined by (u.x, u.y) (v.x, v.y) and the x-axes is calculated
         // in a way useful to the calc sec method
-        public static double calc_angle(sNode u, sNode v)
+        public static double CalcAngle(Snode u, Snode v)
         {
             double t = v.x - u.x;
             double n = Math.Sqrt(Math.Pow((v.x - u.x), 2) + Math.Pow(v.y - u.y, 2));
@@ -953,59 +953,59 @@ namespace Manderijntje
     }
     
 
-    public class sNode
+    public class Snode
     {
         public int x, y, z1, z2, deg, index;
-        public List<sNode> neighbours = new List<sNode>();
-        public sNode[] neighbours_sorted;
+        public List<Snode> neighbours = new List<Snode>();
+        public Snode[] neighbours_sorted;
         public string node_id, name, country;
         public bool draw = true;
         public double weight = 0.0;
 
-        public sNode(int i, Point p)
+        public Snode(int i, Point p)
         {
             index = i;
             x = p.X;
             y = p.Y;
         }
         
-        public double getAngle(sNode u, sNode v)
+        public double getAngle(Snode u, Snode v)
         {
-            return solver.calc_angle(u, v);
+            return Solver.CalcAngle(u, v);
         }
     }
 
-    public class sLink
+    public class Slink
     {
-        public sNode u, v;
+        public Snode u, v;
         public int sec_u_v, sec_v_u;
 
-        public sNode addedNode;
+        public Snode addedNode;
         public bool isLogical = false;
 
-        public sLink(sNode U, sNode V)
+        public Slink(Snode U, Snode V)
         {
             u = U;
             v = V;
         }
     }
 
-    public class sLogical
+    public class Slogical
     {
-        public sNode u, v;
-        public List<sNode> nodes = new List<sNode>();
-        public List<sLink> links = new List<sLink>();
+        public Snode u, v;
+        public List<Snode> nodes = new List<Snode>();
+        public List<Slink> links = new List<Slink>();
 
-        public sLogical (sNode U, sNode V, sNode x)
+        public Slogical (Snode U, Snode V, Snode x)
         {
             u = U;
             v = V;
             nodes.Add(x);
         }
 
-        public bool isSubRoute(sNode U, sNode V)
+        public bool isSubRoute(Snode U, Snode V)
         {
-            List<sNode> booltest = nodes;
+            List<Snode> booltest = nodes;
             booltest.Add(u);
             booltest.Add(v);
             if (booltest.Contains(U) && booltest.Contains(V))
@@ -1018,22 +1018,22 @@ namespace Manderijntje
         }
     }
 
-    public class sLinkPair
+    public class Slinkpair
     {
-        public sLink e1, e2;
+        public Slink e1, e2;
 
-        public sLinkPair(sLink E1, sLink E2)
+        public Slinkpair(Slink E1, Slink E2)
         {
             e1 = E1;
             e2 = E2;
         }
     }
 
-    public class sBendLink
+    public class Sbendlink
     {
-        public sNode u, v, w;
+        public Snode u, v, w;
 
-        public sBendLink(sNode U, sNode V, sNode W)
+        public Sbendlink(Snode U, Snode V, Snode W)
         {
             u = U;
             v = V;
@@ -1041,7 +1041,7 @@ namespace Manderijntje
         }
     }
 
-    static class coordinates
+    static class Coordinates
     {
         public static Point GetLogicalCoordinate(double Lat, double Long, int width, int height)
         {
