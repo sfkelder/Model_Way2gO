@@ -165,17 +165,17 @@ namespace Manderijntje
 
                 foreach (VisueelNode v in access.nodes)
                 {
-                    if (s[0].stationname == v.name_id)
+                    if (s[0].stationName == v.name_id)
                     {
                         v.priorityLinks = true;
-                        map.station1 = s[0].stationname;
+                        map.station1 = s[0].stationName;
                     }
                        
 
-                    if (s[s.Count - 1].stationname == v.name_id)
+                    if (s[s.Count - 1].stationName == v.name_id)
                     {
                         v.priorityLinks = true;
-                        map.station2 = s[s.Count - 1].stationname;
+                        map.station2 = s[s.Count - 1].stationName;
                     }                      
                 }
 
@@ -188,7 +188,7 @@ namespace Manderijntje
                 {
                     foreach (Node n in s)
                     {
-                        if(v.name_id == n.stationname)
+                        if(v.name_id == n.stationName)
                             v.Color = Color.Orange;
 
                     }
@@ -201,11 +201,11 @@ namespace Manderijntje
 
                     for (int n = 0; n < s.Count; n++)
                     {
-                        firstName = s[n].stationname;
+                        firstName = s[n].stationName;
 
                         for (int m = 0; m < s.Count; m++)
                         {
-                            lastName = s[m].stationname;
+                            lastName = s[m].stationName;
 
                             if (firstName == v.v.name_id && lastName == v.u.name_id)
                             {

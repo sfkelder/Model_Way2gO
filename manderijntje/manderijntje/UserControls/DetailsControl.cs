@@ -78,7 +78,7 @@ namespace Manderijntje
             for(int i = 0; i < shortestPath.Count; i++)
             {
                 j += 50;
-                e.Graphics.DrawString("Station: " + shortestPath[i].stationname, new Font("Arial", 15, FontStyle.Regular), Brushes.Black, 50, j);
+                e.Graphics.DrawString("Station: " + shortestPath[i].stationName, new Font("Arial", 15, FontStyle.Regular), Brushes.Black, 50, j);
                 j += 50;
                 e.Graphics.DrawString("Departure Time: " + shortestPath[i].minCostToStart.ToShortTimeString(), new Font("Arial", 15, FontStyle.Regular), Brushes.Black, 50, j);
             }

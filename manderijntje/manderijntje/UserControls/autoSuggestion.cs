@@ -22,7 +22,7 @@ namespace Manderijntje
         {
             nodeList = nodes;
             foreach (Node node in nodeList)
-                stationList.Add(new AutoSuggestionModel(node.stationname, "Train"));
+                stationList.Add(new AutoSuggestionModel(node.stationName, "Train"));
         }
         public AutoSuggestion()
         {

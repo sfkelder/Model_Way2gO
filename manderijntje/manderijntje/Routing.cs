@@ -16,7 +16,7 @@ class Route
         List<Node>  tempshortestpath = Routing.GetShortestPathDijkstra(startName, endName, time, dataModel);
         foreach (Node node in tempshortestpath)
         {
-            Node tempnode = new Node(node.x, node.y, node.stationname, node.country, node.number);
+            Node tempnode = new Node(node.x, node.y, node.stationName, node.country, node.number);
             tempnode.minCostToStart = node.minCostToStart;
             tempnode.connections = node.connections;
             tempnode.neighbours = node.neighbours;
