@@ -462,6 +462,7 @@ namespace Manderijntje
 
             model.SetObjective(weightBend * bendCost + weightRpos * rposCost + weightLength * lengthCost, GRB.MINIMIZE);
             model.Parameters.MIPGap = 0.075;
+            model.Parameters.MIPGap = 0.1;
         }
 
         // optimize the model and if necessary remove constraints from the model to make the model feasible
