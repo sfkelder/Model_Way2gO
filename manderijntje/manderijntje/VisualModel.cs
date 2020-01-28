@@ -14,7 +14,7 @@ namespace Manderijntje
     public class Connecion_to_files
     {
         public Lists_Change l = new Lists_Change();
-        private Changes b = new Changes();
+        private Changes b = new Changes(); 
         public VisualModel access;
         private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
         private const bool reimport = false;
