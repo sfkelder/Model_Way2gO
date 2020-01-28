@@ -17,6 +17,7 @@ namespace Manderijntje
         private Changes b = new Changes();
         public VisualModel access;
         private const string filepath = "C:/Way2Go/visueelmodel_binary.txt";
+        private const bool reimport = true;
 
         /// <summary>
         /// constructor class, when project is opened it will check if there is a data file available to work with, otherwise it creates a new one
@@ -24,7 +25,7 @@ namespace Manderijntje
         /// <param name="data">Links the DataModel file</param>
         public Connecion_to_files(DataModel data)
         {
-            if (File.Exists(filepath) && !Program.reimport)
+            if (File.Exists(filepath) && reimport)
             {
                 try
                 {
