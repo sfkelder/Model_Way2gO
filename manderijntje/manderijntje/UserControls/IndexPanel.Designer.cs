@@ -176,7 +176,7 @@
             // 
             // panel5
             // 
-            this.panel5.BackColor = System.Drawing.Color.Yellow;
+            this.panel5.BackColor = System.Drawing.Color.Sienna;
             this.panel5.Location = new System.Drawing.Point(28, 119);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(34, 10);

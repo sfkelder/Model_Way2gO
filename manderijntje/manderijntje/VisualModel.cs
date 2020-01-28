@@ -151,16 +151,16 @@ namespace Manderijntje
         /// <summary>
         /// is responsible for corectly colloring all nodes
         /// </summary>
-        /// <param name="screenheight">Screenheight of the map from the Mapvieuw file</param>
+        /// <param name="screenHeight">Screenheight of the map from the Mapvieuw file</param>
         /// <param name="factor">The value of the zoom from the Mapview</param>
-        /// <param name="startmouse">strat coordinate of the mouse from MapView</param>
-        /// <param name="endmouse">end coordinate of the mouse from MapView</param>
+        /// <param name="startMouse">strat coordinate of the mouse from MapView</param>
+        /// <param name="endMouse">end coordinate of the mouse from MapView</param>
         /// <param name="s">List of Nodes on the route the user entered, comming from Form1</param>
-        /// <param name="stationnames">Only if a new set of names is filled in by the user, this bool turns to true</param>
+        /// <param name="stationNames">Only if a new set of names is filled in by the user, this bool turns to true</param>
         /// <param name="map">Gives the connection to the MapView</param>
-        public void Visualcontrol(int screenheight, int factor, Point startmouse, Point endmouse, List<Node> s, bool stationnames, MapView map)
+        public void Visualcontrol(int screenHeight, int factor, Point startMouse, Point endMouse, List<Node> s, bool stationNames, MapView map)
         {
-            if (stationnames)
+            if (stationNames)
             {
                 Colorchange();
 
@@ -234,7 +234,7 @@ namespace Manderijntje
                 }
             }
 
-            l.Valuenode(access, factor, screenheight, b, startmouse, endmouse, stationnames, map);
+            l.Valuenode(access, factor, screenHeight, b, startMouse, endMouse, stationNames, map);
 
         }
     }
