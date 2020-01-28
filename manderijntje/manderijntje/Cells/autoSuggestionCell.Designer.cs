@@ -47,7 +47,7 @@
             // 
             // stationTypeIcon
             // 
-            this.stationTypeIcon.Image = global::Manderijntje.Properties.Resources.OrangeTrain;
+            this.stationTypeIcon.Image = manderijntje.Properties.Resources.OrangeTrain;
             this.stationTypeIcon.Location = new System.Drawing.Point(16, 12);
             this.stationTypeIcon.Margin = new System.Windows.Forms.Padding(4);
             this.stationTypeIcon.Name = "stationTypeIcon";

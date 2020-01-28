@@ -164,10 +164,31 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\middenSpoor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eindSpoor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\beginSpoor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\backArrowWhite.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BackwardArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BackwardArrowkopie.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlackLongArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bottomCellBack.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\busIcon.png" />
@@ -176,7 +197,40 @@
     <None Include="Resources\changeText.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\endTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ForwardArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ForwardArrowkopie.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\FowardArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GrayArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InfoIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\inputBack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\map.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\midCellBack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\midTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\options.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\optionsMap.PNG" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\OrangeClock.png" />
@@ -191,34 +245,34 @@
     <None Include="Resources\OverstappenWhite.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\saveIconBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveIconOrange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveIconWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\startTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\topCellBack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\totalScreen.PNG" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\Way2GoLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\WhiteClock.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\WhiteLongArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\WhiteTrain.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\middenSpoor.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\eindSpoor.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\beginSpoor.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\saveIconWhite.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\endTrack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\midTrack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\startTrack.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

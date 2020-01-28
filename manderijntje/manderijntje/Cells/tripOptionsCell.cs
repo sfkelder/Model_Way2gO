@@ -36,7 +36,7 @@ namespace Manderijntje
         {
             get { return _totalTime; }
             set { _totalTime = value; 
-                clockIcon.Image = Properties.Resources.OrangeClock;
+                clockIcon.Image = manderijntje.Properties.Resources.OrangeClock;
                 totaltimeLBL.Text = value; }
         }
 

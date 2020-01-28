@@ -76,7 +76,7 @@
             // 
             // clockIcon
             // 
-            this.clockIcon.Image = global::Manderijntje.Properties.Resources.OrangeClock;
+            this.clockIcon.Image = manderijntje.Properties.Resources.OrangeClock;
             this.clockIcon.Location = new System.Drawing.Point(521, 28);
             this.clockIcon.Margin = new System.Windows.Forms.Padding(4);
             this.clockIcon.Name = "clockIcon";

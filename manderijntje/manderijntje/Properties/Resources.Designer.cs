@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Manderijntje.Properties {
+namespace manderijntje.Properties {
     using System;
     
     
@@ -63,6 +63,16 @@ namespace Manderijntje.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ArrowWhite {
+            get {
+                object obj = ResourceManager.GetObject("ArrowWhite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap backArrowWhite {
             get {
                 object obj = ResourceManager.GetObject("backArrowWhite", resourceCulture);
@@ -76,6 +86,36 @@ namespace Manderijntje.Properties {
         internal static System.Drawing.Bitmap BackwardArrow {
             get {
                 object obj = ResourceManager.GetObject("BackwardArrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BackwardArrowkopie {
+            get {
+                object obj = ResourceManager.GetObject("BackwardArrowkopie", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BlackLongArrow {
+            get {
+                object obj = ResourceManager.GetObject("BlackLongArrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bottomCellBack {
+            get {
+                object obj = ResourceManager.GetObject("bottomCellBack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,6 +153,26 @@ namespace Manderijntje.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ForwardArrow {
+            get {
+                object obj = ResourceManager.GetObject("ForwardArrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ForwardArrowkopie {
+            get {
+                object obj = ResourceManager.GetObject("ForwardArrowkopie", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap FowardArrow {
             get {
                 object obj = ResourceManager.GetObject("FowardArrow", resourceCulture);
@@ -123,9 +183,79 @@ namespace Manderijntje.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap GrayArrow {
+            get {
+                object obj = ResourceManager.GetObject("GrayArrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InfoIcon {
+            get {
+                object obj = ResourceManager.GetObject("InfoIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputBack {
+            get {
+                object obj = ResourceManager.GetObject("inputBack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap map {
+            get {
+                object obj = ResourceManager.GetObject("map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap midCellBack {
+            get {
+                object obj = ResourceManager.GetObject("midCellBack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap midTrack {
             get {
                 object obj = ResourceManager.GetObject("midTrack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap options {
+            get {
+                object obj = ResourceManager.GetObject("options", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap optionsMap {
+            get {
+                object obj = ResourceManager.GetObject("optionsMap", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,6 +303,26 @@ namespace Manderijntje.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap saveIconBlack {
+            get {
+                object obj = ResourceManager.GetObject("saveIconBlack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap saveIconOrange {
+            get {
+                object obj = ResourceManager.GetObject("saveIconOrange", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap saveIconWhite {
             get {
                 object obj = ResourceManager.GetObject("saveIconWhite", resourceCulture);
@@ -193,6 +343,26 @@ namespace Manderijntje.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap topCellBack {
+            get {
+                object obj = ResourceManager.GetObject("topCellBack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap totalScreen {
+            get {
+                object obj = ResourceManager.GetObject("totalScreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Way2GoLogo {
             get {
                 object obj = ResourceManager.GetObject("Way2GoLogo", resourceCulture);
@@ -206,6 +376,16 @@ namespace Manderijntje.Properties {
         internal static System.Drawing.Bitmap WhiteClock {
             get {
                 object obj = ResourceManager.GetObject("WhiteClock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WhiteLongArrow {
+            get {
+                object obj = ResourceManager.GetObject("WhiteLongArrow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

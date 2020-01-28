@@ -60,7 +60,7 @@
             // 
             // lineImage
             // 
-            this.lineImage.Image = global::Manderijntje.Properties.Resources.startTrack;
+            this.lineImage.Image = manderijntje.Properties.Resources.startTrack;
             this.lineImage.Location = new System.Drawing.Point(150, 0);
             this.lineImage.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.lineImage.Name = "lineImage";
@@ -71,7 +71,7 @@
             // 
             // typetransportIcon
             // 
-            this.typetransportIcon.Image = global::Manderijntje.Properties.Resources.OrangeTrain;
+            this.typetransportIcon.Image = manderijntje.Properties.Resources.OrangeTrain;
             this.typetransportIcon.Location = new System.Drawing.Point(741, 46);
             this.typetransportIcon.Margin = new System.Windows.Forms.Padding(4);
             this.typetransportIcon.Name = "typetransportIcon";

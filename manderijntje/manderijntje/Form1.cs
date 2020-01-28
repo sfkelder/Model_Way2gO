@@ -612,9 +612,9 @@ namespace Manderijntje
         private void ChangeBackIcon(bool Forward)
         {
             if (Forward)
-                hideArrowIcon.Image = Properties.Resources.FowardArrow;
+                hideArrowIcon.Image = manderijntje.Properties.Resources.FowardArrow;
             else
-                hideArrowIcon.Image = Properties.Resources.BackwardArrow;
+                hideArrowIcon.Image = manderijntje.Properties.Resources.BackwardArrow;
         }
 
         // Hides userControl or the flowcontrolPanel that need to be Invisbible and set the correct bools.

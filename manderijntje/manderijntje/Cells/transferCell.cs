@@ -27,7 +27,7 @@ namespace Manderijntje
         {
             get { return _typeTransport; }
             set { _typeTransport = value;
-                typetransportIcon.Image = Properties.Resources.OrangeTrain;
+                typetransportIcon.Image = manderijntje.Properties.Resources.OrangeTrain;
             }
         }
 
@@ -38,7 +38,7 @@ namespace Manderijntje
                 // Checks wich image it need to have.
                 if (_last)
                 {
-                    lineImage.Image = Properties.Resources.endTrack;
+                    lineImage.Image = manderijntje.Properties.Resources.endTrack;
                     typetransportIcon.Visible = false;
                 }    
             }
@@ -50,7 +50,7 @@ namespace Manderijntje
                 // Checks wich image it need to have.
                 if (_first)
                 {
-                    lineImage.Image = Properties.Resources.startTrack;
+                    lineImage.Image = manderijntje.Properties.Resources.startTrack;
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace Manderijntje
                 // Checks wich image it need to have.
                 if (_mid)
                 {
-                    lineImage.Image = Properties.Resources.midTrack;
+                    lineImage.Image = manderijntje.Properties.Resources.midTrack;
                 }
             }
         }

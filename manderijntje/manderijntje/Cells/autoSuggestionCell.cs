@@ -20,7 +20,7 @@ namespace Manderijntje
             get { return _stationType; }
             set {
                 _stationType = value;
-                stationTypeIcon.Image = Properties.Resources.OrangeTrain;
+                stationTypeIcon.Image = manderijntje.Properties.Resources.OrangeTrain;
             }
         }
         public bool departureInput
