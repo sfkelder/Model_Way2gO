@@ -36,7 +36,7 @@ namespace Manderijntje
             {
                 if (File.Exists(homeNodes) && File.Exists(homeLinks) && File.Exists(homeRoutes))
                 {
-                    if (!Directory.Exists(baseDir))
+                    if (!Directory.Exists(baseDir)) 
                     {
                         Directory.CreateDirectory(baseDir);
                     }
