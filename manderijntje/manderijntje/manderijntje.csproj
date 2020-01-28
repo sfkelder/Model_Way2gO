@@ -32,6 +32,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Way2GoLogo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="gurobi90.netstandard20">
       <HintPath>..\..\..\..\..\..\..\..\gurobi900\win64\lib\gurobi90.netstandard20.dll</HintPath>
@@ -273,6 +279,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\WhiteTrain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconWay2Go.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Way2GoLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Way2GoLogo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,6 @@
-﻿namespace Manderijntje
+﻿using System.Drawing;
+
+namespace Manderijntje
 {
     partial class Form1
     {
